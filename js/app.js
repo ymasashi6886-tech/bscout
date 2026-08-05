@@ -77,11 +77,13 @@ $('analyzeBtn').addEventListener('click', () => {
     reason:     $('c_why').value.trim()
   };
   const j = {
-    position:     $('j_pos').value.trim(),
-    company:      $('j_co').value.trim(),
-    description:  $('j_desc').value.trim(),
-    requirements: $('j_req').value.trim(),
-    appeal:       $('j_ap').value.trim()
+    position:        $('j_pos').value.trim(),
+    company:         $('j_co').value.trim(),
+    description:     $('j_desc').value.trim(),
+    requirements:    $('j_req').value.trim(),
+    preferred:       $('j_pref')?.value.trim() || '',
+    appeal:          $('j_ap').value.trim(),
+    successExamples: $('j_success')?.value.trim() || ''
   };
   if (!c.company || !c.role || !c.experience || !c.skills) {
     err('候補者情報の必須項目（会社・職種・経験概要・スキル）を入力してください。'); return;
@@ -520,6 +522,21 @@ document.querySelectorAll('.ms textarea').forEach(ta => {
     updateCC('ta-' + sec, 'cc-' + sec);
     if (S.mail) S.mail[sec] = ta.value;
     if ($('pvBox').classList.contains('on')) $('pvBox').textContent = buildFull();
+    // Phase1.5: 修正ログ記録（AI原文と異なる場合のみ）
+    if (S.mail && S.currentHistoryId) {
+      const history = loadScoutHistory();
+      const entry = history.find(h => h.id === S.currentHistoryId);
+      const aiOrig = entry?.mailAi?.[sec] || '';
+      if (aiOrig && aiOrig !== ta.value) {
+        // 変更中フラグ（debounce用）
+        if (!ta._editTimer) {
+          ta._editTimer = setTimeout(() => {
+            saveEditLog(S.currentHistoryId, sec, aiOrig, ta.value, '');
+            ta._editTimer = null;
+          }, 2000);
+        }
+      }
+    }
   });
 });
 
@@ -535,6 +552,9 @@ function restart() {
   document.querySelectorAll('input[type=text], textarea').forEach(el => { if (!el.closest('.topbar')) el.value = ''; });
   S.candidate = {}; S.job = {}; S.analysis = null; S.mail = null; S.selfReview = null; S.selectedAppeals = []; S.learningData = {};
   S.currentHistoryId = null;
+  S.currentProjectId = null;
+  // プロジェクト選択バーのアクティブ状態をリセット
+  document.querySelectorAll('.proj-sel-btn').forEach(b => b.classList.remove('active'));
   go(1);
 }
 
@@ -874,3 +894,127 @@ function removeHistoryEntry(id) {
   deleteHistoryEntry(id);
   renderHistory();
 }
+
+// ══════════════════════════════════════════
+// Phase1.5: 求人プロジェクト管理 UI
+// ══════════════════════════════════════════
+
+/** プロジェクト選択バーを描画（カード上部の保存済み求人ボタン群） */
+function renderProjectSelector() {
+  const projects = loadProjects();
+  const bar  = $('projSelectorBar');
+  const list = $('projSelectorList');
+  if (!bar || !list) return;
+
+  if (projects.length === 0) {
+    bar.classList.remove('has-projects');
+    return;
+  }
+  bar.classList.add('has-projects');
+  list.innerHTML = projects.map(p => `
+    <button class="proj-sel-btn${p.id === S.currentProjectId ? ' active' : ''}"
+            onclick="loadProject('${p.id}')" title="${esc(p.position)} — ${new Date(p.updatedAt).toLocaleDateString('ja-JP')}に保存">
+      ${esc(p.name || p.position)}
+    </button>`).join('');
+}
+
+/** プロジェクトを読み込んでフォームに反映 */
+function loadProject(id) {
+  const projects = loadProjects();
+  const proj = projects.find(p => p.id === id);
+  if (!proj) return;
+  applyProjectToForm(proj);
+  renderProjectSelector();  // アクティブ状態更新
+  // モーダルが開いている場合は閉じる
+  closeProjectModal();
+  // ユーザーへの通知
+  const btn = $('projSaveBtn');
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = '✓ 読み込みました';
+    btn.classList.add('saved');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('saved'); }, 1800);
+  }
+}
+
+/** 現在のフォーム内容をプロジェクトとして保存 */
+function saveCurrentProject() {
+  const pos = $('j_pos')?.value.trim();
+  if (!pos) { err('ポジション名を入力してから求人情報を保存してください。'); return; }
+  const proj = buildProjectFromForm();
+  const id = saveProject(proj);
+  S.currentProjectId = id;
+  renderProjectSelector();
+
+  const btn = $('projSaveBtn');
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = '✓ 保存しました';
+    btn.classList.add('saved');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('saved'); }, 1800);
+  }
+}
+
+/** プロジェクト管理モーダルを開く */
+function openProjectModal() {
+  renderProjectModalList();
+  $('projModalOverlay').classList.add('on');
+}
+
+/** プロジェクト管理モーダルを閉じる */
+function closeProjectModal() {
+  $('projModalOverlay').classList.remove('on');
+}
+
+/** モーダル内のオーバーレイクリックで閉じる（モーダル内クリックは閉じない） */
+function closeProjModal(event) {
+  if (event.target === $('projModalOverlay')) closeProjectModal();
+}
+
+/** モーダル内のプロジェクトリストを描画 */
+function renderProjectModalList() {
+  const projects = loadProjects();
+  const list  = $('projModalList');
+  const empty = $('projModalEmpty');
+  if (!list) return;
+
+  if (projects.length === 0) {
+    list.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+
+  list.innerHTML = projects.map(p => {
+    const d = new Date(p.updatedAt);
+    const dateStr = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+    return `
+      <div class="proj-item">
+        <div class="proj-item-info">
+          <div class="proj-item-name">${esc(p.name || p.position)}</div>
+          <div class="proj-item-pos">${esc(p.position)}${p.company ? ' — ' + esc(p.company) : ''}</div>
+          <div class="proj-item-date">最終更新: ${dateStr}${p.successExamples ? ' ⭐ 成功例あり' : ''}</div>
+        </div>
+        <div class="proj-item-actions">
+          <button class="proj-load-btn" onclick="loadProject('${p.id}')">読み込む</button>
+          <button class="proj-del-btn" onclick="deleteProjectConfirm('${p.id}')">削除</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+/** プロジェクト削除確認 */
+function deleteProjectConfirm(id) {
+  if (!confirm('この求人プロジェクトを削除しますか？')) return;
+  deleteProject(id);
+  if (S.currentProjectId === id) S.currentProjectId = null;
+  renderProjectModalList();
+  renderProjectSelector();
+}
+
+// ページ読み込み時にプロジェクト選択バーを初期描画
+document.addEventListener('DOMContentLoaded', () => {
+  renderProjectSelector();
+});
+// DOMContentLoadedが既に発火済みの場合に備えてすぐにも実行
+if (document.readyState !== 'loading') renderProjectSelector();

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bスカウト — 開発レポート v0.8.1</title>
+<title>Bスカウト — 開発レポート v0.9</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -147,9 +147,9 @@ tr:last-child td{border-bottom:none}
   <!-- VERSION HERO -->
   <div class="version-hero">
     <div class="version-left">
-      <div class="version-num">v0.8.1</div>
-      <div class="version-label">Phase1 完了・バグ修正済 — Phase2 開発準備中</div>
-      <div class="phase-badge">📅 最終更新: 2025年1月（バッチデモのテンプレ表現バグ修正）</div>
+      <div class="version-num">v0.9</div>
+      <div class="version-label">Phase1.5 完了 — 求人プロジェクト管理・修正ログ基盤</div>
+      <div class="phase-badge">📅 最終更新: 2025年7月（求人プロジェクト保存・再利用機能 + 修正ログ収集基盤）</div>
     </div>
     <div class="version-right">
       <div class="version-concept">
@@ -204,13 +204,13 @@ tr:last-child td{border-bottom:none}
       </div>
       <div class="vt-line vt-line-done"></div>
       <div class="vt-item">
-        <div class="vt-dot vt-current">v0.8.1</div>
-        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>Phase1完了</div>
-      </div>
-      <div class="vt-line"></div>
-      <div class="vt-item">
-        <div class="vt-dot vt-next">v0.9</div>
-        <div class="vt-label">IBM訴求<br>ライブラリ</div>
+        <div class="vt-dot vt-done">v0.8.1</div>
+          <div class="vt-label">Phase1完了</div>
+        </div>
+        <div class="vt-line vt-line-done"></div>
+        <div class="vt-item">
+          <div class="vt-dot vt-current">v0.9</div>
+          <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>Phase1.5</div>
       </div>
       <div class="vt-line"></div>
       <div class="vt-item">
@@ -278,17 +278,34 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="phase-row">
+      <div class="phase-marker pm-done"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">Phase 1.5</div>
+          <span class="phase-tag pt-done">✅ 完了</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-done">✅</span><strong>求人プロジェクト管理</strong> — 求人情報をポジション単位で保存・ワンクリック再利用（最大30件）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>歓迎要件・過去の成功スカウト例フィールド追加（AIプロンプトに自動反映）</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>リクルーター修正ログ基盤</strong> — AI案と修正版の差分を自動収集（2秒debounce）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>storage.js v1.1 — projectId管理・editLog・buildLearningData()更新</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
       <div class="phase-marker pm-active"></div>
       <div class="phase-content">
         <div class="phase-head">
           <div class="phase-name">Phase 2</div>
-          <span class="phase-tag pt-active">🔥 次のターゲット → v0.9</span>
+          <span class="phase-tag pt-active">🔥 次のターゲット → v1.0β</span>
         </div>
         <div class="phase-items">
           <div class="phase-item"><span class="pi-todo">⬜</span><strong>IBM訴求ライブラリ実装</strong>（技術/AI/グローバル/育成/社会貢献/働き方/年収/ブランド/案件規模 11カテゴリ）</div>
           <div class="phase-item"><span class="pi-todo">⬜</span>候補者タイプ × IBM訴求の相性マトリクス（AIが自動選択）</div>
           <div class="phase-item"><span class="pi-todo">⬜</span>OHEREとスカウト文の対応関係トレーサビリティUI</div>
           <div class="phase-item"><span class="pi-todo">⬜</span>セルフレビュー→1クリック改善修正機能</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>修正ログからの学習データ活用（上位リクルーターパターン抽出）</div>
         </div>
       </div>
     </div>
@@ -346,6 +363,9 @@ tr:last-child td{border-bottom:none}
     <tr><td>AIセルフレビュー（IBM専用6軸採点）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
     <tr><td>スカウト履歴保存・返信フィードバック</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
     <tr><td>バッチ処理（複数候補者一括）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td><strong>求人プロジェクト保存・再利用（Phase1.5）</strong></td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>リクルーター修正ログ収集基盤（Phase1.5）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>歓迎要件・成功スカウト例フィールド（Phase1.5）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
     <tr><td><strong>IBM訴求ライブラリ</strong></td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
     <tr><td>セルフレビュー→1クリック修正</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
     <tr><td>OHEREとスカウト文の連動トレーサビリティ</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
@@ -358,18 +378,25 @@ tr:last-child td{border-bottom:none}
       <div class="pri-num pri-critical">1</div>
       <div class="pri-body">
         <div class="pri-title">IBM訴求ライブラリの実装</div>
-        <div class="pri-desc">技術/AI・Watson/グローバル/育成/社会貢献/働き方/年収/ブランド/案件規模/チーム/安定 の11カテゴリを構造化。AIが候補者タイプに合わせて自動選択。「IBMらしいスカウト」との差別化の核心。</div>
+        <div class="pri-desc">技術/AI・Watson/グローバル/育成/社会貢献/働き方/年収/ブランド/案件規模/チーム/安定 の11カテゴリを構造化。AIが候補者タイプに合わせて自動選択。「IBMらしいスカウト」との差別化の核心。求人プロジェクトと組み合わせてポジション別の訴求セットを固定化できる。</div>
       </div>
     </div>
     <div class="priority-item">
       <div class="pri-num pri-critical">2</div>
       <div class="pri-body">
         <div class="pri-title">セルフレビュー → 1クリック改善修正</div>
-        <div class="pri-desc">採点結果の「改善指摘」ボタンから該当セクションを自動再生成。採点→修正→再採点のサイクルを実現。現状は採点結果を「見るだけ」で終わっている。</div>
+        <div class="pri-desc">採点結果の「改善指摘」ボタンから該当セクションを自動再生成。採点→修正→再採点のサイクルを実現。Phase1.5の修正ログ基盤と組み合わせてリクルーターの判断差分を蓄積できる。</div>
       </div>
     </div>
     <div class="priority-item">
       <div class="pri-num pri-high">3</div>
+      <div class="pri-body">
+        <div class="pri-title">修正ログからのパターン抽出（学習ループ）</div>
+        <div class="pri-desc">Phase1.5で収集した「AI案 vs リクルーター修正版」のdiffを分析。「このタイプの候補者のintroはこう修正される傾向がある」というパターンを抽出し、次回のプロンプトに反映する学習ループの実現。</div>
+      </div>
+    </div>
+    <div class="priority-item">
+      <div class="pri-num pri-med">4</div>
       <div class="pri-body">
         <div class="pri-title">OHEREとスカウト文の連動トレーサビリティ</div>
         <div class="pri-desc">「この冒頭文はH(仮説)から来ている」「このbenefitはS戦略④IBM訴求を実装」という対応関係をUIで示す。思考プロセスとアウトプットの論理的つながりが現状ブラックボックス。</div>
@@ -383,21 +410,21 @@ tr:last-child td{border-bottom:none}
     <span class="ft-dir">bscout/</span><br>
     ├── <span class="ft-file">index.html</span>　　　　 <span class="ft-comment">// HTML構造・全パネル定義</span><br>
     ├── <span class="ft-dir">css/</span><br>
-    │　　└── <span class="ft-file">style.css</span>　　　 <span class="ft-comment">// 866行・全スタイル定義</span><br>
+    │　　└── <span class="ft-file">style.css</span>　　　 <span class="ft-comment">// 1050行・全スタイル定義（Phase1.5: プロジェクトUIスタイル追加）</span><br>
     ├── <span class="ft-dir">js/</span><br>
-    │　　├── <span class="ft-file">storage.js</span>　　　 <span class="ft-comment">// 状態管理(S)・localStorage・learningData構造</span><br>
-    │　　├── <span class="ft-file">ai.js</span>　　　　　　 <span class="ft-comment">// OpenAI API通信・全プロンプト定義（最重要）</span><br>
-    │　　└── <span class="ft-file">app.js</span>　　　　　 <span class="ft-comment">// UI制御・レンダリング・イベント処理（877行）</span><br>
+    │　　├── <span class="ft-file">storage.js</span>　　　 <span class="ft-comment">// v1.1 — PROJECT_KEY/EDITLOG_KEY・求人プロジェクト管理・修正ログ基盤</span><br>
+    │　　├── <span class="ft-file">ai.js</span>　　　　　　 <span class="ft-comment">// Phase1.5: successExamples・preferredをプロンプトに追加</span><br>
+    │　　└── <span class="ft-file">app.js</span>　　　　　 <span class="ft-comment">// Phase1.5: renderProjectSelector/saveCurrentProject/修正ログ記録処理追加</span><br>
     ├── <span class="ft-dir">netlify/functions/</span><br>
-    │　　└── <span class="ft-file">proxy.js</span>　　　　 <span class="ft-comment">// Netlify用APIプロキシ（APIキーのサーバー管理）</span><br>
-    ├── <span class="ft-file">netlify.toml</span>　　　　 <span class="ft-comment">// Netlifyデプロイ設定</span><br>
-    └── <span class="ft-file">bscout_standalone.html</span> <span class="ft-comment">// 全ファイル統合版（112KB・ChatGPT添付用）</span>
+    │　　└── <span class="ft-file">proxy.js</span>　　　　 <span class="ft-comment">// Netlify用APIプロキシ（変更なし）</span><br>
+    ├── <span class="ft-file">netlify.toml</span>　　　　 <span class="ft-comment">// Netlifyデプロイ設定（変更なし）</span><br>
+    └── <span class="ft-file">bscout_standalone.html</span> <span class="ft-comment">// 全ファイル統合版（189KB・ChatGPT添付用）</span>
   </div>
 
 </div>
 
 <footer style="text-align:center;font-size:12px;color:#9ca3af;border-top:1px solid #e2e5ea;padding:16px 0;margin-top:40px;background:#fff">
-  Bスカウト v0.8 — 採用AIエージェント — Made with IBM Bob
+  Bスカウト v0.9 — 採用AIエージェント — Made with IBM Bob
 </footer>
 
 </body>

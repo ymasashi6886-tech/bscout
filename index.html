@@ -121,9 +121,21 @@
           <div class="icon-chip" style="background:#fce7f3;color:#be185d">求</div>
           求人情報
         </div>
+        <button class="btn btn-ghost btn-sm" id="projMgrBtn" onclick="openProjectModal()">📁 求人プロジェクト管理</button>
       </div>
+
+      <!-- プロジェクト選択バー -->
+      <div class="proj-selector-bar" id="projSelectorBar">
+        <div class="proj-selector-label">📂 保存済み求人を読み込む：</div>
+        <div class="proj-selector-list" id="projSelectorList"></div>
+      </div>
+
       <div class="card-body">
         <div class="grid2">
+          <div class="fg">
+            <label>求人プロジェクト名（任意）</label>
+            <input type="text" id="j_proj_name" placeholder="例：シニアBE採用2024Q2（保存・再利用したい場合）">
+          </div>
           <div class="fg">
             <label>募集ポジション名<span class="req">*</span></label>
             <input type="text" id="j_pos" placeholder="例：シニアバックエンドエンジニア">
@@ -141,14 +153,39 @@
             <textarea id="j_req" placeholder="例：バックエンド開発3年以上、JVM系言語経験、AWS設計運用経験、マイクロサービス経験者優遇"></textarea>
           </div>
           <div class="fg">
+            <label>歓迎要件（任意）</label>
+            <textarea id="j_pref" placeholder="例：Kubernetes経験者、スタートアップ経験者、英語ビジネスレベル"></textarea>
+          </div>
+          <div class="fg s2">
             <label>会社・ポジションの魅力<span class="req">*</span></label>
             <textarea id="j_ap" placeholder="例：シリーズB・急成長、技術的裁量大・アーキテクチャを自分で決められる、フルリモート可、優秀なエンジニアチーム、年収700〜1000万"></textarea>
           </div>
+          <div class="fg s2">
+            <label>過去の成功スカウト例（任意）</label>
+            <textarea id="j_success" placeholder="例：「○○社のリードエンジニアに○○という切り口でアプローチしたら返信率が高かった」「○○という実績を持つ候補者への訴求として技術的挑戦を前面に出したら効果的だった」"></textarea>
+            <div class="hint">過去に返信・採用につながったスカウトの切り口・訴求例を記録しておくと、AIがより精度の高いスカウトを生成します</div>
+          </div>
         </div>
         <div class="btn-row">
+          <button class="btn btn-ghost" id="projSaveBtn" onclick="saveCurrentProject()" style="font-size:12px">💾 求人情報を保存</button>
           <button class="btn btn-ai" id="analyzeBtn">
             <span style="font-size:16px">✦</span> AIリクルーターが分析開始
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 求人プロジェクト管理モーダル -->
+    <div class="proj-modal-overlay" id="projModalOverlay" onclick="closeProjModal(event)">
+      <div class="proj-modal">
+        <div class="proj-modal-head">
+          <div class="proj-modal-title">📁 求人プロジェクト管理</div>
+          <button class="proj-modal-close" onclick="closeProjectModal()">✕</button>
+        </div>
+        <div class="proj-modal-body">
+          <div class="proj-modal-hint">保存した求人情報はワンクリックで読み込めます。複数ポジションを掛け持つ際に便利です。</div>
+          <div class="proj-list" id="projModalList"></div>
+          <div class="proj-modal-empty" id="projModalEmpty">まだ保存された求人プロジェクトはありません。<br>求人情報を入力して「💾 求人情報を保存」ボタンから保存できます。</div>
         </div>
       </div>
     </div>

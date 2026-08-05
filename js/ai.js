@@ -178,6 +178,8 @@ async function callMailAPI() {
   const strat = ohere.scoutStrategy || {};
   const temp = a.temperature || {};
 
+  const successExamples = j.successExamples || '';
+
   const prompt = `あなたは日本のトップリクルーターです。以下の情報をもとに、AIっぽさのないスカウトメールを生成してください。JSONのみ返してください。
 
 ## 候補者情報
@@ -190,7 +192,9 @@ async function callMailAPI() {
 ## 求人情報
 - ポジション: ${j.position}（${j.company || ''}）
 - 内容: ${j.description}
+- 歓迎要件: ${j.preferred || '未記入'}
 - 魅力: ${j.appeal}
+${successExamples ? `\n## 過去の成功スカウト例（参考にして同水準の切り口を使うこと）\n${successExamples}` : ''}
 
 ## AI分析結果（スカウト文に反映すること）
 - キャリアストーリー: ${story.narrative || a.motivationHypothesis || ''}
