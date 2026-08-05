@@ -1236,3 +1236,85 @@ textarea.tall { min-height:110px; }
   overflow: hidden;
   white-space: nowrap;
 }
+
+/* ══════════════════════════════════════════
+   watsonx / バックエンド設定パネル
+══════════════════════════════════════════ */
+.wx-settings-btn {
+  width: 32px; height: 32px;
+  background: #1f2937; border: 1px solid #374151;
+  border-radius: 6px; color: #9ca3af;
+  font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s; flex-shrink: 0;
+}
+.wx-settings-btn:hover { background: #374151; color: #e5e7eb; }
+
+.wx-panel {
+  display: none;
+  position: fixed;
+  top: 56px; right: 12px;
+  z-index: 290;
+  width: 380px;
+}
+.wx-panel.wx-panel-open { display: block; animation: up .15s ease; }
+
+.wx-panel-inner {
+  background: #1a2235;
+  border: 1px solid #2d3748;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.45);
+  padding: 18px 20px 16px;
+  color: #e2e8f0;
+}
+.wx-panel-title {
+  font-size: 12px; font-weight: 800;
+  letter-spacing: .8px; text-transform: uppercase;
+  color: #94a3b8; margin-bottom: 14px;
+}
+.wx-row {
+  display: flex; align-items: center;
+  gap: 10px; margin-bottom: 10px;
+}
+.wx-label {
+  font-size: 11px; font-weight: 700;
+  color: #94a3b8; white-space: nowrap;
+  min-width: 100px; text-align: right;
+}
+.wx-input {
+  flex: 1; padding: 7px 10px;
+  background: #0f172a; border: 1px solid #334155;
+  border-radius: 5px; color: #e2e8f0;
+  font: 12px/1.4 inherit;
+}
+.wx-input:focus { outline: none; border-color: #3b82f6; }
+.wx-input option { background: #1a2235; color: #e2e8f0; }
+
+.wx-toggle-group {
+  display: flex; gap: 4px;
+}
+.wx-toggle {
+  padding: 5px 14px;
+  background: #0f172a; border: 1px solid #334155;
+  border-radius: 5px; color: #94a3b8;
+  font: 600 12px inherit; cursor: pointer;
+  transition: all .15s;
+}
+.wx-toggle:hover { background: #1e293b; color: #e2e8f0; }
+.wx-toggle.wx-toggle-active {
+  background: #2563eb; border-color: #2563eb;
+  color: #fff;
+}
+.wx-fields { margin-top: 4px; }
+
+.wx-panel-footer {
+  display: flex; justify-content: flex-end; gap: 8px;
+  margin-top: 14px; padding-top: 12px;
+  border-top: 1px solid #2d3748;
+}
+.wx-panel-footer .btn-ghost {
+  background: transparent; border-color: #374151;
+  color: #94a3b8; font-size: 12px;
+}
+.wx-panel-footer .btn-ghost:hover { background: #1e293b; color: #e2e8f0; }
+.wx-panel-footer .btn-primary { font-size: 12px; padding: 7px 16px; }

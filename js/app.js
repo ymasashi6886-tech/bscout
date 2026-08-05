@@ -1313,3 +1313,106 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // DOMContentLoadedが既に発火済みの場合に備えてすぐにも実行
 if (document.readyState !== 'loading') renderProjectSelector();
+
+// ══════════════════════════════════════════
+// watsonx 設定パネル制御
+// ══════════════════════════════════════════
+
+/** 設定パネルの開閉トグル */
+function toggleWxPanel() {
+  const panel = $('wxPanel');
+  const isOpen = panel.classList.contains('wx-panel-open');
+  if (isOpen) {
+    panel.classList.remove('wx-panel-open');
+  } else {
+    initWxPanel();
+    panel.classList.add('wx-panel-open');
+  }
+}
+
+/** パネルを開く時に現在の設定値を読み込む */
+function initWxPanel() {
+  const backend = localStorage.getItem('bscout_backend') || 'openai';
+  setBackendUI(backend);
+  const apiKey  = localStorage.getItem('bscout_apikey') || '';
+  const token   = localStorage.getItem('bscout_wx_token') || '';
+  const url     = localStorage.getItem('bscout_wx_url') || '';
+  const project = localStorage.getItem('bscout_wx_project') || '';
+  const model   = localStorage.getItem('bscout_wx_model') || 'ibm/granite-13b-instruct-v2';
+  if ($('wxApiKey'))  $('wxApiKey').value  = apiKey  ? '••••••••' : '';
+  if ($('wxToken'))   $('wxToken').value   = token   ? '••••••••' : '';
+  if ($('wxUrl'))     $('wxUrl').value     = url;
+  if ($('wxProject')) $('wxProject').value = project;
+  if ($('wxModel'))   $('wxModel').value   = model;
+}
+
+/** バックエンド切り替えボタンUI更新 */
+function setBackendUI(backend) {
+  const btnOai = $('wxBtnOpenai'), btnWx = $('wxBtnWatsonx');
+  const oaiFields = $('wxOpenaiFields'), wxFields = $('wxWatsonxFields');
+  if (!btnOai) return;
+  if (backend === 'watsonx') {
+    btnOai.classList.remove('wx-toggle-active');
+    btnWx.classList.add('wx-toggle-active');
+    oaiFields.style.display = 'none';
+    wxFields.style.display  = 'block';
+  } else {
+    btnOai.classList.add('wx-toggle-active');
+    btnWx.classList.remove('wx-toggle-active');
+    oaiFields.style.display = 'block';
+    wxFields.style.display  = 'none';
+  }
+}
+
+/** バックエンド選択 */
+function setBackend(backend) {
+  localStorage.setItem('bscout_backend', backend);
+  setBackendUI(backend);
+}
+
+/** 入力値を即座にlocalStorageへ保存（パスワード表示中は保存しない） */
+function saveWxField(key, value) {
+  if (value === '••••••••') return;
+  if (value) {
+    localStorage.setItem(key, value);
+  }
+}
+
+/** 設定をクリア（確認あり） */
+function clearWxSettings() {
+  if (!confirm('バックエンド設定（APIキー・トークン含む）をすべてクリアしますか？')) return;
+  ['bscout_apikey','bscout_wx_token','bscout_wx_url','bscout_wx_project','bscout_wx_model','bscout_backend'].forEach(k => localStorage.removeItem(k));
+  initWxPanel();
+  alert('設定をクリアしました。ページを再読み込みすると接続状態が更新されます。');
+}
+
+/** 設定適用してパネルを閉じる */
+function applyWxSettings() {
+  // 各フィールドの値を保存（マスク文字以外）
+  const fields = [
+    { id: 'wxApiKey',  key: 'bscout_apikey'    },
+    { id: 'wxToken',   key: 'bscout_wx_token'  },
+    { id: 'wxUrl',     key: 'bscout_wx_url'    },
+    { id: 'wxProject', key: 'bscout_wx_project'},
+    { id: 'wxModel',   key: 'bscout_wx_model'  },
+  ];
+  fields.forEach(({ id, key }) => {
+    const el = $(id);
+    if (el && el.value && el.value !== '••••••••') {
+      localStorage.setItem(key, el.value.trim());
+    }
+  });
+  $('wxPanel').classList.remove('wx-panel-open');
+  // 接続状態を再表示するためリロード
+  location.reload();
+}
+
+// パネル外クリックで閉じる
+document.addEventListener('click', (e) => {
+  const panel = $('wxPanel');
+  const btn   = $('wxSettingsBtn');
+  if (!panel || !btn) return;
+  if (panel.classList.contains('wx-panel-open') && !panel.contains(e.target) && e.target !== btn) {
+    panel.classList.remove('wx-panel-open');
+  }
+});

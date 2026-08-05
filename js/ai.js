@@ -494,19 +494,16 @@ async function regenSection(sec) {
     benefit: '候補者にとってのメリット（2〜3文・訴求ポイント:' + S.selectedAppeals.join('・') + 'を反映）',
     cta:     'カジュアル面談への誘導（2文・プレッシャーなし）'
   };
-  const res = await fetch(API_URL, {
+  const regenMessages = [
+    { role: 'system', content: '優秀な採用担当者としてJSONのみ返してください。' },
+    { role: 'user', content: `候補者:${c.role}(${c.company})、スキル:${c.skills}、志向:${c.reason || '不明'}\n求人:${j.position}(${j.company || ''})、魅力:${j.appeal}\nタイプ:${typeCategory}、訴求優先順位:${(a.appealPriority || []).map(p => p.rank + '位:' + p.appealName).join('・')}、選択訴求:${S.selectedAppeals.join('・')}\n「${desc[sec]}」を1つ生成。JSON:{"${sec}":"テキスト"}` }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({
-      model: md(),
-      messages: [
-        { role: 'system', content: '優秀な採用担当者としてJSONのみ返してください。' },
-        { role: 'user', content: `候補者:${c.role}(${c.company})、スキル:${c.skills}、志向:${c.reason || '不明'}\n求人:${j.position}(${j.company || ''})、魅力:${j.appeal}\nタイプ:${typeCategory}、訴求優先順位:${(a.appealPriority || []).map(p => p.rank + '位:' + p.appealName).join('・')}、選択訴求:${S.selectedAppeals.join('・')}\n「${desc[sec]}」を1つ生成。JSON:{"${sec}":"テキスト"}` }
-      ],
-      temperature: 0.9, response_format: { type: 'json_object' }
-    })
+    body: JSON.stringify(buildRequestBody(regenMessages, 0.9))
   });
   if (!res.ok) throw new Error('API error');
-  const parsed = JSON.parse((await res.json()).choices[0].message.content);
+  const parsed = parseApiResponse(await res.json());
   S.mail[sec] = parsed[sec];
   const ta = $('ta-' + sec); ta.value = parsed[sec]; autoResize(ta); updateCC('ta-' + sec, 'cc-' + sec);
 }
@@ -542,11 +539,15 @@ async function runBatchSingle(c, j) {
 
   if (!hasApiKey()) return batchDemoResult(c, j);
 
-  const res = await fetch(API_URL, {
+  const batchMessages = [
+    { role: 'system', content: '優秀なヘッドハンターとしてJSONのみ返してください。' },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({ model: md(), messages: [{ role: 'system', content: '優秀なヘッドハンターとしてJSONのみ返してください。' }, { role: 'user', content: prompt }], temperature: 0.7, response_format: { type: 'json_object' } })
+    body: JSON.stringify(buildRequestBody(batchMessages, 0.7))
   });
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
-  const data = JSON.parse((await res.json()).choices[0].message.content);
+  const data = parseApiResponse(await res.json());
   return { cand: c, ...data };
 }

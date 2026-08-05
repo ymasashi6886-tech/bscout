@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>B繧ｹ繧ｫ繧ｦ繝・窶・謗｡逕ｨAI繧ｨ繝ｼ繧ｸ繧ｧ繝ｳ繝・/title>
-
+<title>Bスカウト — 採用AIエージェント</title>
 <style>
-/* B繧ｹ繧ｫ繧ｦ繝・窶・繝｡繧､繝ｳ繧ｹ繧ｿ繧､繝ｫ繧ｷ繝ｼ繝・*/
+/* Bスカウト — メインスタイルシート */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
   --bg: #ffffff;
@@ -33,7 +32,7 @@
 }
 body { font-family: -apple-system,"Segoe UI",system-ui,sans-serif; font-size:14px; line-height:1.65; color:var(--text); background:#f0f2f6; min-height:100vh; }
 
-/* 笏笏 TOPBAR 笏笏 */
+/* ── TOPBAR ── */
 .topbar {
   background:#111827; color:#fff;
   height:56px; padding:0 24px;
@@ -57,10 +56,10 @@ body { font-family: -apple-system,"Segoe UI",system-ui,sans-serif; font-size:14p
 .model-sel { background:#1f2937; border:1px solid #374151; border-radius:5px; color:#e5e7eb; font-size:12px; padding:5px 8px; }
 .model-sel:focus { outline:none; }
 
-/* 笏笏 LAYOUT 笏笏 */
+/* ── LAYOUT ── */
 .wrap { max-width:1000px; margin:0 auto; padding:28px 20px 80px; }
 
-/* 笏笏 STEPPER 笏笏 */
+/* ── STEPPER ── */
 .stepper { display:flex; background:var(--bg); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; margin-bottom:24px; box-shadow:var(--shadow); }
 .st { flex:1; display:flex; align-items:center; justify-content:center; gap:7px; padding:13px 6px; font-size:12px; color:var(--muted); border-right:1px solid var(--border); transition:background .2s; cursor:default; }
 .st:last-child { border-right:none; }
@@ -72,19 +71,19 @@ body { font-family: -apple-system,"Segoe UI",system-ui,sans-serif; font-size:14p
 .st-label { white-space:nowrap; }
 @media(max-width:640px){ .st-label { display:none; } }
 
-/* 笏笏 PANEL 笏笏 */
+/* ── PANEL ── */
 .panel { display:none; }
 .panel.on { display:block; animation:up .18s ease; }
 @keyframes up { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
 
-/* 笏笏 CARD 笏笏 */
+/* ── CARD ── */
 .card { background:var(--bg); border:1px solid var(--border); border-radius:var(--r); box-shadow:var(--shadow); margin-bottom:16px; overflow:hidden; }
 .card-head { padding:18px 22px 16px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
 .card-title { display:flex; align-items:center; gap:9px; font-size:15px; font-weight:800; }
 .card-body { padding:22px; }
 .icon-chip { width:30px; height:30px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0; }
 
-/* 笏笏 FORM 笏笏 */
+/* ── FORM ── */
 .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
 .grid2.g1 { grid-template-columns:1fr; }
 .fg { display:flex; flex-direction:column; gap:5px; }
@@ -101,7 +100,7 @@ textarea { min-height:82px; }
 textarea.tall { min-height:110px; }
 ::placeholder { color:#c4cad4; }
 
-/* 笏笏 BUTTONS 笏笏 */
+/* ── BUTTONS ── */
 .btn-row { display:flex; align-items:center; justify-content:flex-end; gap:10px; margin-top:20px; padding-top:18px; border-top:1px solid var(--border); }
 .btn { padding:9px 20px; border-radius:6px; font:600 14px/1 inherit; cursor:pointer; border:none; display:inline-flex; align-items:center; gap:6px; transition:all .15s; }
 .btn-ghost { background:transparent; color:var(--muted); border:1.5px solid var(--border); }
@@ -113,7 +112,7 @@ textarea.tall { min-height:110px; }
 .btn-sm { padding:6px 13px; font-size:12px; }
 .btn:disabled { opacity:.4; cursor:not-allowed; transform:none !important; box-shadow:none !important; }
 
-/* 笏笏 LOADING 笏笏 */
+/* ── LOADING ── */
 .overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.7); z-index:400; align-items:center; justify-content:center; }
 .overlay.on { display:flex; }
 .load-card { background:var(--bg); border-radius:12px; padding:36px 48px; text-align:center; min-width:300px; box-shadow:0 24px 64px rgba(0,0,0,.25); }
@@ -125,11 +124,11 @@ textarea.tall { min-height:110px; }
 .ls.ok { color:var(--green); }
 .ls-dot { width:7px; height:7px; border-radius:50%; background:currentColor; flex-shrink:0; }
 
-/* 笏笏 ERROR 笏笏 */
+/* ── ERROR ── */
 .err-bar { display:none; background:var(--red-l); border:1px solid #fecaca; border-radius:6px; padding:11px 16px; font-size:13px; color:var(--red); margin-bottom:14px; }
 .err-bar.on { display:block; }
 
-/* 笏笏 ANALYSIS BLOCKS 笏笏 */
+/* ── ANALYSIS BLOCKS ── */
 .analysis-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .ab { background:var(--surface); border:1px solid var(--border); border-radius:7px; padding:14px 16px; }
 .ab.full { grid-column:span 2; }
@@ -148,7 +147,7 @@ textarea.tall { min-height:110px; }
 .score-n { font-size:22px; font-weight:900; color:var(--accent); min-width:52px; text-align:right; }
 .score-lv { font-size:11px; color:var(--muted); white-space:nowrap; }
 
-/* 笏笏 APPEAL SELECTOR (STEP 3) 笏笏 */
+/* ── APPEAL SELECTOR (STEP 3) ── */
 .appeal-intro { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:18px; background:var(--accent-l); border:1px solid #bfdbfe; border-radius:6px; padding:12px 16px; }
 .appeal-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:10px; margin-bottom:20px; }
 .appeal-item { position:relative; }
@@ -183,7 +182,7 @@ textarea.tall { min-height:110px; }
 .strategy-note { background:var(--green-l); border:1px solid #a7f3d0; border-radius:6px; padding:12px 16px; font-size:13px; color:#065f46; line-height:1.7; margin-top:16px; }
 .strategy-note strong { font-weight:700; }
 
-/* 笏笏 MAIL EDITOR (STEP 5) 笏笏 */
+/* ── MAIL EDITOR (STEP 5) ── */
 .mail-sections { display:flex; flex-direction:column; gap:10px; }
 .ms { border:1.5px solid var(--border); border-radius:7px; overflow:hidden; transition:border-color .15s; }
 .ms:focus-within { border-color:var(--accent); box-shadow:0 0 0 3px rgba(37,99,235,.1); }
@@ -242,7 +241,7 @@ textarea.tall { min-height:110px; }
 
 .footer { text-align:center; font-size:12px; color:#9ca3af; border-top:1px solid var(--border); padding-top:16px; margin-top:40px; }
 
-/* 笏笏 PRIORITY RANKING 笏笏 */
+/* ── PRIORITY RANKING ── */
 .priority-list { display:flex; flex-direction:column; gap:10px; margin-bottom:16px; }
 .priority-item { display:flex; align-items:flex-start; gap:12px; background:var(--bg); border:1.5px solid var(--border); border-radius:8px; padding:14px 16px; transition:border-color .15s; }
 .priority-item.rank-1 { border-color:var(--accent); background:var(--accent-l); }
@@ -258,11 +257,11 @@ textarea.tall { min-height:110px; }
 .priority-other { font-size:12px; color:var(--muted); background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:10px 14px; margin-top:4px; }
 .priority-other-title { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:var(--muted); margin-bottom:6px; }
 
-/* 笏笏 CANDIDATE TYPE BADGE 笏笏 */
+/* ── CANDIDATE TYPE BADGE ── */
 .type-fixed-badge { display:inline-flex; align-items:center; gap:8px; background:var(--purple); color:#fff; border-radius:6px; padding:6px 14px; font-size:13px; font-weight:700; margin-bottom:4px; }
 .type-fixed-tag { font-size:10px; background:rgba(255,255,255,.25); border-radius:4px; padding:2px 6px; font-weight:600; letter-spacing:.5px; text-transform:uppercase; }
 
-/* 笏笏 RECRUITER GUIDANCE 笏笏 */
+/* ── RECRUITER GUIDANCE ── */
 .guidance-list { display:flex; flex-direction:column; gap:12px; }
 .guidance-item { background:var(--bg); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
 .guidance-flow { display:flex; flex-direction:column; }
@@ -275,10 +274,10 @@ textarea.tall { min-height:110px; }
 .guidance-row-text { font-size:13px; color:var(--text); line-height:1.7; flex:1; }
 .guidance-row.row-action { background:var(--green-l); }
 
-/* 笏笏 LEARNING DATA NOTICE 笏笏 */
+/* ── LEARNING DATA NOTICE ── */
 .learning-badge { display:inline-flex; align-items:center; gap:5px; background:#0f172a; color:#7dd3fc; border-radius:4px; padding:3px 9px; font-size:10px; font-weight:700; letter-spacing:.4px; margin-left:8px; vertical-align:middle; }
 
-/* 笏笏 INFO QUALITY 笏笏 */
+/* ── INFO QUALITY ── */
 .iq-bar-wrap { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--surface); border:1px solid var(--border); border-radius:7px; margin-bottom:14px; }
 .iq-label { font-size:12px; font-weight:700; color:var(--muted); white-space:nowrap; }
 .iq-bar { flex:1; height:8px; background:var(--surface2); border-radius:4px; overflow:hidden; }
@@ -291,7 +290,7 @@ textarea.tall { min-height:110px; }
 .iq-score.mid  { color:var(--amber); }
 .iq-score.low  { color:var(--red); }
 
-/* 笏笏 AI QUESTIONS (STEP 1.5) 笏笏 */
+/* ── AI QUESTIONS (STEP 1.5) ── */
 .aq-intro { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:16px; background:var(--amber-l); border:1px solid #fde68a; border-radius:6px; padding:12px 16px; }
 .aq-list { display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
 .aq-item { background:var(--bg); border:1.5px solid var(--border); border-radius:8px; overflow:hidden; }
@@ -306,7 +305,7 @@ textarea.tall { min-height:110px; }
 .aq-input textarea { min-height:60px; font-size:13px; }
 .aq-skip-note { font-size:11px; color:var(--muted); text-align:center; margin-top:8px; }
 
-/* 笏笏 BATCH MODE 笏笏 */
+/* ── BATCH MODE ── */
 .batch-toggle-btn { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border:1.5px solid var(--border); border-radius:6px; background:var(--bg); font:600 12px/1 inherit; color:var(--muted); cursor:pointer; transition:all .15s; }
 .batch-toggle-btn:hover { border-color:var(--purple); color:var(--purple); background:var(--purple-l); }
 .batch-toggle-btn.active { background:var(--purple); color:#fff; border-color:var(--purple); }
@@ -345,9 +344,9 @@ textarea.tall { min-height:110px; }
 .batch-progress.on { display:flex; align-items:center; gap:10px; }
 @media(max-width:640px){ .br-body{grid-template-columns:1fr} .batch-cand-body{grid-template-columns:1fr} }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   讖溯・C: 霑比ｿ｡邨先棡繝輔ぅ繝ｼ繝峨ヰ繝・けUI
-笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   機能C: 返信結果フィードバックUI
+══════════════════════════════════════════ */
 .feedback-box {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -433,9 +432,9 @@ textarea.tall { min-height:110px; }
   margin-top: 8px;
 }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   讖溯・D: 繧ｹ繧ｫ繧ｦ繝亥ｱ･豁ｴ繝代ロ繝ｫ
-笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   機能D: スカウト履歴パネル
+══════════════════════════════════════════ */
 .hr-item {
   background: #fff;
   border: 1px solid var(--border);
@@ -500,7 +499,7 @@ textarea.tall { min-height:110px; }
   display: flex;
   gap: 8px;
 }
-/* 邨先棡繝舌ャ繧ｸ */
+/* 結果バッジ */
 .hr-badge {
   font-size: 10px;
   font-weight: 700;
@@ -514,9 +513,9 @@ textarea.tall { min-height:110px; }
 .hb-no      { background: #fee2e2; color: #dc2626; }
 .hb-wait    { background: var(--surface); color: var(--muted); border: 1px solid var(--border); }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   Phase1 窶・PANEL 2 繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ繝倥ャ繝繝ｼ
-笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   Phase1 — PANEL 2 セクションヘッダー
+══════════════════════════════════════════ */
 .p2-section-title {
   display: flex;
   align-items: center;
@@ -544,9 +543,9 @@ textarea.tall { min-height:110px; }
   letter-spacing: .3px;
 }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   Phase1 窶・蛟呵｣懆・ｸｩ蠎ｦ諢蘗I
-笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   Phase1 — 候補者温度感AI
+══════════════════════════════════════════ */
 .temperature-wrap {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -583,9 +582,9 @@ textarea.tall { min-height:110px; }
   line-height: 1.5;
 }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   Phase1 窶・繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼAI
-笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   Phase1 — キャリアストーリーAI
+══════════════════════════════════════════ */
 .career-story-wrap {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -631,9 +630,9 @@ textarea.tall { min-height:110px; }
   line-height: 1.7;
 }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   Phase1 窶・OHERE繝輔Ξ繝ｼ繝
-笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   Phase1 — OHEREフレーム
+══════════════════════════════════════════ */
 .ohere-wrap {
   display: flex;
   flex-direction: column;
@@ -707,8 +706,9 @@ textarea.tall { min-height:110px; }
   .ohere-head { flex-wrap: wrap; }
 }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   Phase1 窶・AI繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ・・BM蟆ら畑6霆ｸ・・笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   Phase1 — AIセルフレビュー（IBM専用6軸）
+══════════════════════════════════════════ */
 .self-review-box {
   background: #0f172a;
   border: 1px solid #1e293b;
@@ -871,10 +871,11 @@ textarea.tall { min-height:110px; }
   line-height: 1.6;
 }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   Phase1.5 窶・豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝育ｮ｡逅・笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   Phase1.5 — 求人プロジェクト管理
+══════════════════════════════════════════ */
 
-/* 繝励Ο繧ｸ繧ｧ繧ｯ繝磯∈謚槭ヰ繝ｼ */
+/* プロジェクト選択バー */
 .proj-selector-bar {
   display: none;
   align-items: center;
@@ -915,10 +916,10 @@ textarea.tall { min-height:110px; }
 .proj-sel-btn:hover { background: var(--amber-l); border-color: var(--amber); color: var(--amber); }
 .proj-sel-btn.active { background: var(--amber); border-color: var(--amber); color: #fff; }
 
-/* 豎ゆｺｺ菫晏ｭ倥・繧ｿ繝ｳ縺ｮ菫晏ｭ伜ｾ後ヵ繝ｩ繝・す繝･ */
+/* 求人保存ボタンの保存後フラッシュ */
 #projSaveBtn.saved { background: var(--green-l); color: var(--green); border-color: var(--green); }
 
-/* 繝｢繝ｼ繝繝ｫ */
+/* モーダル */
 .proj-modal-overlay {
   display: none;
   position: fixed;
@@ -1051,11 +1052,11 @@ textarea.tall { min-height:110px; }
 }
 .proj-del-btn:hover { background: var(--red-l); color: var(--red); border-color: var(--red); }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   Phase2 窶・IBM蟆ら畑險ｴ豎ゅΛ繧､繝悶Λ繝ｪ UI
-笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   Phase2 — IBM専用訴求ライブラリ UI
+══════════════════════════════════════════ */
 
-/* IBM險ｴ豎ゅ・繝医Μ繧ｯ繧ｹ繝舌リ繝ｼ */
+/* IBM訴求マトリクスバナー */
 .ibm-matrix-banner {
   background: linear-gradient(135deg, #0f172a, #1e3a8a);
   border-radius: 8px;
@@ -1091,14 +1092,14 @@ textarea.tall { min-height:110px; }
   line-height: 1.7;
 }
 
-/* IBM險ｴ豎ゅげ繝ｪ繝・ラ */
+/* IBM訴求グリッド */
 .ibm-appeal-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 10px;
 }
 
-/* IBM險ｴ豎ゅい繧､繝・Β */
+/* IBM訴求アイテム */
 .ibm-appeal-item { position: relative; }
 .ibm-appeal-item input[type=checkbox] { position: absolute; opacity: 0; width: 0; height: 0; }
 .ibm-appeal-label {
@@ -1173,8 +1174,9 @@ textarea.tall { min-height:110px; }
   line-height: 1.5;
 }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   Phase2 窶・繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ謾ｹ蝟・Ν繝ｼ繝・笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   Phase2 — セルフレビュー改善ループ
+══════════════════════════════════════════ */
 
 .sr-imp-head {
   display: flex;
@@ -1221,9 +1223,9 @@ textarea.tall { min-height:110px; }
   margin-left: 4px;
 }
 
-/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-   Phase2 窶・OHERE繝医Ξ繝ｼ繧ｵ繝薙Μ繝・ぅ繝舌ャ繧ｸ
-笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+/* ══════════════════════════════════════════
+   Phase2 — OHEREトレーサビリティバッジ
+══════════════════════════════════════════ */
 .ohere-trace-badge {
   display: inline-flex;
   align-items: center;
@@ -1242,6 +1244,88 @@ textarea.tall { min-height:110px; }
   white-space: nowrap;
 }
 
+/* ══════════════════════════════════════════
+   watsonx / バックエンド設定パネル
+══════════════════════════════════════════ */
+.wx-settings-btn {
+  width: 32px; height: 32px;
+  background: #1f2937; border: 1px solid #374151;
+  border-radius: 6px; color: #9ca3af;
+  font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s; flex-shrink: 0;
+}
+.wx-settings-btn:hover { background: #374151; color: #e5e7eb; }
+
+.wx-panel {
+  display: none;
+  position: fixed;
+  top: 56px; right: 12px;
+  z-index: 290;
+  width: 380px;
+}
+.wx-panel.wx-panel-open { display: block; animation: up .15s ease; }
+
+.wx-panel-inner {
+  background: #1a2235;
+  border: 1px solid #2d3748;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.45);
+  padding: 18px 20px 16px;
+  color: #e2e8f0;
+}
+.wx-panel-title {
+  font-size: 12px; font-weight: 800;
+  letter-spacing: .8px; text-transform: uppercase;
+  color: #94a3b8; margin-bottom: 14px;
+}
+.wx-row {
+  display: flex; align-items: center;
+  gap: 10px; margin-bottom: 10px;
+}
+.wx-label {
+  font-size: 11px; font-weight: 700;
+  color: #94a3b8; white-space: nowrap;
+  min-width: 100px; text-align: right;
+}
+.wx-input {
+  flex: 1; padding: 7px 10px;
+  background: #0f172a; border: 1px solid #334155;
+  border-radius: 5px; color: #e2e8f0;
+  font: 12px/1.4 inherit;
+}
+.wx-input:focus { outline: none; border-color: #3b82f6; }
+.wx-input option { background: #1a2235; color: #e2e8f0; }
+
+.wx-toggle-group {
+  display: flex; gap: 4px;
+}
+.wx-toggle {
+  padding: 5px 14px;
+  background: #0f172a; border: 1px solid #334155;
+  border-radius: 5px; color: #94a3b8;
+  font: 600 12px inherit; cursor: pointer;
+  transition: all .15s;
+}
+.wx-toggle:hover { background: #1e293b; color: #e2e8f0; }
+.wx-toggle.wx-toggle-active {
+  background: #2563eb; border-color: #2563eb;
+  color: #fff;
+}
+.wx-fields { margin-top: 4px; }
+
+.wx-panel-footer {
+  display: flex; justify-content: flex-end; gap: 8px;
+  margin-top: 14px; padding-top: 12px;
+  border-top: 1px solid #2d3748;
+}
+.wx-panel-footer .btn-ghost {
+  background: transparent; border-color: #374151;
+  color: #94a3b8; font-size: 12px;
+}
+.wx-panel-footer .btn-ghost:hover { background: #1e293b; color: #e2e8f0; }
+.wx-panel-footer .btn-primary { font-size: 12px; padding: 7px 16px; }
+
 </style>
 </head>
 <body>
@@ -1250,14 +1334,14 @@ textarea.tall { min-height:110px; }
 <div class="overlay" id="ov">
   <div class="load-card">
     <div class="spin"></div>
-    <div style="font-size:15px;font-weight:800;color:var(--text)">AI繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺悟・譫蝉ｸｭ</div>
-    <div style="font-size:12px;color:var(--muted);margin-top:4px">繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｮ諤晁・ｒ蜀咲樟縺励※縺・∪縺・/div>
+    <div style="font-size:15px;font-weight:800;color:var(--text)">AIリクルーターが分析中</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px">トップリクルーターの思考を再現しています</div>
     <div class="load-steps" id="lsteps">
-      <div class="ls" id="ls1"><div class="ls-dot"></div>蛟呵｣懆・・繧ｭ繝｣繝ｪ繧｢繝代ち繝ｼ繝ｳ繧貞・鬘・/div>
-      <div class="ls" id="ls2"><div class="ls-dot"></div>霆｢閨ｷ蜍墓ｩ溘・蠢怜髄繧呈耳貂ｬ</div>
-      <div class="ls" id="ls3"><div class="ls-dot"></div>豎ゆｺｺ縺ｨ縺ｮ繝槭ャ繝√・繧､繝ｳ繝医ｒ蛻・梵</div>
-      <div class="ls" id="ls4"><div class="ls-dot"></div>險ｴ豎よ姶逡･繧堤ｭ門ｮ・/div>
-      <div class="ls" id="ls5"><div class="ls-dot"></div>繧ｹ繧ｫ繧ｦ繝域枚繧堤函謌・/div>
+      <div class="ls" id="ls1"><div class="ls-dot"></div>候補者のキャリアパターンを分類</div>
+      <div class="ls" id="ls2"><div class="ls-dot"></div>転職動機・志向を推測</div>
+      <div class="ls" id="ls3"><div class="ls-dot"></div>求人とのマッチポイントを分析</div>
+      <div class="ls" id="ls4"><div class="ls-dot"></div>訴求戦略を策定</div>
+      <div class="ls" id="ls5"><div class="ls-dot"></div>スカウト文を生成</div>
     </div>
   </div>
 </div>
@@ -1267,34 +1351,82 @@ textarea.tall { min-height:110px; }
   <div class="topbar-left">
     <div class="logo">B</div>
     <div class="brand">
-      <div class="brand-name">B繧ｹ繧ｫ繧ｦ繝・/div>
+      <div class="brand-name">Bスカウト</div>
       <div class="brand-sub">AI Recruiter Agent</div>
     </div>
   </div>
   <div class="topbar-right">
-    <button class="btn btn-ghost btn-sm" id="historyBtn" onclick="openHistory()" style="font-size:12px">搭 螻･豁ｴ</button>
-    <button class="batch-toggle-btn" id="batchModeBtn">笳ｫ 繝舌ャ繝∝・逅・/button>
+    <button class="btn btn-ghost btn-sm" id="historyBtn" onclick="openHistory()" style="font-size:12px">📋 履歴</button>
+    <button class="batch-toggle-btn" id="batchModeBtn">◫ バッチ処理</button>
     <div class="mode-pill" id="modePill">
       <div class="mode-dot demo" id="modeDot"></div>
-      <div class="mode-label" id="modeLabel">謗･邯夂｢ｺ隱堺ｸｭ...</div>
+      <div class="mode-label" id="modeLabel">接続確認中...</div>
     </div>
     <select class="model-sel" id="mdl">
       <option value="gpt-4o">GPT-4o</option>
       <option value="gpt-4o-mini">GPT-4o-mini</option>
       <option value="gpt-4-turbo">GPT-4 Turbo</option>
     </select>
+    <button class="wx-settings-btn" id="wxSettingsBtn" onclick="toggleWxPanel()" title="バックエンド設定">⚙</button>
   </div>
 </header>
+
+<!-- watsonx 設定パネル -->
+<div class="wx-panel" id="wxPanel">
+  <div class="wx-panel-inner">
+    <div class="wx-panel-title">バックエンド設定</div>
+    <div class="wx-row">
+      <span class="wx-label">バックエンド</span>
+      <div class="wx-toggle-group">
+        <button class="wx-toggle" id="wxBtnOpenai" onclick="setBackend('openai')">OpenAI</button>
+        <button class="wx-toggle" id="wxBtnWatsonx" onclick="setBackend('watsonx')">IBM watsonx</button>
+      </div>
+    </div>
+    <div id="wxOpenaiFields" class="wx-fields">
+      <div class="wx-row">
+        <span class="wx-label">APIキー</span>
+        <input type="password" class="wx-input" id="wxApiKey" placeholder="sk-..." oninput="saveWxField('bscout_apikey', this.value)">
+      </div>
+    </div>
+    <div id="wxWatsonxFields" class="wx-fields" style="display:none">
+      <div class="wx-row">
+        <span class="wx-label">IAMトークン</span>
+        <input type="password" class="wx-input" id="wxToken" placeholder="Bearer eyJ..." oninput="saveWxField('bscout_wx_token', this.value)">
+      </div>
+      <div class="wx-row">
+        <span class="wx-label">エンドポイントURL</span>
+        <input type="text" class="wx-input" id="wxUrl" placeholder="https://us-south.ml.cloud.ibm.com/..." oninput="saveWxField('bscout_wx_url', this.value)">
+      </div>
+      <div class="wx-row">
+        <span class="wx-label">プロジェクトID</span>
+        <input type="text" class="wx-input" id="wxProject" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" oninput="saveWxField('bscout_wx_project', this.value)">
+      </div>
+      <div class="wx-row">
+        <span class="wx-label">モデル</span>
+        <select class="wx-input" id="wxModel" onchange="saveWxField('bscout_wx_model', this.value)">
+          <option value="ibm/granite-13b-instruct-v2">Granite 13B Instruct v2</option>
+          <option value="ibm/granite-20b-multilingual">Granite 20B Multilingual</option>
+          <option value="meta-llama/llama-3-70b-instruct">Llama 3 70B Instruct</option>
+          <option value="meta-llama/llama-3-8b-instruct">Llama 3 8B Instruct</option>
+        </select>
+      </div>
+    </div>
+    <div class="wx-panel-footer">
+      <button class="btn btn-sm btn-ghost" onclick="clearWxSettings()">設定をクリア</button>
+      <button class="btn btn-sm btn-primary" onclick="applyWxSettings()">適用して閉じる</button>
+    </div>
+  </div>
+</div>
 
 <main class="wrap">
 
   <!-- Stepper -->
   <div class="stepper">
-    <div class="st active" id="si1"><div class="st-num">1</div><span class="st-label">蛟呵｣懆・ュ蝣ｱ</span></div>
-    <div class="st"        id="si2"><div class="st-num">2</div><span class="st-label">AI蛻・梵</span></div>
-    <div class="st"        id="si3"><div class="st-num">3</div><span class="st-label">謌ｦ逡･豎ｺ螳・/span></div>
-    <div class="st"        id="si4"><div class="st-num">4</div><span class="st-label">譁・ｫ逕滓・</span></div>
-    <div class="st"        id="si5"><div class="st-num">5</div><span class="st-label">邱ｨ髮・・螳梧・</span></div>
+    <div class="st active" id="si1"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
+    <div class="st"        id="si2"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
+    <div class="st"        id="si3"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
+    <div class="st"        id="si4"><div class="st-num">4</div><span class="st-label">文章生成</span></div>
+    <div class="st"        id="si5"><div class="st-num">5</div><span class="st-label">編集・完成</span></div>
   </div>
 
   <div class="err-bar" id="errBar"></div>
@@ -1302,52 +1434,52 @@ textarea.tall { min-height:110px; }
   <!-- ==================== PANEL 1 ==================== -->
   <div class="panel on" id="p1">
     <div class="onboard-banner">
-      <div class="ob-title">B繧ｹ繧ｫ繧ｦ繝・窶・謗｡逕ｨAI繧ｨ繝ｼ繧ｸ繧ｧ繝ｳ繝・/div>
-      <div class="ob-sub">繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺・0蛻・°縺代※閠・∴縺溘悟呵｣懆・・蛻・梵繝ｻ險ｴ豎よ姶逡･繝ｻ繧ｹ繧ｫ繧ｦ繝域枚縲阪ｒ縲、I縺・蛻・〒蜀咲樟縺励∪縺吶・br>蛟呵｣懆・ュ蝣ｱ縺ｨ豎ゆｺｺ諠・ｱ繧貞・蜉帙☆繧九□縺代〒縲√◎縺ｮ莠ｺ縺縺代↓蛻ｺ縺輔ｋ繧ｹ繧ｫ繧ｦ繝医ｒ逕滓・縺励∪縺吶・/div>
+      <div class="ob-title">Bスカウト — 採用AIエージェント</div>
+      <div class="ob-sub">トップリクルーターが30分かけて考えた「候補者の分析・訴求戦略・スカウト文」を、AIが2分で再現します。<br>候補者情報と求人情報を入力するだけで、その人だけに刺さるスカウトを生成します。</div>
       <div class="ob-steps">
-        <div class="ob-step"><div class="ob-step-n">1</div>蛟呵｣懆・・豎ゆｺｺ諠・ｱ繧貞・蜉・/div>
-        <div class="ob-step"><div class="ob-step-n">2</div>AI縺後Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ隕也せ縺ｧ蛻・梵</div>
-        <div class="ob-step"><div class="ob-step-n">3</div>險ｴ豎ゅ・繧､繝ｳ繝医ｒ驕ｸ謚槭・遒ｺ隱・/div>
-        <div class="ob-step"><div class="ob-step-n">4</div>繧ｹ繧ｫ繧ｦ繝域枚繧定・蜍慕函謌・/div>
-        <div class="ob-step"><div class="ob-step-n">5</div>邱ｨ髮・＠縺ｦ繧ｳ繝斐・</div>
+        <div class="ob-step"><div class="ob-step-n">1</div>候補者・求人情報を入力</div>
+        <div class="ob-step"><div class="ob-step-n">2</div>AIがリクルーター視点で分析</div>
+        <div class="ob-step"><div class="ob-step-n">3</div>訴求ポイントを選択・確認</div>
+        <div class="ob-step"><div class="ob-step-n">4</div>スカウト文を自動生成</div>
+        <div class="ob-step"><div class="ob-step-n">5</div>編集してコピー</div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-head">
         <div class="card-title">
-          <div class="icon-chip" style="background:#dbeafe;color:#1d4ed8">蛟・/div>
-          蛟呵｣懆・ュ蝣ｱ
+          <div class="icon-chip" style="background:#dbeafe;color:#1d4ed8">候</div>
+          候補者情報
         </div>
-        <span style="font-size:12px;color:var(--muted)"><span style="color:var(--red)">*</span> 蠢・磯・岼</span>
+        <span style="font-size:12px;color:var(--muted)"><span style="color:var(--red)">*</span> 必須項目</span>
       </div>
       <div class="card-body">
         <div class="grid2">
           <div class="fg">
-            <label>迴ｾ蝨ｨ縺ｮ莨夂､ｾ<span class="req">*</span></label>
-            <input type="text" id="c_co" placeholder="萓具ｼ壽ｪ蠑丈ｼ夂､ｾ縲・・ユ繝・け">
+            <label>現在の会社<span class="req">*</span></label>
+            <input type="text" id="c_co" placeholder="例：株式会社〇〇テック">
           </div>
           <div class="fg">
-            <label>迴ｾ蝨ｨ縺ｮ閨ｷ遞ｮ<span class="req">*</span></label>
-            <input type="text" id="c_role" placeholder="萓具ｼ壹ヰ繝・け繧ｨ繝ｳ繝峨お繝ｳ繧ｸ繝九い・医Μ繝ｼ繝会ｼ・>
+            <label>現在の職種<span class="req">*</span></label>
+            <input type="text" id="c_role" placeholder="例：バックエンドエンジニア（リード）">
           </div>
           <div class="fg s2">
-            <label>邨碁ｨ捺ｦりｦ・span class="req">*</span></label>
-            <textarea id="c_exp" class="tall" placeholder="萓具ｼ哽ava繧剃ｽｿ縺｣縺檸C蝓ｺ逶､髢狗匱5蟷ｴ縲ら峩霑・蟷ｴ縺ｯ繝√・繝繝ｪ繝ｼ繝会ｼ・蜷搾ｼ峨よ怦髢・000荳⑰V縺ｮ繧ｵ繝ｼ繝薙せ繧呈球蠖薙＠縲√・繧､繧ｯ繝ｭ繧ｵ繝ｼ繝薙せ蛹悶ｒ荳ｻ蟆弱ゅヱ繝輔か繝ｼ繝槭Φ繧ｹ謾ｹ蝟・〒繝ｬ繧ｹ繝昴Φ繧ｹ繧ｿ繧､繝繧・0%蜑頑ｸ帙・></textarea>
-            <div class="hint">蜈ｷ菴鍋噪縺ｪ謨ｰ蛟､繝ｻ隕乗ｨ｡繝ｻ謌先棡繧呈嶌縺上⊇縺ｩAI蛻・梵縺ｮ邊ｾ蠎ｦ縺御ｸ翫′繧翫∪縺・/div>
+            <label>経験概要<span class="req">*</span></label>
+            <textarea id="c_exp" class="tall" placeholder="例：Javaを使ったEC基盤開発5年。直近2年はチームリード（5名）。月間1000万PVのサービスを担当し、マイクロサービス化を主導。パフォーマンス改善でレスポンスタイムを60%削減。"></textarea>
+            <div class="hint">具体的な数値・規模・成果を書くほどAI分析の精度が上がります</div>
           </div>
           <div class="fg">
-            <label>繧ｹ繧ｭ繝ｫ<span class="req">*</span></label>
-            <textarea id="c_sk" placeholder="萓具ｼ哽ava, Spring Boot, AWS(EC2/RDS/Lambda), Docker, Kubernetes, MySQL, Redis, 繝√・繝繝槭ロ繧ｸ繝｡繝ｳ繝・></textarea>
+            <label>スキル<span class="req">*</span></label>
+            <textarea id="c_sk" placeholder="例：Java, Spring Boot, AWS(EC2/RDS/Lambda), Docker, Kubernetes, MySQL, Redis, チームマネジメント"></textarea>
           </div>
           <div class="fg">
-            <label>驕主悉縺ｮ莉｣陦ｨ繝励Ο繧ｸ繧ｧ繧ｯ繝・/label>
-            <textarea id="c_pj" placeholder="萓具ｼ哘C繝ｪ繝九Η繝ｼ繧｢繝ｫ・・L繝ｻ7蜷阪・6繝ｶ譛茨ｼ峨∵ｱｺ貂亥渕逶､繝槭う繧ｯ繝ｭ繧ｵ繝ｼ繝薙せ遘ｻ陦鯉ｼ医い繝ｼ繧ｭ繝・け繝域球蠖難ｼ・></textarea>
+            <label>過去の代表プロジェクト</label>
+            <textarea id="c_pj" placeholder="例：ECリニューアル（PL・7名・6ヶ月）、決済基盤マイクロサービス移行（アーキテクト担当）"></textarea>
           </div>
           <div class="fg s2">
-            <label>霆｢閨ｷ逅・罰繝ｻ繧ｭ繝｣繝ｪ繧｢蠢怜髄</label>
-            <textarea id="c_why" placeholder="萓具ｼ壽橿陦鍋噪縺ｪ謖第姶繧偵＠縺溘＞縲√・繝阪ず繝｡繝ｳ繝医ｈ繧頑焔繧貞虚縺九＠縺溘＞縲∵・髟ｷ繝輔ぉ繝ｼ繧ｺ縺ｮ繧ｹ繧ｿ繝ｼ繝医い繝・・縺ｧ莠区･ｭ繧偵▽縺上ｋ蛛ｴ縺ｫ髢｢繧上ｊ縺溘＞縲∝ｹｴ蜿弱ｒ荳翫￡縺溘＞"></textarea>
-            <div class="hint">縺薙％縺悟・螳溘☆繧九⊇縺ｩAI縺ｮ縲瑚ｨｴ豎よ姶逡･縲阪・邊ｾ蠎ｦ縺悟､ｧ蟷・↓蜷台ｸ翫＠縺ｾ縺・/div>
+            <label>転職理由・キャリア志向</label>
+            <textarea id="c_why" placeholder="例：技術的な挑戦をしたい、マネジメントより手を動かしたい、成長フェーズのスタートアップで事業をつくる側に関わりたい、年収を上げたい"></textarea>
+            <div class="hint">ここが充実するほどAIの「訴求戦略」の精度が大幅に向上します</div>
           </div>
         </div>
       </div>
@@ -1356,296 +1488,310 @@ textarea.tall { min-height:110px; }
     <div class="card">
       <div class="card-head">
         <div class="card-title">
-          <div class="icon-chip" style="background:#fce7f3;color:#be185d">豎・/div>
-          豎ゆｺｺ諠・ｱ
+          <div class="icon-chip" style="background:#fce7f3;color:#be185d">求</div>
+          求人情報
         </div>
-        <button class="btn btn-ghost btn-sm" id="projMgrBtn" onclick="openProjectModal()">刀 豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝育ｮ｡逅・/button>
+        <button class="btn btn-ghost btn-sm" id="projMgrBtn" onclick="openProjectModal()">📁 求人プロジェクト管理</button>
       </div>
 
-      <!-- 繝励Ο繧ｸ繧ｧ繧ｯ繝磯∈謚槭ヰ繝ｼ -->
+      <!-- プロジェクト選択バー -->
       <div class="proj-selector-bar" id="projSelectorBar">
-        <div class="proj-selector-label">唐 菫晏ｭ俶ｸ医∩豎ゆｺｺ繧定ｪｭ縺ｿ霎ｼ繧・・/div>
+        <div class="proj-selector-label">📂 保存済み求人を読み込む：</div>
         <div class="proj-selector-list" id="projSelectorList"></div>
       </div>
 
       <div class="card-body">
         <div class="grid2">
           <div class="fg">
-            <label>豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝亥錐・井ｻｻ諢擾ｼ・/label>
-            <input type="text" id="j_proj_name" placeholder="萓具ｼ壹す繝九いBE謗｡逕ｨ2024Q2・井ｿ晏ｭ倥・蜀榊茜逕ｨ縺励◆縺・ｴ蜷茨ｼ・>
+            <label>求人プロジェクト名（任意）</label>
+            <input type="text" id="j_proj_name" placeholder="例：シニアBE採用2024Q2（保存・再利用したい場合）">
           </div>
           <div class="fg">
-            <label>蜍滄寔繝昴ず繧ｷ繝ｧ繝ｳ蜷・span class="req">*</span></label>
-            <input type="text" id="j_pos" placeholder="萓具ｼ壹す繝九い繝舌ャ繧ｯ繧ｨ繝ｳ繝峨お繝ｳ繧ｸ繝九い">
+            <label>募集ポジション名<span class="req">*</span></label>
+            <input type="text" id="j_pos" placeholder="例：シニアバックエンドエンジニア">
           </div>
           <div class="fg">
-            <label>莨夂､ｾ蜷・/label>
-            <input type="text" id="j_co" placeholder="萓具ｼ壽ｪ蠑丈ｼ夂､ｾ繧ｹ繧ｿ繝ｼ繝医い繝・・">
+            <label>会社名</label>
+            <input type="text" id="j_co" placeholder="例：株式会社スタートアップ">
           </div>
           <div class="fg s2">
-            <label>莉穂ｺ句・螳ｹ<span class="req">*</span></label>
-            <textarea id="j_desc" class="tall" placeholder="萓具ｼ壽･謌宣聞繝輔ぅ繝ｳ繝・ャ繧ｯSaaS縺ｮ繝舌ャ繧ｯ繧ｨ繝ｳ繝蛾幕逋ｺ縲ゅ・繧､繧ｯ繝ｭ繧ｵ繝ｼ繝薙せ繧｢繝ｼ繧ｭ繝・け繝√Ε縺ｮ險ｭ險医懷ｮ溯｣・∪縺ｧ諡・ｽ薙よ橿陦馴∈螳壹・繧｢繝ｼ繧ｭ繝・け繝√Ε豎ｺ螳壹・陬・㍼縺ゅｊ縲ゅメ繝ｼ繝5蜷阪∽ｻ雁ｾ梧僑螟ｧ莠亥ｮ壹・></textarea>
+            <label>仕事内容<span class="req">*</span></label>
+            <textarea id="j_desc" class="tall" placeholder="例：急成長フィンテックSaaSのバックエンド開発。マイクロサービスアーキテクチャの設計〜実装まで担当。技術選定・アーキテクチャ決定の裁量あり。チーム5名、今後拡大予定。"></textarea>
           </div>
           <div class="fg">
-            <label>豎ゅａ繧狗ｵ碁ｨ薙・繧ｹ繧ｭ繝ｫ<span class="req">*</span></label>
-            <textarea id="j_req" placeholder="萓具ｼ壹ヰ繝・け繧ｨ繝ｳ繝蛾幕逋ｺ3蟷ｴ莉･荳翫゛VM邉ｻ險隱樒ｵ碁ｨ薙、WS險ｭ險磯°逕ｨ邨碁ｨ薙√・繧､繧ｯ繝ｭ繧ｵ繝ｼ繝薙せ邨碁ｨ楢・━驕・></textarea>
+            <label>求める経験・スキル<span class="req">*</span></label>
+            <textarea id="j_req" placeholder="例：バックエンド開発3年以上、JVM系言語経験、AWS設計運用経験、マイクロサービス経験者優遇"></textarea>
           </div>
           <div class="fg">
-            <label>豁楢ｿ手ｦ∽ｻｶ・井ｻｻ諢擾ｼ・/label>
-            <textarea id="j_pref" placeholder="萓具ｼ哮ubernetes邨碁ｨ楢・√せ繧ｿ繝ｼ繝医い繝・・邨碁ｨ楢・∬恭隱槭ン繧ｸ繝阪せ繝ｬ繝吶Ν"></textarea>
+            <label>歓迎要件（任意）</label>
+            <textarea id="j_pref" placeholder="例：Kubernetes経験者、スタートアップ経験者、英語ビジネスレベル"></textarea>
           </div>
           <div class="fg s2">
-            <label>莨夂､ｾ繝ｻ繝昴ず繧ｷ繝ｧ繝ｳ縺ｮ鬲・鴨<span class="req">*</span></label>
-            <textarea id="j_ap" placeholder="萓具ｼ壹す繝ｪ繝ｼ繧ｺB繝ｻ諤･謌宣聞縲∵橿陦鍋噪陬・㍼螟ｧ繝ｻ繧｢繝ｼ繧ｭ繝・け繝√Ε繧定・蛻・〒豎ｺ繧√ｉ繧後ｋ縲√ヵ繝ｫ繝ｪ繝｢繝ｼ繝亥庄縲∝━遘縺ｪ繧ｨ繝ｳ繧ｸ繝九い繝√・繝縲∝ｹｴ蜿・00縲・000荳・></textarea>
+            <label>会社・ポジションの魅力<span class="req">*</span></label>
+            <textarea id="j_ap" placeholder="例：シリーズB・急成長、技術的裁量大・アーキテクチャを自分で決められる、フルリモート可、優秀なエンジニアチーム、年収700〜1000万"></textarea>
           </div>
           <div class="fg s2">
-            <label>驕主悉縺ｮ謌仙粥繧ｹ繧ｫ繧ｦ繝井ｾ具ｼ井ｻｻ諢擾ｼ・/label>
-            <textarea id="j_success" placeholder="萓具ｼ壹娯雷笳狗､ｾ縺ｮ繝ｪ繝ｼ繝峨お繝ｳ繧ｸ繝九い縺ｫ笳銀雷縺ｨ縺・≧蛻・ｊ蜿｣縺ｧ繧｢繝励Ο繝ｼ繝√＠縺溘ｉ霑比ｿ｡邇・′鬮倥°縺｣縺溘阪娯雷笳九→縺・≧螳溽ｸｾ繧呈戟縺､蛟呵｣懆・∈縺ｮ險ｴ豎ゅ→縺励※謚陦鍋噪謖第姶繧貞燕髱｢縺ｫ蜃ｺ縺励◆繧牙柑譫懃噪縺縺｣縺溘・></textarea>
-            <div class="hint">驕主悉縺ｫ霑比ｿ｡繝ｻ謗｡逕ｨ縺ｫ縺､縺ｪ縺後▲縺溘せ繧ｫ繧ｦ繝医・蛻・ｊ蜿｣繝ｻ險ｴ豎ゆｾ九ｒ險倬鹸縺励※縺翫￥縺ｨ縲、I縺後ｈ繧顔ｲｾ蠎ｦ縺ｮ鬮倥＞繧ｹ繧ｫ繧ｦ繝医ｒ逕滓・縺励∪縺・/div>
+            <label>過去の成功スカウト例（任意）</label>
+            <textarea id="j_success" placeholder="例：「○○社のリードエンジニアに○○という切り口でアプローチしたら返信率が高かった」「○○という実績を持つ候補者への訴求として技術的挑戦を前面に出したら効果的だった」"></textarea>
+            <div class="hint">過去に返信・採用につながったスカウトの切り口・訴求例を記録しておくと、AIがより精度の高いスカウトを生成します</div>
           </div>
         </div>
         <div class="btn-row">
-          <button class="btn btn-ghost" id="projSaveBtn" onclick="saveCurrentProject()" style="font-size:12px">沈 豎ゆｺｺ諠・ｱ繧剃ｿ晏ｭ・/button>
+          <button class="btn btn-ghost" id="projSaveBtn" onclick="saveCurrentProject()" style="font-size:12px">💾 求人情報を保存</button>
           <button class="btn btn-ai" id="analyzeBtn">
-            <span style="font-size:16px">笨ｦ</span> AI繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺悟・譫宣幕蟋・          </button>
+            <span style="font-size:16px">✦</span> AIリクルーターが分析開始
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- 豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝育ｮ｡逅・Δ繝ｼ繝繝ｫ -->
+    <!-- 求人プロジェクト管理モーダル -->
     <div class="proj-modal-overlay" id="projModalOverlay" onclick="closeProjModal(event)">
       <div class="proj-modal">
         <div class="proj-modal-head">
-          <div class="proj-modal-title">刀 豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝育ｮ｡逅・/div>
-          <button class="proj-modal-close" onclick="closeProjectModal()">笨・/button>
+          <div class="proj-modal-title">📁 求人プロジェクト管理</div>
+          <button class="proj-modal-close" onclick="closeProjectModal()">✕</button>
         </div>
         <div class="proj-modal-body">
-          <div class="proj-modal-hint">菫晏ｭ倥＠縺滓ｱゆｺｺ諠・ｱ縺ｯ繝ｯ繝ｳ繧ｯ繝ｪ繝・け縺ｧ隱ｭ縺ｿ霎ｼ繧√∪縺吶り､・焚繝昴ず繧ｷ繝ｧ繝ｳ繧呈寺縺第戟縺､髫帙↓萓ｿ蛻ｩ縺ｧ縺吶・/div>
+          <div class="proj-modal-hint">保存した求人情報はワンクリックで読み込めます。複数ポジションを掛け持つ際に便利です。</div>
           <div class="proj-list" id="projModalList"></div>
-          <div class="proj-modal-empty" id="projModalEmpty">縺ｾ縺菫晏ｭ倥＆繧後◆豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝医・縺ゅｊ縺ｾ縺帙ｓ縲・br>豎ゆｺｺ諠・ｱ繧貞・蜉帙＠縺ｦ縲交汳ｾ 豎ゆｺｺ諠・ｱ繧剃ｿ晏ｭ倥阪・繧ｿ繝ｳ縺九ｉ菫晏ｭ倥〒縺阪∪縺吶・/div>
+          <div class="proj-modal-empty" id="projModalEmpty">まだ保存された求人プロジェクトはありません。<br>求人情報を入力して「💾 求人情報を保存」ボタンから保存できます。</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== PANEL 1.5: AI陬懷ｮ瑚ｳｪ蝠・==================== -->
+  <!-- ==================== PANEL 1.5: AI補完質問 ==================== -->
   <div class="panel" id="p15">
     <div class="card">
       <div class="card-head">
         <div class="card-title">
           <div class="icon-chip" style="background:#fef3c7;color:#92400e">?</div>
-          AI繧ｨ繝ｼ繧ｸ繧ｧ繝ｳ繝・窶・霑ｽ蜉諠・ｱ縺ｮ遒ｺ隱・        </div>
-        <span style="font-size:12px;color:var(--muted)">繧ｹ繧ｭ繝・・縺励※蛻・梵縺ｫ騾ｲ繧縺薙→繧ょ庄閭ｽ縺ｧ縺・/span>
+          AIエージェント — 追加情報の確認
+        </div>
+        <span style="font-size:12px;color:var(--muted)">スキップして分析に進むことも可能です</span>
       </div>
       <div class="card-body">
         <div class="iq-bar-wrap">
-          <span class="iq-label">蜈･蜉帶ュ蝣ｱ蜩∬ｳｪ繧ｹ繧ｳ繧｢</span>
+          <span class="iq-label">入力情報品質スコア</span>
           <div class="iq-bar"><div class="iq-fill" id="iqFill" style="width:0%"></div></div>
-          <span class="iq-score" id="iqScore">窶・/span>
+          <span class="iq-score" id="iqScore">—</span>
         </div>
         <div class="aq-intro" id="aqIntro"></div>
         <div class="aq-list" id="aqList"></div>
-        <p class="aq-skip-note">蝗樒ｭ斐〒縺阪↑縺・・岼縺ｯ繧ｹ繧ｭ繝・・縺励※縺上□縺輔＞縲ょ・蜉帙＠縺溷・螳ｹ縺ｯAI蛻・梵縺ｮ邊ｾ蠎ｦ蜷台ｸ翫↓菴ｿ繧上ｌ縺ｾ縺吶・/p>
+        <p class="aq-skip-note">回答できない項目はスキップしてください。入力した内容はAI分析の精度向上に使われます。</p>
         <div class="btn-row">
-          <button class="btn btn-ghost" id="b15to1">竊・諠・ｱ繧剃ｿｮ豁｣</button>
-          <button class="btn btn-ghost" id="b15skip">縺薙・縺ｾ縺ｾ蛻・梵縺吶ｋ 竊・/button>
+          <button class="btn btn-ghost" id="b15to1">← 情報を修正</button>
+          <button class="btn btn-ghost" id="b15skip">このまま分析する →</button>
           <button class="btn btn-ai" id="b15analyze">
-            <span style="font-size:15px">笨ｦ</span> 陬懷ｮ後＠縺ｦ蛻・梵髢句ｧ・          </button>
+            <span style="font-size:15px">✦</span> 補完して分析開始
+          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== PANEL BATCH: 繝舌ャ繝∝・逅・==================== -->
+  <!-- ==================== PANEL BATCH: バッチ処理 ==================== -->
   <div class="panel" id="pBatch">
     <div class="card">
       <div class="card-head">
         <div class="card-title">
-          <div class="icon-chip" style="background:var(--purple-l);color:var(--purple)">笳ｫ</div>
-          繝舌ャ繝∝・逅・窶・隍・焚蛟呵｣懆・ｒ荳諡ｬ蛻・梵繝ｻ繧ｹ繧ｫ繧ｦ繝育函謌・        </div>
-        <button class="btn btn-ghost btn-sm" id="batchAddBtn">・・蛟呵｣懆・ｒ霑ｽ蜉</button>
+          <div class="icon-chip" style="background:var(--purple-l);color:var(--purple)">◫</div>
+          バッチ処理 — 複数候補者を一括分析・スカウト生成
+        </div>
+        <button class="btn btn-ghost btn-sm" id="batchAddBtn">＋ 候補者を追加</button>
       </div>
       <div class="card-body">
         <div class="batch-intro">
-          隍・焚縺ｮ蛟呵｣懆・↓蟇ｾ縺励※縲・strong>蜷後§豎ゆｺｺ諠・ｱ</strong>縺ｧ縺ｾ縺ｨ繧√※蛻・梵繝ｻ繧ｹ繧ｫ繧ｦ繝域枚繧堤函謌舌＠縺ｾ縺吶・          蜷・呵｣懆・・譛菴朱剞縺ｮ諠・ｱ・井ｼ夂､ｾ繝ｻ閨ｷ遞ｮ繝ｻ邨碁ｨ薙・繧ｹ繧ｭ繝ｫ・峨ｒ蜈･蜉帙＠縺ｦ縺上□縺輔＞縲よｱゆｺｺ諠・ｱ縺ｯSTEP1縺ｧ蜈･蜉帙＠縺溘ｂ縺ｮ繧剃ｽｿ逕ｨ縺励∪縺吶・        </div>
+          複数の候補者に対して、<strong>同じ求人情報</strong>でまとめて分析・スカウト文を生成します。
+          各候補者の最低限の情報（会社・職種・経験・スキル）を入力してください。求人情報はSTEP1で入力したものを使用します。
+        </div>
         <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-bottom:16px;font-size:12px;">
-          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">菴ｿ逕ｨ縺吶ｋ豎ゆｺｺ諠・ｱ</div>
-          <div id="batchJobSummary" style="color:var(--text);line-height:1.8">窶・/div>
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">使用する求人情報</div>
+          <div id="batchJobSummary" style="color:var(--text);line-height:1.8">—</div>
         </div>
         <div class="batch-candidates" id="batchCandidates"></div>
         <div class="batch-progress" id="batchProgress">
           <div class="spin" style="width:18px;height:18px;border-width:2px;margin:0"></div>
-          <span id="batchProgressText">蛻・梵荳ｭ...</span>
+          <span id="batchProgressText">分析中...</span>
         </div>
         <div class="btn-row">
-          <button class="btn btn-ghost" id="batchBackBtn">竊・騾壼ｸｸ繝｢繝ｼ繝峨↓謌ｻ繧・/button>
+          <button class="btn btn-ghost" id="batchBackBtn">← 通常モードに戻る</button>
           <button class="btn btn-ai" id="batchRunBtn" disabled>
-            <span style="font-size:15px">笨ｦ</span> 荳諡ｬ蛻・梵繝ｻ繧ｹ繧ｫ繧ｦ繝育函謌・          </button>
+            <span style="font-size:15px">✦</span> 一括分析・スカウト生成
+          </button>
         </div>
         <div class="batch-result" id="batchResult">
-          <div style="font-size:13px;font-weight:800;margin-bottom:12px;padding-top:16px;border-top:1px solid var(--border)">蛻・梵繝ｻ逕滓・邨先棡</div>
+          <div style="font-size:13px;font-weight:800;margin-bottom:12px;padding-top:16px;border-top:1px solid var(--border)">分析・生成結果</div>
           <div class="batch-result-grid" id="batchResultGrid"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== PANEL 2: AI蛻・梵・・HERE繝輔Ξ繝ｼ繝・・==================== -->
+  <!-- ==================== PANEL 2: AI分析（OHEREフレーム） ==================== -->
   <div class="panel" id="p2">
     <div class="card">
       <div class="card-head">
         <div class="card-title">
-          <div class="icon-chip" style="background:#ede9fe;color:#6d28d9">蛻・/div>
-          AI繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ蛻､譁ｭ繝ｬ繝昴・繝・        </div>
-        <button class="btn btn-ghost btn-sm" id="reAnalyzeBtn">笨ｦ 蜀榊・譫・/button>
+          <div class="icon-chip" style="background:#ede9fe;color:#6d28d9">分</div>
+          AIリクルーター判断レポート
+        </div>
+        <button class="btn btn-ghost btn-sm" id="reAnalyzeBtn">✦ 再分析</button>
       </div>
       <div class="card-body">
         <div class="section-desc">
-          AI縺後ヨ繝・・繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｮ隕也せ縺ｧ蛟呵｣懆・ｒ蛻・梵縺励∪縺励◆縲・strong>OHERE繝輔Ξ繝ｼ繝</strong>縺ｧ諤晁・・繝ｭ繧ｻ繧ｹ繧堤｢ｺ隱阪＠縲∬ｨｴ豎よ姶逡･繧呈ｱｺ螳壹＠縺ｦ縺上□縺輔＞縲・        </div>
+          AIがトップリクルーターの視点で候補者を分析しました。<strong>OHEREフレーム</strong>で思考プロセスを確認し、訴求戦略を決定してください。
+        </div>
 
-        <!-- 繝槭ャ繝√せ繧ｳ繧｢ -->
+        <!-- マッチスコア -->
         <div class="score-wrap">
-          <span class="score-label">繝槭ャ繝√せ繧ｳ繧｢</span>
+          <span class="score-label">マッチスコア</span>
           <div class="score-bar"><div class="score-fill" id="sBar" style="width:0%"></div></div>
-          <span class="score-n" id="sNum">窶・/span>
+          <span class="score-n" id="sNum">—</span>
           <span class="score-lv" id="sLv"></span>
         </div>
 
-        <!-- 蛟呵｣懆・ｸｩ蠎ｦ諢蘗I -->
+        <!-- 候補者温度感AI -->
         <div class="p2-section-title">
-          <span class="p2-section-icon" style="background:#fef3c7;color:#92400e">牽</span>
-          蛟呵｣懆・ｸｩ蠎ｦ諢蘗I
-          <span class="p2-section-badge" style="background:#fef3c7;color:#92400e">霆｢閨ｷ諢乗ｬｲ謗ｨ貂ｬ</span>
+          <span class="p2-section-icon" style="background:#fef3c7;color:#92400e">🌡</span>
+          候補者温度感AI
+          <span class="p2-section-badge" style="background:#fef3c7;color:#92400e">転職意欲推測</span>
         </div>
         <div class="temperature-wrap" id="temperatureBlock">
-          <div class="temp-stars">窶・/div>
+          <div class="temp-stars">—</div>
         </div>
 
-        <!-- 繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼAI -->
+        <!-- キャリアストーリーAI -->
         <div class="p2-section-title" style="margin-top:20px">
-          <span class="p2-section-icon" style="background:#dbeafe;color:#1d4ed8">当</span>
-          繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼAI
-          <span class="p2-section-badge" style="background:#dbeafe;color:#1d4ed8">驕主悉竊堤樟蝨ｨ竊呈悴譚･</span>
+          <span class="p2-section-icon" style="background:#dbeafe;color:#1d4ed8">📖</span>
+          キャリアストーリーAI
+          <span class="p2-section-badge" style="background:#dbeafe;color:#1d4ed8">過去→現在→未来</span>
         </div>
         <div class="career-story-wrap" id="careerStoryBlock"></div>
 
-        <!-- OHERE繝輔Ξ繝ｼ繝 -->
+        <!-- OHEREフレーム -->
         <div class="p2-section-title" style="margin-top:20px">
-          <span class="p2-section-icon" style="background:#ede9fe;color:#6d28d9">笨ｦ</span>
-          OHERE繝輔Ξ繝ｼ繝 窶・繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｮ諤晁・・繝ｭ繧ｻ繧ｹ
-          <span class="p2-section-badge" style="background:#ede9fe;color:#6d28d9">5谿ｵ髫主・譫・/span>
+          <span class="p2-section-icon" style="background:#ede9fe;color:#6d28d9">✦</span>
+          OHEREフレーム — トップリクルーターの思考プロセス
+          <span class="p2-section-badge" style="background:#ede9fe;color:#6d28d9">5段階分析</span>
         </div>
         <div class="ohere-wrap" id="ohereBlock"></div>
 
-        <!-- 譌｢蟄伜・譫舌げ繝ｪ繝・ラ・亥呵｣懆・ち繧､繝励・謗･轤ｹ繝ｻ驕ｿ縺代ｋ險ｴ豎ゑｼ・-->
+        <!-- 既存分析グリッド（候補者タイプ・接点・避ける訴求） -->
         <div class="analysis-grid" id="aGrid" style="margin-top:16px"></div>
 
-        <!-- 險ｴ豎ょ━蜈磯・ｽ・-->
+        <!-- 訴求優先順位 -->
         <div style="margin-top:20px">
           <div class="ab-label" style="margin-bottom:12px">
             <div class="ab-dot" style="background:var(--accent)"></div>
-            險ｴ豎ゅ・繧､繝ｳ繝亥━蜈磯・ｽ・窶・縺ｪ縺懊％縺ｮ鬆・分縺ｪ縺ｮ縺・          </div>
+            訴求ポイント優先順位 — なぜこの順番なのか
+          </div>
           <div class="priority-list" id="priorityList"></div>
         </div>
 
-        <!-- 謗｡逕ｨ諡・ｽ楢・ぎ繧､繝繝ｳ繧ｹ -->
+        <!-- 採用担当者ガイダンス -->
         <div style="margin-top:20px">
           <div class="ab-label" style="margin-bottom:12px">
             <div class="ab-dot" style="background:var(--green)"></div>
-            謗｡逕ｨ諡・ｽ楢・∈縺ｮ繧｢繝励Ο繝ｼ繝√ぎ繧､繝繝ｳ繧ｹ
-            <span class="learning-badge">蟄ｦ鄙偵ョ繝ｼ繧ｿ蟇ｾ雎｡</span>
+            採用担当者へのアプローチガイダンス
+            <span class="learning-badge">学習データ対象</span>
           </div>
           <div class="guidance-list" id="guidanceList"></div>
         </div>
 
         <div class="btn-row">
-          <button class="btn btn-ghost" id="b2to1">竊・諠・ｱ繧剃ｿｮ豁｣</button>
-          <button class="btn btn-primary" id="b2to3">險ｴ豎ゅ・繧､繝ｳ繝医ｒ驕ｸ謚・竊・/button>
+          <button class="btn btn-ghost" id="b2to1">← 情報を修正</button>
+          <button class="btn btn-primary" id="b2to3">訴求ポイントを選択 →</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== PANEL 3: 謌ｦ逡･豎ｺ螳・==================== -->
+  <!-- ==================== PANEL 3: 戦略決定 ==================== -->
   <div class="panel" id="p3">
     <div class="card">
       <div class="card-head">
         <div class="card-title">
-          <div class="icon-chip" style="background:#d1fae5;color:#065f46">謌ｦ</div>
-          繧｢繝励Ο繝ｼ繝∵姶逡･豎ｺ螳・        </div>
-        <span style="font-size:12px;color:var(--muted)">AI縺ｮ謗ｨ螂ｨ縺ｫ蛻晄悄繝√ぉ繝・け繧貞・繧後※縺・∪縺・/span>
+          <div class="icon-chip" style="background:#d1fae5;color:#065f46">戦</div>
+          アプローチ戦略決定
+        </div>
+        <span style="font-size:12px;color:var(--muted)">AIの推奨に初期チェックを入れています</span>
       </div>
       <div class="card-body">
         <div class="appeal-intro">
-          <strong>AI縺後％縺ｮ蛟呵｣懆・↓縲悟絢縺輔ｋ縲阪→蛻､譁ｭ縺励◆險ｴ豎ゅ・繧､繝ｳ繝・/strong>縺ｫ蛻晄悄繝√ぉ繝・け縺悟・縺｣縺ｦ縺・∪縺吶ゅメ繧ｧ繝・け繧定ｪｿ謨ｴ縺励※縺九ｉ繧ｹ繧ｫ繧ｦ繝域枚繧堤函謌舌＠縺ｦ縺上□縺輔＞縲・        </div>
+          <strong>AIがこの候補者に「刺さる」と判断した訴求ポイント</strong>に初期チェックが入っています。チェックを調整してからスカウト文を生成してください。
+        </div>
         <div class="appeal-grid" id="appealGrid"></div>
         <div class="strategy-note" id="strategyNote"></div>
         <div class="btn-row">
-          <button class="btn btn-ghost" id="b3to2">竊・蛻・梵邨先棡縺ｫ謌ｻ繧・/button>
+          <button class="btn btn-ghost" id="b3to2">← 分析結果に戻る</button>
           <button class="btn btn-ai" id="genMailBtn">
-            <span style="font-size:15px">笨ｦ</span> 驕ｸ謚槭＠縺溯ｨｴ豎ゅ〒繧ｹ繧ｫ繧ｦ繝域枚繧堤函謌・          </button>
+            <span style="font-size:15px">✦</span> 選択した訴求でスカウト文を生成
+          </button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== PANEL 5: 邱ｨ髮・・螳梧・ ==================== -->
+  <!-- ==================== PANEL 5: 編集・完成 ==================== -->
   <div class="panel" id="p5">
     <div class="card">
       <div class="card-head">
         <div class="card-title">
-          <div class="icon-chip" style="background:#d1fae5;color:#065f46">笨・/div>
-          繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ 窶・邱ｨ髮・・螳梧・
+          <div class="icon-chip" style="background:#d1fae5;color:#065f46">✉</div>
+          スカウトメール — 編集・完成
         </div>
         <div style="display:flex;gap:8px;">
-          <button class="btn btn-ghost btn-sm" id="pvBtn">繝励Ξ繝薙Η繝ｼ</button>
-          <button class="btn btn-ghost btn-sm" id="regenAllBtn">笨ｦ 蜈ｨ譁・・逕滓・</button>
+          <button class="btn btn-ghost btn-sm" id="pvBtn">プレビュー</button>
+          <button class="btn btn-ghost btn-sm" id="regenAllBtn">✦ 全文再生成</button>
         </div>
       </div>
       <div class="card-body">
         <div class="section-desc">
-          蜷・そ繧ｯ繧ｷ繝ｧ繝ｳ繧堤峩謗･邱ｨ髮・〒縺阪∪縺吶ゅ娯惡 蜀咲函謌舌阪〒縺昴・繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ縺縺醍函縺ｿ逶ｴ縺帙∪縺吶らｷｨ髮・ｮ御ｺ・ｾ後√悟・譁・さ繝斐・縲阪〒繝｡繝ｼ繝ｫ縺ｫ雋ｼ繧贋ｻ倥￠縺ｦ縺上□縺輔＞縲・        </div>
+          各セクションを直接編集できます。「✦ 再生成」でそのセクションだけ生み直せます。編集完了後、「全文コピー」でメールに貼り付けてください。
+        </div>
         <div class="preview-box" id="pvBox"></div>
         <div class="mail-sections" id="mSections">
           <div class="ms" id="ms-subject">
             <div class="ms-head">
-              <div class="ms-label">透 莉ｶ蜷・<span class="ms-badge mb-req">蠢・・/span></div>
-              <button class="regen-btn" data-sec="subject">笨ｦ 蜀咲函謌・/button>
+              <div class="ms-label">📧 件名 <span class="ms-badge mb-req">必須</span></div>
+              <button class="regen-btn" data-sec="subject">✦ 再生成</button>
             </div>
             <div class="ms-body"><textarea class="subj" id="ta-subject" rows="2"></textarea></div>
           </div>
           <div class="ms" id="ms-intro">
             <div class="ms-head">
-              <div class="ms-label">窓 蜀帝ｭ譁・<span class="ms-badge mb-req">蛟呵｣懆・崋譛・/span></div>
-              <button class="regen-btn" data-sec="intro">笨ｦ 蜀咲函謌・/button>
+              <div class="ms-label">👋 冒頭文 <span class="ms-badge mb-req">候補者固有</span></div>
+              <button class="regen-btn" data-sec="intro">✦ 再生成</button>
             </div>
             <div class="ms-body"><textarea id="ta-intro" rows="4"></textarea><div class="cc" id="cc-intro"></div></div>
           </div>
           <div class="ms" id="ms-why">
             <div class="ms-head">
-              <div class="ms-label">剥 縺ｪ縺懷｣ｰ繧偵°縺代◆縺・<span class="ms-badge mb-req">蛟呵｣懆・崋譛・/span></div>
-              <button class="regen-btn" data-sec="why">笨ｦ 蜀咲函謌・/button>
+              <div class="ms-label">🔍 なぜ声をかけたか <span class="ms-badge mb-req">候補者固有</span></div>
+              <button class="regen-btn" data-sec="why">✦ 再生成</button>
             </div>
             <div class="ms-body"><textarea id="ta-why" rows="3"></textarea><div class="cc" id="cc-why"></div></div>
           </div>
           <div class="ms" id="ms-match">
             <div class="ms-head">
-              <div class="ms-label">迫 繝昴ず繧ｷ繝ｧ繝ｳ縺ｨ縺ｮ謗･轤ｹ <span class="ms-badge mb-ai">AI蛻・梵</span></div>
-              <button class="regen-btn" data-sec="match">笨ｦ 蜀咲函謌・/button>
+              <div class="ms-label">🔗 ポジションとの接点 <span class="ms-badge mb-ai">AI分析</span></div>
+              <button class="regen-btn" data-sec="match">✦ 再生成</button>
             </div>
             <div class="ms-body"><textarea id="ta-match" rows="3"></textarea><div class="cc" id="cc-match"></div></div>
           </div>
           <div class="ms" id="ms-benefit">
             <div class="ms-head">
-              <div class="ms-label">笨ｨ 蛟呵｣懆・∈縺ｮ繝｡繝ｪ繝・ヨ <span class="ms-badge mb-ai">險ｴ豎よ姶逡･蜿肴丐</span></div>
-              <button class="regen-btn" data-sec="benefit">笨ｦ 蜀咲函謌・/button>
+              <div class="ms-label">✨ 候補者へのメリット <span class="ms-badge mb-ai">訴求戦略反映</span></div>
+              <button class="regen-btn" data-sec="benefit">✦ 再生成</button>
             </div>
             <div class="ms-body"><textarea id="ta-benefit" rows="4"></textarea><div class="cc" id="cc-benefit"></div></div>
           </div>
           <div class="ms" id="ms-cta">
             <div class="ms-head">
-              <div class="ms-label">套 繧ｫ繧ｸ繝･繧｢繝ｫ髱｢隲・∈縺ｮ隱伜ｰ・<span class="ms-badge mb-req">蠢・・/span></div>
-              <button class="regen-btn" data-sec="cta">笨ｦ 蜀咲函謌・/button>
+              <div class="ms-label">📅 カジュアル面談への誘導 <span class="ms-badge mb-req">必須</span></div>
+              <button class="regen-btn" data-sec="cta">✦ 再生成</button>
             </div>
             <div class="ms-body"><textarea id="ta-cta" rows="3"></textarea></div>
           </div>
@@ -1654,50 +1800,51 @@ textarea.tall { min-height:110px; }
           <div style="display:flex;gap:8px">
             <button class="copy-btn" id="cpAll">
               <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-              蜈ｨ譁・さ繝斐・
+              全文コピー
             </button>
-            <button class="copy-btn" id="cpSubj">莉ｶ蜷阪さ繝斐・</button>
+            <button class="copy-btn" id="cpSubj">件名コピー</button>
           </div>
-          <button class="btn btn-ghost btn-sm" id="restartBtn">譁ｰ隕丈ｽ懈・</button>
+          <button class="btn btn-ghost btn-sm" id="restartBtn">新規作成</button>
         </div>
 
-        <!-- 繝輔ぅ繝ｼ繝峨ヰ繝・けUI -->
+        <!-- フィードバックUI -->
         <div class="feedback-box" id="feedbackBox"></div>
 
-        <!-- 笨ｦ AI繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ・・BM蟆ら畑6霆ｸ謗｡轤ｹ・・-->
+        <!-- ✦ AIセルフレビュー（IBM専用6軸採点） -->
         <div class="self-review-box" id="selfReviewBox" style="display:none"></div>
 
         <div class="reason-box">
-          <div class="reason-title">庁 謗｡逕ｨ諡・ｽ楢・∈縺ｮ繝｡繝｢ 窶・縺ｪ縺懊％縺ｮ蛟呵｣懆・↓繧ｹ繧ｫ繧ｦ繝医ｒ騾√ｋ縺ｹ縺阪°</div>
+          <div class="reason-title">💡 採用担当者へのメモ — なぜこの候補者にスカウトを送るべきか</div>
           <div class="reason-body" id="reasonTxt"></div>
         </div>
         <div style="margin-top:16px">
-          <button class="btn btn-ghost btn-sm" id="logToggle" style="font-size:11px">蛻､譁ｭ繝励Ο繧ｻ繧ｹ繝ｭ繧ｰ繧定｡ｨ遉ｺ 笆ｼ</button>
+          <button class="btn btn-ghost btn-sm" id="logToggle" style="font-size:11px">判断プロセスログを表示 ▼</button>
           <div id="logBox" style="display:none;margin-top:8px">
-            <div style="font-size:11px;color:var(--muted);margin-bottom:6px">蟆・擂逧・↑蟄ｦ鄙呈ｩ溯・縺ｮ縺溘ａ縺ｫAI縺ｮ蛻､譁ｭ繝励Ο繧ｻ繧ｹ繧定ｨ倬鹸縺励※縺・∪縺・/div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px">将来的な学習機能のためにAIの判断プロセスを記録しています</div>
             <div class="process-log" id="procLog"></div>
           </div>
         </div>
         <div class="btn-row">
-          <button class="btn btn-ghost" id="b5to3">竊・險ｴ豎ゅｒ螟画峩</button>
+          <button class="btn btn-ghost" id="b5to3">← 訴求を変更</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ==================== PANEL HISTORY: 繧ｹ繧ｫ繧ｦ繝亥ｱ･豁ｴ ==================== -->
+  <!-- ==================== PANEL HISTORY: スカウト履歴 ==================== -->
   <div class="panel" id="pHistory">
     <div class="card">
       <div class="card-head">
         <div class="card-title">
-          <div class="icon-chip" style="background:#f0fdf4;color:#15803d">搭</div>
-          繧ｹ繧ｫ繧ｦ繝亥ｱ･豁ｴ
+          <div class="icon-chip" style="background:#f0fdf4;color:#15803d">📋</div>
+          スカウト履歴
         </div>
-        <button class="btn btn-ghost btn-sm" id="historyBackBtn" onclick="go(1)">竊・謌ｻ繧・/button>
+        <button class="btn btn-ghost btn-sm" id="historyBackBtn" onclick="go(1)">← 戻る</button>
       </div>
       <div class="card-body">
         <div style="font-size:13px;color:var(--muted);margin-bottom:16px">
-          逕滓・縺励◆繧ｹ繧ｫ繧ｦ繝医・閾ｪ蜍穂ｿ晏ｭ倥＆繧後∪縺吶る∽ｿ｡蠕後・繝輔ぅ繝ｼ繝峨ヰ繝・け・郁ｿ比ｿ｡繝ｻ髱｢隲・・謗｡逕ｨ・峨ｒ險倬鹸縺吶ｋ縺ｨ縲∝ｰ・擂縺ｮAI邊ｾ蠎ｦ蜷台ｸ翫↓豢ｻ逕ｨ縺輔ｌ縺ｾ縺吶・        </div>
+          生成したスカウトは自動保存されます。送信後のフィードバック（返信・面談・採用）を記録すると、将来のAI精度向上に活用されます。
+        </div>
         <div id="historyGrid"></div>
       </div>
     </div>
@@ -1707,43 +1854,48 @@ textarea.tall { min-height:110px; }
 
 <footer class="footer"><p>Made with IBM Bob</p></footer>
 
-<!-- JS: 隱ｭ縺ｿ霎ｼ縺ｿ鬆・ｺ上・蠢・★ storage 竊・ai 竊・app -->
+<!-- JS: 読み込み順序は必ず storage → ai → app -->
 
 
 
 <script>
-// storage.js
 /**
- * storage.js 窶・繝ｭ繝ｼ繧ｫ繝ｫ繧ｹ繝医Ξ繝ｼ繧ｸ邂｡逅・・learningData 讒矩
+ * storage.js — ローカルストレージ管理・learningData 構造
  *
- * 蟆・擂逧・↑諡｡蠑ｵ繝昴う繝ｳ繝・
- *   - exportLearningData() : 蟄ｦ鄙偵ョ繝ｼ繧ｿ縺ｮ繧ｨ繧ｯ繧ｹ繝昴・繝・ *   - IBM watsonx / DB 謗･邯壽凾縺ｯ fetch() 繧偵％縺薙↓髮・ｴ・ */
+ * 将来的な拡張ポイント:
+ *   - exportLearningData() : 学習データのエクスポート
+ *   - IBM watsonx / DB 接続時は fetch() をここに集約
+ */
 
 const HISTORY_KEY  = 'bscout_history';
-const PROJECT_KEY  = 'bscout_projects';   // Phase1.5: 豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝・const EDITLOG_KEY  = 'bscout_editlogs';   // Phase1.5: 繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ菫ｮ豁｣繝ｭ繧ｰ
+const PROJECT_KEY  = 'bscout_projects';   // Phase1.5: 求人プロジェクト
+const EDITLOG_KEY  = 'bscout_editlogs';   // Phase1.5: リクルーター修正ログ
 
-// 笏笏 繧｢繝励Μ蜈ｨ菴薙・迥ｶ諷九が繝悶ず繧ｧ繧ｯ繝・笏笏
+// ── アプリ全体の状態オブジェクト ──
 const S = {
   candidate: {},
   job: {},
-  analysis: null,      // ohere / careerStory / temperature 繝輔ぅ繝ｼ繝ｫ繝峨ｒ蜷ｫ繧
+  analysis: null,      // ohere / careerStory / temperature フィールドを含む
   selectedAppeals: [],
   mail: null,
-  selfReview: null,    // callSelfReviewAPI() 縺ｮ邨先棡・・BM蟆ら畑6霆ｸ謗｡轤ｹ・・  processLog: {},
+  selfReview: null,    // callSelfReviewAPI() の結果（IBM専用6軸採点）
+  processLog: {},
   learningData: {},
-  currentHistoryId: null,  // 菫晏ｭ俶ｸ医∩螻･豁ｴID・医ヵ繧｣繝ｼ繝峨ヰ繝・け譖ｴ譁ｰ譎ゅ↓菴ｿ逕ｨ・・  currentProjectId: null   // Phase1.5: 驕ｸ謚樔ｸｭ縺ｮ豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝・D
+  currentHistoryId: null,  // 保存済み履歴ID（フィードバック更新時に使用）
+  currentProjectId: null   // Phase1.5: 選択中の求人プロジェクトID
 };
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// Phase1.5: 豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝育ｮ｡逅・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// Phase1.5: 求人プロジェクト管理
+// ══════════════════════════════════════════
 
-/** 繝励Ο繧ｸ繧ｧ繧ｯ繝井ｸ隕ｧ繧貞叙蠕・*/
+/** プロジェクト一覧を取得 */
 function loadProjects() {
   try { return JSON.parse(localStorage.getItem(PROJECT_KEY) || '[]'); }
   catch { return []; }
 }
 
-/** 繝励Ο繧ｸ繧ｧ繧ｯ繝医ｒ菫晏ｭ假ｼ域眠隕・or 荳頑嶌縺搾ｼ・*/
+/** プロジェクトを保存（新規 or 上書き） */
 function saveProject(proj) {
   const projects = loadProjects();
   const id = proj.id || Date.now().toString();
@@ -1759,13 +1911,13 @@ function saveProject(proj) {
   return id;
 }
 
-/** 繝励Ο繧ｸ繧ｧ繧ｯ繝医ｒ蜑企勁 */
+/** プロジェクトを削除 */
 function deleteProject(id) {
   const projects = loadProjects().filter(p => p.id !== id);
   localStorage.setItem(PROJECT_KEY, JSON.stringify(projects));
 }
 
-/** S.job 縺九ｉ迴ｾ蝨ｨ縺ｮ繝輔か繝ｼ繝蛟､縺ｧ繝励Ο繧ｸ繧ｧ繧ｯ繝医が繝悶ず繧ｧ繧ｯ繝医ｒ菴懈・ */
+/** S.job から現在のフォーム値でプロジェクトオブジェクトを作成 */
 function buildProjectFromForm() {
   return {
     id:              S.currentProjectId || null,
@@ -1780,7 +1932,7 @@ function buildProjectFromForm() {
   };
 }
 
-/** 繝励Ο繧ｸ繧ｧ繧ｯ繝医ｒ繝輔か繝ｼ繝縺ｫ蜿肴丐 */
+/** プロジェクトをフォームに反映 */
 function applyProjectToForm(proj) {
   const set = (id, val) => { const el = $(id); if (el) el.value = val || ''; };
   set('j_proj_name', proj.name);
@@ -1794,20 +1946,24 @@ function applyProjectToForm(proj) {
   S.currentProjectId = proj.id;
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// Phase1.5: 繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ菫ｮ豁｣繝ｭ繧ｰ
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// Phase1.5: リクルーター修正ログ
+// ══════════════════════════════════════════
 
-/** 菫ｮ豁｣繝ｭ繧ｰ荳隕ｧ繧貞叙蠕・*/
+/** 修正ログ一覧を取得 */
 function loadEditLogs() {
   try { return JSON.parse(localStorage.getItem(EDITLOG_KEY) || '[]'); }
   catch { return []; }
 }
 
 /**
- * 菫ｮ豁｣繝ｭ繧ｰ繧・莉ｶ菫晏ｭ・ * @param {string} historyId  - 邏舌▼縺上せ繧ｫ繧ｦ繝亥ｱ･豁ｴID
- * @param {string} section    - 菫ｮ豁｣縺励◆繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ・・ubject/intro/why/match/benefit/cta・・ * @param {string} aiVersion  - AI逕滓・縺ｮ蜴滓枚
- * @param {string} edited     - 菫ｮ豁｣蠕後・繝・く繧ｹ繝・ * @param {string} reason     - 菫ｮ豁｣逅・罰・井ｻｻ諢擾ｼ・ */
+ * 修正ログを1件保存
+ * @param {string} historyId  - 紐づくスカウト履歴ID
+ * @param {string} section    - 修正したセクション（subject/intro/why/match/benefit/cta）
+ * @param {string} aiVersion  - AI生成の原文
+ * @param {string} edited     - 修正後のテキスト
+ * @param {string} reason     - 修正理由（任意）
+ */
 function saveEditLog(historyId, section, aiVersion, edited, reason) {
   const logs = loadEditLogs();
   const entry = {
@@ -1818,7 +1974,7 @@ function saveEditLog(historyId, section, aiVersion, edited, reason) {
     aiVersion,
     edited,
     reason:    reason || '',
-    // 蟄ｦ鄙偵ョ繝ｼ繧ｿ逕ｨ繝｡繧ｿ諠・ｱ
+    // 学習データ用メタ情報
     meta: {
       candidateType:  (S.analysis || {}).candidateTypeCategory || '',
       temperature:    ((S.analysis || {}).temperature || {}).stars || null,
@@ -1826,12 +1982,12 @@ function saveEditLog(historyId, section, aiVersion, edited, reason) {
     }
   };
   logs.unshift(entry);
-  // 譛螟ｧ200莉ｶ
+  // 最大200件
   localStorage.setItem(EDITLOG_KEY, JSON.stringify(logs.slice(0, 200)));
   return entry.id;
 }
 
-/** 菫ｮ豁｣繝ｭ繧ｰ繧偵お繧ｯ繧ｹ繝昴・繝茨ｼ亥ｰ・擂縺ｮ蟄ｦ鄙堤畑・・*/
+/** 修正ログをエクスポート（将来の学習用） */
 function exportEditLogs() {
   const logs = loadEditLogs();
   const blob = new Blob([JSON.stringify(logs, null, 2)], { type: 'application/json' });
@@ -1841,8 +1997,9 @@ function exportEditLogs() {
   URL.revokeObjectURL(url);
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// learningData 讒狗ｯ会ｼ亥・譫仙ｮ御ｺ・凾縺ｫ蜻ｼ縺ｶ・・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// learningData 構築（分析完了時に呼ぶ）
+// ══════════════════════════════════════════
 function buildLearningData() {
   const a = S.analysis, c = S.candidate, j = S.job;
   S.learningData = {
@@ -1889,8 +2046,9 @@ function buildLearningData() {
   };
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// 繧ｹ繧ｫ繧ｦ繝亥ｱ･豁ｴ邂｡逅・ｼ域里蟄假ｼ・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// スカウト履歴管理（既存）
+// ══════════════════════════════════════════
 
 function saveScoutHistory() {
   const history = loadScoutHistory();
@@ -1908,7 +2066,7 @@ function saveScoutHistory() {
       score: (S.analysis || {}).score || 0
     },
     mail:    { ...(S.mail || {}) },
-    mailAi:  { ...(S.mail || {}) },   // Phase1.5: AI逕滓・蜴滓枚繧剃ｿ晄戟
+    mailAi:  { ...(S.mail || {}) },   // Phase1.5: AI生成原文を保持
     selectedAppeals: [...(S.selectedAppeals || [])],
     result: {
       replied:          null,
@@ -1944,18 +2102,23 @@ function deleteHistoryEntry(id) {
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// Phase3a: 菫ｮ豁｣繝ｭ繧ｰfew-shot讒狗ｯ・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// Phase3a: 修正ログfew-shot構築
+// ══════════════════════════════════════════
 
 /**
- * 闢・ｩ阪＠縺滉ｿｮ豁｣繝ｭ繧ｰ縺九ｉ縲窟I譯・竊・繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ菫ｮ豁｣迚医阪・few-shot繧呈ｧ狗ｯ・ * 蜷後§蛟呵｣懆・ち繧､繝励・蜷後§繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ縺ｮ菫ｮ豁｣繝代ち繝ｼ繝ｳ繧呈怙螟ｧ3莉ｶ霑斐☆
+ * 蓄積した修正ログから「AI案 → リクルーター修正版」のfew-shotを構築
+ * 同じ候補者タイプ・同じセクションの修正パターンを最大3件返す
  *
- * @param {string} typeCategory - 蛟呵｣懆・ち繧､繝・ * @param {string[]} selectedAppeals - 驕ｸ謚槭＠縺溯ｨｴ豎ょ錐繝ｪ繧ｹ繝・ * @returns {string} few-shot繝・く繧ｹ繝茨ｼ医・繝ｭ繝ｳ繝励ヨ豕ｨ蜈･逕ｨ・・ */
+ * @param {string} typeCategory - 候補者タイプ
+ * @param {string[]} selectedAppeals - 選択した訴求名リスト
+ * @returns {string} few-shotテキスト（プロンプト注入用）
+ */
 function buildFewShotFromEditLogs(typeCategory, selectedAppeals) {
   const logs = loadEditLogs();
   if (!logs || logs.length === 0) return '';
 
-  // 蜷後ち繧､繝励・繝ｭ繧ｰ繧貞━蜈医∵怙螟ｧ3莉ｶ
+  // 同タイプのログを優先、最大3件
   const relevant = logs
     .filter(l => l.meta?.candidateType === typeCategory && l.edited && l.aiVersion)
     .slice(0, 3);
@@ -1963,36 +2126,42 @@ function buildFewShotFromEditLogs(typeCategory, selectedAppeals) {
   if (relevant.length === 0) return '';
 
   return relevant.map((l, i) => {
-    const secLabel = { subject: '莉ｶ蜷・, intro: '蜀帝ｭ譁・, why: '逅・罰', match: '謗･轤ｹ', benefit: '繝｡繝ｪ繝・ヨ', cta: '隱伜ｰ取枚' };
-    return `蜿り・ｾ・{i + 1}縲・{secLabel[l.section] || l.section}縲・AI譯・ ${(l.aiVersion || '').slice(0, 80)}...
-菫ｮ豁｣蠕・ ${(l.edited || '').slice(0, 80)}...`;
+    const secLabel = { subject: '件名', intro: '冒頭文', why: '理由', match: '接点', benefit: 'メリット', cta: '誘導文' };
+    return `参考例${i + 1}【${secLabel[l.section] || l.section}】
+AI案: ${(l.aiVersion || '').slice(0, 80)}...
+修正後: ${(l.edited || '').slice(0, 80)}...`;
   }).join('\n\n');
 }
 
-// ai.js
+</script>
+<script>
 /**
- * ai.js 窶・OpenAI API / IBM watsonx.ai 騾壻ｿ｡繝ｻ繝励Ο繝ｳ繝励ヨ邂｡逅・ *
- * Phase3a: 繝励Ο繝ｳ繝励ヨ蠑ｷ蛹悶・watsonx蛻・ｊ譖ｿ縺医Ο繧ｸ繝・け繝ｻ菫ｮ豁｣繝ｭ繧ｰfew-shot豕ｨ蜈･
+ * ai.js — OpenAI API / IBM watsonx.ai 通信・プロンプト管理
  *
- * 繝舌ャ繧ｯ繧ｨ繝ｳ繝牙・繧頑崛縺域婿豕・
- *   1. BSCOUT_BACKEND = 'openai' | 'watsonx' 繧・localStorage 縺ｫ險ｭ螳・ *   2. watsonx驕ｸ謚樊凾: BSCOUT_WX_URL / BSCOUT_WX_TOKEN 繧りｨｭ螳壹′蠢・ｦ・ *   3. IS_NETLIFY=true 譎ゅ・繧ｵ繝ｼ繝舌・蛛ｴ繝励Ο繧ｭ繧ｷ縺瑚・蜍募愛螳・ */
+ * Phase3a: プロンプト強化・watsonx切り替えロジック・修正ログfew-shot注入
+ *
+ * バックエンド切り替え方法:
+ *   1. BSCOUT_BACKEND = 'openai' | 'watsonx' を localStorage に設定
+ *   2. watsonx選択時: BSCOUT_WX_URL / BSCOUT_WX_TOKEN も設定が必要
+ *   3. IS_NETLIFY=true 時はサーバー側プロキシが自動判定
+ */
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// Phase3b: 繝舌ャ繧ｯ繧ｨ繝ｳ繝牙・繧頑崛縺医Ο繧ｸ繝・け
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// Phase3b: バックエンド切り替えロジック
+// ══════════════════════════════════════════
 
-/** 迴ｾ蝨ｨ縺ｮ繝舌ャ繧ｯ繧ｨ繝ｳ繝・ 'openai' | 'watsonx' */
+/** 現在のバックエンド: 'openai' | 'watsonx' */
 function currentBackend() {
   return localStorage.getItem('bscout_backend') || 'openai';
 }
 
-/** watsonx繧ｨ繝ｳ繝峨・繧､繝ｳ繝茨ｼ郁ｨｭ螳壹＆繧後※縺・ｌ縺ｰ菴ｿ逕ｨ・・*/
+/** watsonxエンドポイント（設定されていれば使用） */
 function watsonxUrl() {
   return localStorage.getItem('bscout_wx_url') ||
     'https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29';
 }
 
-// 笏笏 繧ｨ繝ｳ繝峨・繧､繝ｳ繝郁・蜍募愛螳・笏笏
+// ── エンドポイント自動判定 ──
 const IS_NETLIFY = location.hostname !== 'localhost'
   && location.protocol === 'https:'
   && !location.hostname.includes('127.0.0.1');
@@ -2002,10 +2171,10 @@ function getApiUrl() {
   if (currentBackend() === 'watsonx') return watsonxUrl();
   return 'https://api.openai.com/v1/chat/completions';
 }
-// 蠕梧婿莠呈鋤
+// 後方互換
 const API_URL = 'https://api.openai.com/v1/chat/completions';
 
-// 笏笏 API繧ｭ繝ｼ邂｡逅・Θ繝ｼ繝・ぅ繝ｪ繝・ぅ 笏笏
+// ── APIキー管理ユーティリティ ──
 function hasApiKey()  { return IS_NETLIFY || !!localStorage.getItem('bscout_apikey') || !!localStorage.getItem('bscout_wx_token'); }
 
 function apiHeaders() {
@@ -2023,12 +2192,13 @@ function apiHeaders() {
 }
 
 /**
- * Phase3b: watsonx逕ｨ繝ｪ繧ｯ繧ｨ繧ｹ繝医・繝・ぅ縺ｸ縺ｮ螟画鋤
- * OpenAI蠖｢蠑上・messages 竊・watsonx Granite/Llama蠖｢蠑上↓螟画鋤
+ * Phase3b: watsonx用リクエストボディへの変換
+ * OpenAI形式のmessages → watsonx Granite/Llama形式に変換
  */
 function buildRequestBody(messages, temperature, model) {
   if (currentBackend() === 'watsonx' && !IS_NETLIFY) {
-    // watsonx text generation API蠖｢蠑・    const systemMsg = messages.find(m => m.role === 'system')?.content || '';
+    // watsonx text generation API形式
+    const systemMsg = messages.find(m => m.role === 'system')?.content || '';
     const userMsg   = messages.find(m => m.role === 'user')?.content || '';
     const wxModel   = localStorage.getItem('bscout_wx_model') || 'ibm/granite-13b-instruct-v2';
     return {
@@ -2043,7 +2213,8 @@ function buildRequestBody(messages, temperature, model) {
       }
     };
   }
-  // OpenAI蠖｢蠑擾ｼ医ョ繝輔か繝ｫ繝茨ｼ・  return {
+  // OpenAI形式（デフォルト）
+  return {
     model: model || md(),
     messages,
     temperature: temperature || 0.7,
@@ -2052,16 +2223,17 @@ function buildRequestBody(messages, temperature, model) {
 }
 
 /**
- * Phase3b: watsonx繝ｬ繧ｹ繝昴Φ繧ｹ繧丹penAI蠖｢蠑上↓豁｣隕丞喧
+ * Phase3b: watsonxレスポンスをOpenAI形式に正規化
  */
 function parseApiResponse(data) {
   if (currentBackend() === 'watsonx' && !IS_NETLIFY) {
-    // watsonx蠖｢蠑・ { results: [{ generated_text: "..." }] }
+    // watsonx形式: { results: [{ generated_text: "..." }] }
     const text = data?.results?.[0]?.generated_text || '{}';
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     return jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(text);
   }
-  // OpenAI蠖｢蠑・  return JSON.parse(data.choices[0].message.content);
+  // OpenAI形式
+  return JSON.parse(data.choices[0].message.content);
 }
 
 function ensureLocalKey() {
@@ -2069,7 +2241,7 @@ function ensureLocalKey() {
   if (currentBackend() === 'watsonx') {
     let tok = localStorage.getItem('bscout_wx_token');
     if (!tok) {
-      tok = window.prompt('IBM watsonx IAM繝医・繧ｯ繝ｳ繧貞・蜉帙＠縺ｦ縺上□縺輔＞:') || '';
+      tok = window.prompt('IBM watsonx IAMトークンを入力してください:') || '';
       if (!tok) return false;
       localStorage.setItem('bscout_wx_token', tok);
     }
@@ -2077,14 +2249,14 @@ function ensureLocalKey() {
   }
   let k = localStorage.getItem('bscout_apikey');
   if (!k) {
-    k = window.prompt('OpenAI API繧ｭ繝ｼ繧貞・蜉帙＠縺ｦ縺上□縺輔＞・医Ο繝ｼ繧ｫ繝ｫ螳溯｡梧凾縺ｮ縺ｿ・・') || '';
+    k = window.prompt('OpenAI APIキーを入力してください（ローカル実行時のみ）:') || '';
     if (!k) return false;
     localStorage.setItem('bscout_apikey', k);
   }
   return true;
 }
 
-// 笏笏 謗･邯壹Δ繝ｼ繝芽｡ｨ遉ｺ 笏笏
+// ── 接続モード表示 ──
 (async function checkMode() {
   const dot = $('modeDot'), lbl = $('modeLabel');
   const backend = currentBackend();
@@ -2097,53 +2269,55 @@ function ensureLocalKey() {
       });
       if (r.ok || r.status === 400) {
         dot.className = 'mode-dot ai';
-        lbl.innerHTML = '<strong>AI謗･邯壽ｸ医∩</strong> 窶・繝√・繝蜈ｱ譛峨Δ繝ｼ繝・;
+        lbl.innerHTML = '<strong>AI接続済み</strong> — チーム共有モード';
       } else { throw new Error(); }
     } catch {
       dot.className = 'mode-dot demo';
-      lbl.innerHTML = '<strong>繝・Δ繝｢繝ｼ繝・/strong> 窶・迺ｰ蠅・､画焚譛ｪ險ｭ螳・;
+      lbl.innerHTML = '<strong>デモモード</strong> — 環境変数未設定';
     }
   } else if (backend === 'watsonx') {
     const hasTok = !!localStorage.getItem('bscout_wx_token');
     dot.className = hasTok ? 'mode-dot ai' : 'mode-dot demo';
     lbl.innerHTML = hasTok
-      ? '<strong>watsonx謗･邯壽ｸ医∩</strong> 窶・IBM Cloud'
-      : '<strong>watsonx譛ｪ險ｭ螳・/strong> 窶・繝医・繧ｯ繝ｳ蜈･蜉幄ｦ・;
+      ? '<strong>watsonx接続済み</strong> — IBM Cloud'
+      : '<strong>watsonx未設定</strong> — トークン入力要';
   } else {
     const hasKey = !!localStorage.getItem('bscout_apikey');
     dot.className = hasKey ? 'mode-dot ai' : 'mode-dot demo';
-    lbl.innerHTML = hasKey ? '<strong>OpenAI謗･邯壽ｸ医∩</strong> 窶・繝ｭ繝ｼ繧ｫ繝ｫ' : '<strong>繝・Δ繝｢繝ｼ繝・/strong> 窶・API繧ｭ繝ｼ譛ｪ險ｭ螳・;
+    lbl.innerHTML = hasKey ? '<strong>OpenAI接続済み</strong> — ローカル' : '<strong>デモモード</strong> — APIキー未設定';
   }
 })();
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// Phase3a: IBM螳溽ｸｾ繝翫Ξ繝・ず繝吶・繧ｹ・医・繝ｭ繝ｳ繝励ヨ豕ｨ蜈･逕ｨ・・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// Phase3a: IBM実績ナレッジベース（プロンプト注入用）
+// ══════════════════════════════════════════
 /**
- * IBM縺ｮ蜈ｷ菴鍋噪蠑ｷ縺ｿ繝ｻ謨ｰ蛟､繝ｻ莠倶ｾ九ｒ繝励Ο繝ｳ繝励ヨ縺ｫ蝓九ａ霎ｼ繧縺薙→縺ｧ
- * AI縺後栗BM繧峨＠縺・榊・菴鍋噪縺ｪ譁・ｫ繧堤函謌舌〒縺阪ｋ繧医≧縺ｫ縺ｪ繧・ */
+ * IBMの具体的強み・数値・事例をプロンプトに埋め込むことで
+ * AIが「IBMらしい」具体的な文章を生成できるようになる
+ */
 const IBM_KNOWLEDGE = {
-  scale:    '170繧ｫ蝗ｽ繝ｻ28荳・ｺｺ繝ｻFortune500縺ｮ90%莉･荳翫′IBM縺ｮ鬘ｧ螳｢縲よ律譛ｬIBM縺ｯ邏・000蜷阪・,
-  ai:       'watsonx.ai縺ｯGranite繝ｻLlama3遲碓SS繝｢繝・Ν繧剃ｼ∵･ｭ繝・・繧ｿ縺ｧ蜍輔°縺吶お繝ｳ繧ｿ繝ｼ繝励Λ繧､繧ｺAI蝓ｺ逶､縲・023蟷ｴ繧医ｊ譛ｬ譬ｼ螻暮幕縲る≡陞阪・蛹ｻ逋ゅ・陬ｽ騾蛻・㍽縺ｧ蝗ｽ蜀・､悶・螟ｧ謇倶ｼ∵･ｭ縺ｫ蟆主・螳溽ｸｾ縲・,
-  cloud:    'IBM Cloud縺ｯRed Hat OpenShift繝吶・繧ｹ縺ｮ繝上う繝悶Μ繝・ラ繧ｯ繝ｩ繧ｦ繝峨・WS繧Бzure縺ｨ荳ｦ縺ｶ繧ｨ繝ｳ繧ｿ繝ｼ繝励Λ繧､繧ｺ繧ｯ繝ｩ繧ｦ繝峨・荳隗偵・ubernetes譎ｮ蜿翫・遶句ｽｹ閠・〒縺ゅｋRed Hat繧・019蟷ｴ340蜆・ラ繝ｫ縺ｧ雋ｷ蜿弱・,
-  oss:      'Red Hat / OpenShift / Kubernetes / Terraform / Ansible / Qiskit 縺ｪ縺ｩ讌ｭ逡梧ｨ呎ｺ飽SS縺ｮ荳ｭ譬ｸ繧呈球縺・・BM縺ｫ霆｢閨ｷ=OSS繧ｨ繧ｳ繧ｷ繧ｹ繝・Β縺ｮ荳ｭ蠢・↓遶九▽縺薙→繧呈э蜻ｳ縺吶ｋ縲・,
-  global:   '繝励Ο繧ｸ繧ｧ繧ｯ繝医・譌･譛ｬ逋ｺ縺ｧ繧よｵｷ螟悶メ繝ｼ繝縺ｨ蜊疲･ｭ縺悟ｸｸ諷九り恭隱槭Γ繝ｼ繝ｫ繝ｻSlack繝ｻ騾ｱ谺｡闍ｱ隱樔ｼ夊ｭｰ縺ｯ蜈･遉ｾ蛻晄律縺九ｉ縲５OEIC600轤ｹ蜿ｰ縺ｧ繧ょ・遉ｾ蠕後↓莨ｸ縺ｳ繧九こ繝ｼ繧ｹ縺悟､壹＞縲・,
-  training: 'IBM Skills Build繝ｻSkillsBadge隱榊ｮ壹・400遞ｮ莉･荳翫ょｹｴ髢薙ヨ繝ｬ繝ｼ繝九Φ繧ｰ莠育ｮ励・1莠ｺ縺ゅ◆繧頑焚蜊∽ｸ・・隕乗ｨ｡縲ら､ｾ蜀・・蜍溷宛蠎ｦ縺ｧ2縲・蟷ｴ縺斐→縺ｫ蛻･繝√・繝縺ｸ縺ｮ逡ｰ蜍輔ｂ荳闊ｬ逧・・,
-  social:   '2021蟷ｴ繧医ｊESG繧ｳ繝溘ャ繝医Γ繝ｳ繝亥ｼｷ蛹悶よｰ怜吝､牙虚繝ｻ蛹ｻ逋ゅい繧ｯ繧ｻ繧ｹ繝ｻ繝・ず繧ｿ繝ｫ繝・ヰ繧､繝芽ｧ｣豸医・繝励Ο繧ｸ繧ｧ繧ｯ繝医↓謚陦楢・→縺励※髢｢荳弱〒縺阪ｋ縲・BM縺ｮProject Debater縺ｯ謨呵ご鬆伜沺縺ｧ繧よｴｻ逕ｨ荳ｭ縲・,
-  stability:'1911蟷ｴ蜑ｵ讌ｭ繝ｻ112蟷ｴ縺ｮ螳溽ｸｾ縲ゅΜ繝ｼ繝槭Φ繧ｷ繝ｧ繝・け繝ｻ繧ｳ繝ｭ繝顔ｦ阪ｂ鮟貞ｭ礼ｶ咏ｶ壹ょ､冶ｳ・ｳｻ縺ｮ荳ｭ縺ｧ縺ｯ譛繧る寐逕ｨ螳牙ｮ壽ｧ縺碁ｫ倥＞驛ｨ鬘槭ょｹｳ蝮・共邯壼ｹｴ謨ｰ縺ｯ譌･邉ｻ螟ｧ謇九↓蛹ｹ謨ｵ縲・,
-  salary:   '譚ｱ莠ｬ蝓ｺ貅悶〒繧ｨ繝ｳ繧ｸ繝九い荳ｭ騾疲治逕ｨ縺ｮ蟷ｴ蜿弱Ξ繝ｳ繧ｸ縺ｯ700荳・・500荳・・縲ゅげ繝ｬ繝ｼ繝牙宛縺ｧ騾乗・諤ｧ縺碁ｫ倥￥縲∬ｩ穂ｾ｡縺ｫ繧医ｋ譏・ｵｦ縺梧・遒ｺ縲ら｢ｺ螳壽侠蜃ｺ蟷ｴ驥代・RSU・域ｪ蠑丞ｱ驟ｬ・峨ｂ蜈・ｮ溘・,
-  workstyle:'繝輔Ξ繝・け繧ｹ繧ｿ繧､繝繝ｻ騾ｱ3縲・譌･繝ｪ繝｢繝ｼ繝域ｨ呎ｺ悶ゅさ繧｢繧ｿ繧､繝縺ｪ縺暦ｼ医メ繝ｼ繝蜷域э繝吶・繧ｹ・峨りご莨大叙蠕礼紫縺ｯ逕ｷ諤ｧ30%莉･荳翫ょ憶讌ｭ蜴溷援OK縺ｮ驛ｨ髢縺悟｢怜刈荳ｭ縲・,
+  scale:    '170カ国・28万人・Fortune500の90%以上がIBMの顧客。日本IBMは約7000名。',
+  ai:       'watsonx.aiはGranite・Llama3等OSSモデルを企業データで動かすエンタープライズAI基盤。2023年より本格展開。金融・医療・製造分野で国内外の大手企業に導入実績。',
+  cloud:    'IBM CloudはRed Hat OpenShiftベースのハイブリッドクラウド。AWSやAzureと並ぶエンタープライズクラウドの一角。Kubernetes普及の立役者であるRed Hatを2019年340億ドルで買収。',
+  oss:      'Red Hat / OpenShift / Kubernetes / Terraform / Ansible / Qiskit など業界標準OSSの中核を担う。IBMに転職=OSSエコシステムの中心に立つことを意味する。',
+  global:   'プロジェクトは日本発でも海外チームと協業が常態。英語メール・Slack・週次英語会議は入社初日から。TOEIC600点台でも入社後に伸びるケースが多い。',
+  training: 'IBM Skills Build・SkillsBadge認定は400種以上。年間トレーニング予算は1人あたり数十万円規模。社内公募制度で2〜3年ごとに別チームへの異動も一般的。',
+  social:   '2021年よりESGコミットメント強化。気候変動・医療アクセス・デジタルデバイド解消のプロジェクトに技術者として関与できる。IBMのProject Debaterは教育領域でも活用中。',
+  stability:'1911年創業・112年の実績。リーマンショック・コロナ禍も黒字継続。外資系の中では最も雇用安定性が高い部類。平均勤続年数は日系大手に匹敵。',
+  salary:   '東京基準でエンジニア中途採用の年収レンジは700万〜1500万円。グレード制で透明性が高く、評価による昇給が明確。確定拠出年金・RSU（株式報酬）も充実。',
+  workstyle:'フレックスタイム・週3〜4日リモート標準。コアタイムなし（チーム合意ベース）。育休取得率は男性30%以上。副業原則OKの部門が増加中。',
 };
 
 /**
- * 蛟呵｣懆・ち繧､繝励・驕ｸ謚櫁ｨｴ豎ゅ°繧画怙繧よ怏蜉ｹ縺ｪIBM遏･隴倥ｒ3縲・莉ｶ驕ｸ繧薙〒霑斐☆
+ * 候補者タイプ・選択訴求から最も有効なIBM知識を3〜4件選んで返す
  */
 function selectIbmKnowledge(typeCategory, appealIds) {
   const MAP = {
-    '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛': ['ai','oss','cloud','global'],
-    'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛':   ['scale','ai','global','social'],
-    '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・:      ['training','scale','stability','salary'],
-    '蟶ょｴ萓｡蛟､蜷台ｸ雁梛':        ['ai','oss','global','training'],
-    '螳牙ｮ壼ｿ怜髄蝙・:            ['stability','salary','workstyle','training'],
+    '技術スペシャリスト型': ['ai','oss','cloud','global'],
+    'PM・マネジメント型':   ['scale','ai','global','social'],
+    'キャリアアップ型':      ['training','scale','stability','salary'],
+    '市場価値向上型':        ['ai','oss','global','training'],
+    '安定志向型':            ['stability','salary','workstyle','training'],
   };
   const appealMap = {
     'ai_transformation': ['ai','cloud'],
@@ -2165,95 +2339,101 @@ function selectIbmKnowledge(typeCategory, appealIds) {
   return [...keys].slice(0, 4).map(k => IBM_KNOWLEDGE[k]).filter(Boolean).join('\n');
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP2: 蛟呵｣懆・・譫・API・・hase3a: IBM遏･隴俶ｳｨ蜈･・・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// STEP2: 候補者分析 API（Phase3a: IBM知識注入）
+// ══════════════════════════════════════════
 async function callAnalysisAPI() {
   const c = S.candidate, j = S.job;
   if (!IS_NETLIFY && !ensureLocalKey()) { demoAnalysis(); throw new Error('demo'); }
 
-  // Phase3a: 蛻・梵繝励Ο繝ｳ繝励ヨ縺ｫIBM遏･隴倥ｒ豕ｨ蜈･・医∪縺繧ｿ繧､繝玲悴遒ｺ螳壹↑縺ｮ縺ｧ蜈ｨ霆ｸ縺ｮ莉｣陦ｨ繧呈兜蜈･・・  const ibmKnowledgeForAnalysis = [IBM_KNOWLEDGE.ai, IBM_KNOWLEDGE.scale, IBM_KNOWLEDGE.global, IBM_KNOWLEDGE.training].join('\n');
+  // Phase3a: 分析プロンプトにIBM知識を注入（まだタイプ未確定なので全軸の代表を投入）
+  const ibmKnowledgeForAnalysis = [IBM_KNOWLEDGE.ai, IBM_KNOWLEDGE.scale, IBM_KNOWLEDGE.global, IBM_KNOWLEDGE.training].join('\n');
 
-  const prompt = `縺ゅ↑縺溘・譌･譛ｬ縺ｮIBM繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ゆｻ･荳九・蛟呵｣懆・ュ蝣ｱ縺ｨ豎ゆｺｺ諠・ｱ繧貞・譫舌＠縲∵ｭ｣遒ｺ縺ｪJSON縺ｮ縺ｿ繧定ｿ斐＠縺ｦ縺上□縺輔＞縲・
-## IBM蝓ｺ遉取ュ蝣ｱ・亥・譫舌・險ｴ豎る∈謚槭・蜿り・↓・・${ibmKnowledgeForAnalysis}
+  const prompt = `あなたは日本のIBMトップリクルーターです。以下の候補者情報と求人情報を分析し、正確なJSONのみを返してください。
+
+## IBM基礎情報（分析・訴求選択の参考に）
+${ibmKnowledgeForAnalysis}
 
 
-## 蛟呵｣懆・ュ蝣ｱ
-- 迴ｾ蝨ｨ縺ｮ莨夂､ｾ: ${c.company}
-- 迴ｾ蝨ｨ縺ｮ閨ｷ遞ｮ: ${c.role}
-- 邨碁ｨ捺ｦりｦ・ ${c.experience}
-- 繧ｹ繧ｭ繝ｫ: ${c.skills}
-- 驕主悉繝励Ο繧ｸ繧ｧ繧ｯ繝・ ${c.projects || '譛ｪ險伜・'}
-- 霆｢閨ｷ逅・罰繝ｻ蠢怜髄: ${c.reason || '譛ｪ險伜・'}
+## 候補者情報
+- 現在の会社: ${c.company}
+- 現在の職種: ${c.role}
+- 経験概要: ${c.experience}
+- スキル: ${c.skills}
+- 過去プロジェクト: ${c.projects || '未記入'}
+- 転職理由・志向: ${c.reason || '未記入'}
 
-## 豎ゆｺｺ諠・ｱ
-- 繝昴ず繧ｷ繝ｧ繝ｳ: ${j.position}
-- 莨夂､ｾ蜷・ ${j.company || '譛ｪ險伜・'}
-- 莉穂ｺ句・螳ｹ: ${j.description}
-- 豎ゅａ繧狗ｵ碁ｨ・ ${j.requirements}
-- 莨夂､ｾ縺ｮ鬲・鴨: ${j.appeal}
+## 求人情報
+- ポジション: ${j.position}
+- 会社名: ${j.company || '未記入'}
+- 仕事内容: ${j.description}
+- 求める経験: ${j.requirements}
+- 会社の魅力: ${j.appeal}
 
-## 霑斐☆JSON縺ｮ讒矩・亥宍螳茨ｼ・{
-  "candidateTypeCategory": "莉･荳九・5蛻・｡槭・縺・★繧後°1縺､縺縺・ 謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛 / PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛 / 繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・/ 蟶ょｴ萓｡蛟､蜷台ｸ雁梛 / 螳牙ｮ壼ｿ怜髄蝙・,
-  "candidateTypeReason": "縺昴・蛻・｡槭↓蛻､譁ｭ縺励◆譬ｹ諡繧・縲・譁・〒蜈ｷ菴鍋噪縺ｫ",
+## 返すJSONの構造（厳守）
+{
+  "candidateTypeCategory": "以下の5分類のいずれか1つだけ: 技術スペシャリスト型 / PM・マネジメント型 / キャリアアップ型 / 市場価値向上型 / 安定志向型",
+  "candidateTypeReason": "その分類に判断した根拠を2〜3文で具体的に",
 
   "ohere": {
-    "observation": "邨梧ｭｴ縺九ｉ隱ｭ縺ｿ蜿悶ｌ繧句ｮ｢隕ｳ逧・ｺ句ｮ溘ｒ邂・擅譖ｸ縺・縲・轤ｹ・医・縺ｧ蟋九ａ繧九よ耳貂ｬ繧・─諠ｳ繧貞・繧後↑縺・ｼ・,
-    "hypothesis": "縺薙・蛟呵｣懆・・縺ｩ繧薙↑莠ｺ迚ｩ縺具ｼ蘗I縺檎ｫ九※繧倶ｻｮ隱ｬ繧・縲・譁・〒・井ｾ・ 縲懊→縺・≧莠ｺ縺ｧ縺ｯ縺ｪ縺・°・・,
-    "evidence": "莉ｮ隱ｬ縺ｮ譬ｹ諡繧堤ｵ梧ｭｴ繝ｻ繧ｹ繧ｭ繝ｫ繝ｻ霆｢閨ｷ逅・罰縺ｨ蠢・★邏舌▼縺代※3縲・轤ｹ・医・縺ｧ蟋九ａ繧具ｼ・,
-    "recommendation": "繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｪ繧峨←縺ｮ繧医≧縺ｫ繧｢繝励Ο繝ｼ繝√☆繧九°・亥・菴鍋噪縺ｪ繝医・繧ｯ繝ｻ蛻・ｊ蜿｣繝ｻ繧ｿ繧､繝溘Φ繧ｰ繧貞性繧2縲・譁・ｼ・,
+    "observation": "経歴から読み取れる客観的事実を箇条書き5〜7点（・で始める。推測や感想を入れない）",
+    "hypothesis": "この候補者はどんな人物か？AIが立てる仮説を2〜3文で（例: 〜という人ではないか）",
+    "evidence": "仮説の根拠を経歴・スキル・転職理由と必ず紐づけて3〜4点（・で始める）",
+    "recommendation": "トップリクルーターならどのようにアプローチするか（具体的なトーク・切り口・タイミングを含む2〜3文）",
     "scoutStrategy": {
-      "step1_empathy": "竭蜈ｱ諢溘ヵ繧ｧ繝ｼ繧ｺ: 蛟呵｣懆・・迴ｾ迥ｶ繝ｻ隱ｲ鬘後∈縺ｮ蜈ｱ諢溘Γ繝・そ繝ｼ繧ｸ・・縲・譁・ｼ・,
-      "step2_recognition": "竭｡閭ｽ蜉帶価隱阪ヵ繧ｧ繝ｼ繧ｺ: 蛟呵｣懆・・蜈ｷ菴鍋噪縺ｪ蠑ｷ縺ｿ繝ｻ螳溽ｸｾ縺ｸ縺ｮ險蜿奇ｼ・縲・譁・ｼ・,
-      "step3_future": "竭｢譛ｪ譚･謠千､ｺ繝輔ぉ繝ｼ繧ｺ: 縺薙・繝昴ず繧ｷ繝ｧ繝ｳ縺ｧ螳溽樟縺ｧ縺阪ｋ譛ｪ譚･縺ｮ謠丞・・・縲・譁・ｼ・,
-      "step4_ibm": "竭｣IBM險ｴ豎ゅヵ繧ｧ繝ｼ繧ｺ: IBM縺ｪ繧峨〒縺ｯ縺ｮ蠑ｷ縺ｿ縺ｨ蛟呵｣懆・∈縺ｮ驕ｩ蜷域ｧ・・縲・譁・ｼ・,
-      "step5_meeting": "竭､髱｢隲・ｪ伜ｰ弱ヵ繧ｧ繝ｼ繧ｺ: 繝励Ξ繝・す繝｣繝ｼ繧剃ｸ弱∴縺ｪ縺・擇隲・∈縺ｮ隱倥＞譁ｹ・・縲・譁・ｼ・
+      "step1_empathy": "①共感フェーズ: 候補者の現状・課題への共感メッセージ（1〜2文）",
+      "step2_recognition": "②能力承認フェーズ: 候補者の具体的な強み・実績への言及（1〜2文）",
+      "step3_future": "③未来提示フェーズ: このポジションで実現できる未来の描写（1〜2文）",
+      "step4_ibm": "④IBM訴求フェーズ: IBMならではの強みと候補者への適合性（1〜2文）",
+      "step5_meeting": "⑤面談誘導フェーズ: プレッシャーを与えない面談への誘い方（1〜2文）"
     }
   },
 
   "careerStory": {
-    "past": "驕主悉: 蛟呵｣懆・′縺ｩ繧薙↑邨碁ｨ薙ｒ遨阪ｓ縺ｧ縺阪◆縺具ｼ・縲・譁・よ焚蛟､繝ｻ蜈ｷ菴鍋噪謌先棡繧貞性繧・・,
-    "present": "迴ｾ蝨ｨ: 迴ｾ閨ｷ縺ｧ縺ｩ繧薙↑萓｡蛟､繧堤匱謠ｮ縺励※縺・ｋ縺具ｼ・縲・譁・ｼ・,
-    "future": "譛ｪ譚･: 縺薙・繝昴ず繧ｷ繝ｧ繝ｳ縺ｧ縺ｩ繧薙↑豢ｻ霄阪′譛溷ｾ・〒縺阪ｋ縺具ｼ・縲・譁・ょｸ梧悍逧・ｦｳ貂ｬ縺ｧ縺ｯ縺ｪ縺乗ｹ諡縺ゅｋ莠域ｸｬ・・,
-    "narrative": "3縺､繧堤ｹ九＞縺荳譛ｬ縺ｮ繧ｹ繝医・繝ｪ繝ｼ・・縲・譁・ゅせ繧ｫ繧ｦ繝域枚縺ｮ蜀帝ｭ縺ｫ菴ｿ縺医ｋ譁・ｽ薙〒・・
+    "past": "過去: 候補者がどんな経験を積んできたか（1〜2文。数値・具体的成果を含む）",
+    "present": "現在: 現職でどんな価値を発揮しているか（1〜2文）",
+    "future": "未来: このポジションでどんな活躍が期待できるか（1〜2文。希望的観測ではなく根拠ある予測）",
+    "narrative": "3つを繋いだ一本のストーリー（3〜4文。スカウト文の冒頭に使える文体で）"
   },
 
   "temperature": {
-    "stars": 1縺九ｉ5縺ｮ謨ｴ謨ｰ,
-    "label": "莉翫☆縺占ｻ｢閨ｷ / 蜊雁ｹｴ莉･蜀・/ 諠・ｱ蜿朱寔 / 蜿励￠霄ｫ / 霆｢閨ｷ諢乗昴⊇縺ｼ縺ｪ縺・縺ｮ縺・★繧後°",
-    "reason": "縺昴・貂ｩ蠎ｦ諢溘→蛻､譁ｭ縺励◆譬ｹ諡繧・縲・譁・ｼ郁ｻ｢閨ｷ逅・罰繝ｻ邨梧ｭｴ繝ｻ蝨ｨ閨ｷ譛滄俣縺ｪ縺ｩ縺九ｉ謗ｨ貂ｬ・・,
-    "approach": "縺薙・貂ｩ蠎ｦ諢溘・蛟呵｣懆・∈縺ｮ譛驕ｩ縺ｪ繧｢繝励Ο繝ｼ繝∵婿豕包ｼ・縲・譁・ｼ・
+    "stars": 1から5の整数,
+    "label": "今すぐ転職 / 半年以内 / 情報収集 / 受け身 / 転職意思ほぼなし のいずれか",
+    "reason": "その温度感と判断した根拠を2〜3文（転職理由・経歴・在職期間などから推測）",
+    "approach": "この温度感の候補者への最適なアプローチ方法（1〜2文）"
   },
 
-  "motivationHypothesis": "谺｡縺ｮ繧ｭ繝｣繝ｪ繧｢縺ｧ螳溽樟縺励◆縺・％縺ｨ繧・轤ｹ縲∵隼陦悟玄蛻・ｊ縺ｧ・亥推轤ｹ繧偵・縺ｧ蟋九ａ繧具ｼ・,
-  "whyContact": "縺ｪ縺應ｻ翫％縺ｮ蛟呵｣懆・↓繧｢繝励Ο繝ｼ繝√☆繧倶ｾ｡蛟､縺後≠繧九°・・50蟄礼ｨ句ｺｦ・・,
-  "matchPoints": "蛟呵｣懆・・邨碁ｨ薙→繝昴ず繧ｷ繝ｧ繝ｳ縺ｮ蜈ｷ菴鍋噪縺ｪ謗･轤ｹ繧・縲・轤ｹ縲∵隼陦悟玄蛻・ｊ縺ｧ・亥推轤ｹ繧偵・縺ｧ蟋九ａ繧具ｼ・,
-  "avoidPoints": "縺薙・蛟呵｣懆・↓縺ｯ蛻ｺ縺輔ｉ縺ｪ縺・庄閭ｽ諤ｧ縺碁ｫ倥＞險ｴ豎ゅｒ2縲・轤ｹ縺ｨ逅・罰・亥推轤ｹ繧偵・縺ｧ蟋九ａ繧具ｼ・,
+  "motivationHypothesis": "次のキャリアで実現したいことを3点、改行区切りで（各点を・で始める）",
+  "whyContact": "なぜ今この候補者にアプローチする価値があるか（150字程度）",
+  "matchPoints": "候補者の経験とポジションの具体的な接点を3〜5点、改行区切りで（各点を・で始める）",
+  "avoidPoints": "この候補者には刺さらない可能性が高い訴求を2〜3点と理由（各点を・で始める）",
   "appealPriority": [
-    { "rank": 1, "appealId": "ID繧呈欠螳・, "appealName": "險ｴ豎ょ錐", "reason": "縺ｪ縺・菴阪↑縺ｮ縺九ょ呵｣懆・・蜈ｷ菴鍋噪縺ｪ邨梧ｭｴ繝ｻ蠢怜髄縺ｨ邏舌▼縺代※隱ｬ譏趣ｼ・縲・譁・ｼ・ },
-    { "rank": 2, "appealId": "ID繧呈欠螳・, "appealName": "險ｴ豎ょ錐", "reason": "縺ｪ縺・菴阪↑縺ｮ縺具ｼ・縲・譁・ｼ・ },
-    { "rank": 3, "appealId": "ID繧呈欠螳・, "appealName": "險ｴ豎ょ錐", "reason": "縺ｪ縺・菴阪↑縺ｮ縺具ｼ・縲・譁・ｼ・ }
+    { "rank": 1, "appealId": "IDを指定", "appealName": "訴求名", "reason": "なぜ1位なのか。候補者の具体的な経歴・志向と紐づけて説明（2〜3文）" },
+    { "rank": 2, "appealId": "IDを指定", "appealName": "訴求名", "reason": "なぜ2位なのか（2〜3文）" },
+    { "rank": 3, "appealId": "IDを指定", "appealName": "訴求名", "reason": "なぜ3位なのか（2〜3文）" }
   ],
-  "otherRecommendedAppeals": ["1縲・菴堺ｻ･螟悶〒譛牙柑縺ｪ險ｴ豎・D繧・縲・縺､"],
+  "otherRecommendedAppeals": ["1〜3位以外で有効な訴求IDを1〜2つ"],
   "recruiterGuidance": [
-    { "judgment": "AI縺悟愛譁ｭ縺励◆縺薙→", "judgmentReason": "縺昴・譬ｹ諡", "approach": "謗｡逕ｨ諡・ｽ楢・′蜿悶ｋ縺ｹ縺阪い繝励Ο繝ｼ繝・ },
-    { "judgment": "2縺､逶ｮ", "judgmentReason": "2縺､逶ｮ縺ｮ譬ｹ諡", "approach": "2縺､逶ｮ縺ｮ繧｢繝励Ο繝ｼ繝・ },
-    { "judgment": "3縺､逶ｮ", "judgmentReason": "3縺､逶ｮ縺ｮ譬ｹ諡", "approach": "3縺､逶ｮ縺ｮ繧｢繝励Ο繝ｼ繝・ }
+    { "judgment": "AIが判断したこと", "judgmentReason": "その根拠", "approach": "採用担当者が取るべきアプローチ" },
+    { "judgment": "2つ目", "judgmentReason": "2つ目の根拠", "approach": "2つ目のアプローチ" },
+    { "judgment": "3つ目", "judgmentReason": "3つ目の根拠", "approach": "3つ目のアプローチ" }
   ],
-  "recommendedAppeals": ["appealPriority縺ｮ1縲・菴阪・ID縺ｨotherRecommendedAppeals繧貞粋繧上○縺滄・蛻・],
-  "score": 0縲・00縺ｮ謨ｴ謨ｰ,
-  "scoreReason": "繧ｹ繧ｳ繧｢縺ｮ譬ｹ諡繧・譁・〒",
-  "reason": "縺薙・蛟呵｣懆・↓繧ｹ繧ｫ繧ｦ繝医ｒ騾√ｋ縺ｹ縺咲ｷ丞粋逧・↑譬ｹ諡・・00蟄礼ｨ句ｺｦ・・,
-  "strategyNote": "莉雁屓縺ｮ繧｢繝励Ο繝ｼ繝√〒謗｡逕ｨ諡・ｽ楢・′諢剰ｭ倥☆縺ｹ縺肴姶逡･逧・・繧､繝ｳ繝茨ｼ・縲・譁・ｼ・
+  "recommendedAppeals": ["appealPriorityの1〜3位のIDとotherRecommendedAppealsを合わせた配列"],
+  "score": 0〜100の整数,
+  "scoreReason": "スコアの根拠を1文で",
+  "reason": "この候補者にスカウトを送るべき総合的な根拠（200字程度）",
+  "strategyNote": "今回のアプローチで採用担当者が意識すべき戦略的ポイント（1〜2文）"
 }
 
-appealPriority/recommendedAppeals縺ｫ菴ｿ縺医ｋID縺ｯ・・BM蟆ら畑11霆ｸ・・
-ai_transformation・・I螟蛾擠・・ watsonx・・atsonx・・ global・医げ繝ｭ繝ｼ繝舌Ν迺ｰ蠅・ｼ・ scale・亥､ｧ隕乗ｨ｡譯井ｻｶ・・
-social・育､ｾ莨夊ｲ｢迪ｮ・・ training・郁ご謌仙宛蠎ｦ・・ workstyle・亥ロ縺肴婿・・ benefits・育ｦ丞茜蜴夂函・・
-brand・・BM繝悶Λ繝ｳ繝会ｼ・ autonomy・郁｣・㍼・・ tech_env・域橿陦鍋腸蠅・ｼ・
-荳願ｨ露BM蟆ら畑ID縺ｮ縺ｿ菴ｿ逕ｨ縲よ立ID・・ech/career/startup遲会ｼ峨・菴ｿ繧上↑縺・％縺ｨ縲Ａ;
+appealPriority/recommendedAppealsに使えるIDは（IBM専用11軸）:
+ai_transformation（AI変革）, watsonx（watsonx）, global（グローバル環境）, scale（大規模案件）,
+social（社会貢献）, training（育成制度）, workstyle（働き方）, benefits（福利厚生）,
+brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）
+
+上記IBM専用IDのみ使用。旧ID（tech/career/startup等）は使わないこと。`;
 
   const messages = [
-    { role: 'system', content: '縺ゅ↑縺溘・IBM譌･譛ｬ縺ｮ謗｡逕ｨ諡・ｽ薙ヨ繝・・繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ょ呵｣懆・・譫舌・蟆る摩螳ｶ縺ｨ縺励※縲！BM蟆ら畑縺ｮ11霆ｸ險ｴ豎ゅ・繧ｹ繧ｿ繧剃ｽｿ縺｣縺ｦJSON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
+    { role: 'system', content: 'あなたはIBM日本の採用担当トップリクルーターです。候補者分析の専門家として、IBM専用の11軸訴求マスタを使ってJSONのみ返してください。' },
     { role: 'user', content: prompt }
   ];
   const res = await fetch(getApiUrl(), {
@@ -2266,14 +2446,14 @@ brand・・BM繝悶Λ繝ｳ繝会ｼ・ autonomy・郁｣・㍼・・ tech_env�
   hideLoad(); renderAnalysis(); go(2);
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP5: 繧ｹ繧ｫ繧ｦ繝域枚逕滓・ API
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// STEP5: スカウト文生成 API
+// ══════════════════════════════════════════
 async function callMailAPI() {
   const c = S.candidate, j = S.job, a = S.analysis, sel = S.selectedAppeals;
   const typeCategory = a.candidateTypeCategory || a.candidateType || '';
   const pri = a.appealPriority || [];
-  const priText = pri.map(p => `${p.rank}菴・${p.appealName}・・{p.reason || ''}・荏).join('\n');
+  const priText = pri.map(p => `${p.rank}位:${p.appealName}（${p.reason || ''}）`).join('\n');
   const story = a.careerStory || {};
   const ohere = a.ohere || {};
   const strat = ohere.scoutStrategy || {};
@@ -2281,63 +2461,77 @@ async function callMailAPI() {
 
   const successExamples = j.successExamples || '';
 
-  // Phase3a: IBM遏･隴俶ｳｨ蜈･・亥呵｣懆・ち繧､繝・+ 險ｴ豎・D縺ｫ蝓ｺ縺･縺・※譛驕ｩ縺ｪ遏･隴倥ｒ驕ｸ謚橸ｼ・  const ibmKnowledge = selectIbmKnowledge(typeCategory, S.selectedAppealIds || []);
+  // Phase3a: IBM知識注入（候補者タイプ + 訴求IDに基づいて最適な知識を選択）
+  const ibmKnowledge = selectIbmKnowledge(typeCategory, S.selectedAppealIds || []);
 
-  // Phase3a: 菫ｮ豁｣繝ｭ繧ｰfew-shot豕ｨ蜈･・亥酔繧ｿ繧､繝励・驕主悉菫ｮ豁｣繝代ち繝ｼ繝ｳ繧貞盾閠・ｾ九→縺励※貂｡縺呻ｼ・  const fewShotExamples = buildFewShotFromEditLogs(typeCategory, sel);
+  // Phase3a: 修正ログfew-shot注入（同タイプの過去修正パターンを参考例として渡す）
+  const fewShotExamples = buildFewShotFromEditLogs(typeCategory, sel);
 
-  // IBM險ｴ豎ＪbmStrength繝偵Φ繝茨ｼ・hase2縺九ｉ邯咏ｶ夲ｼ・  const ibmStrengthHints = sel.map(name => {
+  // IBM訴求ibmStrengthヒント（Phase2から継続）
+  const ibmStrengthHints = sel.map(name => {
     if (typeof IBM_APPEALS !== 'undefined') {
       const ap = IBM_APPEALS.find(x => x.name === name);
-      return ap ? `縲・{ap.name}縲・{ap.ibmStrength}` : name;
+      return ap ? `【${ap.name}】${ap.ibmStrength}` : name;
     }
     return name;
   }).join('\n');
 
-  const prompt = `縺ゅ↑縺溘・譌･譛ｬ縺ｮIBM繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ゆｻ･荳九・諠・ｱ繧偵ｂ縺ｨ縺ｫ縲、I縺｣縺ｽ縺輔・縺ｪ縺・せ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ繧堤函謌舌＠縺ｦ縺上□縺輔＞縲・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・
-## 蛟呵｣懆・ュ蝣ｱ
-- 蛟呵｣懆・・繝ｭ繝輔ぅ繝ｼ繝ｫ: ${c.role}・・{c.company}・・- 繧ｹ繧ｭ繝ｫ: ${c.skills}
-- 霆｢閨ｷ蠢怜髄: ${c.reason || '荳肴・'}
-- 蛟呵｣懆・ち繧､繝・ ${typeCategory}
-- 霆｢閨ｷ貂ｩ蠎ｦ諢・ ${temp.label || '荳肴・'}・遺・${temp.stars || '?'}・・
-## 豎ゆｺｺ諠・ｱ
-- 繝昴ず繧ｷ繝ｧ繝ｳ: ${j.position}・・{j.company || 'IBM'}・・- 蜀・ｮｹ: ${j.description}
-- 豁楢ｿ手ｦ∽ｻｶ: ${j.preferred || '譛ｪ險伜・'}
-- 鬲・鴨: ${j.appeal}
-${successExamples ? `\n## 驕主悉縺ｮ謌仙粥繧ｹ繧ｫ繧ｦ繝井ｾ具ｼ亥酔豌ｴ貅悶・蛻・ｊ蜿｣繧剃ｽｿ縺・％縺ｨ・噂n${successExamples}` : ''}
+  const prompt = `あなたは日本のIBMトップリクルーターです。以下の情報をもとに、AIっぽさのないスカウトメールを生成してください。JSONのみ返してください。
 
-## AI蛻・梵邨先棡・医せ繧ｫ繧ｦ繝域枚縺ｫ蠢・★蜿肴丐縺吶ｋ縺薙→・・- 繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼ: ${story.narrative || a.motivationHypothesis || ''}
-- 險ｴ豎ょ━蜈磯・ｽ・
+## 候補者情報
+- 候補者プロフィール: ${c.role}（${c.company}）
+- スキル: ${c.skills}
+- 転職志向: ${c.reason || '不明'}
+- 候補者タイプ: ${typeCategory}
+- 転職温度感: ${temp.label || '不明'}（★${temp.stars || '?'}）
+
+## 求人情報
+- ポジション: ${j.position}（${j.company || 'IBM'}）
+- 内容: ${j.description}
+- 歓迎要件: ${j.preferred || '未記入'}
+- 魅力: ${j.appeal}
+${successExamples ? `\n## 過去の成功スカウト例（同水準の切り口を使うこと）\n${successExamples}` : ''}
+
+## AI分析結果（スカウト文に必ず反映すること）
+- キャリアストーリー: ${story.narrative || a.motivationHypothesis || ''}
+- 訴求優先順位:
 ${priText}
-- 驕ｸ謚槭＠縺溯ｨｴ豎ゅ・繧､繝ｳ繝・ ${sel.join('縲・)}
-- IBM險ｴ豎ゅ・蜈ｷ菴鍋噪蜀・ｮｹ・・enefit縺ｧ1縲・縺､閾ｪ辟ｶ縺ｫ險蜿奇ｼ・
+- 選択した訴求ポイント: ${sel.join('、')}
+- IBM訴求の具体的内容（benefitで1〜2つ自然に言及）:
 ${ibmStrengthHints}
-- 驕ｿ縺代ｋ縺ｹ縺崎ｨｴ豎・ ${a.avoidPoints || ''}
-- 繧ｹ繧ｫ繧ｦ繝域姶逡･:
-  竭蜈ｱ諢・ ${strat.step1_empathy || ''}
-  竭｡閭ｽ蜉帶価隱・ ${strat.step2_recognition || ''}
-  竭｢譛ｪ譚･謠千､ｺ: ${strat.step3_future || ''}
-  竭｣IBM險ｴ豎・ ${strat.step4_ibm || ''}
-  竭､髱｢隲・ｪ伜ｰ・ ${strat.step5_meeting || ''}
+- 避けるべき訴求: ${a.avoidPoints || ''}
+- スカウト戦略:
+  ①共感: ${strat.step1_empathy || ''}
+  ②能力承認: ${strat.step2_recognition || ''}
+  ③未来提示: ${strat.step3_future || ''}
+  ④IBM訴求: ${strat.step4_ibm || ''}
+  ⑤面談誘導: ${strat.step5_meeting || ''}
 
-## IBM螳溽ｸｾ繝翫Ξ繝・ず・域枚遶縺ｫ閾ｪ辟ｶ縺ｫ邨・∩霎ｼ繧縺薙→ 窶・繧ｳ繝斐・遖∵ｭ｢繝ｻ閾ｪ蛻・・險闡峨〒・・${ibmKnowledge}
-${fewShotExamples ? `\n## 驕主悉縺ｮ繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ菫ｮ豁｣繝代ち繝ｼ繝ｳ・亥盾閠・ｾ・窶・蜷後§譁ｹ蜷第ｧ縺ｧ譖ｸ縺上％縺ｨ・噂n${fewShotExamples}` : ''}
+## IBM実績ナレッジ（文章に自然に組み込むこと — コピペ禁止・自分の言葉で）
+${ibmKnowledge}
+${fewShotExamples ? `\n## 過去のリクルーター修正パターン（参考例 — 同じ方向性で書くこと）\n${fewShotExamples}` : ''}
 
-## 邨ｶ蟇ｾ縺ｫ螳医ｋ繝ｫ繝ｼ繝ｫ・磯＆蜿咲ｦ∵ｭ｢・・1. 縲檎ｪ∫┯縺ｮ縺秘｣邨｡螟ｱ遉ｼ縺励∪縺吶阪後・繝ｭ繝輔ぅ繝ｼ繝ｫ繧呈享隕九＠縺ｾ縺励◆縲阪瑚ｲｴ谿ｿ縲阪↑縺ｩ螳壼梛陦ｨ迴ｾ繧剃ｽｿ繧上↑縺・2. 蜀帝ｭ譁・・蠢・★蛟呵｣懆・・縲悟・菴鍋噪縺ｪ邨梧ｭｴ繝ｻ螳溽ｸｾ繝ｻ繧ｹ繧ｭ繝ｫ縲阪∈縺ｮ險蜿翫°繧牙ｧ九ａ繧・3. 莉ｶ蜷阪・蛟呵｣懆・崋譛峨・蜀・ｮｹ・郁・遞ｮ繝ｻ螳溽ｸｾ繝ｻ繧ｹ繧ｭ繝ｫ・峨ｒ蠢・★蜈･繧後ｋ
-4. 繝・Φ繝励Ξ逧・↑譁・ｫ縺ｫ縺励↑縺・ゅ％縺ｮ蛟呵｣懆・□縺代↓騾√ｋ繝｡繝ｼ繝ｫ縺ｨ縺励※譖ｸ縺・5. 隱ｭ繧薙□逶ｸ謇九′縲瑚・蛻・・縺薙→繧偵■繧・ｓ縺ｨ隕九※縺上ｌ縺ｦ縺・ｋ縲阪→諢溘§繧区枚菴薙↓縺吶ｋ
-6. 繧ｹ繝医・繝ｪ繝ｼ讒矩・亥・諢溪・閭ｽ蜉帶価隱坂・譛ｪ譚･竊棚BM竊帝擇隲・ｼ峨ｒ閾ｪ辟ｶ縺ｪ豬√ｌ縺ｧ邨・∩霎ｼ繧
-7. IBM縺ｮ蠑ｷ縺ｿ繧偵梧ｦょｿｵ縲阪〒縺ｯ縺ｪ縺上悟・菴鍋噪謨ｰ蛟､繝ｻ莠倶ｾ九阪〒隱槭ｋ・・BM遏･隴倥ｒ豢ｻ逕ｨ縺吶ｋ縺薙→・・
-## 霑斐☆JSON縺ｮ讒矩
+## 絶対に守るルール（違反禁止）
+1. 「突然のご連絡失礼します」「プロフィールを拝見しました」「貴殿」など定型表現を使わない
+2. 冒頭文は必ず候補者の「具体的な経歴・実績・スキル」への言及から始める
+3. 件名は候補者固有の内容（職種・実績・スキル）を必ず入れる
+4. テンプレ的な文章にしない。この候補者だけに送るメールとして書く
+5. 読んだ相手が「自分のことをちゃんと見てくれている」と感じる文体にする
+6. ストーリー構造（共感→能力承認→未来→IBM→面談）を自然な流れで組み込む
+7. IBMの強みを「概念」ではなく「具体的数値・事例」で語る（IBM知識を活用すること）
+
+## 返すJSONの構造
 {
-  "subject": "莉ｶ蜷搾ｼ・0蟄嶺ｻ･蜀・・蛟呵｣懆・崋譛峨・螳溽ｸｾ繧・ｼｷ縺ｿ縺ｫ險蜿奇ｼ・,
-  "intro": "蜀帝ｭ譁・ｼ・縲・譁・・蛟呵｣懆・崋譛峨・邨碁ｨ薙・螳溽ｸｾ縺九ｉ蟋九∪繧九・蜈ｱ諢滂ｼ玖・蜉帶価隱阪ヵ繧ｧ繝ｼ繧ｺ・・,
-  "why": "縺ｪ縺懷｣ｰ繧偵°縺代◆縺具ｼ・縲・譁・・蜈ｷ菴鍋噪縺ｪ邨梧ｭｴ縺ｸ縺ｮ險蜿翫・蛟呵｣懆・崋譛会ｼ・,
-  "match": "繝昴ず繧ｷ繝ｧ繝ｳ縺ｨ縺ｮ謗･轤ｹ・・縲・譁・・繧ｹ繧ｭ繝ｫ繝槭ャ繝√ｒ蜈ｷ菴鍋噪縺ｫ繝ｻ譛ｪ譚･謠千､ｺ繧貞性繧・・,
-  "benefit": "蛟呵｣懆・∈縺ｮ繝｡繝ｪ繝・ヨ・・縲・譁・・IBM險ｴ豎ゅｒIBM螳溽ｸｾ繝翫Ξ繝・ず繧剃ｽｿ縺｣縺ｦ蜈ｷ菴鍋噪縺ｫ隱槭ｋ・・,
-  "cta": "繧ｫ繧ｸ繝･繧｢繝ｫ髱｢隲・∈縺ｮ隱伜ｰ趣ｼ・譁・・繝励Ξ繝・す繝｣繝ｼ縺ｪ縺励・驕ｸ閠・↑縺励・繧ｫ繧ｸ繝･繧｢繝ｫ縺ｪ隱倥＞・・
+  "subject": "件名（40字以内・候補者固有の実績や強みに言及）",
+  "intro": "冒頭文（3〜4文・候補者固有の経験・実績から始まる・共感＋能力承認フェーズ）",
+  "why": "なぜ声をかけたか（2〜3文・具体的な経歴への言及・候補者固有）",
+  "match": "ポジションとの接点（2〜3文・スキルマッチを具体的に・未来提示を含む）",
+  "benefit": "候補者へのメリット（2〜3文・IBM訴求をIBM実績ナレッジを使って具体的に語る）",
+  "cta": "カジュアル面談への誘導（2文・プレッシャーなし・選考なしのカジュアルな誘い）"
 }`;
 
   const mailMessages = [
-    { role: 'system', content: '縺ゅ↑縺溘・譌･譛ｬ縺ｮIBM繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶・I縺｣縺ｽ縺輔ｒ謗帝勁縺励◆莠ｺ髢薙ｉ縺励＞繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ繧呈嶌縺阪∪縺吶・BM縺ｮ蜈ｷ菴鍋噪莠句ｮ溘・謨ｰ蛟､繧剃ｽｿ縺｣縺ｦ隱槭ｋ縺薙→縺悟ｾ玲э縺ｧ縺吶・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
+    { role: 'system', content: 'あなたは日本のIBMトップリクルーターです。AIっぽさを排除した人間らしいスカウトメールを書きます。IBMの具体的事実・数値を使って語ることが得意です。JSONのみ返してください。' },
     { role: 'user', content: prompt }
   ];
   const res = await fetch(getApiUrl(), {
@@ -2350,59 +2544,70 @@ ${fewShotExamples ? `\n## 驕主悉縺ｮ繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ菫
   hideLoad(); renderMail(); renderProcessLog(); go(5);
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP5: 繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ API・・BM蟆ら畑迚茨ｼ・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// STEP5: セルフレビュー API（IBM専用版）
+// ══════════════════════════════════════════
 async function callSelfReviewAPI() {
   const c = S.candidate, j = S.job, a = S.analysis, m = S.mail;
-  const fullMail = `莉ｶ蜷・ ${m.subject || ''}\n\n${m.intro || ''}\n\n${m.why || ''}\n\n${m.match || ''}\n\n${m.benefit || ''}\n\n${m.cta || ''}`;
+  const fullMail = `件名: ${m.subject || ''}\n\n${m.intro || ''}\n\n${m.why || ''}\n\n${m.match || ''}\n\n${m.benefit || ''}\n\n${m.cta || ''}`;
   const typeCategory = a.candidateTypeCategory || '';
   const temp = a.temperature || {};
 
-  const prompt = `縺ゅ↑縺溘・繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ縺ｮ謗｡轤ｹ蟆る摩AI縺ｧ縺吶ゆｻ･荳九・繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ繧・霆ｸ縺ｧ謗｡轤ｹ縺励゛SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・
-## 謗｡轤ｹ縺吶ｋ繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ
+  const prompt = `あなたはスカウトメールの採点専門AIです。以下のスカウトメールを6軸で採点し、JSONのみ返してください。
+
+## 採点するスカウトメール
 ${fullMail}
 
-## 蛟呵｣懆・・蛻・梵諠・ｱ
-- 蛟呵｣懆・ち繧､繝・ ${typeCategory}
-- 霆｢閨ｷ貂ｩ蠎ｦ諢・ ${temp.label || '荳肴・'}・遺・${temp.stars || '?'}・・- 霆｢閨ｷ逅・罰: ${c.reason || '荳肴・'}
-- 驕ｿ縺代ｋ縺ｹ縺崎ｨｴ豎・ ${a.avoidPoints || ''}
-- 驕ｸ謚槭＠縺溯ｨｴ豎・ ${(S.selectedAppeals || []).join('縲・)}
+## 候補者・分析情報
+- 候補者タイプ: ${typeCategory}
+- 転職温度感: ${temp.label || '不明'}（★${temp.stars || '?'}）
+- 転職理由: ${c.reason || '不明'}
+- 避けるべき訴求: ${a.avoidPoints || ''}
+- 選択した訴求: ${(S.selectedAppeals || []).join('、')}
 
-## 謗｡轤ｹ蝓ｺ貅厄ｼ・BM繧ｹ繧ｫ繧ｦ繝亥ｰら畑迚茨ｼ・
-謗｡轤ｹ縺ｯ莉･荳九・6霆ｸ縲ょ推霆ｸ0縲・00轤ｹ縺ｧ謗｡轤ｹ縺励∝宍譬ｼ縺ｫ隧穂ｾ｡縺励※縺上□縺輔＞縲・
-1. **繝・Φ繝励Ξ繝ｼ繝域─繧ｹ繧ｳ繧｢・・=螳悟・繝・Φ繝励Ξ縲・00=螳悟・蝗ｺ譛会ｼ・*
-   縲檎ｪ∫┯縺ｮ縺秘｣邨｡縲阪後・繝ｭ繝輔ぅ繝ｼ繝ｫ繧呈享隕九阪後＃豢ｻ霄阪阪↑縺ｩ縺ｮ螳壼梛陦ｨ迴ｾ縺後↑縺・°縲ょ呵｣懆・崋譛峨・蜀・ｮｹ縺九ｉ蟋九∪縺｣縺ｦ縺・ｋ縺九・
-2. **蛟呵｣懆・崋譛画ｧ繧ｹ繧ｳ繧｢・・=隱ｰ縺ｫ縺ｧ繧る√ｌ繧九・00=縺薙・莠ｺ縺縺代↓騾√ｌ繧具ｼ・*
-   蛟呵｣懆・・蜈ｷ菴鍋噪縺ｪ邨梧ｭｴ繝ｻ繧ｹ繧ｭ繝ｫ繝ｻ螳溽ｸｾ繝ｻ霆｢閨ｷ逅・罰縺ｸ縺ｮ險蜿翫′縺ゅｋ縺九・
-3. **IBM繧峨＠縺輔せ繧ｳ繧｢・・=IBM諢溘ぞ繝ｭ縲・00=IBM繧峨＠縺墓ｺ霈会ｼ・*
-   IBM縺ｮ蠑ｷ縺ｿ・医げ繝ｭ繝ｼ繝舌Ν繝ｻ繝・け繝弱Ο繧ｸ繝ｼ繝ｻ遉ｾ莨夊ｲ｢迪ｮ繝ｻAI繝ｻ隕乗ｨ｡繝ｻ閧ｲ謌舌・螳牙ｮ夲ｼ峨′閾ｪ辟ｶ縺ｫ邨・∩霎ｼ縺ｾ繧後※縺・ｋ縺九・BM縺ｧ縺ゅｋ蠢・┯諤ｧ縺御ｼ昴ｏ繧九°縲・
-4. **險ｴ豎ゅ・荳雋ｫ諤ｧ繧ｹ繧ｳ繧｢・・=繝舌Λ繝舌Λ縲・00=螳悟・荳雋ｫ・・*
-   驕ｸ謚槭＠縺溯ｨｴ豎ゅ・繧､繝ｳ繝医′繧ｹ繧ｫ繧ｦ繝域枚蜈ｨ菴薙ｒ騾壹§縺ｦ荳雋ｫ縺励※縺・ｋ縺九ら泝逶ｾ繧・ｸ崎・辟ｶ縺ｪ繧ｺ繝ｬ縺後↑縺・°縲・
-5. **霆｢閨ｷ蜍墓ｩ溘→縺ｮ謨ｴ蜷域ｧ繧ｹ繧ｳ繧｢・・=蜈ｨ縺丞粋縺｣縺ｦ縺・↑縺・・00=螳檎挑縺ｫ蜷医▲縺ｦ縺・ｋ・・*
-   蛟呵｣懆・・霆｢閨ｷ逅・罰繝ｻ蠢怜髄縺ｫ蟇ｾ縺励※繝｡繝ｼ繝ｫ縺ｮ蜀・ｮｹ縺梧紛蜷医＠縺ｦ縺・ｋ縺九る∩縺代ｋ縺ｹ縺崎ｨｴ豎ゅｒ菴ｿ縺｣縺ｦ縺・↑縺・°縲・
-6. **霑比ｿ｡邇・ｺ域ｸｬ・・縲・00%・・*
-   荳願ｨ・霆ｸ縺ｮ邱丞粋隧穂ｾ｡縺九ｉ縲√％縺ｮ繧ｹ繧ｫ繧ｦ繝医↓蟇ｾ縺励※蛟呵｣懆・′霑比ｿ｡縺吶ｋ遒ｺ邇・ｒ莠域ｸｬ縲・
-## 霑斐☆JSON縺ｮ讒矩
+## 採点基準（IBMスカウト専用版）
+
+採点は以下の6軸。各軸0〜100点で採点し、厳格に評価してください。
+
+1. **テンプレート感スコア（0=完全テンプレ、100=完全固有）**
+   「突然のご連絡」「プロフィールを拝見」「ご活躍」などの定型表現がないか。候補者固有の内容から始まっているか。
+
+2. **候補者固有性スコア（0=誰にでも送れる、100=この人だけに送れる）**
+   候補者の具体的な経歴・スキル・実績・転職理由への言及があるか。
+
+3. **IBMらしさスコア（0=IBM感ゼロ、100=IBMらしさ満載）**
+   IBMの強み（グローバル・テクノロジー・社会貢献・AI・規模・育成・安定）が自然に組み込まれているか。IBMである必然性が伝わるか。
+
+4. **訴求の一貫性スコア（0=バラバラ、100=完全一貫）**
+   選択した訴求ポイントがスカウト文全体を通じて一貫しているか。矛盾や不自然なズレがないか。
+
+5. **転職動機との整合性スコア（0=全く合っていない、100=完璧に合っている）**
+   候補者の転職理由・志向に対してメールの内容が整合しているか。避けるべき訴求を使っていないか。
+
+6. **返信率予測（0〜100%）**
+   上記5軸の総合評価から、このスカウトに対して候補者が返信する確率を予測。
+
+## 返すJSONの構造
 {
   "scores": {
-    "templateFreedom": 0縲・00縺ｮ謨ｴ謨ｰ,
-    "candidateSpecificity": 0縲・00縺ｮ謨ｴ謨ｰ,
-    "ibmness": 0縲・00縺ｮ謨ｴ謨ｰ,
-    "appealConsistency": 0縲・00縺ｮ謨ｴ謨ｰ,
-    "motivationAlignment": 0縲・00縺ｮ謨ｴ謨ｰ
+    "templateFreedom": 0〜100の整数,
+    "candidateSpecificity": 0〜100の整数,
+    "ibmness": 0〜100の整数,
+    "appealConsistency": 0〜100の整数,
+    "motivationAlignment": 0〜100の整数
   },
-  "replyRate": 0縲・00縺ｮ謨ｴ謨ｰ,
-  "overallComment": "邱丞粋隧穂ｾ｡繧ｳ繝｡繝ｳ繝茨ｼ・縲・譁・り憶縺・せ縺ｨ謾ｹ蝟・せ繧偵ヰ繝ｩ繝ｳ繧ｹ繧医￥・・,
+  "replyRate": 0〜100の整数,
+  "overallComment": "総合評価コメント（2〜3文。良い点と改善点をバランスよく）",
   "improvements": [
-    { "axis": "繝・Φ繝励Ξ繝ｼ繝域─", "issue": "蜈ｷ菴鍋噪縺ｪ蝠城｡檎せ・・譁・ｼ・, "fix": "蜈ｷ菴鍋噪縺ｪ謾ｹ蝟・｡茨ｼ・縲・譁・ｼ・ },
-    { "axis": "蛟呵｣懆・崋譛画ｧ", "issue": "蜈ｷ菴鍋噪縺ｪ蝠城｡檎せ・・譁・ｼ・, "fix": "蜈ｷ菴鍋噪縺ｪ謾ｹ蝟・｡茨ｼ・縲・譁・ｼ・ }
+    { "axis": "テンプレート感", "issue": "具体的な問題点（1文）", "fix": "具体的な改善案（1〜2文）" },
+    { "axis": "候補者固有性", "issue": "具体的な問題点（1文）", "fix": "具体的な改善案（1〜2文）" }
   ]
 }
 
-improvements縺ｯ譛繧よ隼蝟・☆縺ｹ縺・縲・轤ｹ縺ｮ縺ｿ縲ょ撫鬘後′縺ｪ縺・ｻｸ縺ｯ蜷ｫ繧√↑縺・Ａ;
+improvementsは最も改善すべき2〜3点のみ。問題がない軸は含めない。`;
 
   const srMessages = [
-    { role: 'system', content: '縺ゅ↑縺溘・IBM繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ謗｡轤ｹ縺ｮ蟆る摩螳ｶ縺ｧ縺吶ょ宍譬ｼ縺ｫ謗｡轤ｹ縺励∪縺吶・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
+    { role: 'system', content: 'あなたはIBMスカウトメール採点の専門家です。厳格に採点します。JSONのみ返してください。' },
     { role: 'user', content: prompt }
   ];
   const res = await fetch(getApiUrl(), {
@@ -2414,184 +2619,191 @@ improvements縺ｯ譛繧よ隼蝟・☆縺ｹ縺・縲・轤ｹ縺ｮ縺ｿ縲
   renderSelfReview();
 }
 
-// 笏笏 繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ蛟句挨蜀咲函謌・笏笏
+// ── セクション個別再生成 ──
 async function regenSection(sec) {
   const c = S.candidate, j = S.job, a = S.analysis;
   const typeCategory = a.candidateTypeCategory || a.candidateType || '';
   const desc = {
-    subject: '莉ｶ蜷搾ｼ・0蟄嶺ｻ･蜀・・蛟呵｣懆・崋譛峨・邨碁ｨ薙↓險蜿奇ｼ・,
-    intro:   '蜀帝ｭ譁・ｼ・縲・譁・・蛟呵｣懆・崋譛峨・邨碁ｨ薙・謌先棡縺ｸ縺ｮ險蜿翫°繧牙ｧ九ａ繧具ｼ・,
-    why:     '縺ｪ縺懊％縺ｮ蛟呵｣懆・↓螢ｰ繧偵°縺代◆縺具ｼ・縲・譁・・蜈ｷ菴鍋噪縺ｪ邨梧ｭｴ縺ｸ縺ｮ險蜿奇ｼ・,
-    match:   '繝昴ず繧ｷ繝ｧ繝ｳ縺ｨ縺ｮ謗･轤ｹ・・縲・譁・・蜈ｷ菴鍋噪縺ｪ繧ｹ繧ｭ繝ｫ繝槭ャ繝・ｼ・,
-    benefit: '蛟呵｣懆・↓縺ｨ縺｣縺ｦ縺ｮ繝｡繝ｪ繝・ヨ・・縲・譁・・險ｴ豎ゅ・繧､繝ｳ繝・' + S.selectedAppeals.join('繝ｻ') + '繧貞渚譏・・,
-    cta:     '繧ｫ繧ｸ繝･繧｢繝ｫ髱｢隲・∈縺ｮ隱伜ｰ趣ｼ・譁・・繝励Ξ繝・す繝｣繝ｼ縺ｪ縺暦ｼ・
+    subject: '件名（40字以内・候補者固有の経験に言及）',
+    intro:   '冒頭文（3〜4文・候補者固有の経験・成果への言及から始める）',
+    why:     'なぜこの候補者に声をかけたか（2〜3文・具体的な経歴への言及）',
+    match:   'ポジションとの接点（2〜3文・具体的なスキルマッチ）',
+    benefit: '候補者にとってのメリット（2〜3文・訴求ポイント:' + S.selectedAppeals.join('・') + 'を反映）',
+    cta:     'カジュアル面談への誘導（2文・プレッシャーなし）'
   };
-  const res = await fetch(API_URL, {
+  const regenMessages = [
+    { role: 'system', content: '優秀な採用担当者としてJSONのみ返してください。' },
+    { role: 'user', content: `候補者:${c.role}(${c.company})、スキル:${c.skills}、志向:${c.reason || '不明'}\n求人:${j.position}(${j.company || ''})、魅力:${j.appeal}\nタイプ:${typeCategory}、訴求優先順位:${(a.appealPriority || []).map(p => p.rank + '位:' + p.appealName).join('・')}、選択訴求:${S.selectedAppeals.join('・')}\n「${desc[sec]}」を1つ生成。JSON:{"${sec}":"テキスト"}` }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({
-      model: md(),
-      messages: [
-        { role: 'system', content: '蜆ｪ遘縺ｪ謗｡逕ｨ諡・ｽ楢・→縺励※JSON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
-        { role: 'user', content: `蛟呵｣懆・${c.role}(${c.company})縲√せ繧ｭ繝ｫ:${c.skills}縲∝ｿ怜髄:${c.reason || '荳肴・'}\n豎ゆｺｺ:${j.position}(${j.company || ''})縲・ｭ・鴨:${j.appeal}\n繧ｿ繧､繝・${typeCategory}縲∬ｨｴ豎ょ━蜈磯・ｽ・${(a.appealPriority || []).map(p => p.rank + '菴・' + p.appealName).join('繝ｻ')}縲・∈謚櫁ｨｴ豎・${S.selectedAppeals.join('繝ｻ')}\n縲・{desc[sec]}縲阪ｒ1縺､逕滓・縲・SON:{"${sec}":"繝・く繧ｹ繝・}` }
-      ],
-      temperature: 0.9, response_format: { type: 'json_object' }
-    })
+    body: JSON.stringify(buildRequestBody(regenMessages, 0.9))
   });
   if (!res.ok) throw new Error('API error');
-  const parsed = JSON.parse((await res.json()).choices[0].message.content);
+  const parsed = parseApiResponse(await res.json());
   S.mail[sec] = parsed[sec];
   const ta = $('ta-' + sec); ta.value = parsed[sec]; autoResize(ta); updateCC('ta-' + sec, 'cc-' + sec);
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// 繝舌ャ繝∝・逅・ 1蛟呵｣懆・ｒ1API繧ｳ繝ｼ繝ｫ縺ｧ蜃ｦ逅・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// バッチ処理: 1候補者を1APIコールで処理
+// ══════════════════════════════════════════
 async function runBatchSingle(c, j) {
-  const prompt = `縺ゅ↑縺溘・譌･譛ｬ縺ｮ繝医ャ繝励・繝・ラ繝上Φ繧ｿ繝ｼ縺ｧ縺吶ゆｻ･荳九・蛟呵｣懆・ュ蝣ｱ縺ｨ豎ゆｺｺ諠・ｱ繧貞・譫舌＠縲√せ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ縺ｾ縺ｧ逕滓・縺励※縺上□縺輔＞縲・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・
-## 蛟呵｣懆・- 莨夂､ｾ: ${c.company} / 閨ｷ遞ｮ: ${c.role}
-- 邨碁ｨ・ ${c.experience}
-- 繧ｹ繧ｭ繝ｫ: ${c.skills}
-- 霆｢閨ｷ蠢怜髄: ${c.reason || '譛ｪ險伜・'}
+  const prompt = `あなたは日本のトップヘッドハンターです。以下の候補者情報と求人情報を分析し、スカウトメールまで生成してください。JSONのみ返してください。
 
-## 豎ゆｺｺ
-- 繝昴ず繧ｷ繝ｧ繝ｳ: ${j.position}${j.company ? ' / ' + j.company : ''}
-- 蜀・ｮｹ: ${j.description}
-- 豎ゅａ繧狗ｵ碁ｨ・ ${j.requirements}
-- 鬲・鴨: ${j.appeal}
+## 候補者
+- 会社: ${c.company} / 職種: ${c.role}
+- 経験: ${c.experience}
+- スキル: ${c.skills}
+- 転職志向: ${c.reason || '未記入'}
 
-## 霑斐☆JSON縺ｮ讒矩
+## 求人
+- ポジション: ${j.position}${j.company ? ' / ' + j.company : ''}
+- 内容: ${j.description}
+- 求める経験: ${j.requirements}
+- 魅力: ${j.appeal}
+
+## 返すJSONの構造
 {
-  "candidateTypeCategory": "謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛 / PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛 / 繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・/ 蟶ょｴ萓｡蛟､蜷台ｸ雁梛 / 螳牙ｮ壼ｿ怜髄蝙・縺ｮ縺・★繧後°",
-  "score": 0縲・00縺ｮ謨ｴ謨ｰ,
-  "topAppeal": "譛繧よ怏蜉ｹ縺ｪ險ｴ豎ゅ・繧､繝ｳ繝亥錐・・縺､・・,
-  "topAppealReason": "縺昴・逅・罰・・縲・譁・ｼ・,
-  "avoidPoint": "驕ｿ縺代ｋ縺ｹ縺崎ｨｴ豎ゑｼ・轤ｹ・・,
-  "subject": "莉ｶ蜷搾ｼ・0蟄嶺ｻ･蜀・・蛟呵｣懆・崋譛会ｼ・,
-  "mailBody": "繧ｹ繧ｫ繧ｦ繝域悽譁・ｼ亥・鬆ｭ譁・廚TA縲∵隼陦後〒蛹ｺ蛻・▲縺・縺､縺ｮ譁・ｫ縲・50縲・50蟄暦ｼ・
+  "candidateTypeCategory": "技術スペシャリスト型 / PM・マネジメント型 / キャリアアップ型 / 市場価値向上型 / 安定志向型 のいずれか",
+  "score": 0〜100の整数,
+  "topAppeal": "最も有効な訴求ポイント名（1つ）",
+  "topAppealReason": "その理由（1〜2文）",
+  "avoidPoint": "避けるべき訴求（1点）",
+  "subject": "件名（40字以内・候補者固有）",
+  "mailBody": "スカウト本文（冒頭文〜CTA、改行で区切った1つの文章、250〜350字）"
 }`;
 
   if (!hasApiKey()) return batchDemoResult(c, j);
 
-  const res = await fetch(API_URL, {
+  const batchMessages = [
+    { role: 'system', content: '優秀なヘッドハンターとしてJSONのみ返してください。' },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({ model: md(), messages: [{ role: 'system', content: '蜆ｪ遘縺ｪ繝倥ャ繝峨ワ繝ｳ繧ｿ繝ｼ縺ｨ縺励※JSON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ }, { role: 'user', content: prompt }], temperature: 0.7, response_format: { type: 'json_object' } })
+    body: JSON.stringify(buildRequestBody(batchMessages, 0.7))
   });
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
-  const data = JSON.parse((await res.json()).choices[0].message.content);
+  const data = parseApiResponse(await res.json());
   return { cand: c, ...data };
 }
 
-// app.js
+</script>
+<script>
 /**
- * app.js 窶・UI蛻ｶ蠕｡繝ｻ繧､繝吶Φ繝亥・逅・・繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ
+ * app.js — UI制御・イベント処理・レンダリング
  *
- * 蟆・擂逧・↑諡｡蠑ｵ繝昴う繝ｳ繝・
- *   - 繝ｦ繝ｼ繧ｶ繝ｼ隱崎ｨｼ: 逕ｻ髱｢陦ｨ遉ｺ蜑阪↓隱崎ｨｼ繝√ぉ繝・け繧定ｿｽ蜉
- *   - 繧ｹ繧ｫ繧ｦ繝亥ｱ･豁ｴ: saveScoutHistory() 繧帝∽ｿ｡螳御ｺ・凾縺ｫ蜻ｼ縺ｶ
- *   - 霑比ｿ｡邨先棡險倬鹸: S.learningData.scoutAction.result 繧呈峩譁ｰ縺吶ｋUI繧定ｿｽ蜉
+ * 将来的な拡張ポイント:
+ *   - ユーザー認証: 画面表示前に認証チェックを追加
+ *   - スカウト履歴: saveScoutHistory() を送信完了時に呼ぶ
+ *   - 返信結果記録: S.learningData.scoutAction.result を更新するUIを追加
  */
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// Phase2: IBM蟆ら畑險ｴ豎ゅΛ繧､繝悶Λ繝ｪ
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// Phase2: IBM専用訴求ライブラリ
+// ══════════════════════════════════════════
 
 /**
- * IBM險ｴ豎ゅ・繧ｹ繧ｿ・・1霆ｸ・・ * color: 繧ｫ繝ｼ繝峨・繧｢繧ｯ繧ｻ繝ｳ繝医き繝ｩ繝ｼ  ibmStrength: IBM縺悟ｮ滄圀縺ｫ蠑ｷ縺・せ・亥・菴楢ｨｴ豎よ枚縺ｮ繝偵Φ繝茨ｼ・ */
+ * IBM訴求マスタ（11軸）
+ * color: カードのアクセントカラー  ibmStrength: IBMが実際に強い点（具体訴求文のヒント）
+ */
 const IBM_APPEALS = [
   {
-    id: 'ai_transformation', name: 'AI Transformation', icon: '笨ｦ',
+    id: 'ai_transformation', name: 'AI Transformation', icon: '✦',
     color: '#6d28d9', colorL: '#f5f3ff',
-    desc: 'IBM縺ｮAI螟蛾擠繝励Ο繧ｸ繧ｧ繧ｯ繝医・watsonx豢ｻ逕ｨ讖滉ｼ・,
-    ibmStrength: 'IBM縺ｯwatsonx.ai繧剃ｸｭ蠢・↓驥題檮繝ｻ陬ｽ騾繝ｻ蛹ｻ逋ゅ↑縺ｩ蜷・･ｭ逡後・AI螟蛾擠繧剃ｸｻ蟆弱ょ呵｣懆・′AI繧偵御ｽ懊ｋ蛛ｴ縲阪〒縺ｯ縺ｪ縺上檎､ｾ莨壹↓螳溯｣・☆繧句・縲阪↓遶九※繧九・,
-    effectiveFor: ['謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛', 'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛', '蟶ょｴ萓｡蛟､蜷台ｸ雁梛']
+    desc: 'IBMのAI変革プロジェクト・watsonx活用機会',
+    ibmStrength: 'IBMはwatsonx.aiを中心に金融・製造・医療など各業界のAI変革を主導。候補者がAIを「作る側」ではなく「社会に実装する側」に立てる。',
+    effectiveFor: ['技術スペシャリスト型', 'PM・マネジメント型', '市場価値向上型']
   },
   {
-    id: 'watsonx', name: 'watsonx', icon: '溌',
+    id: 'watsonx', name: 'watsonx', icon: '🔬',
     color: '#0891b2', colorL: '#ecfeff',
-    desc: 'IBM縺ｮ逕滓・AI蝓ｺ逶､watsonx縺ｸ縺ｮ豺ｱ髢｢荳・,
-    ibmStrength: 'watsonx縺ｯ繧ｪ繝ｼ繝励Φ繧ｽ繝ｼ繧ｹLLM繧偵お繝ｳ繧ｿ繝ｼ繝励Λ繧､繧ｺ縺ｧ菴ｿ縺医ｋ蜚ｯ荳縺ｮ蝓ｺ逶､縲・PT縺ｨ縺ｯ逡ｰ縺ｪ繧翫瑚・遉ｾ繝・・繧ｿ縺ｧ蜍輔￥縲喉I繧呈ｧ狗ｯ峨〒縺阪ｋ縲・,
-    effectiveFor: ['謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛', '蟶ょｴ萓｡蛟､蜷台ｸ雁梛']
+    desc: 'IBMの生成AI基盤watsonxへの深関与',
+    ibmStrength: 'watsonxはオープンソースLLMをエンタープライズで使える唯一の基盤。GPTとは異なり「自社データで動く」AIを構築できる。',
+    effectiveFor: ['技術スペシャリスト型', '市場価値向上型']
   },
   {
-    id: 'global', name: '繧ｰ繝ｭ繝ｼ繝舌Ν迺ｰ蠅・, icon: '件',
+    id: 'global', name: 'グローバル環境', icon: '🌏',
     color: '#2563eb', colorL: '#eff6ff',
-    desc: '170繧ｫ蝗ｽ繝ｻ螟壼嵜邀阪メ繝ｼ繝縺ｨ縺ｮ蜊疲･ｭ讖滉ｼ・,
-    ibmStrength: 'IBM縺ｯ170繧ｫ蝗ｽ縺ｫ諡轤ｹ繧呈戟縺｡縲∵律譛ｬ縺ｮ繝励Ο繧ｸ繧ｧ繧ｯ繝医〒繧ょｸｸ縺ｫ豬ｷ螟悶メ繝ｼ繝縺ｨ蜊泌ロ縲り恭隱槭′螳溷漁繝ｬ繝吶Ν縺ｧ菴ｿ縺医∝､冶ｳ・ｳｻ縺ｮ荳ｭ縺ｧ繧ょ悸蛟堤噪縺ｪ繧ｰ繝ｭ繝ｼ繝舌Ν隕乗ｨ｡縲・,
-    effectiveFor: ['繧ｰ繝ｭ繝ｼ繝舌Ν蠢怜髄蝙・, '蟶ょｴ萓｡蛟､蜷台ｸ雁梛', '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛']
+    desc: '170カ国・多国籍チームとの協業機会',
+    ibmStrength: 'IBMは170カ国に拠点を持ち、日本のプロジェクトでも常に海外チームと協働。英語が実務レベルで使え、外資系の中でも圧倒的なグローバル規模。',
+    effectiveFor: ['グローバル志向型', '市場価値向上型', '技術スペシャリスト型']
   },
   {
-    id: 'scale', name: '螟ｧ隕乗ｨ｡譯井ｻｶ', icon: '女',
+    id: 'scale', name: '大規模案件', icon: '🏗',
     color: '#059669', colorL: '#ecfdf5',
-    desc: '蝗ｽ螳ｶ繝ｻ讌ｭ逡後う繝ｳ繝輔Λ隕乗ｨ｡縺ｮ繝励Ο繧ｸ繧ｧ繧ｯ繝・,
-    ibmStrength: '驫陦後・螳伜・蠎√・陬ｽ騾讌ｭ縺ｮ蝓ｺ蟷ｹ繧ｷ繧ｹ繝・Β縺九ｉ蛹ｻ逋・X縺ｾ縺ｧ縲∝倶ｺｺ縺ｧ縺ｯ菴馴ｨ薙〒縺阪↑縺・ｶ・､ｧ隕乗ｨ｡譯井ｻｶ縺ｫ謳ｺ繧上ｌ繧九ゅせ繧ｿ繝ｼ繝医い繝・・縺ｧ縺ｯ邨ｶ蟇ｾ縺ｫ遨阪ａ縺ｪ縺・ｵ碁ｨ薙せ繧ｱ繝ｼ繝ｫ縲・,
-    effectiveFor: ['PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛', '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・, '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛']
+    desc: '国家・業界インフラ規模のプロジェクト',
+    ibmStrength: '銀行・官公庁・製造業の基幹システムから医療DXまで、個人では体験できない超大規模案件に携われる。スタートアップでは絶対に積めない経験スケール。',
+    effectiveFor: ['PM・マネジメント型', 'キャリアアップ型', '技術スペシャリスト型']
   },
   {
-    id: 'social', name: '遉ｾ莨夊ｲ｢迪ｮ', icon: '験',
+    id: 'social', name: '社会貢献', icon: '🌱',
     color: '#16a34a', colorL: '#f0fdf4',
-    desc: 'IBM縺ｮ遉ｾ莨夊ｪｲ鬘瑚ｧ｣豎ｺ繝ｻESG繝励Ο繧ｸ繧ｧ繧ｯ繝・,
-    ibmStrength: '蛹ｻ逋ゅ・謨呵ご繝ｻ豌怜吝､牙虚繝ｻ陦梧帆DX縺ｪ縺ｩ遉ｾ莨壹う繝ｳ繝輔Λ縺ｸ縺ｮ雋｢迪ｮ讖滉ｼ壹ゅ檎ｨｼ縺植I縲阪〒縺ｯ縺ｪ縺上檎､ｾ莨壹ｒ螟峨∴繧帰I縲阪→縺・≧繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼ縺御ｽ懊ｌ繧九・,
-    effectiveFor: ['螳牙ｮ壼ｿ怜髄蝙・, '遉ｾ莨夊ｲ｢迪ｮ蠢怜髄蝙・, 'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛']
+    desc: 'IBMの社会課題解決・ESGプロジェクト',
+    ibmStrength: '医療・教育・気候変動・行政DXなど社会インフラへの貢献機会。「稼ぐAI」ではなく「社会を変えるAI」というキャリアストーリーが作れる。',
+    effectiveFor: ['安定志向型', '社会貢献志向型', 'PM・マネジメント型']
   },
   {
-    id: 'training', name: '閧ｲ謌仙宛蠎ｦ', icon: '答',
+    id: 'training', name: '育成制度', icon: '📚',
     color: '#d97706', colorL: '#fffbeb',
-    desc: 'IBM蜀・Κ隱榊ｮ壹・荳也阜豌ｴ貅悶・閧ｲ謌舌・繝ｭ繧ｰ繝ｩ繝',
-    ibmStrength: 'IBM縺ｮBadge/隱榊ｮ壹・繝ｭ繧ｰ繝ｩ繝繝ｻThink Academy縺ｯ讌ｭ逡梧ｨ呎ｺ悶ゅせ繧ｭ繝ｫ縺後栗BM繝悶Λ繝ｳ繝我ｻ倥″縲阪〒蟶ょｴ萓｡蛟､縺ｨ縺励※蜿ｯ隕門喧縺輔ｌ繧九ら､ｾ蜀・焚蜍輔・繝ｭ繝ｼ繝・・繧ｷ繝ｧ繝ｳ繧りｱ雁ｯ後・,
-    effectiveFor: ['繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・, '蟶ょｴ萓｡蛟､蜷台ｸ雁梛', '螳牙ｮ壼ｿ怜髄蝙・]
+    desc: 'IBM内部認定・世界水準の育成プログラム',
+    ibmStrength: 'IBMのBadge/認定プログラム・Think Academyは業界標準。スキルが「IBMブランド付き」で市場価値として可視化される。社内異動・ローテーションも豊富。',
+    effectiveFor: ['キャリアアップ型', '市場価値向上型', '安定志向型']
   },
   {
-    id: 'workstyle', name: '蜒阪″譁ｹ', icon: '匠',
+    id: 'workstyle', name: '働き方', icon: '🏠',
     color: '#7c3aed', colorL: '#f5f3ff',
-    desc: '繝輔Ξ繝・け繧ｹ繝ｻ繝ｪ繝｢繝ｼ繝医・繝上う繝悶Μ繝・ラ繝ｯ繝ｼ繧ｯ',
-    ibmStrength: 'IBM Japan縺ｯ繝輔Ξ繝・け繧ｹ蜍､蜍吶・繝ｪ繝｢繝ｼ繝医Ρ繝ｼ繧ｯ縺悟ｮ夂捩縲りご蜈舌・蜑ｯ讌ｭ繝ｻ蝨ｰ譁ｹ蝨ｨ菴上ｂ蟇ｾ蠢懊ょｹｴ髢薙ｒ騾壹§縺滓沐霆溘↑蜒阪″譁ｹ縺ｯ螟冶ｳ・ｳｻ縺ｮ荳ｭ縺ｧ繧ょ・螳溷ｺｦ縺碁ｫ倥＞縲・,
-    effectiveFor: ['螳牙ｮ壼ｿ怜髄蝙・, '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・]
+    desc: 'フレックス・リモート・ハイブリッドワーク',
+    ibmStrength: 'IBM Japanはフレックス勤務・リモートワークが定着。育児・副業・地方在住も対応。年間を通じた柔軟な働き方は外資系の中でも充実度が高い。',
+    effectiveFor: ['安定志向型', 'キャリアアップ型']
   },
   {
-    id: 'benefits', name: '遖丞茜蜴夂函', icon: '氏',
+    id: 'benefits', name: '福利厚生', icon: '🎁',
     color: '#be185d', colorL: '#fdf2f8',
-    desc: '螟冶ｳ・ｳｻ豌ｴ貅悶・蝣ｱ驟ｬ繝ｻ繝吶ロ繝輔ぅ繝・ヨ菴鍋ｳｻ',
-    ibmStrength: '螟冶ｳ・ｳｻ讓呎ｺ悶・邨ｦ荳弱Ξ繝ｳ繧ｸ繝ｻ譬ｪ蠑丞ｱ驟ｬ繝ｻ遒ｺ螳壽侠蜃ｺ蟷ｴ驥代・隱槫ｭｦ謾ｯ謠ｴ縲ょ､ｧ謇区律邉ｻ縺ｨ縺ｮ豈碑ｼ・〒縲碁乗・諤ｧ縺ｮ鬮倥＞隧穂ｾ｡縺ｨ蝣ｱ驟ｬ縲阪′險ｴ豎ゅ・繧､繝ｳ繝医・,
-    effectiveFor: ['螳牙ｮ壼ｿ怜髄蝙・, '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・]
+    desc: '外資系水準の報酬・ベネフィット体系',
+    ibmStrength: '外資系標準の給与レンジ・株式報酬・確定拠出年金・語学支援。大手日系との比較で「透明性の高い評価と報酬」が訴求ポイント。',
+    effectiveFor: ['安定志向型', 'キャリアアップ型']
   },
   {
-    id: 'brand', name: 'IBM繝悶Λ繝ｳ繝・, icon: '塙',
+    id: 'brand', name: 'IBMブランド', icon: '🔷',
     color: '#1d4ed8', colorL: '#dbeafe',
-    desc: '112蟷ｴ縺ｮ螳溽ｸｾ繝ｻ荳也阜逧・ｿ｡鬆ｼ繝悶Λ繝ｳ繝・,
-    ibmStrength: '縲栗BM縺ｫ縺・◆縲阪→縺・≧邨梧ｭｴ縺ｮ蟶ょｴ萓｡蛟､縺ｯ蛻･譬ｼ縲ら音縺ｫ繧ｨ繝ｳ繧ｿ繝ｼ繝励Λ繧､繧ｺ鬆伜沺縺ｧ縺ｯ菫｡鬆ｼ縺ｮ險ｼ縲りｻ｢閨ｷ蠕後ｂ縲栗BM繝舌ャ繧ｯ繧ｰ繝ｩ繧ｦ繝ｳ繝峨阪→縺励※繧ｭ繝｣繝ｪ繧｢縺ｫ讖溯・縺礼ｶ壹￠繧九・,
-    effectiveFor: ['蟶ょｴ萓｡蛟､蜷台ｸ雁梛', '螳牙ｮ壼ｿ怜髄蝙・, '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・]
+    desc: '112年の実績・世界的信頼ブランド',
+    ibmStrength: '「IBMにいた」という経歴の市場価値は別格。特にエンタープライズ領域では信頼の証。転職後も「IBMバックグラウンド」としてキャリアに機能し続ける。',
+    effectiveFor: ['市場価値向上型', '安定志向型', 'キャリアアップ型']
   },
   {
-    id: 'autonomy', name: '陬・㍼', icon: '識',
+    id: 'autonomy', name: '裁量', icon: '🎯',
     color: '#dc2626', colorL: '#fef2f2',
-    desc: '謚陦馴∈螳壹・險ｭ險医・諢乗晄ｱｺ螳壽ｨｩ',
-    ibmStrength: 'IBM縺ｮ繧ｳ繝ｳ繧ｵ繝ｫ繝ｻ繧ｨ繝ｳ繧ｸ繝九い縺ｯ鬘ｧ螳｢縺ｮ謚陦捺姶逡･繧堤ｫ区｡医☆繧九・繧ｸ繧ｷ繝ｧ繝ｳ縺悟､壹￥縲∫､ｾ蜀・価隱阪ヵ繝ｭ繝ｼ縺梧紛蛯吶＆繧後◆荳翫〒縺ｮ螟ｧ縺阪↑陬・㍼縺御ｸ弱∴繧峨ｌ繧九・,
-    effectiveFor: ['謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛', 'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛', '蟶ょｴ萓｡蛟､蜷台ｸ雁梛']
+    desc: '技術選定・設計の意思決定権',
+    ibmStrength: 'IBMのコンサル・エンジニアは顧客の技術戦略を立案するポジションが多く、社内承認フローが整備された上での大きな裁量が与えられる。',
+    effectiveFor: ['技術スペシャリスト型', 'PM・マネジメント型', '市場価値向上型']
   },
   {
-    id: 'tech_env', name: '謚陦鍋腸蠅・, icon: '笞呻ｸ・,
+    id: 'tech_env', name: '技術環境', icon: '⚙️',
     color: '#0f766e', colorL: '#f0fdfa',
-    desc: 'OSS繝ｻ繧ｨ繝・ず繝ｻ繧ｯ繝ｩ繧ｦ繝峨↑縺ｩ譛蜈育ｫｯ謚陦薙せ繧ｿ繝・け',
-    ibmStrength: 'RedHat/OpenShift繝ｻKubernetes繝ｻTerraform繝ｻInstana繝ｻQiskit縺ｪ縺ｩ讌ｭ逡梧ｨ呎ｺ飽SS縺ｮ荳ｭ蠢・↓縺・ｋ縲よ橿陦薙せ繧ｿ繝・け閾ｪ菴薙′蟶ょｴ萓｡蛟､縺ｫ逶ｴ邨舌☆繧狗腸蠅・・,
-    effectiveFor: ['謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛', '蟶ょｴ萓｡蛟､蜷台ｸ雁梛']
+    desc: 'OSS・エッジ・クラウドなど最先端技術スタック',
+    ibmStrength: 'RedHat/OpenShift・Kubernetes・Terraform・Instana・Qiskitなど業界標準OSSの中心にいる。技術スタック自体が市場価値に直結する環境。',
+    effectiveFor: ['技術スペシャリスト型', '市場価値向上型']
   },
 ];
 
 /**
- * 蛟呵｣懆・ち繧､繝・ﾃ・IBM險ｴ豎・逶ｸ諤ｧ繝槭ヨ繝ｪ繧ｯ繧ｹ
- * rank: 1=蠢・・ 2=譛牙柑, 3=陬懷勧
+ * 候補者タイプ × IBM訴求 相性マトリクス
+ * rank: 1=必須, 2=有効, 3=補助
  */
 const IBM_MATRIX = {
-  '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛':  ['ai_transformation','watsonx','tech_env','scale','autonomy','global'],
-  'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛':    ['scale','ai_transformation','autonomy','social','global','brand'],
-  '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・:       ['training','career_up','brand','scale','workstyle','benefits'],
-  '蟶ょｴ萓｡蛟､蜷台ｸ雁梛':         ['ai_transformation','watsonx','brand','tech_env','global','training'],
-  '螳牙ｮ壼ｿ怜髄蝙・:             ['brand','benefits','workstyle','social','training','stability'],
+  '技術スペシャリスト型':  ['ai_transformation','watsonx','tech_env','scale','autonomy','global'],
+  'PM・マネジメント型':    ['scale','ai_transformation','autonomy','social','global','brand'],
+  'キャリアアップ型':       ['training','career_up','brand','scale','workstyle','benefits'],
+  '市場価値向上型':         ['ai_transformation','watsonx','brand','tech_env','global','training'],
+  '安定志向型':             ['brand','benefits','workstyle','social','training','stability'],
 };
 
-// 蠕梧婿莠呈鋤縺ｮ縺溘ａ譌ｧID繝槭ャ繝斐Φ繧ｰ繧ゆｿ晄戟
+// 後方互換のため旧IDマッピングも保持
 const ALL_APPEALS = IBM_APPEALS.map(a => ({ id: a.id, name: a.name, desc: a.desc }));
 
-/** 蛟呵｣懆・ち繧､繝励°繧画耳螂ｨIBM險ｴ豎・D繝ｪ繧ｹ繝医ｒ霑斐☆・磯・ｺ丈ｻ倥″・・*/
+/** 候補者タイプから推奨IBM訴求IDリストを返す（順序付き） */
 function getIbmAppealsForType(typeCategory) {
   return IBM_MATRIX[typeCategory] || ['ai_transformation','brand','scale','global','tech_env','training'];
 }
@@ -2599,7 +2811,7 @@ function getIbmAppealsForType(typeCategory) {
 const $ = id => document.getElementById(id);
 const md = () => $('mdl').value;
 
-// 笏笏 繝代ロ繝ｫ驕ｷ遘ｻ 笏笏
+// ── パネル遷移 ──
 function go(n) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
   if      (n === '15')      { $('p15').classList.add('on'); }
@@ -2616,7 +2828,7 @@ function go(n) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 笏笏 繝ｭ繝ｼ繝・ぅ繝ｳ繧ｰ 笏笏
+// ── ローディング ──
 let ltimer = null, lstep = 0;
 function showLoad(steps) {
   steps = steps || 5; lstep = 0;
@@ -2632,13 +2844,14 @@ function showLoad(steps) {
 }
 function hideLoad() { clearInterval(ltimer); $('ov').classList.remove('on'); }
 
-// 笏笏 繧ｨ繝ｩ繝ｼ陦ｨ遉ｺ 笏笏
+// ── エラー表示 ──
 function err(msg)  { const b = $('errBar'); b.textContent = msg; b.classList.add('on'); setTimeout(() => b.classList.remove('on'), 9000); }
 function clearErr(){ $('errBar').classList.remove('on'); }
 function esc(s)    { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'); }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP1: 繝輔か繝ｼ繝蜈･蜉・竊・蛻・梵髢句ｧ・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// STEP1: フォーム入力 → 分析開始
+// ══════════════════════════════════════════
 $('analyzeBtn').addEventListener('click', () => {
   const c = {
     company:    $('c_co').value.trim(),
@@ -2658,10 +2871,10 @@ $('analyzeBtn').addEventListener('click', () => {
     successExamples: $('j_success')?.value.trim() || ''
   };
   if (!c.company || !c.role || !c.experience || !c.skills) {
-    err('蛟呵｣懆・ュ蝣ｱ縺ｮ蠢・磯・岼・井ｼ夂､ｾ繝ｻ閨ｷ遞ｮ繝ｻ邨碁ｨ捺ｦりｦ√・繧ｹ繧ｭ繝ｫ・峨ｒ蜈･蜉帙＠縺ｦ縺上□縺輔＞縲・); return;
+    err('候補者情報の必須項目（会社・職種・経験概要・スキル）を入力してください。'); return;
   }
   if (!j.position || !j.description || !j.requirements || !j.appeal) {
-    err('豎ゆｺｺ諠・ｱ縺ｮ蠢・磯・岼・医・繧ｸ繧ｷ繝ｧ繝ｳ繝ｻ莉穂ｺ句・螳ｹ繝ｻ豎ゅａ繧狗ｵ碁ｨ薙・鬲・鴨・峨ｒ蜈･蜉帙＠縺ｦ縺上□縺輔＞縲・); return;
+    err('求人情報の必須項目（ポジション・仕事内容・求める経験・魅力）を入力してください。'); return;
   }
   clearErr(); S.candidate = c; S.job = j;
   const iq = calcInfoQuality(c);
@@ -2669,7 +2882,7 @@ $('analyzeBtn').addEventListener('click', () => {
   else { runAnalysis(); }
 });
 
-// 笏笏 繝懊ち繝ｳ繧､繝吶Φ繝井ｸ隕ｧ 笏笏
+// ── ボタンイベント一覧 ──
 $('reAnalyzeBtn').addEventListener('click', runAnalysis);
 $('b2to1').addEventListener('click',  () => go(1));
 $('b2to3').addEventListener('click',  () => { renderAppealSelector(); go(3); });
@@ -2680,155 +2893,157 @@ $('regenAllBtn').addEventListener('click', generateMail);
 $('pvBtn').addEventListener('click',  togglePreview);
 $('restartBtn').addEventListener('click', restart);
 
-// p15 (AI陬懷ｮ瑚ｳｪ蝠・
+// p15 (AI補完質問)
 $('b15to1').addEventListener('click', () => go(1));
 $('b15skip').addEventListener('click', () => runAnalysis());
 $('b15analyze').addEventListener('click', () => {
   document.querySelectorAll('.aq-input textarea').forEach(ta => {
     const field = ta.dataset.field;
-    if (field && ta.value.trim()) S.candidate[field] += '\n縲占｣懆ｶｳ縲・ + ta.value.trim();
+    if (field && ta.value.trim()) S.candidate[field] += '\n【補足】' + ta.value.trim();
   });
   runAnalysis();
 });
 
-// 繝舌ャ繝√Δ繝ｼ繝・$('batchModeBtn').addEventListener('click', openBatchMode);
+// バッチモード
+$('batchModeBtn').addEventListener('click', openBatchMode);
 $('batchAddBtn').addEventListener('click', addBatchCandidate);
 $('batchBackBtn').addEventListener('click', () => { $('batchModeBtn').classList.remove('active'); go(1); });
 $('batchRunBtn').addEventListener('click', runBatch);
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// 蛻・梵繝輔Ο繝ｼ
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// 分析フロー
+// ══════════════════════════════════════════
 async function runAnalysis() {
   showLoad(4);
   try { await callAnalysisAPI(); }
   catch (e) {
     hideLoad();
     if (e.message.includes('demo')) { demoAnalysis(); }
-    else { err('蛻・梵繧ｨ繝ｩ繝ｼ: ' + e.message); demoAnalysis(); hideLoad(); }
+    else { err('分析エラー: ' + e.message); demoAnalysis(); hideLoad(); }
   }
 }
 
-// 笏笏 繝・Δ蛻・梵・・PI繧ｭ繝ｼ縺ｪ縺励・繧ｪ繝輔Λ繧､繝ｳ・・笏笏
+// ── デモ分析（APIキーなし・オフライン） ──
 function demoAnalysis() {
   const c = S.candidate, j = S.job;
-  const hasLead       = /繝ｪ繝ｼ繝榎繝槭ロ繧ｸ|繝√・繝繝ｪ繝ｼ繝榎lead|manager/i.test(c.experience + c.skills);
-  const wantsChallenge = /謖第姶|謚陦倒繧ｹ繧ｿ繝ｼ繝医い繝・・|陬・㍼/i.test(c.reason);
-  const wantsMgmt     = /繝槭ロ繧ｸ|邨・ｹ培繝√・繝繝薙Ν繝榎繝槭ロ繝ｼ繧ｸ繝｣繝ｼ/i.test(c.reason + c.experience);
-  const wantsStability = /螳牙ｮ嘶螟ｧ謇弓遖丞茜蜴夂函/i.test(c.reason);
+  const hasLead       = /リード|マネジ|チームリード|lead|manager/i.test(c.experience + c.skills);
+  const wantsChallenge = /挑戦|技術|スタートアップ|裁量/i.test(c.reason);
+  const wantsMgmt     = /マネジ|組織|チームビルド|マネージャー/i.test(c.reason + c.experience);
+  const wantsStability = /安定|大手|福利厚生/i.test(c.reason);
 
   let typeCategory, typeReason;
-  if      (wantsMgmt && hasLead)          { typeCategory = 'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛';   typeReason = `${c.role}縺ｨ縺励※繝√・繝繝ｪ繝ｼ繝臥ｵ碁ｨ薙′縺ゅｊ縲∫ｵ・ｹ斐ｄ繝槭ロ繧ｸ繝｡繝ｳ繝医∈縺ｮ蠢怜髄縺瑚ｪｭ縺ｿ蜿悶ｌ縺ｾ縺吶ら樟閨ｷ縺ｧ縺ｮ謚陦禿励・繝阪ず繝｡繝ｳ繝医・荳｡霆ｸ繧呈ｴｻ縺九＠縲√ｈ繧雁､ｧ縺阪↑邨・ｹ斐ｄPM逧・ｽｹ蜑ｲ繧呈ｱゅａ縺ｦ縺・ｋ蜿ｯ閭ｽ諤ｧ縺後≠繧翫∪縺吶Ａ; }
-  else if (wantsChallenge && !hasLead)    { typeCategory = '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛';  typeReason = `${c.role}縺ｨ縺励※豺ｱ縺・ｰる摩諤ｧ繧堤｣ｨ縺・※縺阪◆繧ｭ繝｣繝ｪ繧｢繝代ち繝ｼ繝ｳ縺ｧ縺吶りｻ｢閨ｷ蜍墓ｩ溘°繧画橿陦鍋噪謖第姶繝ｻ繧ｹ繝壹す繝｣繝ｪ繧ｹ繝医→縺励※縺ｮ謌宣聞繧帝㍾隕悶＠縺ｦ縺・ｋ縺薙→縺瑚ｪｭ縺ｿ蜿悶ｌ縺ｾ縺吶Ａ; }
-  else if (wantsChallenge && hasLead)     { typeCategory = '蟶ょｴ萓｡蛟､蜷台ｸ雁梛';        typeReason = `謚陦薙Μ繝ｼ繝臥ｵ碁ｨ薙ｒ謖√■縺ｪ縺後ｉ縲√＆繧峨↑繧句ｸょｴ萓｡蛟､蜷台ｸ翫ｒ諢剰ｭ倥＠縺溯ｻ｢閨ｷ蠢怜髄縺ｧ縺吶ゅせ繧ｭ繝ｫ縺ｮ蟷・ｒ蠎・￡縲√ｈ繧雁ｸ悟ｰ第ｧ縺ｮ鬮倥＞莠ｺ譚舌↓縺ｪ繧九％縺ｨ繧堤岼謖・＠縺ｦ縺・ｋ縺ｨ閠・∴繧峨ｌ縺ｾ縺吶Ａ; }
-  else if (wantsStability)                { typeCategory = '螳牙ｮ壼ｿ怜髄蝙・;            typeReason = `迴ｾ閨ｷ縺ｧ縺ｮ邨碁ｨ薙ｒ豢ｻ縺九＠縺､縺､縲√ｈ繧雁ｮ牙ｮ壹＠縺溽腸蠅・・蠕・∞繧呈ｱゅａ縺ｦ縺・ｋ蛯ｾ蜷代′縺ゅｊ縺ｾ縺吶よ･謌宣聞繝輔ぉ繝ｼ繧ｺ繧医ｊ繧ゅ∽ｺ区･ｭ蝓ｺ逶､縺悟ｮ牙ｮ壹＠縺溽腸蠅・ｒ螂ｽ繧蜿ｯ閭ｽ諤ｧ縺後≠繧翫∪縺吶Ａ; }
-  else                                    { typeCategory = '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・;      typeReason = `${c.company}縺ｧ縺ｮ${c.role}縺ｨ縺励※縺ｮ螳溽ｸｾ繧定ｸ上∪縺医√ｈ繧雁､ｧ縺阪↑雋ｬ莉ｻ遽・峇繝ｻ蠖ｹ閨ｷ繝ｻ蠖ｱ髻ｿ蜉帙ｒ豎ゅａ縺ｦ繧ｭ繝｣繝ｪ繧｢繧｢繝・・繧堤岼謖・＠縺ｦ縺・ｋ縺ｨ蛻､譁ｭ縺励∪縺吶Ａ; }
+  if      (wantsMgmt && hasLead)          { typeCategory = 'PM・マネジメント型';   typeReason = `${c.role}としてチームリード経験があり、組織やマネジメントへの志向が読み取れます。現職での技術×マネジメントの両軸を活かし、より大きな組織やPM的役割を求めている可能性があります。`; }
+  else if (wantsChallenge && !hasLead)    { typeCategory = '技術スペシャリスト型';  typeReason = `${c.role}として深い専門性を磨いてきたキャリアパターンです。転職動機から技術的挑戦・スペシャリストとしての成長を重視していることが読み取れます。`; }
+  else if (wantsChallenge && hasLead)     { typeCategory = '市場価値向上型';        typeReason = `技術リード経験を持ちながら、さらなる市場価値向上を意識した転職志向です。スキルの幅を広げ、より希少性の高い人材になることを目指していると考えられます。`; }
+  else if (wantsStability)                { typeCategory = '安定志向型';            typeReason = `現職での経験を活かしつつ、より安定した環境・待遇を求めている傾向があります。急成長フェーズよりも、事業基盤が安定した環境を好む可能性があります。`; }
+  else                                    { typeCategory = 'キャリアアップ型';      typeReason = `${c.company}での${c.role}としての実績を踏まえ、より大きな責任範囲・役職・影響力を求めてキャリアアップを目指していると判断します。`; }
 
-  const pri1 = wantsChallenge ? { id: 'tech',     name: '謚陦鍋噪謖第姶' } : { id: 'career',   name: '繧ｭ繝｣繝ｪ繧｢繧｢繝・・' };
-  const pri2 = hasLead        ? { id: 'autonomy', name: '陬・㍼繝ｻ閾ｪ逕ｱ蠎ｦ' } : { id: 'startup', name: '繧ｹ繧ｿ繝ｼ繝医い繝・・謌宣聞' };
-  const pri3 = { id: 'team', name: '蜆ｪ遘縺ｪ繝√・繝' };
-  const sk0 = c.skills.split(/[,縲―n]/)[0].trim();
+  const pri1 = wantsChallenge ? { id: 'tech',     name: '技術的挑戦' } : { id: 'career',   name: 'キャリアアップ' };
+  const pri2 = hasLead        ? { id: 'autonomy', name: '裁量・自由度' } : { id: 'startup', name: 'スタートアップ成長' };
+  const pri3 = { id: 'team', name: '優秀なチーム' };
+  const sk0 = c.skills.split(/[,、\n]/)[0].trim();
 
   S.analysis = {
     candidateTypeCategory: typeCategory,
     candidateTypeReason:   typeReason,
-    motivationHypothesis: `繝ｻ閾ｪ蛻・・繧ｹ繧ｭ繝ｫ縺檎峩謗･莠区･ｭ謌宣聞縺ｫ郢九′繧狗腸蠅・ｒ豎ゅａ縺ｦ縺・ｋ\n繝ｻ謚陦鍋噪縺ｫ繧医ｊ鬮倥＞謖第姶縺後〒縺阪ｋ繝昴ず繧ｷ繝ｧ繝ｳ縺ｸ縺ｮ遘ｻ陦後ｒ譛帙ｓ縺ｧ縺・ｋ\n繝ｻ縺薙ｌ縺ｾ縺ｧ縺ｮ邨碁ｨ薙ｒ豢ｻ縺九＠縺､縺､縲√ｈ繧雁ｽｱ髻ｿ遽・峇縺ｮ螟ｧ縺阪＞莉穂ｺ九ｒ縺励◆縺Я,
-    whyContact:   `${c.company}縺ｧ${c.role}縺ｨ縺励※蝓ｹ縺｣縺溽ｵ碁ｨ薙・縲・{j.position}縺ｮ隕∽ｻｶ縺ｫ蟇ｾ縺励※鬮倥＞隕ｪ蜥梧ｧ繧呈戟縺｡縺ｾ縺吶ら樟蝨ｨ蟶ょｴ縺ｧ縺薙・繧ｹ繧ｭ繝ｫ繧ｻ繝・ヨ繧呈戟縺､莠ｺ譚舌・蟶悟ｰ代〒縺ゅｊ縲√％縺ｮ繧ｿ繧､繝溘Φ繧ｰ縺ｧ縺ｮ繧｢繝励Ο繝ｼ繝√↓縺ｯ謌ｦ逡･逧・↑萓｡蛟､縺後≠繧翫∪縺吶Ａ,
-    matchPoints:  `繝ｻ${sk0}縺ｮ繧ｹ繧ｭ繝ｫ縺梧ｱゅａ繧狗ｵ碁ｨ薙→逶ｴ謗･繝槭ャ繝―n繝ｻ${hasLead ? '繝√・繝繝ｪ繝ｼ繝臥ｵ碁ｨ薙′繝昴ず繧ｷ繝ｧ繝ｳ縺ｮ雋ｬ莉ｻ遽・峇縺ｫ蜷医≧' : '螳溯｣・鴨繝ｻ蟆る摩諤ｧ縺後・繧ｸ繧ｷ繝ｧ繝ｳ縺ｮ蜊ｳ謌ｦ蜉帙→縺励※讖溯・'}\n繝ｻ髢狗匱繧ｹ繧ｿ繧､繝ｫ繝ｻ謚陦灘ｿ怜髄縺梧ｱゆｺｺ蜀・ｮｹ縺ｨ霑代＞`,
-    avoidPoints:  `繝ｻ縲悟､ｧ謇倶ｼ∵･ｭ縺ｮ螳牙ｮ壽ｧ縲阪ｒ蜑埼擇縺ｫ蜃ｺ縺励◆險ｴ豎ゅ・騾・柑譫懊↓縺ｪ繧句庄閭ｽ諤ｧ\n繝ｻ縲後・繝阪ず繝｡繝ｳ繝井ｸ崎ｦ√・蛟倶ｺｺ菴懈･ｭ荳ｭ蠢・阪→縺・≧險ｴ豎ゅ・繝ｪ繝ｼ繝臥ｵ碁ｨ楢・↓縺ｯ髻ｿ縺九↑縺・庄閭ｽ諤ｧ`,
-    // Phase1: OHERE繝輔Ξ繝ｼ繝
+    motivationHypothesis: `・自分のスキルが直接事業成長に繋がる環境を求めている\n・技術的により高い挑戦ができるポジションへの移行を望んでいる\n・これまでの経験を活かしつつ、より影響範囲の大きい仕事をしたい`,
+    whyContact:   `${c.company}で${c.role}として培った経験は、${j.position}の要件に対して高い親和性を持ちます。現在市場でこのスキルセットを持つ人材は希少であり、このタイミングでのアプローチには戦略的な価値があります。`,
+    matchPoints:  `・${sk0}のスキルが求める経験と直接マッチ\n・${hasLead ? 'チームリード経験がポジションの責任範囲に合う' : '実装力・専門性がポジションの即戦力として機能'}\n・開発スタイル・技術志向が求人内容と近い`,
+    avoidPoints:  `・「大手企業の安定性」を前面に出した訴求は逆効果になる可能性\n・「マネジメント不要・個人作業中心」という訴求はリード経験者には響かない可能性`,
+    // Phase1: OHEREフレーム
     ohere: {
-      observation: `繝ｻ${c.company}縺ｫ縺ｦ${c.role}縺ｨ縺励※蠕謎ｺ欺n繝ｻ繧ｹ繧ｭ繝ｫ繧ｻ繝・ヨ: ${c.skills.slice(0, 60)}\n繝ｻ${c.experience.slice(0, 80)}`,
-      hypothesis:  `${sk0}縺ｧ縺ｮ螳溽ｸｾ繧呈ｭｦ蝎ｨ縺ｫ縲√ｈ繧雁､ｧ縺阪↑陬・㍼縺ｨ繧､繝ｳ繝代け繝医ｒ豎ゅａ縺ｦ縺・ｋ縺ｮ縺ｧ縺ｯ縺ｪ縺・°縲ら樟閨ｷ縺ｧ縺ｮ${hasLead ? '繝ｪ繝ｼ繝臥ｵ碁ｨ薙ｒ豢ｻ縺九＠縺､縺､' : '蟆る摩諤ｧ繧呈ｷｱ繧√▽縺､'}縲∵ｬ｡縺ｮ繧ｹ繝・・繧ｸ縺ｸ縺ｮ繧ｿ繧､繝溘Φ繧ｰ繧呈爾縺｣縺ｦ縺・ｋ蜿ｯ閭ｽ諤ｧ縺後≠繧九Ａ,
-      evidence:    `繝ｻ霆｢閨ｷ逅・罰縺ｫ縲・{c.reason ? c.reason.slice(0, 30) : '謌宣聞繝ｻ謖第姶'}縲阪∈縺ｮ險蜿浬n繝ｻ${hasLead ? '繝√・繝繝ｪ繝ｼ繝臥ｵ碁ｨ薙・繝槭ロ繧ｸ繝｡繝ｳ繝亥ｿ怜髄繧堤､ｺ縺・ : '繧ｹ繝壹す繝｣繝ｪ繧ｹ繝亥ｿ怜髄縺檎ｵ梧ｭｴ縺九ｉ隱ｭ縺ｿ蜿悶ｌ繧・}\n繝ｻ繧ｹ繧ｭ繝ｫ繧ｻ繝・ヨ縺ｮ蠎・＆縺悟ｸょｴ萓｡蛟､蜷台ｸ頑э隴倥ｒ蜿肴丐`,
-      recommendation: `蜀帝ｭ縺ｧ縲・{sk0}縺ｧ縺ｮ縺皮ｵ碁ｨ薙阪↓險蜿翫＠縲√∪縺壼呵｣懆・・螳溽ｸｾ繧定ｪ阪ａ繧九ヨ繝ｼ繝ｳ縺ｧ蟋九ａ繧九よｬ｡縺ｫ縲梧橿陦鍋噪縺ｪ隱ｲ鬘後・螟ｧ縺阪＆縲阪ｒ蜈ｷ菴鍋噪縺ｫ隱槭ｋ縺薙→縺ｧ縲∫嶌謇九・螂ｽ螂・ｿ・ｒ蠑輔″蜃ｺ縺吶よ怙蠕後・繧ｫ繧ｸ繝･繧｢繝ｫ髱｢隲・・謠先｡医〒菴弱さ繧ｹ繝医↑霑比ｿ｡繧剃ｿ・☆縲Ａ,
+      observation: `・${c.company}にて${c.role}として従事\n・スキルセット: ${c.skills.slice(0, 60)}\n・${c.experience.slice(0, 80)}`,
+      hypothesis:  `${sk0}での実績を武器に、より大きな裁量とインパクトを求めているのではないか。現職での${hasLead ? 'リード経験を活かしつつ' : '専門性を深めつつ'}、次のステージへのタイミングを探っている可能性がある。`,
+      evidence:    `・転職理由に「${c.reason ? c.reason.slice(0, 30) : '成長・挑戦'}」への言及\n・${hasLead ? 'チームリード経験はマネジメント志向を示す' : 'スペシャリスト志向が経歴から読み取れる'}\n・スキルセットの広さが市場価値向上意識を反映`,
+      recommendation: `冒頭で「${sk0}でのご経験」に言及し、まず候補者の実績を認めるトーンで始める。次に「技術的な課題の大きさ」を具体的に語ることで、相手の好奇心を引き出す。最後はカジュアル面談の提案で低コストな返信を促す。`,
       scoutStrategy: {
-        step1_empathy:    `${c.company}縺ｧ縺ｮ${c.role}縺ｨ縺励※遨阪∩荳翫￡縺ｦ縺阪◆邨碁ｨ薙∈縺ｮ蜈ｱ諢溘→縲∫樟蝨ｨ縺ｮ迺ｰ蠅・′謖√▽蜿ｯ閭ｽ諤ｧ縺ｮ髯千阜縺ｸ縺ｮ逅・ｧ｣繧堤､ｺ縺吶Ａ,
-        step2_recognition: `${sk0}繧呈ｴｻ縺九＠縺・{c.experience.includes('繝ｪ繝ｼ繝・) ? '繝ｪ繝ｼ繝峨→縺励※縺ｮ螳溽ｸｾ' : '謚陦鍋噪縺ｪ謌先棡'}繧貞・菴鍋噪縺ｫ險蜿翫＠縲∬・蜉帙ｒ豁｣蠖薙↓隧穂ｾ｡縺励※縺・ｋ縺薙→繧剃ｼ昴∴繧九Ａ,
-        step3_future:     `縺薙・繝昴ず繧ｷ繝ｧ繝ｳ縺ｧ縺ｯ${j.position}縺ｨ縺励※縲・{j.description.slice(0, 40)}...縺ｨ縺・≧謖第姶縺後〒縺阪ｋ縺薙→繧剃ｼ昴∴繧九Ａ,
-        step4_ibm:        `IBM縺ｮ繧ｰ繝ｭ繝ｼ繝舌Ν繧ｹ繧ｱ繝ｼ繝ｫ繝ｻ譛蜈育ｫｯ謚陦薙・遉ｾ莨夊ｲ｢迪ｮ縺ｨ縺・≧繝ｦ繝九・繧ｯ縺ｪ迺ｰ蠅・′縲∝呵｣懆・・蠢怜髄縺ｨ蜷郁・縺励※縺・ｋ縺薙→繧定ｪｬ譏弱☆繧九Ａ,
-        step5_meeting:    `縲・0蛻・・驕ｸ閠・↑縺励・隧ｱ繧定◇縺上□縺代〒繧０K縲阪→縺・≧繝輔Ξ繝ｼ繝溘Φ繧ｰ縺ｧ縲∬ｿ比ｿ｡繧ｳ繧ｹ繝医ｒ譛蟆丞喧縺吶ｋ縲Ａ
+        step1_empathy:    `${c.company}での${c.role}として積み上げてきた経験への共感と、現在の環境が持つ可能性の限界への理解を示す。`,
+        step2_recognition: `${sk0}を活かした${c.experience.includes('リード') ? 'リードとしての実績' : '技術的な成果'}を具体的に言及し、能力を正当に評価していることを伝える。`,
+        step3_future:     `このポジションでは${j.position}として、${j.description.slice(0, 40)}...という挑戦ができることを伝える。`,
+        step4_ibm:        `IBMのグローバルスケール・最先端技術・社会貢献というユニークな環境が、候補者の志向と合致していることを説明する。`,
+        step5_meeting:    `「30分・選考なし・話を聞くだけでもOK」というフレーミングで、返信コストを最小化する。`
       }
     },
-    // Phase1: 繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼAI
+    // Phase1: キャリアストーリーAI
     careerStory: {
-      past:      `${c.company}縺ｫ縺ｦ${c.role}縺ｨ縺励※縲・{c.experience.slice(0, 60)}...縺ｨ縺・≧螳溽ｸｾ繧堤ｩ阪∩荳翫￡縺ｦ縺阪◆縲Ａ,
-      present:   `迴ｾ蝨ｨ縺ｯ${sk0}繧剃ｸｭ蠢・→縺吶ｋ繧ｹ繧ｭ繝ｫ繧ｻ繝・ヨ繧呈ｭｦ蝎ｨ縺ｫ縲・{c.company}縺ｧ${hasLead ? '繝√・繝繧偵Μ繝ｼ繝峨☆繧狗ｫ句ｴ縺ｨ縺励※' : '蟆る摩螳ｶ縺ｨ縺励※'}萓｡蛟､繧堤匱謠ｮ縺励※縺・ｋ縲Ａ,
-      future:    `${j.position}縺ｧ縺ｯ${wantsChallenge ? '謚陦鍋噪謖第姶縺ｨ陬・㍼縺ｮ螟ｧ縺阪＆' : '繧ｭ繝｣繝ｪ繧｢縺ｮ諡｡螟ｧ縺ｨ蠖ｱ髻ｿ遽・峇縺ｮ蠎・＆'}繧呈焔縺ｫ蜈･繧後∝ｸょｴ縺ｧ縺輔ｉ縺ｫ蟶悟ｰ代↑莠ｺ譚舌∈縺ｨ謌宣聞縺ｧ縺阪ｋ蜿ｯ閭ｽ諤ｧ縺後≠繧九Ａ,
-      narrative:  `${c.company}縺ｧ${c.role}縺ｨ縺励※蝓ｹ縺｣縺ｦ縺阪◆${sk0}縺ｮ螳溷鴨縺ｯ縲∫捩螳溘↓蟶ょｴ萓｡蛟､繧帝ｫ倥ａ縺ｦ縺阪◆險ｼ縺ｧ縺吶ら樟閨ｷ縺ｧ縺ｮ邨碁ｨ薙→螳溽ｸｾ縺ｯ譛ｬ迚ｩ縺ｧ縺吶′縲∵ｬ｡縺ｮ繧ｹ繝・・繧ｸ縺ｧ繧医ｊ螟ｧ縺阪↑謖第姶繧偵☆繧区凾譛溘↓譚･縺ｦ縺・ｋ縺ｮ縺ｧ縺ｯ縺ｪ縺・〒縺励ｇ縺・°縲・{j.position}縺ｧ縺ｮ繝昴ず繧ｷ繝ｧ繝ｳ縺ｯ縲√◎縺ｮ譁ｹ蜷第ｧ縺ｨ蜷郁・縺励※縺・∪縺吶Ａ
+      past:      `${c.company}にて${c.role}として、${c.experience.slice(0, 60)}...という実績を積み上げてきた。`,
+      present:   `現在は${sk0}を中心とするスキルセットを武器に、${c.company}で${hasLead ? 'チームをリードする立場として' : '専門家として'}価値を発揮している。`,
+      future:    `${j.position}では${wantsChallenge ? '技術的挑戦と裁量の大きさ' : 'キャリアの拡大と影響範囲の広さ'}を手に入れ、市場でさらに希少な人材へと成長できる可能性がある。`,
+      narrative:  `${c.company}で${c.role}として培ってきた${sk0}の実力は、着実に市場価値を高めてきた証です。現職での経験と実績は本物ですが、次のステージでより大きな挑戦をする時期に来ているのではないでしょうか。${j.position}でのポジションは、その方向性と合致しています。`
     },
-    // Phase1: 蛟呵｣懆・ｸｩ蠎ｦ諢蘗I
+    // Phase1: 候補者温度感AI
     temperature: {
       stars:    c.reason && c.reason.length > 10 ? (wantsChallenge ? 4 : 3) : 2,
-      label:    c.reason && c.reason.length > 10 ? (wantsChallenge ? '蜊雁ｹｴ莉･蜀・ : '諠・ｱ蜿朱寔') : '蜿励￠霄ｫ',
-      reason:   `霆｢閨ｷ逅・罰${c.reason ? '・医・ + c.reason.slice(0, 20) + '...縲搾ｼ・ : '縺梧悴險伜・'}縺九ｉ蛻､譁ｭ縲・{c.reason ? '諢乗ｬｲ逧・↑險闡峨′隕九ｉ繧後ｋ縺溘ａ霆｢閨ｷ諢乗ｬｲ縺ｯ豈碑ｼ・噪鬮倥ａ縲・ : '霆｢閨ｷ逅・罰縺御ｸ肴・縺ｪ縺溘ａ諷朱㍾縺ｫ繧｢繝励Ο繝ｼ繝√′蠢・ｦ√・}`,
-      approach: `${c.reason && c.reason.length > 10 ? '豈碑ｼ・噪霑比ｿ｡繧貞ｾ励ｄ縺吶＞繧ｿ繧､繝溘Φ繧ｰ縺ｧ縺吶ゅせ繧ｫ繧ｦ繝域枚縺ｮ雉ｪ繧剃ｸ翫￡繧後・鬮倥＞遒ｺ邇・〒霑比ｿ｡縺梧悄蠕・〒縺阪∪縺吶・ : '霆｢閨ｷ諢乗ｬｲ縺御ｸ肴・縺ｪ縺溘ａ縲∽ｽ弱・繝ｬ繝・す繝｣繝ｼ縺九▽螂ｽ螂・ｿ・ｒ蛻ｺ豼縺吶ｋ繧｢繝励Ο繝ｼ繝√′譛牙柑縺ｧ縺吶・}`
+      label:    c.reason && c.reason.length > 10 ? (wantsChallenge ? '半年以内' : '情報収集') : '受け身',
+      reason:   `転職理由${c.reason ? '（「' + c.reason.slice(0, 20) + '...」）' : 'が未記入'}から判断。${c.reason ? '意欲的な言葉が見られるため転職意欲は比較的高め。' : '転職理由が不明なため慎重にアプローチが必要。'}`,
+      approach: `${c.reason && c.reason.length > 10 ? '比較的返信を得やすいタイミングです。スカウト文の質を上げれば高い確率で返信が期待できます。' : '転職意欲が不明なため、低プレッシャーかつ好奇心を刺激するアプローチが有効です。'}`
     },
     appealPriority: [
-      { rank: 1, appealId: pri1.id, appealName: pri1.name, reason: `霆｢閨ｷ逅・罰縺ｫ縲・{wantsChallenge ? '謚陦鍋噪謖第姶' : '繧ｭ繝｣繝ｪ繧｢繧｢繝・・'}縲阪∈縺ｮ險蜿翫′縺ゅｊ縲√％縺ｮ繝昴ず繧ｷ繝ｧ繝ｳ縺檎峩謗･險ｴ豎ゅ〒縺阪ｋ繝昴う繝ｳ繝医〒縺吶ょ呵｣懆・′谺｡縺ｮ繧ｭ繝｣繝ｪ繧｢縺ｧ譛繧ょｮ溽樟縺励◆縺・％縺ｨ縺ｨ蜷郁・縺励※縺・∪縺吶Ａ },
-      { rank: 2, appealId: pri2.id, appealName: pri2.name, reason: `${hasLead ? '繝ｪ繝ｼ繝臥ｵ碁ｨ楢・・陬・㍼繝ｻ諢乗晄ｱｺ螳壽ｨｩ縺ｮ螟ｧ縺阪＆繧帝㍾隕悶☆繧句だ蜷代′縺ゅｊ縺ｾ縺・ : '謌宣聞繝輔ぉ繝ｼ繧ｺ縺ｸ縺ｮ蜿ら判諢丞髄縺瑚ｪｭ縺ｿ蜿悶ｌ縺ｾ縺・}縲・逡ｪ逶ｮ縺ｫ譛牙柑縺ｪ險ｴ豎ゅ→縺励※險ｴ豎よ姶逡･縺ｫ邨・∩霎ｼ繧薙〒縺上□縺輔＞縲Ａ },
-      { rank: 3, appealId: pri3.id, appealName: pri3.name, reason: `蜆ｪ遘縺ｪ繧ｨ繝ｳ繧ｸ繝九い縺ｨ縺ｮ蜊疲･ｭ讖滉ｼ壹・縲∵橿陦薙・謌宣聞蠢怜髄縺ｮ蛟呵｣懆・↓譎ｮ驕咲噪縺ｫ譛牙柑縺ｧ縺吶ゅΓ繝ｼ繝ｫ蜀・〒縲後メ繝ｼ繝縺ｮ雉ｪ縲阪ｒ蜈ｷ菴鍋噪縺ｫ莨昴∴繧九％縺ｨ縺ｧ蟾ｮ蛻･蛹悶〒縺阪∪縺吶Ａ }
+      { rank: 1, appealId: pri1.id, appealName: pri1.name, reason: `転職理由に「${wantsChallenge ? '技術的挑戦' : 'キャリアアップ'}」への言及があり、このポジションが直接訴求できるポイントです。候補者が次のキャリアで最も実現したいことと合致しています。` },
+      { rank: 2, appealId: pri2.id, appealName: pri2.name, reason: `${hasLead ? 'リード経験者は裁量・意思決定権の大きさを重視する傾向があります' : '成長フェーズへの参画意向が読み取れます'}。2番目に有効な訴求として訴求戦略に組み込んでください。` },
+      { rank: 3, appealId: pri3.id, appealName: pri3.name, reason: `優秀なエンジニアとの協業機会は、技術・成長志向の候補者に普遍的に有効です。メール内で「チームの質」を具体的に伝えることで差別化できます。` }
     ],
     otherRecommendedAppeals: wantsChallenge ? ['startup'] : ['salary'],
     recommendedAppeals: [pri1.id, pri2.id, pri3.id, wantsChallenge ? 'startup' : 'salary'],
     recruiterGuidance: [
-      { judgment: `縺薙・蛟呵｣懆・・縲・{typeCategory}縲阪ヱ繧ｿ繝ｼ繝ｳ縺ｧ縺兪, judgmentReason: `${c.company}縺ｧ縺ｮ${c.role}邨碁ｨ薙√せ繧ｭ繝ｫ繧ｻ繝・ヨ・・{sk0}遲会ｼ峨∬ｻ｢閨ｷ逅・罰縺ｮ邨・∩蜷医ｏ縺帙°繧峨％縺ｮ繧ｿ繧､繝励→蛻､譁ｭ縺励※縺・∪縺吶Ａ, approach: `繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ縺ｧ縺ｯ${wantsChallenge ? '縲梧橿陦鍋噪縺ｪ髮｣譏灘ｺｦ繝ｻ陬・㍼縺ｮ螟ｧ縺阪＆縲阪ｒ蜀帝ｭ縺ｫ蜑埼擇縺ｫ蜃ｺ縺・ : '縲後く繝｣繝ｪ繧｢縺ｮ諡｡螟ｧ繝ｻ蠖ｱ髻ｿ遽・峇縺ｮ蠎・＆縲阪ｒ蜈ｷ菴鍋噪縺ｪ謨ｰ蟄励〒遉ｺ縺・}縺薙→縺ｧ縲・幕蟆∫紫繝ｻ霑比ｿ｡邇・ｒ鬮倥ａ縺ｦ縺上□縺輔＞縲Ａ },
-      { judgment: `迴ｾ閨ｷ縺ｧ縺ｮ繧ｹ繧ｭ繝ｫ縺ｯ蟶ょｴ縺ｧ縺ｮ蟶悟ｰ台ｾ｡蛟､縺碁ｫ倥＞`, judgmentReason: `${sk0}縺ｪ縺ｩ縺ｮ邨碁ｨ薙・迴ｾ蝨ｨ縺ｮ謗｡逕ｨ蟶ょｴ縺ｫ縺翫＞縺ｦ遶ｶ莠牙鴨縺碁ｫ倥￥縲∬､・焚遉ｾ縺九ｉ蜷梧凾縺ｫ繧｢繝励Ο繝ｼ繝√ｒ蜿励￠縺ｦ縺・ｋ蜿ｯ閭ｽ諤ｧ縺後≠繧翫∪縺吶Ａ, approach: `縲後↑縺懊≠縺ｪ縺溘↓螢ｰ繧偵°縺代◆縺ｮ縺九阪ｒ蜈ｷ菴鍋噪縺ｫ譖ｸ縺上％縺ｨ縺碁㍾隕√〒縺吶らｵ梧ｭｴ縺ｮ縲後←縺薙阪↓豕ｨ逶ｮ縺励◆縺九ｒ譏守､ｺ縺励√ユ繝ｳ繝励Ξ諢溘ｒ謗帝勁縺励※縺上□縺輔＞縲Ａ },
-      { judgment: `霑比ｿ｡繧貞ｼ輔″蜃ｺ縺吶↓縺ｯ縲御ｽ弱さ繧ｹ繝医・菴弱Μ繧ｹ繧ｯ縲阪・隱倥＞譁ｹ縺梧怏蜉ｹ`, judgmentReason: `霆｢閨ｷ繧堤ｩ肴･ｵ逧・↓閠・∴縺ｦ縺・↑縺・庄閭ｽ諤ｧ繧ゅ≠繧九◆繧√・∈閠・牡縺ｮ蠑ｷ縺・ｪ倥＞譁ｹ縺ｯ髢句ｰ√＆繧後※繧りｿ比ｿ｡縺輔ｌ縺ｪ縺・Μ繧ｹ繧ｯ縺後≠繧翫∪縺吶Ａ, approach: `縲・0蛻・・繧ｫ繧ｸ繝･繧｢繝ｫ髱｢隲・阪碁∈閠・↑縺励・隧ｱ繧定◇縺上□縺代阪→縺・≧繝輔Ξ繝ｼ繝溘Φ繧ｰ縺ｧ螢ｰ繧偵°縺代ｋ縺薙→縺ｧ縲∬ｿ比ｿ｡邇・ｒ鬮倥ａ繧峨ｌ縺ｾ縺吶Ａ }
+      { judgment: `この候補者は「${typeCategory}」パターンです`, judgmentReason: `${c.company}での${c.role}経験、スキルセット（${sk0}等）、転職理由の組み合わせからこのタイプと判断しています。`, approach: `スカウトメールでは${wantsChallenge ? '「技術的な難易度・裁量の大きさ」を冒頭に前面に出す' : '「キャリアの拡大・影響範囲の広さ」を具体的な数字で示す'}ことで、開封率・返信率を高めてください。` },
+      { judgment: `現職でのスキルは市場での希少価値が高い`, judgmentReason: `${sk0}などの経験は現在の採用市場において競争力が高く、複数社から同時にアプローチを受けている可能性があります。`, approach: `「なぜあなたに声をかけたのか」を具体的に書くことが重要です。経歴の「どこ」に注目したかを明示し、テンプレ感を排除してください。` },
+      { judgment: `返信を引き出すには「低コスト・低リスク」の誘い方が有効`, judgmentReason: `転職を積極的に考えていない可能性もあるため、選考色の強い誘い方は開封されても返信されないリスクがあります。`, approach: `「30分のカジュアル面談」「選考なし・話を聞くだけ」というフレーミングで声をかけることで、返信率を高められます。` }
     ],
     score:      wantsChallenge ? 81 : 74,
-    scoreReason: '繧ｹ繧ｭ繝ｫ繝ｻ邨碁ｨ薙・霆｢閨ｷ蠢怜髄縺ｮ3霆ｸ縺ｧ繝舌Λ繝ｳ繧ｹ繧医￥繝槭ャ繝√＠縺ｦ縺・∪縺吶・,
-    reason:      `${c.role}縺ｨ縺励※${c.company}縺ｧ螳溽ｸｾ繧堤ｩ阪ｓ縺蛟呵｣懆・・縲・{j.position}縺ｮ隕∽ｻｶ縺ｨ鬮倥＞隕ｪ蜥梧ｧ縺後≠繧翫∪縺吶りｻ｢閨ｷ蠢怜髄縺ｨ豎ゆｺｺ縺ｮ鬲・鴨縺後・繝・メ縺励※縺翫ｊ縲∬ｿ比ｿ｡邇・・鬮倥＞繧ｹ繧ｫ繧ｦ繝医′譛溷ｾ・〒縺阪∪縺吶Ａ,
-    strategyNote: `${wantsChallenge ? '縲梧橿陦鍋噪陬・㍼縺ｮ螟ｧ縺阪＆縲阪→縲御ｺ区･ｭ繝輔ぉ繝ｼ繧ｺ縺ｮ髱｢逋ｽ縺輔阪ｒ蜑埼擇縺ｫ蜃ｺ縺励◆繧｢繝励Ο繝ｼ繝√′譛牙柑縺ｧ縺吶・ : '縺ｾ縺夂樟閨ｷ縺ｧ縺ｮ隱ｲ鬘後ｒ蠑輔″蜃ｺ縺励∬ｧ｣豎ｺ遲悶→縺励※縺薙・繝昴ず繧ｷ繝ｧ繝ｳ繧呈署遉ｺ縺吶ｋ豬√ｌ縺悟柑譫懃噪縺ｧ縺吶・}`
+    scoreReason: 'スキル・経験・転職志向の3軸でバランスよくマッチしています。',
+    reason:      `${c.role}として${c.company}で実績を積んだ候補者は、${j.position}の要件と高い親和性があります。転職志向と求人の魅力がマッチしており、返信率の高いスカウトが期待できます。`,
+    strategyNote: `${wantsChallenge ? '「技術的裁量の大きさ」と「事業フェーズの面白さ」を前面に出したアプローチが有効です。' : 'まず現職での課題を引き出し、解決策としてこのポジションを提示する流れが効果的です。'}`
   };
   hideLoad(); renderAnalysis(); go(2);
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP2: 蛻・梵邨先棡繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ・・HERE繝輔Ξ繝ｼ繝・・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// STEP2: 分析結果レンダリング（OHEREフレーム）
+// ══════════════════════════════════════════
 function renderAnalysis() {
   const a = S.analysis;
   const score = parseInt(a.score) || 0;
   setTimeout(() => {
     $('sBar').style.width = score + '%';
     $('sNum').textContent = score + '%';
-    $('sLv').textContent  = score >= 85 ? '髱槫ｸｸ縺ｫ鬮倥＞' : score >= 70 ? '鬮倥＞' : score >= 55 ? '荳ｭ遞句ｺｦ' : '隕∵､懆ｨ・;
+    $('sLv').textContent  = score >= 85 ? '非常に高い' : score >= 70 ? '高い' : score >= 55 ? '中程度' : '要検討';
   }, 80);
 
-  const typeCategory = a.candidateTypeCategory || a.candidateType || '窶・;
+  const typeCategory = a.candidateTypeCategory || a.candidateType || '—';
   const typeReason   = a.candidateTypeReason   || a.typeReason   || '';
 
-  // 笏笏 蛟呵｣懆・ｸｩ蠎ｦ諢・笏笏
+  // ── 候補者温度感 ──
   const temp = a.temperature || {};
   const tempStars = parseInt(temp.stars) || 0;
-  const starsFilled = '笘・.repeat(tempStars) + '笘・.repeat(5 - tempStars);
+  const starsFilled = '★'.repeat(tempStars) + '☆'.repeat(5 - tempStars);
   const tempClass = tempStars >= 4 ? 'temp-hot' : tempStars >= 3 ? 'temp-warm' : tempStars >= 2 ? 'temp-cool' : 'temp-cold';
   $('temperatureBlock').innerHTML = `
     <div class="temp-stars ${tempClass}">${starsFilled}</div>
-    <div class="temp-label">${esc(temp.label || '窶・)}</div>
+    <div class="temp-label">${esc(temp.label || '—')}</div>
     <div class="temp-reason">${esc(temp.reason || '')}</div>
     <div class="temp-approach">${esc(temp.approach || '')}</div>`;
 
-  // 笏笏 繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼ 笏笏
+  // ── キャリアストーリー ──
   const cs = a.careerStory || {};
   $('careerStoryBlock').innerHTML = cs.narrative
     ? `<div class="cs-narrative">${esc(cs.narrative)}</div>
        <div class="cs-timeline">
-         <div class="cs-row"><span class="cs-tag cs-past">驕主悉</span><span class="cs-text">${esc(cs.past || '')}</span></div>
-         <div class="cs-row"><span class="cs-tag cs-present">迴ｾ蝨ｨ</span><span class="cs-text">${esc(cs.present || '')}</span></div>
-         <div class="cs-row"><span class="cs-tag cs-future">譛ｪ譚･</span><span class="cs-text">${esc(cs.future || '')}</span></div>
+         <div class="cs-row"><span class="cs-tag cs-past">過去</span><span class="cs-text">${esc(cs.past || '')}</span></div>
+         <div class="cs-row"><span class="cs-tag cs-present">現在</span><span class="cs-text">${esc(cs.present || '')}</span></div>
+         <div class="cs-row"><span class="cs-tag cs-future">未来</span><span class="cs-text">${esc(cs.future || '')}</span></div>
        </div>`
     : `<div class="ab-text">${esc(a.motivationHypothesis || '')}</div>`;
 
-  // 笏笏 OHERE繝輔Ξ繝ｼ繝 笏笏
+  // ── OHEREフレーム ──
   const oh = a.ohere || {};
   const strat = oh.scoutStrategy || {};
   const ohereSteps = [
-    { key: 'O', label: 'Observation', sub: '邨梧ｭｴ縺九ｉ蛻・°繧倶ｺ句ｮ・, color: '#2563eb', bg: '#eff6ff', val: oh.observation },
-    { key: 'H', label: 'Hypothesis',  sub: '縺薙・莠ｺ縺ｯ縺薙≧縺・≧莠ｺ縺ｧ縺ｯ・・, color: '#7c3aed', bg: '#f5f3ff', val: oh.hypothesis },
-    { key: 'E', label: 'Evidence',    sub: '縺ｪ縺懊◎縺・・∴縺溘°・育ｵ梧ｭｴ邏舌▼縺搾ｼ・, color: '#0891b2', bg: '#ecfeff', val: oh.evidence },
-    { key: 'R', label: 'Recommendation', sub: '繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｮ繧｢繝励Ο繝ｼ繝・, color: '#059669', bg: '#ecfdf5', val: oh.recommendation },
-    { key: 'S', label: 'Scout Strategy', sub: '蛻ｺ縺輔ｋ險ｴ豎ゅ・鬆・分', color: '#d97706', bg: '#fffbeb', val: null, strat: strat }
+    { key: 'O', label: 'Observation', sub: '経歴から分かる事実', color: '#2563eb', bg: '#eff6ff', val: oh.observation },
+    { key: 'H', label: 'Hypothesis',  sub: 'この人はこういう人では？', color: '#7c3aed', bg: '#f5f3ff', val: oh.hypothesis },
+    { key: 'E', label: 'Evidence',    sub: 'なぜそう考えたか（経歴紐づき）', color: '#0891b2', bg: '#ecfeff', val: oh.evidence },
+    { key: 'R', label: 'Recommendation', sub: 'トップリクルーターのアプローチ', color: '#059669', bg: '#ecfdf5', val: oh.recommendation },
+    { key: 'S', label: 'Scout Strategy', sub: '刺さる訴求の順番', color: '#d97706', bg: '#fffbeb', val: null, strat: strat }
   ];
   $('ohereBlock').innerHTML = ohereSteps.map(s => `
     <div class="ohere-step" style="border-left-color:${s.color}">
@@ -2841,28 +3056,29 @@ function renderAnalysis() {
         ${s.strat ? `
           <div class="ohere-strat">
             ${[
-              ['竭蜈ｱ諢・,      strat.step1_empathy,    '#6366f1'],
-              ['竭｡閭ｽ蜉帶価隱・,  strat.step2_recognition,'#7c3aed'],
-              ['竭｢譛ｪ譚･謠千､ｺ',  strat.step3_future,     '#0891b2'],
-              ['竭｣IBM險ｴ豎・,   strat.step4_ibm,        '#059669'],
-              ['竭､髱｢隲・ｪ伜ｰ・,  strat.step5_meeting,    '#d97706']
+              ['①共感',      strat.step1_empathy,    '#6366f1'],
+              ['②能力承認',  strat.step2_recognition,'#7c3aed'],
+              ['③未来提示',  strat.step3_future,     '#0891b2'],
+              ['④IBM訴求',   strat.step4_ibm,        '#059669'],
+              ['⑤面談誘導',  strat.step5_meeting,    '#d97706']
             ].map(([lbl, txt, c]) => txt ? `<div class="ohere-strat-row"><span class="ohere-strat-lbl" style="background:${c}">${lbl}</span><span class="ohere-strat-txt">${esc(txt)}</span></div>` : '').join('')}
-          </div>` : `<div class="ab-text">${esc(s.val || '窶・)}</div>`}
+          </div>` : `<div class="ab-text">${esc(s.val || '—')}</div>`}
       </div>
     </div>`).join('');
 
-  // 笏笏 譌｢蟄倥ヶ繝ｭ繝・け・亥呵｣懆・ち繧､繝励・謗･轤ｹ繝ｻ驕ｿ縺代ｋ險ｴ豎ゑｼ・笏笏
+  // ── 既存ブロック（候補者タイプ・接点・避ける訴求） ──
   const blocks = [
-    { label: '蛟呵｣懆・ち繧､繝暦ｼ亥崋螳壼・鬘橸ｼ・, dot: '#7c3aed', html: `<div class="type-fixed-badge">${esc(typeCategory)}<span class="type-fixed-tag">蝗ｺ螳・蛻・｡・/span></div><div class="ab-text" style="margin-top:10px">${esc(typeReason)}</div>` },
-    { label: '豎ゆｺｺ縺ｨ縺ｮ謗･轤ｹ',             dot: '#0891b2', html: `<div class="ab-text">${esc(a.matchPoints)}</div>` },
-    { label: '笞・・驕ｿ縺代ｋ縺ｹ縺崎ｨｴ豎・,        dot: '#d97706', cls: 'warn', html: `<div class="ab-text">${esc(a.avoidPoints)}</div>` },
-    { label: '繧ｹ繧ｳ繧｢譬ｹ諡',               dot: '#6b7280', html: `<div class="ab-text">${esc(a.scoreReason)}</div>` },
+    { label: '候補者タイプ（固定分類）', dot: '#7c3aed', html: `<div class="type-fixed-badge">${esc(typeCategory)}<span class="type-fixed-tag">固定5分類</span></div><div class="ab-text" style="margin-top:10px">${esc(typeReason)}</div>` },
+    { label: '求人との接点',             dot: '#0891b2', html: `<div class="ab-text">${esc(a.matchPoints)}</div>` },
+    { label: '⚠️ 避けるべき訴求',        dot: '#d97706', cls: 'warn', html: `<div class="ab-text">${esc(a.avoidPoints)}</div>` },
+    { label: 'スコア根拠',               dot: '#6b7280', html: `<div class="ab-text">${esc(a.scoreReason)}</div>` },
   ];
   $('aGrid').innerHTML = blocks.map(b =>
     `<div class="ab${b.cls ? ' ' + b.cls : ''}">\n<div class="ab-label"><div class="ab-dot" style="background:${b.dot}"></div>${b.label}</div>\n${b.html}\n</div>`
   ).join('');
 
-  // 險ｴ豎ょ━蜈磯・ｽ・  const pri = a.appealPriority || [];
+  // 訴求優先順位
+  const pri = a.appealPriority || [];
   const others = (a.otherRecommendedAppeals || []).map(id => { const ap = ALL_APPEALS.find(x => x.id === id); return ap ? ap.name : id; });
   const rankClass = ['rank-1', 'rank-2', 'rank-3'];
   $('priorityList').innerHTML = pri.map((p, i) => `
@@ -2873,25 +3089,25 @@ function renderAnalysis() {
         <div class="priority-reason">${esc(p.reason)}</div>
       </div>
     </div>`).join('') +
-    (others.length ? `<div class="priority-other"><div class="priority-other-title">縺昴・莉悶・譛牙柑縺ｪ險ｴ豎・/div>${others.join('縲/縲')}</div>` : '');
+    (others.length ? `<div class="priority-other"><div class="priority-other-title">その他の有効な訴求</div>${others.join('　/　')}</div>` : '');
 
-  // 謗｡逕ｨ諡・ｽ楢・ぎ繧､繝繝ｳ繧ｹ
+  // 採用担当者ガイダンス
   const gd = a.recruiterGuidance || [];
   $('guidanceList').innerHTML = gd.map(g => `
     <div class="guidance-item">
       <div class="guidance-flow">
-        <div class="guidance-row"><span class="guidance-row-label lbl-judge">AI蛻､譁ｭ</span><span class="guidance-row-text">${esc(g.judgment)}</span></div>
-        <div class="guidance-row"><span class="guidance-row-label lbl-reason">蛻､譁ｭ逅・罰</span><span class="guidance-row-text">${esc(g.judgmentReason)}</span></div>
-        <div class="guidance-row row-action"><span class="guidance-row-label lbl-action">繧｢繝励Ο繝ｼ繝・/span><span class="guidance-row-text">${esc(g.approach)}</span></div>
+        <div class="guidance-row"><span class="guidance-row-label lbl-judge">AI判断</span><span class="guidance-row-text">${esc(g.judgment)}</span></div>
+        <div class="guidance-row"><span class="guidance-row-label lbl-reason">判断理由</span><span class="guidance-row-text">${esc(g.judgmentReason)}</span></div>
+        <div class="guidance-row row-action"><span class="guidance-row-label lbl-action">アプローチ</span><span class="guidance-row-text">${esc(g.approach)}</span></div>
       </div>
     </div>`).join('');
 
   buildLearningData();
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP3: IBM蟆ら畑 險ｴ豎ゅそ繝ｬ繧ｯ繧ｿ繝ｼ繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ (Phase2)
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// STEP3: IBM専用 訴求セレクターレンダリング (Phase2)
+// ══════════════════════════════════════════
 function renderAppealSelector() {
   const a = S.analysis;
   const typeCategory = a.candidateTypeCategory || a.candidateType || '';
@@ -2899,35 +3115,35 @@ function renderAppealSelector() {
   const priMap = {};
   (a.appealPriority || []).forEach(p => { if (p.appealId) priMap[p.appealId] = { reason: p.reason, rank: p.rank }; });
 
-  // 繝槭ヨ繝ｪ繧ｯ繧ｹ謗ｨ螂ｨ鬆・〒繧ｽ繝ｼ繝茨ｼ壽耳螂ｨ荳贋ｽ阪ｒ蜈磯ｭ縺ｫ縲√◎繧御ｻ･螟悶ｒ蠕後ｍ縺ｫ
+  // マトリクス推奨順でソート：推奨上位を先頭に、それ以外を後ろに
   const matrixOrder = getIbmAppealsForType(typeCategory);
   const sorted = [
     ...matrixOrder.map(id => IBM_APPEALS.find(a => a.id === id)).filter(Boolean),
     ...IBM_APPEALS.filter(a => !matrixOrder.includes(a.id))
   ];
 
-  // 繧ｿ繧､繝怜ｰら畑繝偵Φ繝医ヰ繝翫・
+  // タイプ専用ヒントバナー
   const typeHint = {
-    '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛':  '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛縺ｯAI Transformation繝ｻwatsonx繝ｻ謚陦鍋腸蠅・′譛繧ょ絢縺輔ｊ縺ｾ縺吶・BM縺後梧橿陦薙ｒ遉ｾ莨壹↓螳溯｣・☆繧句ｴ縲阪〒縺ゅｋ縺薙→繧貞燕髱｢縺ｫ蜃ｺ縺励※縺上□縺輔＞縲・,
-    'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛':    'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛縺ｯ螟ｧ隕乗ｨ｡譯井ｻｶ繝ｻAI螟蛾擠繝ｻ陬・㍼縺ｮ險ｴ豎ゅ′譛牙柑縺ｧ縺吶・BM縺ｮ繝励Ο繧ｸ繧ｧ繧ｯ繝郁ｦ乗ｨ｡縺ｨ諢乗晄ｱｺ螳壽ｨｩ縺ｮ螟ｧ縺阪＆繧貞・菴鍋噪縺ｫ莨昴∴縺ｦ縺上□縺輔＞縲・,
-    '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・:       '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙九↓縺ｯ閧ｲ謌仙宛蠎ｦ繝ｻIBM繝悶Λ繝ｳ繝峨・螟ｧ隕乗ｨ｡譯井ｻｶ縺碁涸縺阪∪縺吶ゅ栗BM縺ｫ縺・◆縲阪→縺・≧邨梧ｭｴ萓｡蛟､縺ｨ菴鍋ｳｻ逧・↑謌宣聞讖滉ｼ壹ｒ蠑ｷ隱ｿ縺励※縺上□縺輔＞縲・,
-    '蟶ょｴ萓｡蛟､蜷台ｸ雁梛':         '蟶ょｴ萓｡蛟､蜷台ｸ雁梛縺ｯAIﾃ悠BMﾃ励げ繝ｭ繝ｼ繝舌Ν縺ｮ邨・∩蜷医ｏ縺帙′譛蠑ｷ縺ｧ縺吶・BM縺ｮAI螟蛾擠邨碁ｨ薙′蟶ょｴ縺ｧ譛繧ょｸ悟ｰ代↑螳溽ｸｾ縺ｫ縺ｪ繧九％縺ｨ繧定ｨｴ豎ゅ＠縺ｦ縺上□縺輔＞縲・,
-    '螳牙ｮ壼ｿ怜髄蝙・:             '螳牙ｮ壼ｿ怜髄蝙九↓縺ｯIBM繝悶Λ繝ｳ繝峨・遖丞茜蜴夂函繝ｻ蜒阪″譁ｹ繝ｻ遉ｾ莨夊ｲ｢迪ｮ縺梧怏蜉ｹ縺ｧ縺吶・BM縺ｮ112蟷ｴ縺ｮ螳溽ｸｾ縺ｨ螳牙ｮ壹＠縺滉ｺ区･ｭ蝓ｺ逶､繧貞・菴鍋噪縺ｫ遉ｺ縺励※縺上□縺輔＞縲・,
+    '技術スペシャリスト型':  '技術スペシャリスト型はAI Transformation・watsonx・技術環境が最も刺さります。IBMが「技術を社会に実装する場」であることを前面に出してください。',
+    'PM・マネジメント型':    'PM・マネジメント型は大規模案件・AI変革・裁量の訴求が有効です。IBMのプロジェクト規模と意思決定権の大きさを具体的に伝えてください。',
+    'キャリアアップ型':       'キャリアアップ型には育成制度・IBMブランド・大規模案件が響きます。「IBMにいた」という経歴価値と体系的な成長機会を強調してください。',
+    '市場価値向上型':         '市場価値向上型はAI×IBM×グローバルの組み合わせが最強です。IBMのAI変革経験が市場で最も希少な実績になることを訴求してください。',
+    '安定志向型':             '安定志向型にはIBMブランド・福利厚生・働き方・社会貢献が有効です。IBMの112年の実績と安定した事業基盤を具体的に示してください。',
   };
 
   $('appealGrid').innerHTML = `
     <div class="ibm-matrix-banner">
       <div class="imb-type-row">
-        <span class="imb-type-badge">${esc(typeCategory || '譛ｪ蛻・｡・)}</span>
-        <span class="imb-type-label">蛟呵｣懆・ち繧､繝・ﾃ・IBM險ｴ豎・繝槭ヨ繝ｪ繧ｯ繧ｹ譛驕ｩ蛹・/span>
+        <span class="imb-type-badge">${esc(typeCategory || '未分類')}</span>
+        <span class="imb-type-label">候補者タイプ × IBM訴求 マトリクス最適化</span>
       </div>
-      <div class="imb-hint">${esc(typeHint[typeCategory] || '蛟呵｣懆・ち繧､繝励↓蜷医ｏ縺帙◆IBM險ｴ豎ゅｒ驕ｸ謚槭＠縺ｦ縺上□縺輔＞縲・)}</div>
+      <div class="imb-hint">${esc(typeHint[typeCategory] || '候補者タイプに合わせたIBM訴求を選択してください。')}</div>
     </div>
     <div class="ibm-appeal-grid">` +
     sorted.map(ap => {
       const isRec   = rec.includes(ap.id);
       const priInfo = priMap[ap.id];
-      const rank    = priInfo ? priInfo.rank : (isRec ? '謗ｨ螂ｨ' : '');
+      const rank    = priInfo ? priInfo.rank : (isRec ? '推奨' : '');
       const reason  = priInfo ? priInfo.reason : '';
       const rankClass = priInfo?.rank === 1 ? 'rank1' : priInfo?.rank === 2 ? 'rank2' : priInfo?.rank === 3 ? 'rank3' : isRec ? 'recommended' : '';
       return `
@@ -2937,11 +3153,11 @@ function renderAppealSelector() {
             <div class="ibm-ap-head">
               <span class="ibm-ap-icon">${ap.icon}</span>
               <span class="ibm-ap-name">${esc(ap.name)}</span>
-              ${rank ? `<span class="ibm-ap-rank rank-${rank === '謗ｨ螂ｨ' ? 'rec' : rank}">${rank === '謗ｨ螂ｨ' ? 'AI謗ｨ螂ｨ' : rank + '菴・}</span>` : ''}
+              ${rank ? `<span class="ibm-ap-rank rank-${rank === '推奨' ? 'rec' : rank}">${rank === '推奨' ? 'AI推奨' : rank + '位'}</span>` : ''}
             </div>
             <div class="ibm-ap-desc">${esc(ap.desc)}</div>
             <div class="ibm-ap-strength">${esc(ap.ibmStrength)}</div>
-            ${reason ? `<div class="ibm-ap-reason">庁 ${esc(reason)}</div>` : ''}
+            ${reason ? `<div class="ibm-ap-reason">💡 ${esc(reason)}</div>` : ''}
           </label>
         </div>`;
     }).join('') + `</div>`;
@@ -2951,47 +3167,49 @@ function renderAppealSelector() {
       const item = cb.closest('.ibm-appeal-item');
       if (cb.checked) item.classList.add('checked'); else item.classList.remove('checked');
     });
-    // 蛻晄悄迥ｶ諷句渚譏
+    // 初期状態反映
     if (cb.checked) cb.closest('.ibm-appeal-item').classList.add('checked');
   });
-  $('strategyNote').innerHTML = `<strong>IBM繧｢繝励Ο繝ｼ繝∵姶逡･繝｡繝｢・・/strong>${esc(a.strategyNote || '')}`;
+  $('strategyNote').innerHTML = `<strong>IBMアプローチ戦略メモ：</strong>${esc(a.strategyNote || '')}`;
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP5: 繧ｹ繧ｫ繧ｦ繝域枚逕滓・繝ｻ繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// STEP5: スカウト文生成・レンダリング
+// ══════════════════════════════════════════
 async function generateMail() {
   S.selectedAppeals = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => {
     const ap = IBM_APPEALS.find(a => a.id === cb.value); return ap ? ap.name : cb.value;
   }).filter(Boolean);
-  // IBM險ｴ豎・D繧ゆｿ晄戟・医・繝ｭ繝ｳ繝励ヨ邊ｾ蠎ｦ蜷台ｸ翫・縺溘ａ・・  S.selectedAppealIds = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => cb.value);
-  if (S.selectedAppeals.length === 0) { err('險ｴ豎ゅ・繧､繝ｳ繝医ｒ蟆代↑縺上→繧・縺､驕ｸ謚槭＠縺ｦ縺上□縺輔＞縲・); return; }
+  // IBM訴求IDも保持（プロンプト精度向上のため）
+  S.selectedAppealIds = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => cb.value);
+  if (S.selectedAppeals.length === 0) { err('訴求ポイントを少なくとも1つ選択してください。'); return; }
   showLoad(5);
   try { if (hasApiKey()) await callMailAPI(); else demoMail(); }
-  catch (e) { hideLoad(); err('逕滓・繧ｨ繝ｩ繝ｼ: ' + e.message); demoMail(); hideLoad(); }
+  catch (e) { hideLoad(); err('生成エラー: ' + e.message); demoMail(); hideLoad(); }
 }
 
 function demoMail() {
   const c = S.candidate, j = S.job, sel = S.selectedAppeals, jCo = j.company || 'IBM';
-  const sk0 = c.skills.split(/[,縲―n]/)[0].trim();
+  const sk0 = c.skills.split(/[,、\n]/)[0].trim();
   const story = (S.analysis?.careerStory || {}).narrative || '';
   S.mail = {
-    subject: `${c.company}縺ｧ縺ｮ${sk0}縺皮ｵ碁ｨ薙↓縺､縺・※ 窶・${j.position}縺ｮ縺皮嶌隲㌔,
-    intro:   `${c.company}縺ｧ${c.role}縺ｨ縺励※${c.experience.slice(0, 40)}...縺ｨ縺・≧邨碁ｨ薙ｒ遨阪∪繧後※縺阪◆轤ｹ縺ｫ豕ｨ逶ｮ縺励√＃騾｣邨｡縺励∪縺励◆縲・{story ? '\n' + story.slice(0, 80) + '...' : ''}`,
-    why:     `${sk0}縺ｮ螳溷漁邨碁ｨ薙→${c.experience.includes('繝ｪ繝ｼ繝・) ? '繝√・繝繝ｪ繝ｼ繝峨→縺励※縺ｮ螳溽ｸｾ' : '鬮倥＞螳溯｣・鴨'}縺ｯ縲√％縺ｮ繝昴ず繧ｷ繝ｧ繝ｳ縺ｧ豎ゅａ縺ｦ縺・ｋ繝励Ο繝輔ぅ繝ｼ繝ｫ縺ｨ髱槫ｸｸ縺ｫ蜷郁・縺励※縺・∪縺吶・n迚ｹ縺ｫ${c.experience.slice(0, 50)}...縺ｨ縺・≧驛ｨ蛻・′縲∽ｻ雁屓縺ｮ豎ゆｺｺ隕∽ｻｶ縺ｫ逶ｴ謗･繝槭ャ繝√＠縺ｦ縺・∪縺吶Ａ,
-    match:   `${j.position}縺ｧ縺ｯ${j.description.slice(0, 60)}...縺ｨ縺・≧讌ｭ蜍吶ｒ諡・ｽ薙＞縺溘□縺阪∪縺吶・n${sk0}縺ｮ縺皮ｵ碁ｨ薙・蜊ｳ謌ｦ蜉帙→縺励※豢ｻ縺九○繧矩Κ蛻・′螟壹￥縲・{j.requirements.slice(0, 40)}...縺ｨ縺・≧隕∽ｻｶ縺ｫ繧ょｼｷ縺丞粋閾ｴ縺励※縺・∪縺吶Ａ,
-    benefit: `${sel.includes('謚陦鍋噪謖第姶') ? 'IBM縺ｧ縺ｯ譛蜈育ｫｯAI繝ｻ繧ｯ繝ｩ繧ｦ繝画橿陦薙↓髢｢繧上ｋ螟ｧ隕乗ｨ｡繝励Ο繧ｸ繧ｧ繧ｯ繝医↓謳ｺ繧上ｋ縺薙→縺後〒縺阪・ : sel.includes('繧ｰ繝ｭ繝ｼ繝舌Ν迺ｰ蠅・) ? 'IBM縺ｮ繧ｰ繝ｭ繝ｼ繝舌Ν迺ｰ蠅・〒170繧ｫ蝗ｽ莉･荳翫・繝√・繝縺ｨ蜊疲･ｭ縺ｧ縺阪ｋ讖滉ｼ壹′縺ゅｊ縲・ : 'IBM縺ｨ縺・≧迺ｰ蠅・〒縺ｯ縲・}${j.appeal.split(/[,縲―n]/)[0].trim()}縺ｨ縺・≧迚ｹ蠕ｴ縺後≠繧翫∪縺吶・n${c.reason ? '縲・ + c.reason.slice(0, 30) + '...縲阪→縺・≧蠢怜髄縺ｫ蠢懊∴繧狗腸蠅・〒縺吶・ : '縺薙ｌ縺ｾ縺ｧ縺ｮ邨碁ｨ薙ｒ谺｡縺ｮ繧ｹ繝・・繧ｸ縺ｧ豢ｻ縺九＠縺ｦ縺・◆縺縺代∪縺吶・}`,
-    cta:     `30蛻・⊇縺ｩ縲・∈閠・ｒ蜑肴署縺ｨ縺励↑縺・き繧ｸ繝･繧｢繝ｫ縺ｪ縺願ｩｱ縺励・讖滉ｼ壹ｒ縺・◆縺縺代∪縺吶°・歃n縲瑚・蜻ｳ縺ｯ縺ゅｋ縺代←霆｢閨ｷ縺ｯ閠・∴縺ｦ縺・↑縺・阪→縺・≧譁ｹ縺ｧ繧ょ､ｧ豁楢ｿ弱〒縺吶ゅ＃驛ｽ蜷医・繧医＞縺頑律譎ゅｒ縺・◆縺縺代∪縺吶→蟷ｸ縺・〒縺吶Ａ
+    subject: `${c.company}での${sk0}ご経験について — ${j.position}のご相談`,
+    intro:   `${c.company}で${c.role}として${c.experience.slice(0, 40)}...という経験を積まれてきた点に注目し、ご連絡しました。${story ? '\n' + story.slice(0, 80) + '...' : ''}`,
+    why:     `${sk0}の実務経験と${c.experience.includes('リード') ? 'チームリードとしての実績' : '高い実装力'}は、このポジションで求めているプロフィールと非常に合致しています。\n特に${c.experience.slice(0, 50)}...という部分が、今回の求人要件に直接マッチしています。`,
+    match:   `${j.position}では${j.description.slice(0, 60)}...という業務を担当いただきます。\n${sk0}のご経験は即戦力として活かせる部分が多く、${j.requirements.slice(0, 40)}...という要件にも強く合致しています。`,
+    benefit: `${sel.includes('技術的挑戦') ? 'IBMでは最先端AI・クラウド技術に関わる大規模プロジェクトに携わることができ、' : sel.includes('グローバル環境') ? 'IBMのグローバル環境で170カ国以上のチームと協業できる機会があり、' : 'IBMという環境では、'}${j.appeal.split(/[,、\n]/)[0].trim()}という特徴があります。\n${c.reason ? '「' + c.reason.slice(0, 30) + '...」という志向に応える環境です。' : 'これまでの経験を次のステージで活かしていただけます。'}`,
+    cta:     `30分ほど、選考を前提としないカジュアルなお話しの機会をいただけますか？\n「興味はあるけど転職は考えていない」という方でも大歓迎です。ご都合のよいお日時をいただけますと幸いです。`
   };
   hideLoad(); renderMail(); renderProcessLog(); go(5);
-  // 繝・Δ逕ｨ縺ｮ繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ・磯≦蟒ｶ螳溯｡鯉ｼ・  setTimeout(() => {
+  // デモ用のセルフレビュー（遅延実行）
+  setTimeout(() => {
     S.selfReview = {
       scores: { templateFreedom: 78, candidateSpecificity: 72, ibmness: 65, appealConsistency: 80, motivationAlignment: 75 },
       replyRate: 38,
-      overallComment: '蛟呵｣懆・崋譛峨・邨碁ｨ薙∈縺ｮ險蜿翫′縺ゅｊ縲√ユ繝ｳ繝励Ξ諢溘・豈碑ｼ・噪蟆代↑縺・せ繧ｫ繧ｦ繝医〒縺吶・BM縺ｪ繧峨〒縺ｯ縺ｮ險ｴ豎ゅｒ繧医ｊ蠑ｷ蛹悶＠縲∝呵｣懆・・霆｢閨ｷ逅・罰縺ｨ縺ｮ荳閾ｴ諢溘ｒ鬮倥ａ繧九％縺ｨ縺ｧ霑比ｿ｡邇・′荳翫′繧翫∪縺吶・,
+      overallComment: '候補者固有の経験への言及があり、テンプレ感は比較的少ないスカウトです。IBMならではの訴求をより強化し、候補者の転職理由との一致感を高めることで返信率が上がります。',
       improvements: [
-        { axis: 'IBM繧峨＠縺・, issue: 'IBM縺ｧ縺ゅｋ蠢・┯諤ｧ縺瑚埋縺上∽ｻ也､ｾ縺ｮ繧ｹ繧ｫ繧ｦ繝医→蟾ｮ蛻･蛹悶〒縺阪※縺・↑縺・・, fix: 'IBM縺ｮAI繝ｻWatsonx繝ｻ繧ｰ繝ｭ繝ｼ繝舌Ν繝励Ο繧ｸ繧ｧ繧ｯ繝医↑縺ｩ蝗ｺ譛峨・蠑ｷ縺ｿ繧貞・菴鍋噪縺ｫ1縲・譁・ｵ・∩霎ｼ繧縲・ },
-        { axis: '蛟呵｣懆・崋譛画ｧ', issue: '邨梧ｭｴ縺ｸ縺ｮ險蜿翫′縺ゅｋ縺後√ｂ縺・ｸ豁ｩ雕上∩霎ｼ繧薙□蜈ｷ菴捺ｧ縺梧ｬｲ縺励＞縲・, fix: '蛟呵｣懆・・螳溽ｸｾ謨ｰ蛟､・医メ繝ｼ繝莠ｺ謨ｰ繝ｻPV謨ｰ繝ｻ謾ｹ蝟・紫縺ｪ縺ｩ・峨ｒ逶ｴ謗･蠑慕畑縺吶ｋ縺ｨ蝗ｺ譛画ｧ縺御ｸ翫′繧九・ }
+        { axis: 'IBMらしさ', issue: 'IBMである必然性が薄く、他社のスカウトと差別化できていない。', fix: 'IBMのAI・Watsonx・グローバルプロジェクトなど固有の強みを具体的に1〜2文組み込む。' },
+        { axis: '候補者固有性', issue: '経歴への言及があるが、もう一歩踏み込んだ具体性が欲しい。', fix: '候補者の実績数値（チーム人数・PV数・改善率など）を直接引用すると固有性が上がる。' }
       ]
     };
     renderSelfReview();
@@ -3008,22 +3226,23 @@ function renderMail() {
     S.learningData.scoutAction.selectedAppeals  = S.selectedAppeals;
     S.learningData.scoutAction.generatedSubject = S.mail?.subject || '';
   }
-  // Phase2-3: OHERE繝医Ξ繝ｼ繧ｵ繝薙Μ繝・ぅ繝舌ャ繧ｸ繧貞推繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ繝倥ャ繝繝ｼ縺ｫ陦ｨ遉ｺ
+  // Phase2-3: OHEREトレーサビリティバッジを各セクションヘッダーに表示
   renderOhereTraceBadges();
-  // 螻･豁ｴ縺ｫ閾ｪ蜍穂ｿ晏ｭ倥＠縺ｦ繝輔ぅ繝ｼ繝峨ヰ繝・けUI繧呈緒逕ｻ
+  // 履歴に自動保存してフィードバックUIを描画
   saveScoutHistory();
   renderFeedbackUI();
-  // AI繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ繧帝撼蜷梧悄縺ｧ螳溯｡鯉ｼ・PI縺ゅｌ縺ｰ譛ｬ迚ｩ縲√↑縺代ｌ縺ｰdemo縺ｧ螳溯｡梧ｸ医∩・・  S.reviewRound = 1;
+  // AIセルフレビューを非同期で実行（APIあれば本物、なければdemoで実行済み）
+  S.reviewRound = 1;
   if (hasApiKey()) {
     const srBox = $('selfReviewBox');
-    if (srBox) { srBox.innerHTML = '<div class="sr-loading"><div class="spin" style="width:20px;height:20px;border-width:2px;margin:0 auto 8px"></div><div style="font-size:12px;color:var(--muted)">AI縺後せ繧ｫ繧ｦ繝域枚繧呈治轤ｹ荳ｭ...</div></div>'; srBox.style.display = 'block'; }
+    if (srBox) { srBox.innerHTML = '<div class="sr-loading"><div class="spin" style="width:20px;height:20px;border-width:2px;margin:0 auto 8px"></div><div style="font-size:12px;color:var(--muted)">AIがスカウト文を採点中...</div></div>'; srBox.style.display = 'block'; }
     callSelfReviewAPI().catch(() => {});
   }
 }
 
 /**
- * Phase2-3: OHERE繝医Ξ繝ｼ繧ｵ繝薙Μ繝・ぅ
- * 蜷・せ繧ｫ繧ｦ繝医そ繧ｯ繧ｷ繝ｧ繝ｳ縺後薫HERE縺ｮ縺ｩ縺ｮ繝輔ぉ繝ｼ繧ｺ縺九ｉ譚･縺ｦ縺・ｋ縺九阪ｒ繝舌ャ繧ｸ縺ｧ蜿ｯ隕門喧
+ * Phase2-3: OHEREトレーサビリティ
+ * 各スカウトセクションが「OHEREのどのフェーズから来ているか」をバッジで可視化
  */
 function renderOhereTraceBadges() {
   const a = S.analysis;
@@ -3033,56 +3252,56 @@ function renderOhereTraceBadges() {
   const temp = a.temperature || {};
   const cs = a.careerStory || {};
 
-  // 繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ 竊・OHERE譬ｹ諡繝槭ャ繝斐Φ繧ｰ
+  // セクション → OHERE根拠マッピング
   const traces = {
     subject: {
       ohereKey: 'O',
       label: 'Observation',
       color: '#2563eb',
-      tooltip: `O・郁ｦｳ蟇滂ｼ・ ${oh.observation ? oh.observation.slice(0, 60) + '...' : '蛟呵｣懆・・邨梧ｭｴ莠句ｮ・}`,
+      tooltip: `O（観察）: ${oh.observation ? oh.observation.slice(0, 60) + '...' : '候補者の経歴事実'}`,
       strategy: ''
     },
     intro: {
-      ohereKey: 'H竊担竭竭｡',
-      label: '莉ｮ隱ｬ + 蜈ｱ諢溘・閭ｽ蜉帶価隱・,
+      ohereKey: 'H→S①②',
+      label: '仮説 + 共感・能力承認',
       color: '#7c3aed',
-      tooltip: `H・井ｻｮ隱ｬ・・ ${oh.hypothesis ? oh.hypothesis.slice(0, 50) + '...' : '蛟呵｣懆・・莠ｺ迚ｩ蜒丈ｻｮ隱ｬ'}`,
-      strategy: strat.step1_empathy ? `竭蜈ｱ諢・ ${strat.step1_empathy.slice(0, 50)}...` : ''
+      tooltip: `H（仮説）: ${oh.hypothesis ? oh.hypothesis.slice(0, 50) + '...' : '候補者の人物像仮説'}`,
+      strategy: strat.step1_empathy ? `①共感: ${strat.step1_empathy.slice(0, 50)}...` : ''
     },
     why: {
-      ohereKey: 'E竊担竭｡',
-      label: '譬ｹ諡 + 閭ｽ蜉帶価隱・,
+      ohereKey: 'E→S②',
+      label: '根拠 + 能力承認',
       color: '#0891b2',
-      tooltip: `E・域ｹ諡・・ ${oh.evidence ? oh.evidence.slice(0, 50) + '...' : '莉ｮ隱ｬ縺ｮ譬ｹ諡'}`,
-      strategy: strat.step2_recognition ? `竭｡謇ｿ隱・ ${strat.step2_recognition.slice(0, 50)}...` : ''
+      tooltip: `E（根拠）: ${oh.evidence ? oh.evidence.slice(0, 50) + '...' : '仮説の根拠'}`,
+      strategy: strat.step2_recognition ? `②承認: ${strat.step2_recognition.slice(0, 50)}...` : ''
     },
     match: {
-      ohereKey: 'R竊担竭｢',
-      label: 'Recommendation + 譛ｪ譚･謠千､ｺ',
+      ohereKey: 'R→S③',
+      label: 'Recommendation + 未来提示',
       color: '#059669',
-      tooltip: `R・域耳螂ｨ・・ ${oh.recommendation ? oh.recommendation.slice(0, 50) + '...' : '繧｢繝励Ο繝ｼ繝∵耳螂ｨ'}`,
-      strategy: strat.step3_future ? `竭｢譛ｪ譚･: ${strat.step3_future.slice(0, 50)}...` : ''
+      tooltip: `R（推奨）: ${oh.recommendation ? oh.recommendation.slice(0, 50) + '...' : 'アプローチ推奨'}`,
+      strategy: strat.step3_future ? `③未来: ${strat.step3_future.slice(0, 50)}...` : ''
     },
     benefit: {
-      ohereKey: 'S竭｣',
-      label: 'IBM險ｴ豎ゅヵ繧ｧ繝ｼ繧ｺ',
+      ohereKey: 'S④',
+      label: 'IBM訴求フェーズ',
       color: '#d97706',
-      tooltip: `S竭｣IBM險ｴ豎・ ${strat.step4_ibm ? strat.step4_ibm.slice(0, 60) + '...' : 'IBM險ｴ豎よ姶逡･'}`,
-      strategy: strat.step4_ibm ? `竭｣IBM: ${strat.step4_ibm.slice(0, 50)}...` : ''
+      tooltip: `S④IBM訴求: ${strat.step4_ibm ? strat.step4_ibm.slice(0, 60) + '...' : 'IBM訴求戦略'}`,
+      strategy: strat.step4_ibm ? `④IBM: ${strat.step4_ibm.slice(0, 50)}...` : ''
     },
     cta: {
-      ohereKey: 'S竭､',
-      label: '髱｢隲・ｪ伜ｰ弱ヵ繧ｧ繝ｼ繧ｺ',
+      ohereKey: 'S⑤',
+      label: '面談誘導フェーズ',
       color: '#be185d',
-      tooltip: `S竭､髱｢隲・ｪ伜ｰ・ ${strat.step5_meeting ? strat.step5_meeting.slice(0, 60) + '...' : '髱｢隲・ｪ伜ｰ取姶逡･'}`,
-      strategy: strat.step5_meeting ? `竭､隱伜ｰ・ ${strat.step5_meeting.slice(0, 50)}...` : ''
+      tooltip: `S⑤面談誘導: ${strat.step5_meeting ? strat.step5_meeting.slice(0, 60) + '...' : '面談誘導戦略'}`,
+      strategy: strat.step5_meeting ? `⑤誘導: ${strat.step5_meeting.slice(0, 50)}...` : ''
     }
   };
 
   Object.entries(traces).forEach(([secId, trace]) => {
     const msHead = document.querySelector(`#ms-${secId} .ms-head`);
     if (!msHead) return;
-    // 譌｢蟄倥ヰ繝・ず繧貞炎髯､縺励※縺九ｉ蜀崎ｿｽ蜉
+    // 既存バッジを削除してから再追加
     msHead.querySelectorAll('.ohere-trace-badge').forEach(b => b.remove());
     const badge = document.createElement('span');
     badge.className = 'ohere-trace-badge';
@@ -3093,8 +3312,9 @@ function renderOhereTraceBadges() {
   });
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP5: 繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ 繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ + Phase2: 謾ｹ蝟・Ν繝ｼ繝・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// STEP5: セルフレビュー レンダリング + Phase2: 改善ループ
+// ══════════════════════════════════════════
 function renderSelfReview() {
   const sr = S.selfReview;
   const box = $('selfReviewBox');
@@ -3102,35 +3322,36 @@ function renderSelfReview() {
 
   const sc = sr.scores || {};
   const axes = [
-    { key: 'templateFreedom',     label: '繝・Φ繝励Ξ繝ｼ繝域─',     icon: '統' },
-    { key: 'candidateSpecificity', label: '蛟呵｣懆・崋譛画ｧ',       icon: '側' },
-    { key: 'ibmness',             label: 'IBM繧峨＠縺・,           icon: '塙' },
-    { key: 'appealConsistency',   label: '險ｴ豎ゅ・荳雋ｫ諤ｧ',        icon: '識' },
-    { key: 'motivationAlignment', label: '霆｢閨ｷ蜍墓ｩ溘→縺ｮ謨ｴ蜷域ｧ',  icon: '庁' }
+    { key: 'templateFreedom',     label: 'テンプレート感',     icon: '📝' },
+    { key: 'candidateSpecificity', label: '候補者固有性',       icon: '👤' },
+    { key: 'ibmness',             label: 'IBMらしさ',           icon: '🔷' },
+    { key: 'appealConsistency',   label: '訴求の一貫性',        icon: '🎯' },
+    { key: 'motivationAlignment', label: '転職動機との整合性',  icon: '💡' }
   ];
   const replyRate = parseInt(sr.replyRate) || 0;
   const rateClass = replyRate >= 50 ? 'sr-rate-high' : replyRate >= 30 ? 'sr-rate-mid' : 'sr-rate-low';
   const avgScore = Math.round(axes.reduce((s, a) => s + (parseInt(sc[a.key]) || 0), 0) / axes.length);
   const reviewRound = S.reviewRound || 1;
 
-  // 謾ｹ蝟・欠鞫・窶・1繧ｯ繝ｪ繝・け蜀咲函謌舌・繧ｿ繝ｳ莉倥″ (Phase2)
+  // 改善指摘 — 1クリック再生成ボタン付き (Phase2)
   const SEC_MAP = {
-    '繝・Φ繝励Ξ繝ｼ繝域─': 'intro', '蛟呵｣懆・崋譛画ｧ': 'intro', 'IBM繧峨＠縺・: 'benefit',
-    '險ｴ豎ゅ・荳雋ｫ諤ｧ': 'match', '霆｢閨ｷ蜍墓ｩ溘→縺ｮ謨ｴ蜷域ｧ': 'why'
+    'テンプレート感': 'intro', '候補者固有性': 'intro', 'IBMらしさ': 'benefit',
+    '訴求の一貫性': 'match', '転職動機との整合性': 'why'
   };
   const impHtml = (sr.improvements || []).map((imp, idx) => {
     const secId = SEC_MAP[imp.axis] || 'benefit';
-    const secLabel = { subject:'莉ｶ蜷・, intro:'蜀帝ｭ譁・, why:'逅・罰', match:'謗･轤ｹ', benefit:'繝｡繝ｪ繝・ヨ', cta:'隱伜ｰ取枚' };
+    const secLabel = { subject:'件名', intro:'冒頭文', why:'理由', match:'接点', benefit:'メリット', cta:'誘導文' };
     return `
       <div class="sr-imp-item" id="sr-imp-${idx}">
         <div class="sr-imp-head">
           <div style="flex:1">
             <div class="sr-imp-axis">${esc(imp.axis)}</div>
-            <div class="sr-imp-issue">笞・・${esc(imp.issue)}</div>
-            <div class="sr-imp-fix">庁 謾ｹ蝟・｡・ ${esc(imp.fix)}</div>
+            <div class="sr-imp-issue">⚠️ ${esc(imp.issue)}</div>
+            <div class="sr-imp-fix">💡 改善案: ${esc(imp.fix)}</div>
           </div>
           <button class="sr-fix-btn" onclick="applyImprovementToSection('${secId}', ${idx})">
-            笨ｦ ${esc(secLabel[secId] || secId)}繧呈隼蝟・          </button>
+            ✦ ${esc(secLabel[secId] || secId)}を改善
+          </button>
         </div>
       </div>`;
   }).join('');
@@ -3139,12 +3360,12 @@ function renderSelfReview() {
   box.innerHTML = `
     <div class="sr-header">
       <div class="sr-title">
-        <span class="sr-icon">笨ｦ</span>
-        AI繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ <span class="sr-ibm-badge">IBM蟆ら畑迚・/span>
-        ${reviewRound > 1 ? `<span class="sr-round-badge">隨ｬ${reviewRound}蝗・/span>` : ''}
+        <span class="sr-icon">✦</span>
+        AIセルフレビュー <span class="sr-ibm-badge">IBM専用版</span>
+        ${reviewRound > 1 ? `<span class="sr-round-badge">第${reviewRound}回</span>` : ''}
       </div>
       <div class="sr-reply-wrap">
-        <span class="sr-reply-label">霑比ｿ｡邇・ｺ域ｸｬ</span>
+        <span class="sr-reply-label">返信率予測</span>
         <span class="sr-reply-rate ${rateClass}">${replyRate}%</span>
       </div>
     </div>
@@ -3161,34 +3382,34 @@ function renderSelfReview() {
       }).join('')}
     </div>
     <div class="sr-avg-row">
-      <span class="sr-avg-label">邱丞粋繧ｹ繧ｳ繧｢</span>
+      <span class="sr-avg-label">総合スコア</span>
       <span class="sr-avg-score">${avgScore}<span style="font-size:13px;font-weight:400">/100</span></span>
-      <button class="sr-rerun-btn" onclick="rerunSelfReview()">竊ｻ 蜀肴治轤ｹ</button>
+      <button class="sr-rerun-btn" onclick="rerunSelfReview()">↻ 再採点</button>
     </div>
     ${impHtml
-      ? `<div class="sr-imp-section"><div class="sr-imp-title">謾ｹ蝟・欠鞫・窶・繝懊ち繝ｳ縺ｧ1繧ｯ繝ｪ繝・け謾ｹ蝟・/div>${impHtml}</div>`
-      : `<div class="sr-imp-section" style="padding:10px 0"><div style="font-size:12px;color:#4ade80;padding:8px">笨・謾ｹ蝟・欠鞫倥↑縺・窶・鬮伜刀雉ｪ縺ｪ繧ｹ繧ｫ繧ｦ繝医〒縺・/div></div>`}`;
+      ? `<div class="sr-imp-section"><div class="sr-imp-title">改善指摘 — ボタンで1クリック改善</div>${impHtml}</div>`
+      : `<div class="sr-imp-section" style="padding:10px 0"><div style="font-size:12px;color:#4ade80;padding:8px">✓ 改善指摘なし — 高品質なスカウトです</div></div>`}`;
 }
 
-/** Phase2: 謾ｹ蝟・欠鞫倥°繧牙ｯｾ雎｡繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ繧但I縺ｧ蜀咲函謌・*/
+/** Phase2: 改善指摘から対象セクションをAIで再生成 */
 async function applyImprovementToSection(secId, impIdx) {
   const imp = (S.selfReview?.improvements || [])[impIdx];
   if (!imp) return;
   const btn = document.querySelector(`#sr-imp-${impIdx} .sr-fix-btn`);
-  if (btn) { btn.textContent = '逕滓・荳ｭ...'; btn.disabled = true; }
+  if (btn) { btn.textContent = '生成中...'; btn.disabled = true; }
   try {
     await regenSectionWithFix(secId, imp.fix);
-    if (btn) { btn.textContent = '笨・驕ｩ逕ｨ螳御ｺ・; btn.style.background = '#059669'; }
+    if (btn) { btn.textContent = '✓ 適用完了'; btn.style.background = '#059669'; }
     setTimeout(() => {
-      if (btn) { btn.textContent = `笨ｦ 蜀肴隼蝟Я; btn.style.background = ''; btn.disabled = false; }
+      if (btn) { btn.textContent = `✦ 再改善`; btn.style.background = ''; btn.disabled = false; }
       if (hasApiKey()) rerunSelfReview();
     }, 1500);
   } catch (e) {
-    if (btn) { btn.textContent = '繧ｨ繝ｩ繝ｼ'; btn.disabled = false; }
+    if (btn) { btn.textContent = 'エラー'; btn.disabled = false; }
   }
 }
 
-/** Phase2: 謾ｹ蝟・欠遉ｺ莉倥″繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ蜀咲函謌・*/
+/** Phase2: 改善指示付きセクション再生成 */
 async function regenSectionWithFix(sec, fixInstruction) {
   const c = S.candidate, j = S.job, a = S.analysis;
   const current = $('ta-' + sec)?.value || S.mail[sec] || '';
@@ -3202,8 +3423,8 @@ async function regenSectionWithFix(sec, fixInstruction) {
     body: JSON.stringify({
       model: md(),
       messages: [
-        { role: 'system', content: '縺ゅ↑縺溘・譌･譛ｬ縺ｮ繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ゅせ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ縺ｮ迚ｹ螳壹そ繧ｯ繧ｷ繝ｧ繝ｳ繧呈隼蝟・＠縺ｾ縺吶・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
-        { role: 'user', content: `## 謾ｹ蝟・ｯｾ雎｡繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ: ${sec}\n## 迴ｾ蝨ｨ縺ｮ譁・ｫ:\n${current}\n\n## 謾ｹ蝟・欠遉ｺ・亥ｿ・★蜿肴丐縺吶ｋ縺薙→・・\n${fixInstruction}\n\n## IBM險ｴ豎ゅ・繝偵Φ繝茨ｼ郁・辟ｶ縺ｫ邨・∩霎ｼ繧・・\n${ibmAppeals}\n\n## 蛟呵｣懆・ュ蝣ｱ: ${c.role}・・{c.company}・峨√せ繧ｭ繝ｫ: ${c.skills}縲∝ｿ怜髄: ${c.reason || '荳肴・'}\n## 豎ゆｺｺ諠・ｱ: ${j.position}・・{j.company || 'IBM'}・噂n\n謾ｹ蝟・欠遉ｺ繧貞ｮ悟・縺ｫ蜿肴丐縺励◆譁ｰ縺励＞譁・ｫ繧堤函謌舌＠縺ｦ縺上□縺輔＞縲・I縺｣縺ｽ縺・ｮ壼梛陦ｨ迴ｾ縺ｯ遖∵ｭ｢縲・SON: {"${sec}": "謾ｹ蝟・ｾ後ユ繧ｭ繧ｹ繝・}` }
+        { role: 'system', content: 'あなたは日本のトップリクルーターです。スカウトメールの特定セクションを改善します。JSONのみ返してください。' },
+        { role: 'user', content: `## 改善対象セクション: ${sec}\n## 現在の文章:\n${current}\n\n## 改善指示（必ず反映すること）:\n${fixInstruction}\n\n## IBM訴求のヒント（自然に組み込む）:\n${ibmAppeals}\n\n## 候補者情報: ${c.role}（${c.company}）、スキル: ${c.skills}、志向: ${c.reason || '不明'}\n## 求人情報: ${j.position}（${j.company || 'IBM'}）\n\n改善指示を完全に反映した新しい文章を生成してください。AIっぽい定型表現は禁止。JSON: {"${sec}": "改善後テキスト"}` }
       ],
       temperature: 0.8, response_format: { type: 'json_object' }
     })
@@ -3216,12 +3437,12 @@ async function regenSectionWithFix(sec, fixInstruction) {
   if ($('pvBox')?.classList.contains('on')) $('pvBox').textContent = buildFull();
 }
 
-/** Phase2: 謾ｹ蝟・ｾ後↓蜀肴治轤ｹ */
+/** Phase2: 改善後に再採点 */
 async function rerunSelfReview() {
   S.reviewRound = (S.reviewRound || 1) + 1;
   const box = $('selfReviewBox');
   if (box) {
-    box.innerHTML = `<div class="sr-loading"><div class="spin" style="width:20px;height:20px;border-width:2px;margin:0 auto 8px"></div><div style="font-size:12px;color:#94a3b8">隨ｬ${S.reviewRound}蝗樊治轤ｹ荳ｭ...</div></div>`;
+    box.innerHTML = `<div class="sr-loading"><div class="spin" style="width:20px;height:20px;border-width:2px;margin:0 auto 8px"></div><div style="font-size:12px;color:#94a3b8">第${S.reviewRound}回採点中...</div></div>`;
   }
   if (hasApiKey()) {
     try { await callSelfReviewAPI(); } catch { /* silent */ }
@@ -3246,11 +3467,11 @@ function renderProcessLog() {
     .replace(/: (\d+)/g, ': <span class="log-val">$1</span>');
 }
 
-// 笏笏 蜀咲函謌舌・繧ｿ繝ｳ 笏笏
+// ── 再生成ボタン ──
 document.querySelectorAll('.regen-btn').forEach(btn => {
   btn.addEventListener('click', async () => {
     const sec = btn.dataset.sec, orig = btn.textContent;
-    btn.textContent = '逕滓・荳ｭ...'; btn.disabled = true;
+    btn.textContent = '生成中...'; btn.disabled = true;
     try { if (hasApiKey()) await regenSection(sec); else regenSectionDemo(sec); }
     catch { regenSectionDemo(sec); }
     btn.textContent = orig; btn.disabled = false;
@@ -3259,28 +3480,28 @@ document.querySelectorAll('.regen-btn').forEach(btn => {
 
 function regenSectionDemo(sec) {
   const newVal = sec === 'subject'
-    ? `縲・{S.candidate.role}縺ｮ縺皮ｵ碁ｨ薙ｒ縺懊・縲・{S.job.company || '蠑顔､ｾ'}縺ｧ縺ｮ繝√Ε繝ｬ繝ｳ繧ｸ縺ｫ縺､縺・※縺皮嶌隲㌔
+    ? `【${S.candidate.role}のご経験をぜひ】${S.job.company || '弊社'}でのチャレンジについてご相談`
     : S.mail[sec] || '';
   S.mail[sec] = newVal; const ta = $('ta-' + sec); ta.value = newVal; autoResize(ta); updateCC('ta-' + sec, 'cc-' + sec);
 }
 
-// 笏笏 繝励Ξ繝薙Η繝ｼ繝ｻ繧ｳ繝斐・ 笏笏
+// ── プレビュー・コピー ──
 function togglePreview() {
   const pv = $('pvBox'), ms = $('mSections'), btn = $('pvBtn');
-  if (pv.classList.contains('on')) { pv.classList.remove('on'); ms.style.display = ''; btn.textContent = '繝励Ξ繝薙Η繝ｼ'; }
-  else { pv.textContent = buildFull(); pv.classList.add('on'); ms.style.display = 'none'; btn.textContent = '邱ｨ髮・↓謌ｻ繧・; }
+  if (pv.classList.contains('on')) { pv.classList.remove('on'); ms.style.display = ''; btn.textContent = 'プレビュー'; }
+  else { pv.textContent = buildFull(); pv.classList.add('on'); ms.style.display = 'none'; btn.textContent = '編集に戻る'; }
 }
 function buildFull() {
-  return `莉ｶ蜷搾ｼ・{$('ta-subject')?.value || ''}\n\n笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤笏≫煤\n\n${['intro', 'why', 'match', 'benefit', 'cta'].map(s => $('ta-' + s)?.value || '').join('\n\n')}\n\n[諡・ｽ楢・錐]\n[莨夂､ｾ蜷江 謗｡逕ｨ諡・ｽ伝;
+  return `件名：${$('ta-subject')?.value || ''}\n\n━━━━━━━━━━━━━━━━━━━━━━\n\n${['intro', 'why', 'match', 'benefit', 'cta'].map(s => $('ta-' + s)?.value || '').join('\n\n')}\n\n[担当者名]\n[会社名] 採用担当`;
 }
 
-$('cpAll').addEventListener('click',  () => { navigator.clipboard.writeText(buildFull()).then(() => flashCopy('cpAll', '笨・繧ｳ繝斐・縺励∪縺励◆')); });
-$('cpSubj').addEventListener('click', () => { navigator.clipboard.writeText($('ta-subject')?.value || '').then(() => flashCopy('cpSubj', '笨・繧ｳ繝斐・縺励∪縺励◆')); });
+$('cpAll').addEventListener('click',  () => { navigator.clipboard.writeText(buildFull()).then(() => flashCopy('cpAll', '✓ コピーしました')); });
+$('cpSubj').addEventListener('click', () => { navigator.clipboard.writeText($('ta-subject')?.value || '').then(() => flashCopy('cpSubj', '✓ コピーしました')); });
 function flashCopy(id, msg) { const b = $(id), orig = b.textContent; b.classList.add('ok'); b.textContent = msg; setTimeout(() => { b.classList.remove('ok'); b.textContent = orig; }, 2000); }
 
-// 笏笏 繝・く繧ｹ繝医お繝ｪ繧｢閾ｪ蜍輔Μ繧ｵ繧､繧ｺ 笏笏
+// ── テキストエリア自動リサイズ ──
 function autoResize(ta) { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; }
-function updateCC(taId, ccId) { const ta = $(taId), cc = $(ccId); if (!ta || !cc) return; cc.textContent = ta.value.length + '蟄・; cc.classList.toggle('warn', ta.value.length > 400); }
+function updateCC(taId, ccId) { const ta = $(taId), cc = $(ccId); if (!ta || !cc) return; cc.textContent = ta.value.length + '字'; cc.classList.toggle('warn', ta.value.length > 400); }
 document.querySelectorAll('.ms textarea').forEach(ta => {
   ta.addEventListener('input', () => {
     autoResize(ta);
@@ -3288,12 +3509,14 @@ document.querySelectorAll('.ms textarea').forEach(ta => {
     updateCC('ta-' + sec, 'cc-' + sec);
     if (S.mail) S.mail[sec] = ta.value;
     if ($('pvBox').classList.contains('on')) $('pvBox').textContent = buildFull();
-    // Phase1.5: 菫ｮ豁｣繝ｭ繧ｰ險倬鹸・・I蜴滓枚縺ｨ逡ｰ縺ｪ繧句ｴ蜷医・縺ｿ・・    if (S.mail && S.currentHistoryId) {
+    // Phase1.5: 修正ログ記録（AI原文と異なる場合のみ）
+    if (S.mail && S.currentHistoryId) {
       const history = loadScoutHistory();
       const entry = history.find(h => h.id === S.currentHistoryId);
       const aiOrig = entry?.mailAi?.[sec] || '';
       if (aiOrig && aiOrig !== ta.value) {
-        // 螟画峩荳ｭ繝輔Λ繧ｰ・・ebounce逕ｨ・・        if (!ta._editTimer) {
+        // 変更中フラグ（debounce用）
+        if (!ta._editTimer) {
           ta._editTimer = setTimeout(() => {
             saveEditLog(S.currentHistoryId, sec, aiOrig, ta.value, '');
             ta._editTimer = null;
@@ -3304,49 +3527,50 @@ document.querySelectorAll('.ms textarea').forEach(ta => {
   });
 });
 
-// 笏笏 繝励Ο繧ｻ繧ｹ繝ｭ繧ｰ陦ｨ遉ｺ蛻・崛 笏笏
+// ── プロセスログ表示切替 ──
 $('logToggle').addEventListener('click', () => {
   const b = $('logBox');
-  if (b.style.display === 'none') { b.style.display = 'block'; $('logToggle').textContent = '蛻､譁ｭ繝励Ο繧ｻ繧ｹ繝ｭ繧ｰ繧帝撼陦ｨ遉ｺ 笆ｲ'; }
-  else                            { b.style.display = 'none';  $('logToggle').textContent = '蛻､譁ｭ繝励Ο繧ｻ繧ｹ繝ｭ繧ｰ繧定｡ｨ遉ｺ 笆ｼ'; }
+  if (b.style.display === 'none') { b.style.display = 'block'; $('logToggle').textContent = '判断プロセスログを非表示 ▲'; }
+  else                            { b.style.display = 'none';  $('logToggle').textContent = '判断プロセスログを表示 ▼'; }
 });
 
-// 笏笏 譁ｰ隕丈ｽ懈・ 笏笏
+// ── 新規作成 ──
 function restart() {
   document.querySelectorAll('input[type=text], textarea').forEach(el => { if (!el.closest('.topbar')) el.value = ''; });
   S.candidate = {}; S.job = {}; S.analysis = null; S.mail = null; S.selfReview = null; S.selectedAppeals = []; S.selectedAppealIds = []; S.learningData = {};
   S.currentHistoryId = null;
   S.currentProjectId = null;
   S.reviewRound = 1;
-  // 繝励Ο繧ｸ繧ｧ繧ｯ繝磯∈謚槭ヰ繝ｼ縺ｮ繧｢繧ｯ繝・ぅ繝也憾諷九ｒ繝ｪ繧ｻ繝・ヨ
+  // プロジェクト選択バーのアクティブ状態をリセット
   document.querySelectorAll('.proj-sel-btn').forEach(b => b.classList.remove('active'));
   go(1);
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// 讖溯・A: 諠・ｱ蜩∬ｳｪ繝√ぉ繝・け & AI陬懷ｮ瑚ｳｪ蝠・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// 機能A: 情報品質チェック & AI補完質問
+// ══════════════════════════════════════════
 function calcInfoQuality(c) {
   const checks = [];
   let score = 0;
 
   if (!c.reason || c.reason.length < 10) {
-    checks.push({ field: 'reason', priority: 'high', q: '霆｢閨ｷ繝ｻ霆｢閨ｷ繧呈､懆ｨ弱＠縺ｦ縺・ｋ逅・罰繧・∵ｬ｡縺ｮ繧ｭ繝｣繝ｪ繧｢縺ｧ螳溽樟縺励◆縺・％縺ｨ縺ｯ縺ゅｊ縺ｾ縺吶°・・, why: '霆｢閨ｷ逅・罰縺ｯ縲悟呵｣懆・ち繧､繝励阪→縲瑚ｨｴ豎ゅ・繧､繝ｳ繝亥━蜈磯・ｽ阪阪・邊ｾ蠎ｦ縺ｫ譛繧ょｽｱ髻ｿ縺励∪縺吶・ });
+    checks.push({ field: 'reason', priority: 'high', q: '転職・転職を検討している理由や、次のキャリアで実現したいことはありますか？', why: '転職理由は「候補者タイプ」と「訴求ポイント優先順位」の精度に最も影響します。' });
   } else { score += 30; }
 
-  if (c.experience.length < 30 || !/[0-9・・・吝ｹｴ蜷堺ｻｶ%・・ｸ・т]/.test(c.experience)) {
-    checks.push({ field: 'experience', priority: 'high', q: '邨碁ｨ薙＠縺滓･ｭ蜍吶〒縲∬ｦ乗ｨ｡繝ｻ莠ｺ謨ｰ繝ｻ譛滄俣繝ｻ謌先棡縺ｪ縺ｩ繧貞・菴鍋噪縺ｫ謨吶∴縺ｦ縺上□縺輔＞縲ゑｼ井ｾ・ 繝√・繝5蜷阪・譛磯俣100荳⑰V繝ｻ繝ｬ繧ｹ繝昴Φ繧ｹ30%謾ｹ蝟・ｼ・, why: '蜈ｷ菴鍋噪縺ｪ謨ｰ蛟､縺後≠繧九→縲∵ｱゆｺｺ縺ｨ縺ｮ縲梧磁轤ｹ縲榊・譫舌・邊ｾ蠎ｦ縺御ｸ翫′繧翫∪縺吶・ });
+  if (c.experience.length < 30 || !/[0-9０-９年名件%％万億]/.test(c.experience)) {
+    checks.push({ field: 'experience', priority: 'high', q: '経験した業務で、規模・人数・期間・成果などを具体的に教えてください。（例: チーム5名・月間100万PV・レスポンス30%改善）', why: '具体的な数値があると、求人との「接点」分析の精度が上がります。' });
   } else { score += 20; }
 
   if (!c.projects || c.projects.length < 5) {
-    checks.push({ field: 'projects', priority: 'med', q: '蜊ｰ雎｡縺ｫ谿九▲縺ｦ縺・ｋ繝励Ο繧ｸ繧ｧ繧ｯ繝医ｄ縲∬・蛻・′荳ｻ蟆弱・雋｢迪ｮ縺励◆繧ｨ繝斐た繝ｼ繝峨・縺ゅｊ縺ｾ縺吶°・・, why: '繝励Ο繧ｸ繧ｧ繧ｯ繝育ｵ碁ｨ薙′縺ゅｋ縺ｨ縲√せ繧ｫ繧ｦ繝域枚縺ｫ縲後≠縺ｪ縺溘・螳溽ｸｾ繧定ｦ九◆縲阪→縺・≧蜈ｷ菴捺ｧ縺悟・縺ｾ縺吶・ });
+    checks.push({ field: 'projects', priority: 'med', q: '印象に残っているプロジェクトや、自分が主導・貢献したエピソードはありますか？', why: 'プロジェクト経験があると、スカウト文に「あなたの実績を見た」という具体性が出ます。' });
   } else { score += 15; }
 
-  if (c.skills.split(/[,縲―n]/).length < 3) {
-    checks.push({ field: 'skills', priority: 'med', q: '荳ｻ隕√せ繧ｭ繝ｫ莉･螟悶↓縲∝ｾ玲э縺ｪ繝・・繝ｫ繝ｻ繝輔Ξ繝ｼ繝繝ｯ繝ｼ繧ｯ繝ｻ讌ｭ蜍咎伜沺縺後≠繧後・謨吶∴縺ｦ縺上□縺輔＞縲・, why: '繧ｹ繧ｭ繝ｫ縺ｮ蟷・′繧上°繧九→繝槭ャ繝∝・譫舌・邊ｾ蠎ｦ縺碁ｫ倥∪繧翫∪縺吶・ });
+  if (c.skills.split(/[,、\n]/).length < 3) {
+    checks.push({ field: 'skills', priority: 'med', q: '主要スキル以外に、得意なツール・フレームワーク・業務領域があれば教えてください。', why: 'スキルの幅がわかるとマッチ分析の精度が高まります。' });
   } else { score += 15; }
 
-  if (!/(譬ｪ蠑楯譛蛾剞|Inc|Ltd|LLC|corp|繧ｹ繧ｿ繝ｼ繝医い繝・・|SIer|繝吶Φ繝√Ε繝ｼ|荳雁ｴ)/i.test(c.company) && c.company.length < 6) {
-    checks.push({ field: 'company', priority: 'low', q: '迴ｾ蝨ｨ縺ｮ莨夂､ｾ縺ｯ螟ｧ謇九・SIer繝ｻ繧ｹ繧ｿ繝ｼ繝医い繝・・繝ｻ螟冶ｳ・ｳｻ縺ｪ縺ｩ縺ｩ縺ｮ繧医≧縺ｪ迺ｰ蠅・〒縺吶°・・, why: '莨夂､ｾ迺ｰ蠅・・遞ｮ蛻･縺後ｏ縺九ｋ縺ｨ蛟呵｣懆・ｿ怜髄縺ｮ謗ｨ貂ｬ邊ｾ蠎ｦ縺悟髄荳翫＠縺ｾ縺吶・ });
+  if (!/(株式|有限|Inc|Ltd|LLC|corp|スタートアップ|SIer|ベンチャー|上場)/i.test(c.company) && c.company.length < 6) {
+    checks.push({ field: 'company', priority: 'low', q: '現在の会社は大手・SIer・スタートアップ・外資系などどのような環境ですか？', why: '会社環境の種別がわかると候補者志向の推測精度が向上します。' });
   } else { score += 10; }
 
   score += 10;
@@ -3360,14 +3584,14 @@ function renderAIQuestions(c, j, iq) {
   fill.className = `iq-fill ${level}`;
   setTimeout(() => { fill.style.width = score + '%'; }, 60);
   const scoreEl = $('iqScore');
-  scoreEl.textContent = score + '轤ｹ';
+  scoreEl.textContent = score + '点';
   scoreEl.className = `iq-score ${level}`;
 
   $('aqIntro').innerHTML = score < 45
-    ? `<strong>諠・ｱ蜩∬ｳｪ繧ｹ繧ｳ繧｢ ${score}轤ｹ 窶・陬懷ｮ後′蠢・ｦ√〒縺・/strong><br>迴ｾ蝨ｨ縺ｮ諠・ｱ縺ｧ縺ｯ縲瑚ｨｴ豎ゅ・繧､繝ｳ繝医・蜆ｪ蜈磯・ｽ阪阪→縲悟呵｣懆・ち繧､繝怜・鬘槭阪・邊ｾ蠎ｦ縺御ｽ弱￥縺ｪ繧翫∪縺吶ゆｻ･荳九・雉ｪ蝠上↓蝗樒ｭ斐☆繧九％縺ｨ縺ｧ縲√ヨ繝・・繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ荳ｦ縺ｿ縺ｮ邊ｾ蠎ｦ繧貞ｮ溽樟縺ｧ縺阪∪縺吶Ａ
-    : `<strong>諠・ｱ蜩∬ｳｪ繧ｹ繧ｳ繧｢ ${score}轤ｹ 窶・縺ゅ→蟆代＠縺ｧ邊ｾ蠎ｦ縺悟､ｧ蟷・髄荳・/strong><br>蝓ｺ譛ｬ諠・ｱ縺ｯ謠・▲縺ｦ縺・∪縺吶′縲∽ｻ･荳九・諠・ｱ繧定｣懷ｮ後☆繧九→AI蛻・梵縺ｮ菫｡鬆ｼ蠎ｦ縺御ｸ翫′繧翫∪縺吶ゅせ繧ｭ繝・・縺励※繧ゅ◎縺ｮ縺ｾ縺ｾ蛻・梵繧帝ｲ繧√ｉ繧後∪縺吶Ａ;
+    ? `<strong>情報品質スコア ${score}点 — 補完が必要です</strong><br>現在の情報では「訴求ポイントの優先順位」と「候補者タイプ分類」の精度が低くなります。以下の質問に回答することで、トップリクルーター並みの精度を実現できます。`
+    : `<strong>情報品質スコア ${score}点 — あと少しで精度が大幅向上</strong><br>基本情報は揃っていますが、以下の情報を補完するとAI分析の信頼度が上がります。スキップしてもそのまま分析を進められます。`;
 
-  const priLabel = { high: '邊ｾ蠎ｦ蠖ｱ髻ｿ・夐ｫ・, med: '邊ｾ蠎ｦ蠖ｱ髻ｿ・壻ｸｭ', low: '邊ｾ蠎ｦ蠖ｱ髻ｿ・壻ｽ・ };
+  const priLabel = { high: '精度影響：高', med: '精度影響：中', low: '精度影響：低' };
   const priClass = { high: 'aqp-high',     med: 'aqp-med',     low: 'aqp-low' };
   $('aqList').innerHTML = iq.checks.map(q => `
     <div class="aq-item">
@@ -3376,12 +3600,13 @@ function renderAIQuestions(c, j, iq) {
         <span class="aq-q">${esc(q.q)}</span>
       </div>
       <div class="aq-why">${esc(q.why)}</div>
-      <div class="aq-input"><textarea placeholder="・医せ繧ｭ繝・・縺吶ｋ蝣ｴ蜷医・遨ｺ谺・・縺ｾ縺ｾ・・ data-field="${q.field}" rows="2"></textarea></div>
+      <div class="aq-input"><textarea placeholder="（スキップする場合は空欄のまま）" data-field="${q.field}" rows="2"></textarea></div>
     </div>`).join('');
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// 讖溯・B: 繝舌ャ繝∝・逅・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// 機能B: バッチ処理
+// ══════════════════════════════════════════
 let batchCandCount = 0;
 const BATCH_RESULTS = [];
 
@@ -3389,8 +3614,8 @@ function openBatchMode() {
   $('batchModeBtn').classList.add('active');
   const j = S.job;
   $('batchJobSummary').textContent = j && j.position
-    ? `繝昴ず繧ｷ繝ｧ繝ｳ: ${j.position}${j.company ? ' / ' + j.company : ''}\n莉穂ｺ句・螳ｹ: ${j.description ? j.description.slice(0, 80) + '...' : ''}`
-    : '豎ゆｺｺ諠・ｱ縺梧悴蜈･蜉帙〒縺吶ょ・縺ｫSTEP1縺ｮ豎ゆｺｺ諠・ｱ繧貞・蜉帙＠縺ｦ縺上□縺輔＞縲・;
+    ? `ポジション: ${j.position}${j.company ? ' / ' + j.company : ''}\n仕事内容: ${j.description ? j.description.slice(0, 80) + '...' : ''}`
+    : '求人情報が未入力です。先にSTEP1の求人情報を入力してください。';
   if (batchCandCount === 0) { addBatchCandidate(); addBatchCandidate(); }
   go('Batch');
 }
@@ -3402,15 +3627,15 @@ function addBatchCandidate() {
   div.className = 'batch-cand'; div.id = `bcand_${n}`;
   div.innerHTML = `
     <div class="batch-cand-head">
-      <span class="batch-cand-num">蛟呵｣懆・${n}</span>
-      <span class="batch-cand-status bcs-wait" id="bcand_status_${n}">蠕・ｩ滉ｸｭ</span>
+      <span class="batch-cand-num">候補者 ${n}</span>
+      <span class="batch-cand-status bcs-wait" id="bcand_status_${n}">待機中</span>
     </div>
     <div class="batch-cand-body">
-      <div class="fg"><label>迴ｾ蝨ｨ縺ｮ莨夂､ｾ<span class="req">*</span></label><input type="text" id="bc_co_${n}" placeholder="萓具ｼ壽ｪ蠑丈ｼ夂､ｾ縲・・></div>
-      <div class="fg"><label>迴ｾ蝨ｨ縺ｮ閨ｷ遞ｮ<span class="req">*</span></label><input type="text" id="bc_role_${n}" placeholder="萓具ｼ壹ヰ繝・け繧ｨ繝ｳ繝峨お繝ｳ繧ｸ繝九い"></div>
-      <div class="fg"><label>邨碁ｨ捺ｦりｦ・span class="req">*</span></label><textarea id="bc_exp_${n}" placeholder="荳ｻ縺ｪ邨碁ｨ薙・螳溽ｸｾ繧堤ｰ｡貎斐↓" style="min-height:54px"></textarea></div>
-      <div class="fg"><label>繧ｹ繧ｭ繝ｫ<span class="req">*</span></label><textarea id="bc_sk_${n}" placeholder="萓具ｼ哽ava, AWS, Docker" style="min-height:54px"></textarea></div>
-      <div class="fg" style="grid-column:span 2"><label>霆｢閨ｷ逅・罰繝ｻ蠢怜髄・井ｻｻ諢擾ｼ・/label><textarea id="bc_why_${n}" placeholder="萓具ｼ壽橿陦鍋噪謖第姶繧偵＠縺溘＞" style="min-height:40px"></textarea></div>
+      <div class="fg"><label>現在の会社<span class="req">*</span></label><input type="text" id="bc_co_${n}" placeholder="例：株式会社〇〇"></div>
+      <div class="fg"><label>現在の職種<span class="req">*</span></label><input type="text" id="bc_role_${n}" placeholder="例：バックエンドエンジニア"></div>
+      <div class="fg"><label>経験概要<span class="req">*</span></label><textarea id="bc_exp_${n}" placeholder="主な経験・実績を簡潔に" style="min-height:54px"></textarea></div>
+      <div class="fg"><label>スキル<span class="req">*</span></label><textarea id="bc_sk_${n}" placeholder="例：Java, AWS, Docker" style="min-height:54px"></textarea></div>
+      <div class="fg" style="grid-column:span 2"><label>転職理由・志向（任意）</label><textarea id="bc_why_${n}" placeholder="例：技術的挑戦をしたい" style="min-height:40px"></textarea></div>
     </div>`;
   $('batchCandidates').appendChild(div);
   updateBatchRunBtn();
@@ -3431,7 +3656,7 @@ async function runBatch() {
   const j = S.job?.position
     ? S.job
     : { position: $('j_pos')?.value.trim() || '', company: $('j_co')?.value.trim() || '', description: $('j_desc')?.value.trim() || '', requirements: $('j_req')?.value.trim() || '', appeal: $('j_ap')?.value.trim() || '' };
-  if (!j.position) { err('豎ゆｺｺ諠・ｱ縺ｮ繝昴ず繧ｷ繝ｧ繝ｳ蜷阪ｒ蜈･蜉帙＠縺ｦ縺上□縺輔＞縲・); return; }
+  if (!j.position) { err('求人情報のポジション名を入力してください。'); return; }
 
   const candidates = [];
   for (let i = 1; i <= batchCandCount; i++) {
@@ -3439,7 +3664,7 @@ async function runBatch() {
     if (!co || !co.value.trim() || !role?.value.trim() || !exp?.value.trim() || !sk?.value.trim()) continue;
     candidates.push({ idx: i, company: co.value.trim(), role: role.value.trim(), experience: exp.value.trim(), skills: sk.value.trim(), projects: '', reason: why?.value.trim() || '' });
   }
-  if (candidates.length === 0) { err('譛牙柑縺ｪ蛟呵｣懆・ュ蝣ｱ縺・莉ｶ繧ゅ≠繧翫∪縺帙ｓ縲・); return; }
+  if (candidates.length === 0) { err('有効な候補者情報が1件もありません。'); return; }
 
   $('batchResult').classList.remove('on');
   $('batchResultGrid').innerHTML = '';
@@ -3450,15 +3675,15 @@ async function runBatch() {
   for (let ci = 0; ci < candidates.length; ci++) {
     const cand = candidates[ci];
     const statusEl = $(`bcand_status_${cand.idx}`);
-    if (statusEl) { statusEl.className = 'batch-cand-status bcs-run'; statusEl.textContent = '蛻・梵荳ｭ...'; }
-    progTxt.textContent = `蛻・梵荳ｭ ${ci + 1}/${candidates.length}莉ｶ逶ｮ 窶・${cand.role}・・{cand.company}・荏;
+    if (statusEl) { statusEl.className = 'batch-cand-status bcs-run'; statusEl.textContent = '分析中...'; }
+    progTxt.textContent = `分析中 ${ci + 1}/${candidates.length}件目 — ${cand.role}（${cand.company}）`;
     try {
       const result = await runBatchSingle(cand, j);
       BATCH_RESULTS.push(result);
-      if (statusEl) { statusEl.className = 'batch-cand-status bcs-done'; statusEl.textContent = '螳御ｺ・; }
+      if (statusEl) { statusEl.className = 'batch-cand-status bcs-done'; statusEl.textContent = '完了'; }
     } catch (e) {
       BATCH_RESULTS.push({ cand, error: e.message });
-      if (statusEl) { statusEl.className = 'batch-cand-status bcs-err'; statusEl.textContent = '繧ｨ繝ｩ繝ｼ'; }
+      if (statusEl) { statusEl.className = 'batch-cand-status bcs-err'; statusEl.textContent = 'エラー'; }
     }
     if (ci < candidates.length - 1) await new Promise(r => setTimeout(r, 600));
   }
@@ -3467,50 +3692,50 @@ async function runBatch() {
 }
 
 function batchDemoResult(c, j) {
-  const hasLead        = /繝ｪ繝ｼ繝榎繝槭ロ繧ｸ|lead|manager/i.test(c.experience + c.skills);
-  const wantsChallenge = /謖第姶|謚陦倒繧ｹ繧ｿ繝ｼ繝医い繝・・|陬・㍼/i.test(c.reason);
-  const wantsMgmt      = /繝槭ロ繧ｸ|邨・ｹ培繝√・繝繝薙Ν繝・i.test(c.reason + c.experience);
-  const wantsStability = /螳牙ｮ嘶螟ｧ謇弓遖丞茜蜴夂函/i.test(c.reason);
+  const hasLead        = /リード|マネジ|lead|manager/i.test(c.experience + c.skills);
+  const wantsChallenge = /挑戦|技術|スタートアップ|裁量/i.test(c.reason);
+  const wantsMgmt      = /マネジ|組織|チームビルド/i.test(c.reason + c.experience);
+  const wantsStability = /安定|大手|福利厚生/i.test(c.reason);
   let type;
-  if      (wantsMgmt && hasLead)        type = 'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛';
-  else if (wantsChallenge && !hasLead)  type = '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛';
-  else if (wantsChallenge && hasLead)   type = '蟶ょｴ萓｡蛟､蜷台ｸ雁梛';
-  else if (wantsStability)              type = '螳牙ｮ壼ｿ怜髄蝙・;
-  else                                  type = '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・;
-  const sk0 = c.skills.split(/[,縲―n]/)[0].trim();
+  if      (wantsMgmt && hasLead)        type = 'PM・マネジメント型';
+  else if (wantsChallenge && !hasLead)  type = '技術スペシャリスト型';
+  else if (wantsChallenge && hasLead)   type = '市場価値向上型';
+  else if (wantsStability)              type = '安定志向型';
+  else                                  type = 'キャリアアップ型';
+  const sk0 = c.skills.split(/[,、\n]/)[0].trim();
   return {
     cand: c,
     candidateTypeCategory: type,
     score: wantsChallenge ? 79 : 72,
-    topAppeal: wantsChallenge ? '謚陦鍋噪謖第姶' : '繧ｭ繝｣繝ｪ繧｢繧｢繝・・',
-    topAppealReason: `霆｢閨ｷ蠢怜髄縺ｨ豎ゆｺｺ縺ｮ鬲・鴨縺御ｸ閾ｴ縺励※縺翫ｊ縲・{wantsChallenge ? '謚陦鍋噪謖第姶' : '繧ｭ繝｣繝ｪ繧｢縺ｮ諡｡螟ｧ'}繧定ｨｴ豎ゅ☆繧九％縺ｨ縺ｧ霑比ｿ｡邇・′鬮倥∪繧翫∪縺吶Ａ,
-    avoidPoint: '縲悟ｮ牙ｮ壽ｧ縲阪悟､ｧ謇九・繝悶Λ繝ｳ繝牙鴨縲阪・髻ｿ縺九↑縺・庄閭ｽ諤ｧ',
-    subject: `${c.company}縺ｧ縺ｮ${sk0}縺皮ｵ碁ｨ薙↓縺､縺・※ 窶・${j.position}縺ｮ縺皮嶌隲㌔,
-    mailBody: `${c.company}縺ｧ${c.role}縺ｨ縺励※${c.experience.slice(0, 40)}...縺ｨ縺・≧邨碁ｨ薙ｒ遨阪∪繧後※縺阪◆轤ｹ縺ｫ豕ｨ逶ｮ縺励√＃騾｣邨｡縺励∪縺励◆縲・n${sk0}縺ｮ螳溷漁邨碁ｨ薙→${hasLead ? '繝√・繝繝ｪ繝ｼ繝峨→縺励※縺ｮ螳溽ｸｾ' : '鬮倥＞螳溯｣・鴨'}縺ｯ縲∽ｻ雁屓縺ｮ${j.position}繝昴ず繧ｷ繝ｧ繝ｳ縺梧ｱゅａ縺ｦ縺・ｋ繝励Ο繝輔ぅ繝ｼ繝ｫ縺ｨ髱槫ｸｸ縺ｫ蜷郁・縺励※縺・∪縺吶・n${j.description.slice(0, 50)}窶ｦ縺ｨ縺・≧讌ｭ蜍吶ｒ縺贋ｻｻ縺帙＠縺溘＞縺ｨ閠・∴縺ｦ縺・∪縺吶・n30蛻・⊇縺ｩ縲・∈閠・ｒ蜑肴署縺ｨ縺励↑縺・き繧ｸ繝･繧｢繝ｫ縺ｪ縺願ｩｱ縺励・讖滉ｼ壹ｒ縺・◆縺縺代∪縺吶°・歔
+    topAppeal: wantsChallenge ? '技術的挑戦' : 'キャリアアップ',
+    topAppealReason: `転職志向と求人の魅力が一致しており、${wantsChallenge ? '技術的挑戦' : 'キャリアの拡大'}を訴求することで返信率が高まります。`,
+    avoidPoint: '「安定性」「大手のブランド力」は響かない可能性',
+    subject: `${c.company}での${sk0}ご経験について — ${j.position}のご相談`,
+    mailBody: `${c.company}で${c.role}として${c.experience.slice(0, 40)}...という経験を積まれてきた点に注目し、ご連絡しました。\n${sk0}の実務経験と${hasLead ? 'チームリードとしての実績' : '高い実装力'}は、今回の${j.position}ポジションが求めているプロフィールと非常に合致しています。\n${j.description.slice(0, 50)}…という業務をお任せしたいと考えています。\n30分ほど、選考を前提としないカジュアルなお話しの機会をいただけますか？`
   };
 }
 
 function renderBatchResults() {
   $('batchResultGrid').innerHTML = BATCH_RESULTS.map((r, i) => {
-    if (r.error) return `<div class="br-item"><div class="br-item-head"><div class="br-num">${i + 1}</div><span class="br-name" style="color:var(--red)">${esc(r.cand.role)}・・{esc(r.cand.company)}・・/span><span style="font-size:12px;color:var(--red)">繧ｨ繝ｩ繝ｼ: ${esc(r.error)}</span></div></div>`;
+    if (r.error) return `<div class="br-item"><div class="br-item-head"><div class="br-num">${i + 1}</div><span class="br-name" style="color:var(--red)">${esc(r.cand.role)}（${esc(r.cand.company)}）</span><span style="font-size:12px;color:var(--red)">エラー: ${esc(r.error)}</span></div></div>`;
     const scoreColor = r.score >= 80 ? 'var(--green)' : r.score >= 65 ? 'var(--accent)' : 'var(--amber)';
     return `
       <div class="br-item">
         <div class="br-item-head">
           <div class="br-num">${i + 1}</div>
-          <div class="br-name">${esc(r.cand.role)}・・{esc(r.cand.company)}・・/div>
+          <div class="br-name">${esc(r.cand.role)}（${esc(r.cand.company)}）</div>
           <span class="br-type">${esc(r.candidateTypeCategory)}</span>
           <span class="br-score" style="color:${scoreColor}">${r.score}%</span>
         </div>
         <div class="br-body">
-          <div class="br-field"><div class="br-field-label">譛蜆ｪ蜈郁ｨｴ豎・/div><div class="br-field-val">${esc(r.topAppeal)}<br><span style="font-size:11px;color:var(--muted)">${esc(r.topAppealReason)}</span></div></div>
-          <div class="br-field"><div class="br-field-label">驕ｿ縺代ｋ縺ｹ縺崎ｨｴ豎・/div><div class="br-field-val">${esc(r.avoidPoint)}</div></div>
+          <div class="br-field"><div class="br-field-label">最優先訴求</div><div class="br-field-val">${esc(r.topAppeal)}<br><span style="font-size:11px;color:var(--muted)">${esc(r.topAppealReason)}</span></div></div>
+          <div class="br-field"><div class="br-field-label">避けるべき訴求</div><div class="br-field-val">${esc(r.avoidPoint)}</div></div>
         </div>
         <div class="br-mail-box">
-          <div class="br-mail-label">逕滓・縺輔ｌ縺溘せ繧ｫ繧ｦ繝・/div>
+          <div class="br-mail-label">生成されたスカウト</div>
           <div class="br-mail-subj">${esc(r.subject)}</div>
           <div class="br-mail-body">${esc(r.mailBody)}</div>
-          <button class="br-copy-btn" data-idx="${i}">繧ｳ繝斐・</button>
+          <button class="br-copy-btn" data-idx="${i}">コピー</button>
         </div>
       </div>`;
   }).join('');
@@ -3520,16 +3745,16 @@ function renderBatchResults() {
       const idx = parseInt(btn.dataset.idx);
       const r = BATCH_RESULTS[idx];
       if (!r || r.error) return;
-      navigator.clipboard.writeText(`莉ｶ蜷搾ｼ・{r.subject}\n\n${r.mailBody}`).then(() => {
-        const orig = btn.textContent; btn.textContent = '笨・繧ｳ繝斐・縺励∪縺励◆'; setTimeout(() => btn.textContent = orig, 2000);
+      navigator.clipboard.writeText(`件名：${r.subject}\n\n${r.mailBody}`).then(() => {
+        const orig = btn.textContent; btn.textContent = '✓ コピーしました'; setTimeout(() => btn.textContent = orig, 2000);
       });
     });
   });
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// 讖溯・C: 霑比ｿ｡邨先棡繝輔ぅ繝ｼ繝峨ヰ繝・けUI
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// 機能C: 返信結果フィードバックUI
+// ══════════════════════════════════════════
 function renderFeedbackUI() {
   const box = $('feedbackBox');
   if (!box) return;
@@ -3544,29 +3769,29 @@ function renderFeedbackUI() {
   };
 
   box.innerHTML = `
-    <div class="fb-title">投 騾∽ｿ｡蠕後ヵ繧｣繝ｼ繝峨ヰ繝・け <span class="fb-sub">霑比ｿ｡迥ｶ豕√ｒ險倬鹸縺吶ｋ縺ｨ蟆・擂縺ｮ蟄ｦ鄙偵ョ繝ｼ繧ｿ縺ｫ縺ｪ繧翫∪縺・/span></div>
+    <div class="fb-title">📊 送信後フィードバック <span class="fb-sub">返信状況を記録すると将来の学習データになります</span></div>
     <div class="fb-row">
       <div class="fb-group">
-        <div class="fb-group-label">霑比ｿ｡</div>
-        ${btn('replied', '笨・霑比ｿ｡縺ゅｊ', true, '#16a34a')}
-        ${btn('replied', '笨・霑比ｿ｡縺ｪ縺・, false, '#dc2626')}
+        <div class="fb-group-label">返信</div>
+        ${btn('replied', '✓ 返信あり', true, '#16a34a')}
+        ${btn('replied', '✗ 返信なし', false, '#dc2626')}
       </div>
       <div class="fb-group">
-        <div class="fb-group-label">髱｢隲・/div>
-        ${btn('meetingScheduled', '笨・險ｭ螳壽ｸ医∩', true, '#2563eb')}
-        ${btn('meetingScheduled', '譛ｪ險ｭ螳・, false, '#6b7280')}
+        <div class="fb-group-label">面談</div>
+        ${btn('meetingScheduled', '✓ 設定済み', true, '#2563eb')}
+        ${btn('meetingScheduled', '未設定', false, '#6b7280')}
       </div>
       <div class="fb-group">
-        <div class="fb-group-label">謗｡逕ｨ</div>
-        ${btn('hired', '笨・謗｡逕ｨ', true, '#7c3aed')}
-        ${btn('hired', '譛ｪ謗｡逕ｨ', false, '#6b7280')}
+        <div class="fb-group-label">採用</div>
+        ${btn('hired', '✓ 採用', true, '#7c3aed')}
+        ${btn('hired', '未採用', false, '#6b7280')}
       </div>
     </div>
     <div class="fb-note-row">
-      <textarea class="fb-note" id="fbNote" placeholder="繝｡繝｢・井ｻｻ諢擾ｼ会ｼ夊ｿ比ｿ｡蜀・ｮｹ繝ｻ蜊ｰ雎｡繝ｻ谺｡縺ｮ繧｢繧ｯ繧ｷ繝ｧ繝ｳ縺ｪ縺ｩ" rows="2">${r.feedbackNote || ''}</textarea>
-      <button class="fb-save-btn" onclick="saveFeedbackNote()">菫晏ｭ・/button>
+      <textarea class="fb-note" id="fbNote" placeholder="メモ（任意）：返信内容・印象・次のアクションなど" rows="2">${r.feedbackNote || ''}</textarea>
+      <button class="fb-save-btn" onclick="saveFeedbackNote()">保存</button>
     </div>
-    ${r.replied !== null ? '<div class="fb-saved">笨・繝輔ぅ繝ｼ繝峨ヰ繝・け菫晏ｭ俶ｸ医∩</div>' : ''}
+    ${r.replied !== null ? '<div class="fb-saved">✓ フィードバック保存済み</div>' : ''}
   `;
 }
 
@@ -3574,7 +3799,7 @@ function toggleFeedback(key, val, color) {
   const id = S.currentHistoryId; if (!id) return;
   const history = loadScoutHistory();
   const entry = history.find(h => h.id === id); if (!entry) return;
-  // 蜷後§蛟､繧偵け繝ｪ繝・け縺励◆繧峨Μ繧ｻ繝・ヨ
+  // 同じ値をクリックしたらリセット
   entry.result[key] = entry.result[key] === val ? null : val;
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
   renderFeedbackUI();
@@ -3585,12 +3810,12 @@ function saveFeedbackNote() {
   const note = $('fbNote')?.value || '';
   updateHistoryResult(id, { feedbackNote: note });
   const btn = document.querySelector('.fb-save-btn');
-  if (btn) { btn.textContent = '笨・菫晏ｭ・; btn.style.background = '#16a34a'; setTimeout(() => { btn.textContent = '菫晏ｭ・; btn.style.background = ''; }, 1800); }
+  if (btn) { btn.textContent = '✓ 保存'; btn.style.background = '#16a34a'; setTimeout(() => { btn.textContent = '保存'; btn.style.background = ''; }, 1800); }
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// 讖溯・D: 繧ｹ繧ｫ繧ｦ繝亥ｱ･豁ｴ荳隕ｧ繝代ロ繝ｫ
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// 機能D: スカウト履歴一覧パネル
+// ══════════════════════════════════════════
 function openHistory() {
   renderHistory();
   go('History');
@@ -3602,16 +3827,16 @@ function renderHistory() {
   if (!grid) return;
 
   if (history.length === 0) {
-    grid.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:14px">縺ｾ縺繧ｹ繧ｫ繧ｦ繝亥ｱ･豁ｴ縺後≠繧翫∪縺帙ｓ縲・br>繧ｹ繧ｫ繧ｦ繝域枚繧堤函謌舌☆繧九→閾ｪ蜍慕噪縺ｫ菫晏ｭ倥＆繧後∪縺吶・/div>';
+    grid.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:14px">まだスカウト履歴がありません。<br>スカウト文を生成すると自動的に保存されます。</div>';
     return;
   }
 
   const resultLabel = r => {
-    if (r.hired === true)            return '<span class="hr-badge hb-hired">謗｡逕ｨ</span>';
-    if (r.meetingScheduled === true) return '<span class="hr-badge hb-meeting">髱｢隲・/span>';
-    if (r.replied === true)          return '<span class="hr-badge hb-replied">霑比ｿ｡縺ゅｊ</span>';
-    if (r.replied === false)         return '<span class="hr-badge hb-no">霑比ｿ｡縺ｪ縺・/span>';
-    return '<span class="hr-badge hb-wait">譛ｪ險倬鹸</span>';
+    if (r.hired === true)            return '<span class="hr-badge hb-hired">採用</span>';
+    if (r.meetingScheduled === true) return '<span class="hr-badge hb-meeting">面談</span>';
+    if (r.replied === true)          return '<span class="hr-badge hb-replied">返信あり</span>';
+    if (r.replied === false)         return '<span class="hr-badge hb-no">返信なし</span>';
+    return '<span class="hr-badge hb-wait">未記録</span>';
   };
 
   grid.innerHTML = history.map(h => {
@@ -3623,19 +3848,19 @@ function renderHistory() {
         <div class="hr-item-head">
           <div>
             <div class="hr-name">${esc(h.candidate.role)} <span class="hr-company">@ ${esc(h.candidate.company)}</span></div>
-            <div class="hr-pos">${esc(h.job.position)}${h.job.company ? ' 窶・' + esc(h.job.company) : ''}</div>
+            <div class="hr-pos">${esc(h.job.position)}${h.job.company ? ' — ' + esc(h.job.company) : ''}</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px">
-            <span class="hr-score" style="color:${scoreColor}">${h.analysis.score}轤ｹ</span>
+            <span class="hr-score" style="color:${scoreColor}">${h.analysis.score}点</span>
             ${resultLabel(h.result)}
             <span class="hr-date">${dateStr}</span>
           </div>
         </div>
         <div class="hr-type">${esc(h.analysis.candidateTypeCategory)}</div>
-        <div class="hr-subj">${esc(h.mail?.subject || '窶・)}</div>
+        <div class="hr-subj">${esc(h.mail?.subject || '—')}</div>
         <div class="hr-actions">
-          <button class="btn btn-ghost btn-sm" onclick="loadHistoryEntry('${h.id}')">蜀崎｡ｨ遉ｺ</button>
-          <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="removeHistoryEntry('${h.id}')">蜑企勁</button>
+          <button class="btn btn-ghost btn-sm" onclick="loadHistoryEntry('${h.id}')">再表示</button>
+          <button class="btn btn-ghost btn-sm" style="color:var(--red)" onclick="removeHistoryEntry('${h.id}')">削除</button>
         </div>
       </div>`;
   }).join('');
@@ -3653,16 +3878,16 @@ function loadHistoryEntry(id) {
 }
 
 function removeHistoryEntry(id) {
-  if (!confirm('縺薙・螻･豁ｴ繧貞炎髯､縺励∪縺吶°・・)) return;
+  if (!confirm('この履歴を削除しますか？')) return;
   deleteHistoryEntry(id);
   renderHistory();
 }
 
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// Phase1.5: 豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝育ｮ｡逅・UI
-// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// ══════════════════════════════════════════
+// Phase1.5: 求人プロジェクト管理 UI
+// ══════════════════════════════════════════
 
-/** 繝励Ο繧ｸ繧ｧ繧ｯ繝磯∈謚槭ヰ繝ｼ繧呈緒逕ｻ・医き繝ｼ繝我ｸ企Κ縺ｮ菫晏ｭ俶ｸ医∩豎ゆｺｺ繝懊ち繝ｳ鄒､・・*/
+/** プロジェクト選択バーを描画（カード上部の保存済み求人ボタン群） */
 function renderProjectSelector() {
   const projects = loadProjects();
   const bar  = $('projSelectorBar');
@@ -3676,33 +3901,34 @@ function renderProjectSelector() {
   bar.classList.add('has-projects');
   list.innerHTML = projects.map(p => `
     <button class="proj-sel-btn${p.id === S.currentProjectId ? ' active' : ''}"
-            onclick="loadProject('${p.id}')" title="${esc(p.position)} 窶・${new Date(p.updatedAt).toLocaleDateString('ja-JP')}縺ｫ菫晏ｭ・>
+            onclick="loadProject('${p.id}')" title="${esc(p.position)} — ${new Date(p.updatedAt).toLocaleDateString('ja-JP')}に保存">
       ${esc(p.name || p.position)}
     </button>`).join('');
 }
 
-/** 繝励Ο繧ｸ繧ｧ繧ｯ繝医ｒ隱ｭ縺ｿ霎ｼ繧薙〒繝輔か繝ｼ繝縺ｫ蜿肴丐 */
+/** プロジェクトを読み込んでフォームに反映 */
 function loadProject(id) {
   const projects = loadProjects();
   const proj = projects.find(p => p.id === id);
   if (!proj) return;
   applyProjectToForm(proj);
-  renderProjectSelector();  // 繧｢繧ｯ繝・ぅ繝也憾諷区峩譁ｰ
-  // 繝｢繝ｼ繝繝ｫ縺碁幕縺・※縺・ｋ蝣ｴ蜷医・髢峨§繧・  closeProjectModal();
-  // 繝ｦ繝ｼ繧ｶ繝ｼ縺ｸ縺ｮ騾夂衍
+  renderProjectSelector();  // アクティブ状態更新
+  // モーダルが開いている場合は閉じる
+  closeProjectModal();
+  // ユーザーへの通知
   const btn = $('projSaveBtn');
   if (btn) {
     const orig = btn.textContent;
-    btn.textContent = '笨・隱ｭ縺ｿ霎ｼ縺ｿ縺ｾ縺励◆';
+    btn.textContent = '✓ 読み込みました';
     btn.classList.add('saved');
     setTimeout(() => { btn.textContent = orig; btn.classList.remove('saved'); }, 1800);
   }
 }
 
-/** 迴ｾ蝨ｨ縺ｮ繝輔か繝ｼ繝蜀・ｮｹ繧偵・繝ｭ繧ｸ繧ｧ繧ｯ繝医→縺励※菫晏ｭ・*/
+/** 現在のフォーム内容をプロジェクトとして保存 */
 function saveCurrentProject() {
   const pos = $('j_pos')?.value.trim();
-  if (!pos) { err('繝昴ず繧ｷ繝ｧ繝ｳ蜷阪ｒ蜈･蜉帙＠縺ｦ縺九ｉ豎ゆｺｺ諠・ｱ繧剃ｿ晏ｭ倥＠縺ｦ縺上□縺輔＞縲・); return; }
+  if (!pos) { err('ポジション名を入力してから求人情報を保存してください。'); return; }
   const proj = buildProjectFromForm();
   const id = saveProject(proj);
   S.currentProjectId = id;
@@ -3711,29 +3937,29 @@ function saveCurrentProject() {
   const btn = $('projSaveBtn');
   if (btn) {
     const orig = btn.textContent;
-    btn.textContent = '笨・菫晏ｭ倥＠縺ｾ縺励◆';
+    btn.textContent = '✓ 保存しました';
     btn.classList.add('saved');
     setTimeout(() => { btn.textContent = orig; btn.classList.remove('saved'); }, 1800);
   }
 }
 
-/** 繝励Ο繧ｸ繧ｧ繧ｯ繝育ｮ｡逅・Δ繝ｼ繝繝ｫ繧帝幕縺・*/
+/** プロジェクト管理モーダルを開く */
 function openProjectModal() {
   renderProjectModalList();
   $('projModalOverlay').classList.add('on');
 }
 
-/** 繝励Ο繧ｸ繧ｧ繧ｯ繝育ｮ｡逅・Δ繝ｼ繝繝ｫ繧帝哩縺倥ｋ */
+/** プロジェクト管理モーダルを閉じる */
 function closeProjectModal() {
   $('projModalOverlay').classList.remove('on');
 }
 
-/** 繝｢繝ｼ繝繝ｫ蜀・・繧ｪ繝ｼ繝舌・繝ｬ繧､繧ｯ繝ｪ繝・け縺ｧ髢峨§繧具ｼ医Δ繝ｼ繝繝ｫ蜀・け繝ｪ繝・け縺ｯ髢峨§縺ｪ縺・ｼ・*/
+/** モーダル内のオーバーレイクリックで閉じる（モーダル内クリックは閉じない） */
 function closeProjModal(event) {
   if (event.target === $('projModalOverlay')) closeProjectModal();
 }
 
-/** 繝｢繝ｼ繝繝ｫ蜀・・繝励Ο繧ｸ繧ｧ繧ｯ繝医Μ繧ｹ繝医ｒ謠冗判 */
+/** モーダル内のプロジェクトリストを描画 */
 function renderProjectModalList() {
   const projects = loadProjects();
   const list  = $('projModalList');
@@ -3754,32 +3980,137 @@ function renderProjectModalList() {
       <div class="proj-item">
         <div class="proj-item-info">
           <div class="proj-item-name">${esc(p.name || p.position)}</div>
-          <div class="proj-item-pos">${esc(p.position)}${p.company ? ' 窶・' + esc(p.company) : ''}</div>
-          <div class="proj-item-date">譛邨よ峩譁ｰ: ${dateStr}${p.successExamples ? ' 箝・謌仙粥萓九≠繧・ : ''}</div>
+          <div class="proj-item-pos">${esc(p.position)}${p.company ? ' — ' + esc(p.company) : ''}</div>
+          <div class="proj-item-date">最終更新: ${dateStr}${p.successExamples ? ' ⭐ 成功例あり' : ''}</div>
         </div>
         <div class="proj-item-actions">
-          <button class="proj-load-btn" onclick="loadProject('${p.id}')">隱ｭ縺ｿ霎ｼ繧</button>
-          <button class="proj-del-btn" onclick="deleteProjectConfirm('${p.id}')">蜑企勁</button>
+          <button class="proj-load-btn" onclick="loadProject('${p.id}')">読み込む</button>
+          <button class="proj-del-btn" onclick="deleteProjectConfirm('${p.id}')">削除</button>
         </div>
       </div>`;
   }).join('');
 }
 
-/** 繝励Ο繧ｸ繧ｧ繧ｯ繝亥炎髯､遒ｺ隱・*/
+/** プロジェクト削除確認 */
 function deleteProjectConfirm(id) {
-  if (!confirm('縺薙・豎ゆｺｺ繝励Ο繧ｸ繧ｧ繧ｯ繝医ｒ蜑企勁縺励∪縺吶°・・)) return;
+  if (!confirm('この求人プロジェクトを削除しますか？')) return;
   deleteProject(id);
   if (S.currentProjectId === id) S.currentProjectId = null;
   renderProjectModalList();
   renderProjectSelector();
 }
 
-// 繝壹・繧ｸ隱ｭ縺ｿ霎ｼ縺ｿ譎ゅ↓繝励Ο繧ｸ繧ｧ繧ｯ繝磯∈謚槭ヰ繝ｼ繧貞・譛滓緒逕ｻ
+// ページ読み込み時にプロジェクト選択バーを初期描画
 document.addEventListener('DOMContentLoaded', () => {
   renderProjectSelector();
 });
-// DOMContentLoaded縺梧里縺ｫ逋ｺ轣ｫ貂医∩縺ｮ蝣ｴ蜷医↓蛯吶∴縺ｦ縺吶＄縺ｫ繧ょｮ溯｡・if (document.readyState !== 'loading') renderProjectSelector();
+// DOMContentLoadedが既に発火済みの場合に備えてすぐにも実行
+if (document.readyState !== 'loading') renderProjectSelector();
+
+// ══════════════════════════════════════════
+// watsonx 設定パネル制御
+// ══════════════════════════════════════════
+
+/** 設定パネルの開閉トグル */
+function toggleWxPanel() {
+  const panel = $('wxPanel');
+  const isOpen = panel.classList.contains('wx-panel-open');
+  if (isOpen) {
+    panel.classList.remove('wx-panel-open');
+  } else {
+    initWxPanel();
+    panel.classList.add('wx-panel-open');
+  }
+}
+
+/** パネルを開く時に現在の設定値を読み込む */
+function initWxPanel() {
+  const backend = localStorage.getItem('bscout_backend') || 'openai';
+  setBackendUI(backend);
+  const apiKey  = localStorage.getItem('bscout_apikey') || '';
+  const token   = localStorage.getItem('bscout_wx_token') || '';
+  const url     = localStorage.getItem('bscout_wx_url') || '';
+  const project = localStorage.getItem('bscout_wx_project') || '';
+  const model   = localStorage.getItem('bscout_wx_model') || 'ibm/granite-13b-instruct-v2';
+  if ($('wxApiKey'))  $('wxApiKey').value  = apiKey  ? '••••••••' : '';
+  if ($('wxToken'))   $('wxToken').value   = token   ? '••••••••' : '';
+  if ($('wxUrl'))     $('wxUrl').value     = url;
+  if ($('wxProject')) $('wxProject').value = project;
+  if ($('wxModel'))   $('wxModel').value   = model;
+}
+
+/** バックエンド切り替えボタンUI更新 */
+function setBackendUI(backend) {
+  const btnOai = $('wxBtnOpenai'), btnWx = $('wxBtnWatsonx');
+  const oaiFields = $('wxOpenaiFields'), wxFields = $('wxWatsonxFields');
+  if (!btnOai) return;
+  if (backend === 'watsonx') {
+    btnOai.classList.remove('wx-toggle-active');
+    btnWx.classList.add('wx-toggle-active');
+    oaiFields.style.display = 'none';
+    wxFields.style.display  = 'block';
+  } else {
+    btnOai.classList.add('wx-toggle-active');
+    btnWx.classList.remove('wx-toggle-active');
+    oaiFields.style.display = 'block';
+    wxFields.style.display  = 'none';
+  }
+}
+
+/** バックエンド選択 */
+function setBackend(backend) {
+  localStorage.setItem('bscout_backend', backend);
+  setBackendUI(backend);
+}
+
+/** 入力値を即座にlocalStorageへ保存（パスワード表示中は保存しない） */
+function saveWxField(key, value) {
+  if (value === '••••••••') return;
+  if (value) {
+    localStorage.setItem(key, value);
+  }
+}
+
+/** 設定をクリア（確認あり） */
+function clearWxSettings() {
+  if (!confirm('バックエンド設定（APIキー・トークン含む）をすべてクリアしますか？')) return;
+  ['bscout_apikey','bscout_wx_token','bscout_wx_url','bscout_wx_project','bscout_wx_model','bscout_backend'].forEach(k => localStorage.removeItem(k));
+  initWxPanel();
+  alert('設定をクリアしました。ページを再読み込みすると接続状態が更新されます。');
+}
+
+/** 設定適用してパネルを閉じる */
+function applyWxSettings() {
+  // 各フィールドの値を保存（マスク文字以外）
+  const fields = [
+    { id: 'wxApiKey',  key: 'bscout_apikey'    },
+    { id: 'wxToken',   key: 'bscout_wx_token'  },
+    { id: 'wxUrl',     key: 'bscout_wx_url'    },
+    { id: 'wxProject', key: 'bscout_wx_project'},
+    { id: 'wxModel',   key: 'bscout_wx_model'  },
+  ];
+  fields.forEach(({ id, key }) => {
+    const el = $(id);
+    if (el && el.value && el.value !== '••••••••') {
+      localStorage.setItem(key, el.value.trim());
+    }
+  });
+  $('wxPanel').classList.remove('wx-panel-open');
+  // 接続状態を再表示するためリロード
+  location.reload();
+}
+
+// パネル外クリックで閉じる
+document.addEventListener('click', (e) => {
+  const panel = $('wxPanel');
+  const btn   = $('wxSettingsBtn');
+  if (!panel || !btn) return;
+  if (panel.classList.contains('wx-panel-open') && !panel.contains(e.target) && e.target !== btn) {
+    panel.classList.remove('wx-panel-open');
+  }
+});
 
 </script>
 </body>
 </html>
+
