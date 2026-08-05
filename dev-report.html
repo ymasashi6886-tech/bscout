@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bスカウト — 開発レポート</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff;--surface:#f7f8fa;--border:#e2e5ea;--text:#1a1f2e;--muted:#5a6272;
+  --accent:#2563eb;--accent-l:#eff6ff;--purple:#7c3aed;--purple-l:#f5f3ff;
+  --green:#059669;--green-l:#ecfdf5;--amber:#d97706;--amber-l:#fffbeb;
+  --red:#dc2626;--red-l:#fef2f2;
+}
+body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;font-size:14px;line-height:1.65;color:var(--text);background:#f0f2f6;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:800px;margin:0 auto;padding:40px 20px 80px}
+
+/* HEADER */
+.site-header{background:#111827;color:#fff;padding:16px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo-row{display:flex;align-items:center;gap:12px}
+.logo{width:36px;height:36px;background:#2563eb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;color:#fff}
+.brand-name{font-size:16px;font-weight:800}
+.brand-sub{font-size:10px;color:#6b7280;letter-spacing:.6px;text-transform:uppercase}
+.header-links{display:flex;gap:12px;align-items:center}
+.header-link{font-size:12px;color:#9ca3af;padding:5px 12px;border:1px solid #374151;border-radius:6px;transition:all .15s}
+.header-link:hover{background:#1f2937;color:#fff;text-decoration:none}
+
+/* VERSION HERO */
+.version-hero{background:linear-gradient(135deg,#1e3a8a,#4c1d95);color:#fff;border-radius:12px;padding:28px 32px;margin:28px 0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.version-left{}
+.version-num{font-size:48px;font-weight:900;line-height:1;letter-spacing:-1px}
+.version-label{font-size:13px;color:#bfdbfe;margin-top:4px}
+.version-right{text-align:right}
+.version-concept{font-size:13px;color:#bfdbfe;line-height:1.7;max-width:320px;text-align:right}
+.phase-badge{display:inline-block;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:6px;padding:4px 14px;font-size:12px;font-weight:700;margin-top:8px}
+
+/* SECTION */
+h2{font-size:15px;font-weight:800;margin:28px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:8px}
+.sec-num{width:24px;height:24px;border-radius:6px;background:var(--accent);color:#fff;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* CARD */
+.card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:18px 20px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+
+/* LINKS BOX */
+.links-box{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:0}
+.link-card{background:#fff;border:1px solid var(--border);border-radius:8px;padding:14px 18px;transition:box-shadow .15s}
+.link-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.08);text-decoration:none}
+.link-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
+.link-url{font-size:13px;font-weight:700;color:var(--accent);word-break:break-all}
+.link-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+
+/* PHASE TABLE */
+.phase-list{display:flex;flex-direction:column;gap:10px}
+.phase-row{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.phase-marker{width:8px;flex-shrink:0}
+.phase-content{padding:14px 16px;flex:1}
+.phase-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.phase-name{font-size:14px;font-weight:800}
+.phase-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+.pt-done{background:var(--green-l);color:var(--green)}
+.pt-active{background:#fef3c7;color:#92400e}
+.pt-next{background:var(--accent-l);color:var(--accent)}
+.pt-future{background:var(--surface);color:var(--muted)}
+.pm-done{background:var(--green)}
+.pm-active{background:#f59e0b}
+.pm-next{background:var(--accent)}
+.pm-future{background:#d1d5db}
+.phase-items{display:flex;flex-direction:column;gap:4px}
+.phase-item{font-size:12px;color:var(--text);display:flex;align-items:flex-start;gap:6px;line-height:1.5}
+.pi-done{color:var(--green)}
+.pi-active{color:#d97706}
+.pi-todo{color:var(--muted)}
+
+/* FEATURE TABLE */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--surface);padding:8px 12px;text-align:left;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:2px solid var(--border)}
+td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+tr:last-child td{border-bottom:none}
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px}
+.b-done{background:var(--green-l);color:var(--green)}
+.b-partial{background:var(--amber-l);color:var(--amber)}
+.b-todo{background:var(--red-l);color:var(--red)}
+.b-api{background:#dbeafe;color:#1d4ed8}
+
+/* SCORE */
+.score-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:0}
+.score-card{flex:1;min-width:120px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;text-align:center}
+.score-val{font-size:28px;font-weight:900;line-height:1}
+.score-label{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* ROADMAP VERSION */
+.version-track{display:flex;align-items:center;gap:0;margin:16px 0;overflow-x:auto;padding-bottom:4px}
+.vt-item{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:80px}
+.vt-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;z-index:1}
+.vt-done{background:var(--green);color:#fff}
+.vt-current{background:var(--accent);color:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.2)}
+.vt-next{background:var(--surface);border:2px solid var(--border);color:var(--muted)}
+.vt-label{font-size:10px;font-weight:700;color:var(--muted);text-align:center}
+.vt-line{flex:1;height:2px;background:var(--border);min-width:20px;margin-top:-28px}
+.vt-line-done{background:var(--green)}
+
+/* FILE TREE */
+.file-tree{background:#0f172a;border-radius:8px;padding:16px 18px;font-family:monospace;font-size:12px;color:#94a3b8;line-height:2}
+.ft-dir{color:#7dd3fc;font-weight:700}
+.ft-file{color:#86efac}
+.ft-comment{color:#475569}
+
+/* PRIORITY */
+.priority-list{display:flex;flex-direction:column;gap:8px}
+.priority-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:#fff}
+.pri-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;flex-shrink:0;color:#fff}
+.pri-critical{background:#dc2626}
+.pri-high{background:#d97706}
+.pri-med{background:#6b7280}
+.pri-body{flex:1}
+.pri-title{font-size:13px;font-weight:700;margin-bottom:3px}
+.pri-desc{font-size:12px;color:var(--muted);line-height:1.5}
+
+@media(max-width:600px){
+  .links-box{grid-template-columns:1fr}
+  .version-hero{flex-direction:column}
+  .version-right{text-align:left}
+  .version-concept{text-align:left}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo-row">
+    <div class="logo">B</div>
+    <div>
+      <div class="brand-name">Bスカウト</div>
+      <div class="brand-sub">AI Recruiter Agent</div>
+    </div>
+  </div>
+  <div class="header-links">
+    <a href="https://ymasashi6886-tech.github.io/bscout/" class="header-link">🚀 アプリを開く</a>
+    <a href="https://github.com/ymasashi6886-tech/bscout" class="header-link">GitHub</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- VERSION HERO -->
+  <div class="version-hero">
+    <div class="version-left">
+      <div class="version-num">v0.8</div>
+      <div class="version-label">Phase1 完了 — Phase2 開発準備中</div>
+      <div class="phase-badge">📅 最終更新: 2025年1月</div>
+    </div>
+    <div class="version-right">
+      <div class="version-concept">
+        「トップリクルーターが30分かけて考える<br>採用戦略を、AIが2分で再現する」<br><br>
+        <strong style="color:#fff">採用担当者の思考をAI化する<br>採用AIエージェント</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKS -->
+  <h2><span class="sec-num">🔗</span>プロジェクトリンク</h2>
+  <div class="links-box">
+    <a href="https://ymasashi6886-tech.github.io/bscout/" class="link-card">
+      <div class="link-label">🚀 本番アプリ（GitHub Pages）</div>
+      <div class="link-url">ymasashi6886-tech.github.io/bscout/</div>
+      <div class="link-desc">APIキー入力で本番AI動作。デモモードでも動作確認可能。</div>
+    </a>
+    <a href="https://github.com/ymasashi6886-tech/bscout" class="link-card">
+      <div class="link-label">📦 GitHubリポジトリ（コードレビュー）</div>
+      <div class="link-url">github.com/ymasashi6886-tech/bscout</div>
+      <div class="link-desc">index.html / ai.js / app.js / storage.js / style.css</div>
+    </a>
+    <a href="https://github.com/ymasashi6886-tech/bscout/blob/main/js/ai.js" class="link-card">
+      <div class="link-label">🤖 AIプロンプト（ai.js）</div>
+      <div class="link-url">github.com/.../blob/main/js/ai.js</div>
+      <div class="link-desc">OHERE分析・スカウト生成・セルフレビューの全プロンプト</div>
+    </a>
+    <a href="https://github.com/ymasashi6886-tech/bscout/blob/main/js/app.js" class="link-card">
+      <div class="link-label">⚙️ UIロジック（app.js）</div>
+      <div class="link-url">github.com/.../blob/main/js/app.js</div>
+      <div class="link-desc">レンダリング・状態管理・デモデータ</div>
+    </a>
+  </div>
+
+  <!-- バージョントラック -->
+  <h2><span class="sec-num">📈</span>バージョントラック</h2>
+  <div class="card">
+    <div class="version-track">
+      <div class="vt-item">
+        <div class="vt-dot vt-done">v0.1</div>
+        <div class="vt-label">UIプロトタイプ</div>
+      </div>
+      <div class="vt-line vt-line-done"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-done">v0.4</div>
+        <div class="vt-label">AI接続<br>Netlify対応</div>
+      </div>
+      <div class="vt-line vt-line-done"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-done">v0.6</div>
+        <div class="vt-label">候補者タイプ<br>バッチ処理</div>
+      </div>
+      <div class="vt-line vt-line-done"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-current">v0.8</div>
+        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>Phase1完了</div>
+      </div>
+      <div class="vt-line"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-next">v0.9</div>
+        <div class="vt-label">IBM訴求<br>ライブラリ</div>
+      </div>
+      <div class="vt-line"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-next">v1.0β</div>
+        <div class="vt-label">改善ループ<br>完成</div>
+      </div>
+      <div class="vt-line"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-next">v1.0</div>
+        <div class="vt-label">IBM<br>デモ版</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 自己評価スコア -->
+  <h2><span class="sec-num">📊</span>現状の自己評価（厳しめ）</h2>
+  <div class="card">
+    <div class="score-row">
+      <div class="score-card">
+        <div class="score-val" style="color:var(--amber)">5.5</div>
+        <div class="score-label">総合 / 10点</div>
+      </div>
+      <div class="score-card">
+        <div class="score-val" style="color:var(--green)">7</div>
+        <div class="score-label">基本機能</div>
+      </div>
+      <div class="score-card">
+        <div class="score-val" style="color:var(--red)">4</div>
+        <div class="score-label">思考再現度</div>
+      </div>
+      <div class="score-card">
+        <div class="score-val" style="color:var(--red)">3</div>
+        <div class="score-label">IBM専用化</div>
+      </div>
+      <div class="score-card">
+        <div class="score-val" style="color:var(--amber)">5</div>
+        <div class="score-label">実用性</div>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7">
+      「入力をAIに投げてスカウト文を生成するツール」の域は超えつつある。OHEREフレームなどの思考プロセス可視化は実装済みだが、それが採用担当者の判断に実際に活きているかは未検証。IBM訴求ライブラリがなく、「IBMらしいスカウト」という差別化がまだない。
+    </p>
+  </div>
+
+  <!-- Phase一覧 -->
+  <h2><span class="sec-num">🗺</span>開発フェーズ</h2>
+  <div class="phase-list">
+
+    <div class="phase-row">
+      <div class="phase-marker pm-done"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">Phase 1</div>
+          <span class="phase-tag pt-done">✅ 完了</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-done">✅</span>OHEREフレーム（O/H/E/R/S 5段階思考プロセス可視化）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>キャリアストーリーAI（過去→現在→未来ナラティブ）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>候補者温度感AI（★×5段階・理由・アプローチ提案）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>AIセルフレビュー — IBM専用6軸採点（返信率予測付き）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>スカウト文のAIっぽさ排除（定型表現禁止ルール組み込み）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>GitHub管理・GitHub Pages公開</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-marker pm-active"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">Phase 2</div>
+          <span class="phase-tag pt-active">🔥 次のターゲット → v0.9</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-todo">⬜</span><strong>IBM訴求ライブラリ実装</strong>（技術/AI/グローバル/育成/社会貢献/働き方/年収/ブランド/案件規模 11カテゴリ）</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>候補者タイプ × IBM訴求の相性マトリクス（AIが自動選択）</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>OHEREとスカウト文の対応関係トレーサビリティUI</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>セルフレビュー→1クリック改善修正機能</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-marker pm-next"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">Phase 3</div>
+          <span class="phase-tag pt-next">v1.0β</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-todo">⬜</span>バリエーション生成（トーン：丁寧/カジュアル/媒体別）</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>求人テンプレート保存機能</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>デモモード精度向上（ルールベース→辞書ベース）</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>スコアが低い軸のセクションをハイライト</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-marker pm-future"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">Phase 4</div>
+          <span class="phase-tag pt-future">v1.0 Release〜</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-todo">⬜</span>返信結果フィードバックの学習データ活用</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>PDF/Word求人票の自動読み込み</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>IBM watsonx.ai への切り替え対応</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>チーム共有・権限管理</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 実装済み機能一覧 -->
+  <h2><span class="sec-num">⚙️</span>実装済み機能一覧</h2>
+  <table>
+    <tr><th>機能</th><th>状態</th><th>APIあり</th><th>デモ</th></tr>
+    <tr><td>候補者・求人情報入力フォーム</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>情報品質スコア + AI補完質問 (STEP1.5)</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>候補者タイプ5分類（固定分類）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>OHEREフレーム（5段階思考プロセス）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>キャリアストーリーAI（過去→現在→未来）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>候補者温度感AI（★×5）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>⚠️精度低</td></tr>
+    <tr><td>訴求ポイント優先順位（根拠付き）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>採用担当者ガイダンス（3パターン）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>訴求ポイント選択UI（STEP3）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>スカウト文生成（6セクション構成）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>AIっぽさ排除（禁止ルール組み込み）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>⚠️デモは未完全</td></tr>
+    <tr><td>セクション個別再生成ボタン</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>AIセルフレビュー（IBM専用6軸採点）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>スカウト履歴保存・返信フィードバック</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>バッチ処理（複数候補者一括）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td><strong>IBM訴求ライブラリ</strong></td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
+    <tr><td>セルフレビュー→1クリック修正</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
+    <tr><td>OHEREとスカウト文の連動トレーサビリティ</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
+  </table>
+
+  <!-- 次の優先課題 -->
+  <h2><span class="sec-num">🎯</span>Phase2 — 次に実装すべきこと</h2>
+  <div class="priority-list">
+    <div class="priority-item">
+      <div class="pri-num pri-critical">1</div>
+      <div class="pri-body">
+        <div class="pri-title">IBM訴求ライブラリの実装</div>
+        <div class="pri-desc">技術/AI・Watson/グローバル/育成/社会貢献/働き方/年収/ブランド/案件規模/チーム/安定 の11カテゴリを構造化。AIが候補者タイプに合わせて自動選択。「IBMらしいスカウト」との差別化の核心。</div>
+      </div>
+    </div>
+    <div class="priority-item">
+      <div class="pri-num pri-critical">2</div>
+      <div class="pri-body">
+        <div class="pri-title">セルフレビュー → 1クリック改善修正</div>
+        <div class="pri-desc">採点結果の「改善指摘」ボタンから該当セクションを自動再生成。採点→修正→再採点のサイクルを実現。現状は採点結果を「見るだけ」で終わっている。</div>
+      </div>
+    </div>
+    <div class="priority-item">
+      <div class="pri-num pri-high">3</div>
+      <div class="pri-body">
+        <div class="pri-title">OHEREとスカウト文の連動トレーサビリティ</div>
+        <div class="pri-desc">「この冒頭文はH(仮説)から来ている」「このbenefitはS戦略④IBM訴求を実装」という対応関係をUIで示す。思考プロセスとアウトプットの論理的つながりが現状ブラックボックス。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ファイル構成 -->
+  <h2><span class="sec-num">📁</span>ファイル構成（コードレビュー参照先）</h2>
+  <div class="file-tree">
+    <span class="ft-dir">bscout/</span><br>
+    ├── <span class="ft-file">index.html</span>　　　　 <span class="ft-comment">// HTML構造・全パネル定義</span><br>
+    ├── <span class="ft-dir">css/</span><br>
+    │　　└── <span class="ft-file">style.css</span>　　　 <span class="ft-comment">// 866行・全スタイル定義</span><br>
+    ├── <span class="ft-dir">js/</span><br>
+    │　　├── <span class="ft-file">storage.js</span>　　　 <span class="ft-comment">// 状態管理(S)・localStorage・learningData構造</span><br>
+    │　　├── <span class="ft-file">ai.js</span>　　　　　　 <span class="ft-comment">// OpenAI API通信・全プロンプト定義（最重要）</span><br>
+    │　　└── <span class="ft-file">app.js</span>　　　　　 <span class="ft-comment">// UI制御・レンダリング・イベント処理（877行）</span><br>
+    ├── <span class="ft-dir">netlify/functions/</span><br>
+    │　　└── <span class="ft-file">proxy.js</span>　　　　 <span class="ft-comment">// Netlify用APIプロキシ（APIキーのサーバー管理）</span><br>
+    ├── <span class="ft-file">netlify.toml</span>　　　　 <span class="ft-comment">// Netlifyデプロイ設定</span><br>
+    └── <span class="ft-file">bscout_standalone.html</span> <span class="ft-comment">// 全ファイル統合版（112KB・ChatGPT添付用）</span>
+  </div>
+
+</div>
+
+<footer style="text-align:center;font-size:12px;color:#9ca3af;border-top:1px solid #e2e5ea;padding:16px 0;margin-top:40px;background:#fff">
+  Bスカウト v0.8 — 採用AIエージェント — Made with IBM Bob
+</footer>
+
+</body>
+</html>
