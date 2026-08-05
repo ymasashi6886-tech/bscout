@@ -12,86 +12,172 @@
 // ══════════════════════════════════════════
 
 /**
- * IBM訴求マスタ（11軸）
- * color: カードのアクセントカラー  ibmStrength: IBMが実際に強い点（具体訴求文のヒント）
+ * IBM訴求マスタ（v1.2: 構造拡張版）
+ * 30〜50軸への拡張を見据えた構造:
+ * id / name / icon / color / colorL / desc / ibmStrength / ibmExample / effectiveFor / priority / keywords
+ *
+ * ibmExample: スカウト文に組み込める具体的な一文例
+ * priority: 1=最重要, 2=重要, 3=補助
+ * keywords: 検索・マッチング用タグ
  */
 const IBM_APPEALS = [
+  // ── AI・テクノロジー軸 ──
   {
     id: 'ai_transformation', name: 'AI Transformation', icon: '✦',
     color: '#6d28d9', colorL: '#f5f3ff',
     desc: 'IBMのAI変革プロジェクト・watsonx活用機会',
     ibmStrength: 'IBMはwatsonx.aiを中心に金融・製造・医療など各業界のAI変革を主導。候補者がAIを「作る側」ではなく「社会に実装する側」に立てる。',
-    effectiveFor: ['技術スペシャリスト型', 'PM・マネジメント型', '市場価値向上型']
+    ibmExample: '今、IBMが最も力を入れているwatsonxによる業界AI変革プロジェクトに、中心メンバーとして関わるポジションです。',
+    effectiveFor: ['技術スペシャリスト型', 'PM・マネジメント型', '市場価値向上型'],
+    priority: 1,
+    keywords: ['AI', 'DX', 'watsonx', '変革', '実装', 'LLM', '生成AI'],
   },
   {
     id: 'watsonx', name: 'watsonx', icon: '🔬',
     color: '#0891b2', colorL: '#ecfeff',
     desc: 'IBMの生成AI基盤watsonxへの深関与',
     ibmStrength: 'watsonxはオープンソースLLMをエンタープライズで使える唯一の基盤。GPTとは異なり「自社データで動く」AIを構築できる。',
-    effectiveFor: ['技術スペシャリスト型', '市場価値向上型']
-  },
-  {
-    id: 'global', name: 'グローバル環境', icon: '🌏',
-    color: '#2563eb', colorL: '#eff6ff',
-    desc: '170カ国・多国籍チームとの協業機会',
-    ibmStrength: 'IBMは170カ国に拠点を持ち、日本のプロジェクトでも常に海外チームと協働。英語が実務レベルで使え、外資系の中でも圧倒的なグローバル規模。',
-    effectiveFor: ['グローバル志向型', '市場価値向上型', '技術スペシャリスト型']
-  },
-  {
-    id: 'scale', name: '大規模案件', icon: '🏗',
-    color: '#059669', colorL: '#ecfdf5',
-    desc: '国家・業界インフラ規模のプロジェクト',
-    ibmStrength: '銀行・官公庁・製造業の基幹システムから医療DXまで、個人では体験できない超大規模案件に携われる。スタートアップでは絶対に積めない経験スケール。',
-    effectiveFor: ['PM・マネジメント型', 'キャリアアップ型', '技術スペシャリスト型']
-  },
-  {
-    id: 'social', name: '社会貢献', icon: '🌱',
-    color: '#16a34a', colorL: '#f0fdf4',
-    desc: 'IBMの社会課題解決・ESGプロジェクト',
-    ibmStrength: '医療・教育・気候変動・行政DXなど社会インフラへの貢献機会。「稼ぐAI」ではなく「社会を変えるAI」というキャリアストーリーが作れる。',
-    effectiveFor: ['安定志向型', '社会貢献志向型', 'PM・マネジメント型']
-  },
-  {
-    id: 'training', name: '育成制度', icon: '📚',
-    color: '#d97706', colorL: '#fffbeb',
-    desc: 'IBM内部認定・世界水準の育成プログラム',
-    ibmStrength: 'IBMのBadge/認定プログラム・Think Academyは業界標準。スキルが「IBMブランド付き」で市場価値として可視化される。社内異動・ローテーションも豊富。',
-    effectiveFor: ['キャリアアップ型', '市場価値向上型', '安定志向型']
-  },
-  {
-    id: 'workstyle', name: '働き方', icon: '🏠',
-    color: '#7c3aed', colorL: '#f5f3ff',
-    desc: 'フレックス・リモート・ハイブリッドワーク',
-    ibmStrength: 'IBM Japanはフレックス勤務・リモートワークが定着。育児・副業・地方在住も対応。年間を通じた柔軟な働き方は外資系の中でも充実度が高い。',
-    effectiveFor: ['安定志向型', 'キャリアアップ型']
-  },
-  {
-    id: 'benefits', name: '福利厚生', icon: '🎁',
-    color: '#be185d', colorL: '#fdf2f8',
-    desc: '外資系水準の報酬・ベネフィット体系',
-    ibmStrength: '外資系標準の給与レンジ・株式報酬・確定拠出年金・語学支援。大手日系との比較で「透明性の高い評価と報酬」が訴求ポイント。',
-    effectiveFor: ['安定志向型', 'キャリアアップ型']
-  },
-  {
-    id: 'brand', name: 'IBMブランド', icon: '🔷',
-    color: '#1d4ed8', colorL: '#dbeafe',
-    desc: '112年の実績・世界的信頼ブランド',
-    ibmStrength: '「IBMにいた」という経歴の市場価値は別格。特にエンタープライズ領域では信頼の証。転職後も「IBMバックグラウンド」としてキャリアに機能し続ける。',
-    effectiveFor: ['市場価値向上型', '安定志向型', 'キャリアアップ型']
-  },
-  {
-    id: 'autonomy', name: '裁量', icon: '🎯',
-    color: '#dc2626', colorL: '#fef2f2',
-    desc: '技術選定・設計の意思決定権',
-    ibmStrength: 'IBMのコンサル・エンジニアは顧客の技術戦略を立案するポジションが多く、社内承認フローが整備された上での大きな裁量が与えられる。',
-    effectiveFor: ['技術スペシャリスト型', 'PM・マネジメント型', '市場価値向上型']
+    ibmExample: 'watsonx.aiでGranite・Llama3などのOSSモデルを企業データに最適化する、まさにLLM時代の最前線です。',
+    effectiveFor: ['技術スペシャリスト型', '市場価値向上型'],
+    priority: 1,
+    keywords: ['watsonx', 'Granite', 'LLM', 'RAG', 'MLOps', '生成AI', 'Foundation Model'],
   },
   {
     id: 'tech_env', name: '技術環境', icon: '⚙️',
     color: '#0f766e', colorL: '#f0fdfa',
     desc: 'OSS・エッジ・クラウドなど最先端技術スタック',
     ibmStrength: 'RedHat/OpenShift・Kubernetes・Terraform・Instana・Qiskitなど業界標準OSSの中心にいる。技術スタック自体が市場価値に直結する環境。',
-    effectiveFor: ['技術スペシャリスト型', '市場価値向上型']
+    ibmExample: 'RedHat/OpenShiftやKubernetesのエコシステムど真ん中で、業界標準OSSのコア部分に触れながら働けます。',
+    effectiveFor: ['技術スペシャリスト型', '市場価値向上型'],
+    priority: 1,
+    keywords: ['RedHat', 'OpenShift', 'Kubernetes', 'Terraform', 'OSS', 'クラウド', 'コンテナ'],
+  },
+  // ── 規模・案件軸 ──
+  {
+    id: 'scale', name: '大規模案件', icon: '🏗',
+    color: '#059669', colorL: '#ecfdf5',
+    desc: '国家・業界インフラ規模のプロジェクト',
+    ibmStrength: '銀行・官公庁・製造業の基幹システムから医療DXまで、個人では体験できない超大規模案件に携われる。スタートアップでは絶対に積めない経験スケール。',
+    ibmExample: '国内メガバンクや官公庁の基幹システム更新など、1件で数百億規模のプロジェクトに関わることができます。',
+    effectiveFor: ['PM・マネジメント型', 'キャリアアップ型', '技術スペシャリスト型'],
+    priority: 1,
+    keywords: ['大規模', '官公庁', '金融', '製造', '基幹系', 'インフラ', 'エンタープライズ'],
+  },
+  {
+    id: 'finance_dx', name: '金融DX', icon: '🏦',
+    color: '#1d4ed8', colorL: '#dbeafe',
+    desc: 'メガバンク・証券・保険のDXプロジェクト',
+    ibmStrength: 'IBMは国内メガバンク・地銀・保険会社のコアバンキング・リスク管理・AI活用で独占的な実績を持つ。金融業界の「インフラを知るエンジニア」としての経歴が積める。',
+    ibmExample: '国内主要金融機関のコアシステム更新やリスクモデル構築で、金融×AIの最前線に立てます。',
+    effectiveFor: ['技術スペシャリスト型', 'PM・マネジメント型', '市場価値向上型'],
+    priority: 2,
+    keywords: ['金融', '銀行', '保険', '証券', 'FinTech', 'リスク管理', 'コアバンキング'],
+  },
+  {
+    id: 'public_dx', name: '官公庁・社会インフラDX', icon: '🏛',
+    color: '#7c3aed', colorL: '#f5f3ff',
+    desc: '行政・医療・教育のデジタル変革',
+    ibmStrength: 'デジタル庁・自治体DX・医療情報システムなど、社会インフラのデジタル変革プロジェクトに技術者として関与できる。',
+    ibmExample: '自治体のDXや医療情報基盤の構築など、インフラとして社会に残るシステムを設計できるポジションです。',
+    effectiveFor: ['PM・マネジメント型', '安定志向型', '社会貢献志向型'],
+    priority: 2,
+    keywords: ['官公庁', '自治体', '医療', '教育', '社会インフラ', 'デジタル庁', 'DX'],
+  },
+  // ── グローバル・組織軸 ──
+  {
+    id: 'global', name: 'グローバル環境', icon: '🌏',
+    color: '#2563eb', colorL: '#eff6ff',
+    desc: '170カ国・多国籍チームとの協業機会',
+    ibmStrength: 'IBMは170カ国に拠点を持ち、日本のプロジェクトでも常に海外チームと協働。英語が実務レベルで使え、外資系の中でも圧倒的なグローバル規模。',
+    ibmExample: '入社初日から英語Slack・週次英語会議は普通です。TOEIC600点台でも入社後に伸びるケースが多いです。',
+    effectiveFor: ['グローバル志向型', '市場価値向上型', '技術スペシャリスト型'],
+    priority: 1,
+    keywords: ['グローバル', '英語', '海外', '多国籍', '170カ国', '外資系'],
+  },
+  // ── ブランド・安定軸 ──
+  {
+    id: 'brand', name: 'IBMブランド', icon: '🔷',
+    color: '#1d4ed8', colorL: '#dbeafe',
+    desc: '112年の実績・世界的信頼ブランド',
+    ibmStrength: '「IBMにいた」という経歴の市場価値は別格。特にエンタープライズ領域では信頼の証。転職後も「IBMバックグラウンド」としてキャリアに機能し続ける。',
+    ibmExample: 'IBMの経歴は、エンタープライズ領域での「信頼の証」として、次のキャリアでも機能し続けます。',
+    effectiveFor: ['市場価値向上型', '安定志向型', 'キャリアアップ型'],
+    priority: 2,
+    keywords: ['ブランド', '市場価値', 'キャリア', '実績', '信頼', '112年'],
+  },
+  {
+    id: 'stability', name: '安定・長期雇用', icon: '🛡',
+    color: '#374151', colorL: '#f9fafb',
+    desc: '創業112年・外資系最高水準の雇用安定性',
+    ibmStrength: '1911年創業・リーマンショック・コロナ禍も黒字継続。外資系の中では最も雇用安定性が高い部類。平均勤続年数は日系大手に匹敵。',
+    ibmExample: '外資系でありながら、IBMの雇用安定性は国内日系大手と遜色ありません。創業112年の実績がそれを証明しています。',
+    effectiveFor: ['安定志向型', 'キャリアアップ型'],
+    priority: 2,
+    keywords: ['安定', '長期', '雇用', '継続', '112年', '老舗', '外資系'],
+  },
+  // ── 社会貢献軸 ──
+  {
+    id: 'social', name: '社会貢献', icon: '🌱',
+    color: '#16a34a', colorL: '#f0fdf4',
+    desc: 'IBMの社会課題解決・ESGプロジェクト',
+    ibmStrength: '医療・教育・気候変動・行政DXなど社会インフラへの貢献機会。「稼ぐAI」ではなく「社会を変えるAI」というキャリアストーリーが作れる。',
+    ibmExample: '気候変動対策・医療アクセス改善・デジタルデバイド解消など、技術で社会課題に向き合うプロジェクトがあります。',
+    effectiveFor: ['安定志向型', '社会貢献志向型', 'PM・マネジメント型'],
+    priority: 2,
+    keywords: ['社会貢献', 'ESG', '医療', '教育', '気候変動', 'SDGs', 'インパクト'],
+  },
+  // ── 育成・キャリア軸 ──
+  {
+    id: 'training', name: '育成制度', icon: '📚',
+    color: '#d97706', colorL: '#fffbeb',
+    desc: 'IBM内部認定・世界水準の育成プログラム',
+    ibmStrength: 'IBMのBadge/認定プログラム・Think Academyは業界標準。スキルが「IBMブランド付き」で市場価値として可視化される。社内異動・ローテーションも豊富。',
+    ibmExample: '400種以上のIBM Skills Badge認定が取得でき、スキルが「IBMブランド付き」で市場価値として可視化されます。',
+    effectiveFor: ['キャリアアップ型', '市場価値向上型', '安定志向型'],
+    priority: 2,
+    keywords: ['育成', 'Badge', '研修', 'スキル', '認定', 'キャリア開発', 'ローテーション'],
+  },
+  {
+    id: 'career_change', name: 'キャリアチェンジ支援', icon: '🔄',
+    color: '#7c3aed', colorL: '#f5f3ff',
+    desc: '社内公募・異動によるキャリア転換機会',
+    ibmStrength: '社内公募制度で2〜3年ごとに別チームへの異動が一般的。エンジニアからコンサル、技術から営業など、社内でのキャリアチェンジが実現できる。',
+    ibmExample: '2〜3年でチームを変えながらキャリアを積める社内公募制度で、「IBM内転職」が当たり前の文化です。',
+    effectiveFor: ['キャリアアップ型', '市場価値向上型'],
+    priority: 3,
+    keywords: ['キャリアチェンジ', '社内公募', '異動', 'ローテーション', '多様な経験'],
+  },
+  // ── 働き方・報酬軸 ──
+  {
+    id: 'workstyle', name: '働き方', icon: '🏠',
+    color: '#7c3aed', colorL: '#f5f3ff',
+    desc: 'フレックス・リモート・ハイブリッドワーク',
+    ibmStrength: 'IBM Japanはフレックス勤務・リモートワークが定着。育児・副業・地方在住も対応。年間を通じた柔軟な働き方は外資系の中でも充実度が高い。',
+    ibmExample: '週3〜4日リモート・コアタイムなしのフレックスが標準。副業原則OKの部門も増えています。',
+    effectiveFor: ['安定志向型', 'キャリアアップ型'],
+    priority: 2,
+    keywords: ['リモート', 'フレックス', 'ワークライフバランス', '副業', '育児', '在宅'],
+  },
+  {
+    id: 'benefits', name: '福利厚生・報酬', icon: '🎁',
+    color: '#be185d', colorL: '#fdf2f8',
+    desc: '外資系水準の報酬・ベネフィット体系',
+    ibmStrength: '外資系標準の給与レンジ・株式報酬・確定拠出年金・語学支援。大手日系との比較で「透明性の高い評価と報酬」が訴求ポイント。',
+    ibmExample: 'RSU（株式報酬）・確定拠出年金・語学支援に加え、グレード制で透明性の高い評価体系です。年収700万〜1500万レンジ。',
+    effectiveFor: ['安定志向型', 'キャリアアップ型'],
+    priority: 3,
+    keywords: ['報酬', '年収', '福利厚生', 'RSU', '株式報酬', '確定拠出', '給与'],
+  },
+  // ── 裁量・自律性軸 ──
+  {
+    id: 'autonomy', name: '裁量・技術選定', icon: '🎯',
+    color: '#dc2626', colorL: '#fef2f2',
+    desc: '技術選定・設計の意思決定権',
+    ibmStrength: 'IBMのコンサル・エンジニアは顧客の技術戦略を立案するポジションが多く、社内承認フローが整備された上での大きな裁量が与えられる。',
+    ibmExample: '顧客の技術戦略を立案するポジションが多く、「何を使うか」の意思決定に関われる裁量があります。',
+    effectiveFor: ['技術スペシャリスト型', 'PM・マネジメント型', '市場価値向上型'],
+    priority: 2,
+    keywords: ['裁量', '技術選定', '意思決定', 'アーキテクチャ', '自律性'],
   },
 ];
 
@@ -102,9 +188,9 @@ const IBM_APPEALS = [
 const IBM_MATRIX = {
   '技術スペシャリスト型':  ['ai_transformation','watsonx','tech_env','scale','autonomy','global'],
   'PM・マネジメント型':    ['scale','ai_transformation','autonomy','social','global','brand'],
-  'キャリアアップ型':       ['training','career_up','brand','scale','workstyle','benefits'],
-  '市場価値向上型':         ['ai_transformation','watsonx','brand','tech_env','global','training'],
-  '安定志向型':             ['brand','benefits','workstyle','social','training','stability'],
+  'キャリアアップ型':      ['training','career_change','brand','scale','workstyle','benefits'],
+  '市場価値向上型':        ['ai_transformation','watsonx','brand','tech_env','global','training'],
+  '安定志向型':            ['stability','brand','benefits','workstyle','social','training'],
 };
 
 // 後方互換のため旧IDマッピングも保持
@@ -508,15 +594,14 @@ function demoMail() {
     cta:     `30分ほど、選考を前提としないカジュアルなお話しの機会をいただけますか？\n「興味はあるけど転職は考えていない」という方でも大歓迎です。ご都合のよいお日時をいただけますと幸いです。`
   };
   hideLoad(); renderMail(); renderProcessLog(); go(5);
-  // デモ用のセルフレビュー（遅延実行）
+  // デモ用のセルフレビュー（v1.2新5軸版・遅延実行）
   setTimeout(() => {
     S.selfReview = {
-      scores: { templateFreedom: 78, candidateSpecificity: 72, ibmness: 65, appealConsistency: 80, motivationAlignment: 75 },
-      replyRate: 38,
-      overallComment: '候補者固有の経験への言及があり、テンプレ感は比較的少ないスカウトです。IBMならではの訴求をより強化し、候補者の転職理由との一致感を高めることで返信率が上がります。',
+      scores: { humanness: 74, candidateSpecificity: 72, consistency: 80, ibmness: 65, evidenceQuality: 70 },
+      overallComment: '候補者固有の経験への言及があり、人間らしい文章に近づいています。IBMならではの訴求をより具体的な数値・事例で強化し、冒頭の書き出しをもう一段踏み込んだ表現にすることで品質が上がります。',
       improvements: [
-        { axis: 'IBMらしさ', issue: 'IBMである必然性が薄く、他社のスカウトと差別化できていない。', fix: 'IBMのAI・Watsonx・グローバルプロジェクトなど固有の強みを具体的に1〜2文組み込む。' },
-        { axis: '候補者固有性', issue: '経歴への言及があるが、もう一歩踏み込んだ具体性が欲しい。', fix: '候補者の実績数値（チーム人数・PV数・改善率など）を直接引用すると固有性が上がる。' }
+        { axis: 'IBMらしさ', issue: 'IBMである必然性が薄く、他社のスカウトと差別化できていない。', fix: 'watsonxや170カ国グローバルなど固有の強みを具体的な数値・事例で1〜2文組み込む。', targetSection: 'benefit' },
+        { axis: '候補者固有性', issue: '経歴への言及があるが、具体的な数値・規模感が薄い。', fix: '候補者の実績数値（チーム人数・規模・改善率）を直接引用すると固有性が上がる。', targetSection: 'intro' }
       ]
     };
     renderSelfReview();
@@ -628,26 +713,40 @@ function renderSelfReview() {
   if (!sr || !box) return;
 
   const sc = sr.scores || {};
+  // v1.2 刷新: 5軸（返信率廃止）
   const axes = [
-    { key: 'templateFreedom',     label: 'テンプレート感',     icon: '📝' },
-    { key: 'candidateSpecificity', label: '候補者固有性',       icon: '👤' },
-    { key: 'ibmness',             label: 'IBMらしさ',           icon: '🔷' },
-    { key: 'appealConsistency',   label: '訴求の一貫性',        icon: '🎯' },
-    { key: 'motivationAlignment', label: '転職動機との整合性',  icon: '💡' }
-  ];
-  const replyRate = parseInt(sr.replyRate) || 0;
-  const rateClass = replyRate >= 50 ? 'sr-rate-high' : replyRate >= 30 ? 'sr-rate-mid' : 'sr-rate-low';
+    { key: 'humanness',            label: 'AIっぽさ除去',     icon: '✍️', desc: '人間らしい文章か' },
+    { key: 'candidateSpecificity', label: '候補者固有性',     icon: '👤', desc: 'この人だけに送れるか' },
+    { key: 'consistency',          label: '判断の一貫性',     icon: '🔗', desc: 'OHERE→訴求→文章の流れ' },
+    { key: 'ibmness',              label: 'IBMらしさ',        icon: '🔷', desc: 'IBMでなければ書けないか' },
+    { key: 'evidenceQuality',      label: '根拠の妥当性',     icon: '📋', desc: '訴求に根拠があるか' },
+    // 後方互換: 旧キーもフォールバックで表示
+    { key: 'templateFreedom',      label: 'テンプレ感（旧）', icon: '📝', desc: '旧スコア', legacy: true },
+    { key: 'appealConsistency',    label: '訴求一貫性（旧）', icon: '🎯', desc: '旧スコア', legacy: true },
+    { key: 'motivationAlignment',  label: '動機整合（旧）',   icon: '💡', desc: '旧スコア', legacy: true },
+  ].filter(a => !a.legacy || sc[a.key]);  // 旧キーは値がある時だけ表示
+
   const avgScore = Math.round(axes.reduce((s, a) => s + (parseInt(sc[a.key]) || 0), 0) / axes.length);
   const reviewRound = S.reviewRound || 1;
 
-  // 改善指摘 — 1クリック再生成ボタン付き (Phase2)
-  const SEC_MAP = {
-    'テンプレート感': 'intro', '候補者固有性': 'intro', 'IBMらしさ': 'benefit',
-    '訴求の一貫性': 'match', '転職動機との整合性': 'why'
+  // v1.2: 禁止表現違反の警告バナー
+  const violations = S.bannedViolations || [];
+  const violationBanner = violations.length > 0
+    ? `<div style="background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#dc2626">
+        ⚠️ 禁止表現が検出されました（自動再生成を実行済み）: ${violations.map(v => `「${esc(v.phrase)}」`).join(' ')}
+       </div>`
+    : '';
+
+  // 改善指摘 — v1.2: targetSection対応
+  const secLabel = { subject:'件名', intro:'冒頭文', why:'理由', match:'接点', benefit:'メリット', cta:'誘導文' };
+  const SEC_FALLBACK = {
+    'AIっぽさ除去': 'intro', '候補者固有性': 'intro', '判断の一貫性': 'match',
+    'IBMらしさ': 'benefit', '根拠の妥当性': 'why',
+    // 旧キー後方互換
+    'テンプレート感': 'intro', '訴求の一貫性': 'match', '転職動機との整合性': 'why'
   };
   const impHtml = (sr.improvements || []).map((imp, idx) => {
-    const secId = SEC_MAP[imp.axis] || 'benefit';
-    const secLabel = { subject:'件名', intro:'冒頭文', why:'理由', match:'接点', benefit:'メリット', cta:'誘導文' };
+    const secId = imp.targetSection || SEC_FALLBACK[imp.axis] || 'benefit';
     return `
       <div class="sr-imp-item" id="sr-imp-${idx}">
         <div class="sr-imp-head">
@@ -668,21 +767,18 @@ function renderSelfReview() {
     <div class="sr-header">
       <div class="sr-title">
         <span class="sr-icon">✦</span>
-        AIセルフレビュー <span class="sr-ibm-badge">IBM専用版</span>
+        AIセルフレビュー <span class="sr-ibm-badge">v1.2</span>
         ${reviewRound > 1 ? `<span class="sr-round-badge">第${reviewRound}回</span>` : ''}
       </div>
-      <div class="sr-reply-wrap">
-        <span class="sr-reply-label">返信率予測</span>
-        <span class="sr-reply-rate ${rateClass}">${replyRate}%</span>
-      </div>
     </div>
+    ${violationBanner}
     <div class="sr-overall">${esc(sr.overallComment || '')}</div>
     <div class="sr-axes">
       ${axes.map(a => {
         const v = parseInt(sc[a.key]) || 0;
         const barClass = v >= 75 ? 'sr-bar-good' : v >= 50 ? 'sr-bar-mid' : 'sr-bar-low';
         return `<div class="sr-axis-row">
-          <div class="sr-axis-label">${a.icon} ${a.label}</div>
+          <div class="sr-axis-label" title="${a.desc || ''}">${a.icon} ${a.label}</div>
           <div class="sr-axis-bar-wrap"><div class="sr-axis-bar ${barClass}" style="width:${v}%"></div></div>
           <div class="sr-axis-score">${v}</div>
         </div>`;
