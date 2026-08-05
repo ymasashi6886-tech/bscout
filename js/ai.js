@@ -144,7 +144,12 @@ async function callAnalysisAPI() {
   "strategyNote": "今回のアプローチで採用担当者が意識すべき戦略的ポイント（1〜2文）"
 }
 
-appealPriority/recommendedAppealsに使えるIDは: tech, career, scale, startup, autonomy, mgmt, remote, salary, social, global, team, stability`;
+appealPriority/recommendedAppealsに使えるIDは（IBM専用11軸）:
+ai_transformation（AI変革）, watsonx（watsonx）, global（グローバル環境）, scale（大規模案件）,
+social（社会貢献）, training（育成制度）, workstyle（働き方）, benefits（福利厚生）,
+brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）
+
+上記IBM専用IDのみ使用。旧ID（tech/career/startup等）は使わないこと。`;
 
   const res = await fetch(API_URL, {
     method: 'POST',
@@ -179,6 +184,16 @@ async function callMailAPI() {
   const temp = a.temperature || {};
 
   const successExamples = j.successExamples || '';
+  // IBM訴求ライブラリから選択訴求のibmStrengthを取得してプロンプトに埋め込む（Phase2）
+  // S.selectedAppealIds はフロント側で設定されるが、callMailAPIはS参照なのでここで取得
+  const ibmStrengthHints = sel.map(name => {
+    // nameからIBM_APPEALSを逆引き（ai.jsからはwindow経由でアクセス）
+    if (typeof IBM_APPEALS !== 'undefined') {
+      const ap = IBM_APPEALS.find(x => x.name === name);
+      return ap ? `【${ap.name}】${ap.ibmStrength}` : name;
+    }
+    return name;
+  }).join('\n');
 
   const prompt = `あなたは日本のトップリクルーターです。以下の情報をもとに、AIっぽさのないスカウトメールを生成してください。JSONのみ返してください。
 
@@ -201,6 +216,8 @@ ${successExamples ? `\n## 過去の成功スカウト例（参考にして同水
 - 訴求優先順位:
 ${priText}
 - 選択した訴求ポイント: ${sel.join('、')}
+- IBM訴求の具体的内容（benefitセクションで必ず1〜2つ自然に言及すること）:
+${ibmStrengthHints}
 - 避けるべき訴求: ${a.avoidPoints || ''}
 - スカウト戦略:
   ①共感: ${strat.step1_empathy || ''}

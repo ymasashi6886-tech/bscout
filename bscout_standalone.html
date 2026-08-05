@@ -1051,6 +1051,197 @@ textarea.tall { min-height:110px; }
 }
 .proj-del-btn:hover { background: var(--red-l); color: var(--red); border-color: var(--red); }
 
+/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+   Phase2 窶・IBM蟆ら畑險ｴ豎ゅΛ繧､繝悶Λ繝ｪ UI
+笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+
+/* IBM險ｴ豎ゅ・繝医Μ繧ｯ繧ｹ繝舌リ繝ｼ */
+.ibm-matrix-banner {
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  grid-column: span 99;
+}
+.imb-type-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.imb-type-badge {
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.imb-type-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #93c5fd;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.imb-hint {
+  font-size: 12px;
+  color: #bfdbfe;
+  line-height: 1.7;
+}
+
+/* IBM險ｴ豎ゅげ繝ｪ繝・ラ */
+.ibm-appeal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+/* IBM險ｴ豎ゅい繧､繝・Β */
+.ibm-appeal-item { position: relative; }
+.ibm-appeal-item input[type=checkbox] { position: absolute; opacity: 0; width: 0; height: 0; }
+.ibm-appeal-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--bg);
+  transition: all .15s;
+  height: 100%;
+}
+.ibm-appeal-label:hover {
+  border-color: var(--ap-color, var(--accent));
+  background: var(--ap-color-l, var(--accent-l));
+}
+.ibm-appeal-item.checked .ibm-appeal-label,
+.ibm-appeal-item.rank1 .ibm-appeal-label,
+.ibm-appeal-item.rank2 .ibm-appeal-label,
+.ibm-appeal-item.rank3 .ibm-appeal-label {
+  border-color: var(--ap-color, var(--accent));
+  background: var(--ap-color-l, var(--accent-l));
+}
+.ibm-appeal-item.checked .ibm-appeal-label { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ap-color, #2563eb) 20%, transparent); }
+.ibm-appeal-item.rank1 .ibm-appeal-label { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ap-color, #2563eb) 30%, transparent); }
+.ibm-ap-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.ibm-ap-icon { font-size: 16px; flex-shrink: 0; }
+.ibm-ap-name { font-size: 14px; font-weight: 800; color: var(--text); flex: 1; }
+.ibm-ap-rank {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.rank-1   { background: #fee2e2; color: #dc2626; }
+.rank-2   { background: #fef3c7; color: #d97706; }
+.rank-3   { background: #d1fae5; color: #059669; }
+.rank-rec { background: var(--purple-l); color: var(--purple); }
+.ibm-ap-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.ibm-ap-strength {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.6;
+  background: rgba(0,0,0,.04);
+  border-radius: 4px;
+  padding: 5px 8px;
+  display: none;
+}
+.ibm-appeal-item.checked .ibm-ap-strength,
+.ibm-appeal-item.rank1 .ibm-ap-strength,
+.ibm-appeal-item.rank2 .ibm-ap-strength {
+  display: block;
+}
+.ibm-ap-reason {
+  font-size: 11px;
+  color: var(--purple);
+  background: var(--purple-l);
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+   Phase2 窶・繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ謾ｹ蝟・Ν繝ｼ繝・笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+
+.sr-imp-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sr-fix-btn {
+  flex-shrink: 0;
+  padding: 6px 13px;
+  border: 1.5px solid #4ade80;
+  border-radius: 6px;
+  background: transparent;
+  color: #4ade80;
+  font: 700 11px inherit;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.sr-fix-btn:hover { background: #4ade80; color: #0f172a; }
+.sr-fix-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+.sr-rerun-btn {
+  margin-left: auto;
+  padding: 5px 13px;
+  border: 1px solid #334155;
+  border-radius: 5px;
+  background: transparent;
+  color: #94a3b8;
+  font: 600 11px inherit;
+  cursor: pointer;
+  transition: all .15s;
+}
+.sr-rerun-btn:hover { background: #1e293b; color: #e2e8f0; }
+
+.sr-round-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: #d97706;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+/* 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+   Phase2 窶・OHERE繝医Ξ繝ｼ繧ｵ繝薙Μ繝・ぅ繝舌ャ繧ｸ
+笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武 */
+.ohere-trace-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+  cursor: help;
+  letter-spacing: .3px;
+  vertical-align: middle;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 </style>
 </head>
 <body>
@@ -1892,7 +2083,11 @@ async function callAnalysisAPI() {
   "strategyNote": "莉雁屓縺ｮ繧｢繝励Ο繝ｼ繝√〒謗｡逕ｨ諡・ｽ楢・′諢剰ｭ倥☆縺ｹ縺肴姶逡･逧・・繧､繝ｳ繝茨ｼ・縲・譁・ｼ・
 }
 
-appealPriority/recommendedAppeals縺ｫ菴ｿ縺医ｋID縺ｯ: tech, career, scale, startup, autonomy, mgmt, remote, salary, social, global, team, stability`;
+appealPriority/recommendedAppeals縺ｫ菴ｿ縺医ｋID縺ｯ・・BM蟆ら畑11霆ｸ・・
+ai_transformation・・I螟蛾擠・・ watsonx・・atsonx・・ global・医げ繝ｭ繝ｼ繝舌Ν迺ｰ蠅・ｼ・ scale・亥､ｧ隕乗ｨ｡譯井ｻｶ・・
+social・育､ｾ莨夊ｲ｢迪ｮ・・ training・郁ご謌仙宛蠎ｦ・・ workstyle・亥ロ縺肴婿・・ benefits・育ｦ丞茜蜴夂函・・
+brand・・BM繝悶Λ繝ｳ繝会ｼ・ autonomy・郁｣・㍼・・ tech_env・域橿陦鍋腸蠅・ｼ・
+荳願ｨ露BM蟆ら畑ID縺ｮ縺ｿ菴ｿ逕ｨ縲よ立ID・・ech/career/startup遲会ｼ峨・菴ｿ繧上↑縺・％縺ｨ縲Ａ;
 
   const res = await fetch(API_URL, {
     method: 'POST',
@@ -1927,6 +2122,13 @@ async function callMailAPI() {
   const temp = a.temperature || {};
 
   const successExamples = j.successExamples || '';
+  // IBM險ｴ豎ゅΛ繧､繝悶Λ繝ｪ縺九ｉ驕ｸ謚櫁ｨｴ豎ゅ・ibmStrength繧貞叙蠕励＠縺ｦ繝励Ο繝ｳ繝励ヨ縺ｫ蝓九ａ霎ｼ繧・・hase2・・  // S.selectedAppealIds 縺ｯ繝輔Ο繝ｳ繝亥・縺ｧ險ｭ螳壹＆繧後ｋ縺後…allMailAPI縺ｯS蜿ら・縺ｪ縺ｮ縺ｧ縺薙％縺ｧ蜿門ｾ・  const ibmStrengthHints = sel.map(name => {
+    // name縺九ｉIBM_APPEALS繧帝・ｼ輔″・・i.js縺九ｉ縺ｯwindow邨檎罰縺ｧ繧｢繧ｯ繧ｻ繧ｹ・・    if (typeof IBM_APPEALS !== 'undefined') {
+      const ap = IBM_APPEALS.find(x => x.name === name);
+      return ap ? `縲・{ap.name}縲・{ap.ibmStrength}` : name;
+    }
+    return name;
+  }).join('\n');
 
   const prompt = `縺ゅ↑縺溘・譌･譛ｬ縺ｮ繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ゆｻ･荳九・諠・ｱ繧偵ｂ縺ｨ縺ｫ縲、I縺｣縺ｽ縺輔・縺ｪ縺・せ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ繧堤函謌舌＠縺ｦ縺上□縺輔＞縲・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・
 ## 蛟呵｣懆・ュ蝣ｱ
@@ -1944,6 +2146,8 @@ ${successExamples ? `\n## 驕主悉縺ｮ謌仙粥繧ｹ繧ｫ繧ｦ繝井ｾ具
 - 險ｴ豎ょ━蜈磯・ｽ・
 ${priText}
 - 驕ｸ謚槭＠縺溯ｨｴ豎ゅ・繧､繝ｳ繝・ ${sel.join('縲・)}
+- IBM險ｴ豎ゅ・蜈ｷ菴鍋噪蜀・ｮｹ・・enefit繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ縺ｧ蠢・★1縲・縺､閾ｪ辟ｶ縺ｫ險蜿翫☆繧九％縺ｨ・・
+${ibmStrengthHints}
 - 驕ｿ縺代ｋ縺ｹ縺崎ｨｴ豎・ ${a.avoidPoints || ''}
 - 繧ｹ繧ｫ繧ｦ繝域姶逡･:
   竭蜈ｱ諢・ ${strat.step1_empathy || ''}
@@ -2120,21 +2324,111 @@ async function runBatchSingle(c, j) {
  *   - 霑比ｿ｡邨先棡險倬鹸: S.learningData.scoutAction.result 繧呈峩譁ｰ縺吶ｋUI繧定ｿｽ蜉
  */
 
-// 笏笏 險ｴ豎ゅ・繧､繝ｳ繝医・繧ｹ繧ｿ 笏笏
-const ALL_APPEALS = [
-  { id: 'tech',      name: '謚陦鍋噪謖第姶',       desc: '譛譁ｰ謚陦薙・髮｣縺励＞隱ｲ鬘後∈縺ｮ謖第姶讖滉ｼ・ },
-  { id: 'career',    name: '繧ｭ繝｣繝ｪ繧｢繧｢繝・・',    desc: '閨ｷ菴阪・蠖ｹ蜑ｲ繝ｻ蠖ｱ髻ｿ遽・峇縺ｮ諡｡螟ｧ' },
-  { id: 'scale',     name: '螟ｧ隕乗ｨ｡繝励Ο繧ｸ繧ｧ繧ｯ繝・, desc: '螟ｧ縺阪↑隕乗ｨ｡繝ｻ繧､繝ｳ繝代け繝医・縺ゅｋ髢狗匱' },
-  { id: 'startup',   name: '繧ｹ繧ｿ繝ｼ繝医い繝・・謌宣聞', desc: '諤･謌宣聞繝輔ぉ繝ｼ繧ｺ縺ｸ縺ｮ蜿ら判繝ｻ莠区･ｭ雋｢迪ｮ' },
-  { id: 'autonomy',  name: '陬・㍼繝ｻ閾ｪ逕ｱ蠎ｦ',       desc: '謚陦馴∈螳壹・險ｭ險医・諢乗晄ｱｺ螳壽ｨｩ' },
-  { id: 'mgmt',      name: '繝槭ロ繧ｸ繝｡繝ｳ繝域ｩ滉ｼ・,   desc: '繝√・繝繝ｪ繝ｼ繝峨・邨・ｹ斐▼縺上ｊ縺ｸ縺ｮ髢｢荳・ },
-  { id: 'remote',    name: '蜒阪″譁ｹ謾ｹ蝟・,         desc: '繝ｪ繝｢繝ｼ繝医・繝輔Ξ繝・け繧ｹ繝ｻ繝ｯ繝ｼ繧ｯ繝ｩ繧､繝・ },
-  { id: 'salary',    name: '蟷ｴ蜿弱い繝・・',         desc: '蝣ｱ驟ｬ繝ｻ蠕・∞縺ｮ蜷台ｸ・ },
-  { id: 'social',    name: '遉ｾ莨夊ｲ｢迪ｮ諤ｧ',         desc: '荳悶・荳ｭ縺ｸ縺ｮ繧､繝ｳ繝代け繝医・繝溘ャ繧ｷ繝ｧ繝ｳ蜈ｱ諢・ },
-  { id: 'global',    name: '繧ｰ繝ｭ繝ｼ繝舌Ν迺ｰ蠅・,     desc: '闍ｱ隱槭・豬ｷ螟悶メ繝ｼ繝縺ｨ縺ｮ蜊疲･ｭ讖滉ｼ・ },
-  { id: 'team',      name: '蜆ｪ遘縺ｪ繝√・繝',       desc: '繝上う繝ｬ繝吶Ν縺ｪ莉ｲ髢薙・蛻ｺ豼縺ゅｋ迺ｰ蠅・ },
-  { id: 'stability', name: '螳牙ｮ壹・螳牙ｿ・─',       desc: '莠区･ｭ縺ｮ螳牙ｮ壽ｧ繝ｻ莨夂､ｾ縺ｮ菫｡鬆ｼ諤ｧ' },
+// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// Phase2: IBM蟆ら畑險ｴ豎ゅΛ繧､繝悶Λ繝ｪ
+// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+
+/**
+ * IBM險ｴ豎ゅ・繧ｹ繧ｿ・・1霆ｸ・・ * color: 繧ｫ繝ｼ繝峨・繧｢繧ｯ繧ｻ繝ｳ繝医き繝ｩ繝ｼ  ibmStrength: IBM縺悟ｮ滄圀縺ｫ蠑ｷ縺・せ・亥・菴楢ｨｴ豎よ枚縺ｮ繝偵Φ繝茨ｼ・ */
+const IBM_APPEALS = [
+  {
+    id: 'ai_transformation', name: 'AI Transformation', icon: '笨ｦ',
+    color: '#6d28d9', colorL: '#f5f3ff',
+    desc: 'IBM縺ｮAI螟蛾擠繝励Ο繧ｸ繧ｧ繧ｯ繝医・watsonx豢ｻ逕ｨ讖滉ｼ・,
+    ibmStrength: 'IBM縺ｯwatsonx.ai繧剃ｸｭ蠢・↓驥題檮繝ｻ陬ｽ騾繝ｻ蛹ｻ逋ゅ↑縺ｩ蜷・･ｭ逡後・AI螟蛾擠繧剃ｸｻ蟆弱ょ呵｣懆・′AI繧偵御ｽ懊ｋ蛛ｴ縲阪〒縺ｯ縺ｪ縺上檎､ｾ莨壹↓螳溯｣・☆繧句・縲阪↓遶九※繧九・,
+    effectiveFor: ['謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛', 'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛', '蟶ょｴ萓｡蛟､蜷台ｸ雁梛']
+  },
+  {
+    id: 'watsonx', name: 'watsonx', icon: '溌',
+    color: '#0891b2', colorL: '#ecfeff',
+    desc: 'IBM縺ｮ逕滓・AI蝓ｺ逶､watsonx縺ｸ縺ｮ豺ｱ髢｢荳・,
+    ibmStrength: 'watsonx縺ｯ繧ｪ繝ｼ繝励Φ繧ｽ繝ｼ繧ｹLLM繧偵お繝ｳ繧ｿ繝ｼ繝励Λ繧､繧ｺ縺ｧ菴ｿ縺医ｋ蜚ｯ荳縺ｮ蝓ｺ逶､縲・PT縺ｨ縺ｯ逡ｰ縺ｪ繧翫瑚・遉ｾ繝・・繧ｿ縺ｧ蜍輔￥縲喉I繧呈ｧ狗ｯ峨〒縺阪ｋ縲・,
+    effectiveFor: ['謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛', '蟶ょｴ萓｡蛟､蜷台ｸ雁梛']
+  },
+  {
+    id: 'global', name: '繧ｰ繝ｭ繝ｼ繝舌Ν迺ｰ蠅・, icon: '件',
+    color: '#2563eb', colorL: '#eff6ff',
+    desc: '170繧ｫ蝗ｽ繝ｻ螟壼嵜邀阪メ繝ｼ繝縺ｨ縺ｮ蜊疲･ｭ讖滉ｼ・,
+    ibmStrength: 'IBM縺ｯ170繧ｫ蝗ｽ縺ｫ諡轤ｹ繧呈戟縺｡縲∵律譛ｬ縺ｮ繝励Ο繧ｸ繧ｧ繧ｯ繝医〒繧ょｸｸ縺ｫ豬ｷ螟悶メ繝ｼ繝縺ｨ蜊泌ロ縲り恭隱槭′螳溷漁繝ｬ繝吶Ν縺ｧ菴ｿ縺医∝､冶ｳ・ｳｻ縺ｮ荳ｭ縺ｧ繧ょ悸蛟堤噪縺ｪ繧ｰ繝ｭ繝ｼ繝舌Ν隕乗ｨ｡縲・,
+    effectiveFor: ['繧ｰ繝ｭ繝ｼ繝舌Ν蠢怜髄蝙・, '蟶ょｴ萓｡蛟､蜷台ｸ雁梛', '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛']
+  },
+  {
+    id: 'scale', name: '螟ｧ隕乗ｨ｡譯井ｻｶ', icon: '女',
+    color: '#059669', colorL: '#ecfdf5',
+    desc: '蝗ｽ螳ｶ繝ｻ讌ｭ逡後う繝ｳ繝輔Λ隕乗ｨ｡縺ｮ繝励Ο繧ｸ繧ｧ繧ｯ繝・,
+    ibmStrength: '驫陦後・螳伜・蠎√・陬ｽ騾讌ｭ縺ｮ蝓ｺ蟷ｹ繧ｷ繧ｹ繝・Β縺九ｉ蛹ｻ逋・X縺ｾ縺ｧ縲∝倶ｺｺ縺ｧ縺ｯ菴馴ｨ薙〒縺阪↑縺・ｶ・､ｧ隕乗ｨ｡譯井ｻｶ縺ｫ謳ｺ繧上ｌ繧九ゅせ繧ｿ繝ｼ繝医い繝・・縺ｧ縺ｯ邨ｶ蟇ｾ縺ｫ遨阪ａ縺ｪ縺・ｵ碁ｨ薙せ繧ｱ繝ｼ繝ｫ縲・,
+    effectiveFor: ['PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛', '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・, '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛']
+  },
+  {
+    id: 'social', name: '遉ｾ莨夊ｲ｢迪ｮ', icon: '験',
+    color: '#16a34a', colorL: '#f0fdf4',
+    desc: 'IBM縺ｮ遉ｾ莨夊ｪｲ鬘瑚ｧ｣豎ｺ繝ｻESG繝励Ο繧ｸ繧ｧ繧ｯ繝・,
+    ibmStrength: '蛹ｻ逋ゅ・謨呵ご繝ｻ豌怜吝､牙虚繝ｻ陦梧帆DX縺ｪ縺ｩ遉ｾ莨壹う繝ｳ繝輔Λ縺ｸ縺ｮ雋｢迪ｮ讖滉ｼ壹ゅ檎ｨｼ縺植I縲阪〒縺ｯ縺ｪ縺上檎､ｾ莨壹ｒ螟峨∴繧帰I縲阪→縺・≧繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼ縺御ｽ懊ｌ繧九・,
+    effectiveFor: ['螳牙ｮ壼ｿ怜髄蝙・, '遉ｾ莨夊ｲ｢迪ｮ蠢怜髄蝙・, 'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛']
+  },
+  {
+    id: 'training', name: '閧ｲ謌仙宛蠎ｦ', icon: '答',
+    color: '#d97706', colorL: '#fffbeb',
+    desc: 'IBM蜀・Κ隱榊ｮ壹・荳也阜豌ｴ貅悶・閧ｲ謌舌・繝ｭ繧ｰ繝ｩ繝',
+    ibmStrength: 'IBM縺ｮBadge/隱榊ｮ壹・繝ｭ繧ｰ繝ｩ繝繝ｻThink Academy縺ｯ讌ｭ逡梧ｨ呎ｺ悶ゅせ繧ｭ繝ｫ縺後栗BM繝悶Λ繝ｳ繝我ｻ倥″縲阪〒蟶ょｴ萓｡蛟､縺ｨ縺励※蜿ｯ隕門喧縺輔ｌ繧九ら､ｾ蜀・焚蜍輔・繝ｭ繝ｼ繝・・繧ｷ繝ｧ繝ｳ繧りｱ雁ｯ後・,
+    effectiveFor: ['繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・, '蟶ょｴ萓｡蛟､蜷台ｸ雁梛', '螳牙ｮ壼ｿ怜髄蝙・]
+  },
+  {
+    id: 'workstyle', name: '蜒阪″譁ｹ', icon: '匠',
+    color: '#7c3aed', colorL: '#f5f3ff',
+    desc: '繝輔Ξ繝・け繧ｹ繝ｻ繝ｪ繝｢繝ｼ繝医・繝上う繝悶Μ繝・ラ繝ｯ繝ｼ繧ｯ',
+    ibmStrength: 'IBM Japan縺ｯ繝輔Ξ繝・け繧ｹ蜍､蜍吶・繝ｪ繝｢繝ｼ繝医Ρ繝ｼ繧ｯ縺悟ｮ夂捩縲りご蜈舌・蜑ｯ讌ｭ繝ｻ蝨ｰ譁ｹ蝨ｨ菴上ｂ蟇ｾ蠢懊ょｹｴ髢薙ｒ騾壹§縺滓沐霆溘↑蜒阪″譁ｹ縺ｯ螟冶ｳ・ｳｻ縺ｮ荳ｭ縺ｧ繧ょ・螳溷ｺｦ縺碁ｫ倥＞縲・,
+    effectiveFor: ['螳牙ｮ壼ｿ怜髄蝙・, '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・]
+  },
+  {
+    id: 'benefits', name: '遖丞茜蜴夂函', icon: '氏',
+    color: '#be185d', colorL: '#fdf2f8',
+    desc: '螟冶ｳ・ｳｻ豌ｴ貅悶・蝣ｱ驟ｬ繝ｻ繝吶ロ繝輔ぅ繝・ヨ菴鍋ｳｻ',
+    ibmStrength: '螟冶ｳ・ｳｻ讓呎ｺ悶・邨ｦ荳弱Ξ繝ｳ繧ｸ繝ｻ譬ｪ蠑丞ｱ驟ｬ繝ｻ遒ｺ螳壽侠蜃ｺ蟷ｴ驥代・隱槫ｭｦ謾ｯ謠ｴ縲ょ､ｧ謇区律邉ｻ縺ｨ縺ｮ豈碑ｼ・〒縲碁乗・諤ｧ縺ｮ鬮倥＞隧穂ｾ｡縺ｨ蝣ｱ驟ｬ縲阪′險ｴ豎ゅ・繧､繝ｳ繝医・,
+    effectiveFor: ['螳牙ｮ壼ｿ怜髄蝙・, '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・]
+  },
+  {
+    id: 'brand', name: 'IBM繝悶Λ繝ｳ繝・, icon: '塙',
+    color: '#1d4ed8', colorL: '#dbeafe',
+    desc: '112蟷ｴ縺ｮ螳溽ｸｾ繝ｻ荳也阜逧・ｿ｡鬆ｼ繝悶Λ繝ｳ繝・,
+    ibmStrength: '縲栗BM縺ｫ縺・◆縲阪→縺・≧邨梧ｭｴ縺ｮ蟶ょｴ萓｡蛟､縺ｯ蛻･譬ｼ縲ら音縺ｫ繧ｨ繝ｳ繧ｿ繝ｼ繝励Λ繧､繧ｺ鬆伜沺縺ｧ縺ｯ菫｡鬆ｼ縺ｮ險ｼ縲りｻ｢閨ｷ蠕後ｂ縲栗BM繝舌ャ繧ｯ繧ｰ繝ｩ繧ｦ繝ｳ繝峨阪→縺励※繧ｭ繝｣繝ｪ繧｢縺ｫ讖溯・縺礼ｶ壹￠繧九・,
+    effectiveFor: ['蟶ょｴ萓｡蛟､蜷台ｸ雁梛', '螳牙ｮ壼ｿ怜髄蝙・, '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・]
+  },
+  {
+    id: 'autonomy', name: '陬・㍼', icon: '識',
+    color: '#dc2626', colorL: '#fef2f2',
+    desc: '謚陦馴∈螳壹・險ｭ險医・諢乗晄ｱｺ螳壽ｨｩ',
+    ibmStrength: 'IBM縺ｮ繧ｳ繝ｳ繧ｵ繝ｫ繝ｻ繧ｨ繝ｳ繧ｸ繝九い縺ｯ鬘ｧ螳｢縺ｮ謚陦捺姶逡･繧堤ｫ区｡医☆繧九・繧ｸ繧ｷ繝ｧ繝ｳ縺悟､壹￥縲∫､ｾ蜀・価隱阪ヵ繝ｭ繝ｼ縺梧紛蛯吶＆繧後◆荳翫〒縺ｮ螟ｧ縺阪↑陬・㍼縺御ｸ弱∴繧峨ｌ繧九・,
+    effectiveFor: ['謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛', 'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛', '蟶ょｴ萓｡蛟､蜷台ｸ雁梛']
+  },
+  {
+    id: 'tech_env', name: '謚陦鍋腸蠅・, icon: '笞呻ｸ・,
+    color: '#0f766e', colorL: '#f0fdfa',
+    desc: 'OSS繝ｻ繧ｨ繝・ず繝ｻ繧ｯ繝ｩ繧ｦ繝峨↑縺ｩ譛蜈育ｫｯ謚陦薙せ繧ｿ繝・け',
+    ibmStrength: 'RedHat/OpenShift繝ｻKubernetes繝ｻTerraform繝ｻInstana繝ｻQiskit縺ｪ縺ｩ讌ｭ逡梧ｨ呎ｺ飽SS縺ｮ荳ｭ蠢・↓縺・ｋ縲よ橿陦薙せ繧ｿ繝・け閾ｪ菴薙′蟶ょｴ萓｡蛟､縺ｫ逶ｴ邨舌☆繧狗腸蠅・・,
+    effectiveFor: ['謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛', '蟶ょｴ萓｡蛟､蜷台ｸ雁梛']
+  },
 ];
+
+/**
+ * 蛟呵｣懆・ち繧､繝・ﾃ・IBM險ｴ豎・逶ｸ諤ｧ繝槭ヨ繝ｪ繧ｯ繧ｹ
+ * rank: 1=蠢・・ 2=譛牙柑, 3=陬懷勧
+ */
+const IBM_MATRIX = {
+  '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛':  ['ai_transformation','watsonx','tech_env','scale','autonomy','global'],
+  'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛':    ['scale','ai_transformation','autonomy','social','global','brand'],
+  '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・:       ['training','career_up','brand','scale','workstyle','benefits'],
+  '蟶ょｴ萓｡蛟､蜷台ｸ雁梛':         ['ai_transformation','watsonx','brand','tech_env','global','training'],
+  '螳牙ｮ壼ｿ怜髄蝙・:             ['brand','benefits','workstyle','social','training','stability'],
+};
+
+// 蠕梧婿莠呈鋤縺ｮ縺溘ａ譌ｧID繝槭ャ繝斐Φ繧ｰ繧ゆｿ晄戟
+const ALL_APPEALS = IBM_APPEALS.map(a => ({ id: a.id, name: a.name, desc: a.desc }));
+
+/** 蛟呵｣懆・ち繧､繝励°繧画耳螂ｨIBM險ｴ豎・D繝ｪ繧ｹ繝医ｒ霑斐☆・磯・ｺ丈ｻ倥″・・*/
+function getIbmAppealsForType(typeCategory) {
+  return IBM_MATRIX[typeCategory] || ['ai_transformation','brand','scale','global','tech_env','training'];
+}
 
 const $ = id => document.getElementById(id);
 const md = () => $('mdl').value;
@@ -2430,26 +2724,71 @@ function renderAnalysis() {
 }
 
 // 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP3: 險ｴ豎ゅそ繝ｬ繧ｯ繧ｿ繝ｼ繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ
+// STEP3: IBM蟆ら畑 險ｴ豎ゅそ繝ｬ繧ｯ繧ｿ繝ｼ繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ (Phase2)
 // 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
 function renderAppealSelector() {
-  const a = S.analysis, rec = a.recommendedAppeals || [];
-  const reasons = a.appealReasons || {};
+  const a = S.analysis;
+  const typeCategory = a.candidateTypeCategory || a.candidateType || '';
+  const rec = a.recommendedAppeals || getIbmAppealsForType(typeCategory);
   const priMap = {};
   (a.appealPriority || []).forEach(p => { if (p.appealId) priMap[p.appealId] = { reason: p.reason, rank: p.rank }; });
 
-  $('appealGrid').innerHTML = ALL_APPEALS.map(ap => {
-    const isRec    = rec.includes(ap.id);
-    const priInfo  = priMap[ap.id];
-    const reason   = priInfo ? `${priInfo.rank}菴肴耳螂ｨ 窶・${priInfo.reason}` : (reasons[ap.id] || '');
-    const badge    = priInfo ? `<span class="ai-rec-badge">${priInfo.rank}菴・/span>` : (isRec ? '<span class="ai-rec-badge">AI謗ｨ螂ｨ</span>' : '');
-    return `<div class="appeal-item"><input type="checkbox" id="ap_${ap.id}" value="${ap.id}" ${isRec ? 'checked' : ''}><label class="appeal-label" for="ap_${ap.id}"><div class="appeal-check">${isRec ? '笨・ : ''}</div><div class="appeal-info"><div class="appeal-name">${ap.name}${badge}</div><div class="appeal-desc">${ap.desc}</div>${reason ? `<div class="appeal-reason">${reason}</div>` : ''}</div></label></div>`;
-  }).join('');
+  // 繝槭ヨ繝ｪ繧ｯ繧ｹ謗ｨ螂ｨ鬆・〒繧ｽ繝ｼ繝茨ｼ壽耳螂ｨ荳贋ｽ阪ｒ蜈磯ｭ縺ｫ縲√◎繧御ｻ･螟悶ｒ蠕後ｍ縺ｫ
+  const matrixOrder = getIbmAppealsForType(typeCategory);
+  const sorted = [
+    ...matrixOrder.map(id => IBM_APPEALS.find(a => a.id === id)).filter(Boolean),
+    ...IBM_APPEALS.filter(a => !matrixOrder.includes(a.id))
+  ];
 
-  document.querySelectorAll('.appeal-item input[type=checkbox]').forEach(cb => {
-    cb.addEventListener('change', () => { cb.nextElementSibling.querySelector('.appeal-check').textContent = cb.checked ? '笨・ : ''; });
+  // 繧ｿ繧､繝怜ｰら畑繝偵Φ繝医ヰ繝翫・
+  const typeHint = {
+    '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛':  '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛縺ｯAI Transformation繝ｻwatsonx繝ｻ謚陦鍋腸蠅・′譛繧ょ絢縺輔ｊ縺ｾ縺吶・BM縺後梧橿陦薙ｒ遉ｾ莨壹↓螳溯｣・☆繧句ｴ縲阪〒縺ゅｋ縺薙→繧貞燕髱｢縺ｫ蜃ｺ縺励※縺上□縺輔＞縲・,
+    'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛':    'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛縺ｯ螟ｧ隕乗ｨ｡譯井ｻｶ繝ｻAI螟蛾擠繝ｻ陬・㍼縺ｮ險ｴ豎ゅ′譛牙柑縺ｧ縺吶・BM縺ｮ繝励Ο繧ｸ繧ｧ繧ｯ繝郁ｦ乗ｨ｡縺ｨ諢乗晄ｱｺ螳壽ｨｩ縺ｮ螟ｧ縺阪＆繧貞・菴鍋噪縺ｫ莨昴∴縺ｦ縺上□縺輔＞縲・,
+    '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・:       '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙九↓縺ｯ閧ｲ謌仙宛蠎ｦ繝ｻIBM繝悶Λ繝ｳ繝峨・螟ｧ隕乗ｨ｡譯井ｻｶ縺碁涸縺阪∪縺吶ゅ栗BM縺ｫ縺・◆縲阪→縺・≧邨梧ｭｴ萓｡蛟､縺ｨ菴鍋ｳｻ逧・↑謌宣聞讖滉ｼ壹ｒ蠑ｷ隱ｿ縺励※縺上□縺輔＞縲・,
+    '蟶ょｴ萓｡蛟､蜷台ｸ雁梛':         '蟶ょｴ萓｡蛟､蜷台ｸ雁梛縺ｯAIﾃ悠BMﾃ励げ繝ｭ繝ｼ繝舌Ν縺ｮ邨・∩蜷医ｏ縺帙′譛蠑ｷ縺ｧ縺吶・BM縺ｮAI螟蛾擠邨碁ｨ薙′蟶ょｴ縺ｧ譛繧ょｸ悟ｰ代↑螳溽ｸｾ縺ｫ縺ｪ繧九％縺ｨ繧定ｨｴ豎ゅ＠縺ｦ縺上□縺輔＞縲・,
+    '螳牙ｮ壼ｿ怜髄蝙・:             '螳牙ｮ壼ｿ怜髄蝙九↓縺ｯIBM繝悶Λ繝ｳ繝峨・遖丞茜蜴夂函繝ｻ蜒阪″譁ｹ繝ｻ遉ｾ莨夊ｲ｢迪ｮ縺梧怏蜉ｹ縺ｧ縺吶・BM縺ｮ112蟷ｴ縺ｮ螳溽ｸｾ縺ｨ螳牙ｮ壹＠縺滉ｺ区･ｭ蝓ｺ逶､繧貞・菴鍋噪縺ｫ遉ｺ縺励※縺上□縺輔＞縲・,
+  };
+
+  $('appealGrid').innerHTML = `
+    <div class="ibm-matrix-banner">
+      <div class="imb-type-row">
+        <span class="imb-type-badge">${esc(typeCategory || '譛ｪ蛻・｡・)}</span>
+        <span class="imb-type-label">蛟呵｣懆・ち繧､繝・ﾃ・IBM險ｴ豎・繝槭ヨ繝ｪ繧ｯ繧ｹ譛驕ｩ蛹・/span>
+      </div>
+      <div class="imb-hint">${esc(typeHint[typeCategory] || '蛟呵｣懆・ち繧､繝励↓蜷医ｏ縺帙◆IBM險ｴ豎ゅｒ驕ｸ謚槭＠縺ｦ縺上□縺輔＞縲・)}</div>
+    </div>
+    <div class="ibm-appeal-grid">` +
+    sorted.map(ap => {
+      const isRec   = rec.includes(ap.id);
+      const priInfo = priMap[ap.id];
+      const rank    = priInfo ? priInfo.rank : (isRec ? '謗ｨ螂ｨ' : '');
+      const reason  = priInfo ? priInfo.reason : '';
+      const rankClass = priInfo?.rank === 1 ? 'rank1' : priInfo?.rank === 2 ? 'rank2' : priInfo?.rank === 3 ? 'rank3' : isRec ? 'recommended' : '';
+      return `
+        <div class="ibm-appeal-item ${rankClass}">
+          <input type="checkbox" id="ap_${ap.id}" value="${ap.id}" ${isRec ? 'checked' : ''}>
+          <label class="ibm-appeal-label" for="ap_${ap.id}" style="--ap-color:${ap.color};--ap-color-l:${ap.colorL}">
+            <div class="ibm-ap-head">
+              <span class="ibm-ap-icon">${ap.icon}</span>
+              <span class="ibm-ap-name">${esc(ap.name)}</span>
+              ${rank ? `<span class="ibm-ap-rank rank-${rank === '謗ｨ螂ｨ' ? 'rec' : rank}">${rank === '謗ｨ螂ｨ' ? 'AI謗ｨ螂ｨ' : rank + '菴・}</span>` : ''}
+            </div>
+            <div class="ibm-ap-desc">${esc(ap.desc)}</div>
+            <div class="ibm-ap-strength">${esc(ap.ibmStrength)}</div>
+            ${reason ? `<div class="ibm-ap-reason">庁 ${esc(reason)}</div>` : ''}
+          </label>
+        </div>`;
+    }).join('') + `</div>`;
+
+  document.querySelectorAll('.ibm-appeal-item input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const item = cb.closest('.ibm-appeal-item');
+      if (cb.checked) item.classList.add('checked'); else item.classList.remove('checked');
+    });
+    // 蛻晄悄迥ｶ諷句渚譏
+    if (cb.checked) cb.closest('.ibm-appeal-item').classList.add('checked');
   });
-  $('strategyNote').innerHTML = `<strong>AI縺ｮ繧｢繝励Ο繝ｼ繝∵姶逡･繝｡繝｢・・/strong>${esc(a.strategyNote || '')}`;
+  $('strategyNote').innerHTML = `<strong>IBM繧｢繝励Ο繝ｼ繝∵姶逡･繝｡繝｢・・/strong>${esc(a.strategyNote || '')}`;
 }
 
 // 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
@@ -2457,8 +2796,9 @@ function renderAppealSelector() {
 // 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
 async function generateMail() {
   S.selectedAppeals = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => {
-    const ap = ALL_APPEALS.find(a => a.id === cb.value); return ap ? ap.name : '';
+    const ap = IBM_APPEALS.find(a => a.id === cb.value); return ap ? ap.name : cb.value;
   }).filter(Boolean);
+  // IBM險ｴ豎・D繧ゆｿ晄戟・医・繝ｭ繝ｳ繝励ヨ邊ｾ蠎ｦ蜷台ｸ翫・縺溘ａ・・  S.selectedAppealIds = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => cb.value);
   if (S.selectedAppeals.length === 0) { err('險ｴ豎ゅ・繧､繝ｳ繝医ｒ蟆代↑縺上→繧・縺､驕ｸ謚槭＠縺ｦ縺上□縺輔＞縲・); return; }
   showLoad(5);
   try { if (hasApiKey()) await callMailAPI(); else demoMail(); }
@@ -2502,18 +2842,93 @@ function renderMail() {
     S.learningData.scoutAction.selectedAppeals  = S.selectedAppeals;
     S.learningData.scoutAction.generatedSubject = S.mail?.subject || '';
   }
+  // Phase2-3: OHERE繝医Ξ繝ｼ繧ｵ繝薙Μ繝・ぅ繝舌ャ繧ｸ繧貞推繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ繝倥ャ繝繝ｼ縺ｫ陦ｨ遉ｺ
+  renderOhereTraceBadges();
   // 螻･豁ｴ縺ｫ閾ｪ蜍穂ｿ晏ｭ倥＠縺ｦ繝輔ぅ繝ｼ繝峨ヰ繝・けUI繧呈緒逕ｻ
   saveScoutHistory();
   renderFeedbackUI();
-  // AI繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ繧帝撼蜷梧悄縺ｧ螳溯｡鯉ｼ・PI縺ゅｌ縺ｰ譛ｬ迚ｩ縲√↑縺代ｌ縺ｰdemo縺ｧ螳溯｡梧ｸ医∩・・  if (hasApiKey()) {
+  // AI繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ繧帝撼蜷梧悄縺ｧ螳溯｡鯉ｼ・PI縺ゅｌ縺ｰ譛ｬ迚ｩ縲√↑縺代ｌ縺ｰdemo縺ｧ螳溯｡梧ｸ医∩・・  S.reviewRound = 1;
+  if (hasApiKey()) {
     const srBox = $('selfReviewBox');
     if (srBox) { srBox.innerHTML = '<div class="sr-loading"><div class="spin" style="width:20px;height:20px;border-width:2px;margin:0 auto 8px"></div><div style="font-size:12px;color:var(--muted)">AI縺後せ繧ｫ繧ｦ繝域枚繧呈治轤ｹ荳ｭ...</div></div>'; srBox.style.display = 'block'; }
     callSelfReviewAPI().catch(() => {});
   }
 }
 
+/**
+ * Phase2-3: OHERE繝医Ξ繝ｼ繧ｵ繝薙Μ繝・ぅ
+ * 蜷・せ繧ｫ繧ｦ繝医そ繧ｯ繧ｷ繝ｧ繝ｳ縺後薫HERE縺ｮ縺ｩ縺ｮ繝輔ぉ繝ｼ繧ｺ縺九ｉ譚･縺ｦ縺・ｋ縺九阪ｒ繝舌ャ繧ｸ縺ｧ蜿ｯ隕門喧
+ */
+function renderOhereTraceBadges() {
+  const a = S.analysis;
+  if (!a) return;
+  const oh = a.ohere || {};
+  const strat = oh.scoutStrategy || {};
+  const temp = a.temperature || {};
+  const cs = a.careerStory || {};
+
+  // 繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ 竊・OHERE譬ｹ諡繝槭ャ繝斐Φ繧ｰ
+  const traces = {
+    subject: {
+      ohereKey: 'O',
+      label: 'Observation',
+      color: '#2563eb',
+      tooltip: `O・郁ｦｳ蟇滂ｼ・ ${oh.observation ? oh.observation.slice(0, 60) + '...' : '蛟呵｣懆・・邨梧ｭｴ莠句ｮ・}`,
+      strategy: ''
+    },
+    intro: {
+      ohereKey: 'H竊担竭竭｡',
+      label: '莉ｮ隱ｬ + 蜈ｱ諢溘・閭ｽ蜉帶価隱・,
+      color: '#7c3aed',
+      tooltip: `H・井ｻｮ隱ｬ・・ ${oh.hypothesis ? oh.hypothesis.slice(0, 50) + '...' : '蛟呵｣懆・・莠ｺ迚ｩ蜒丈ｻｮ隱ｬ'}`,
+      strategy: strat.step1_empathy ? `竭蜈ｱ諢・ ${strat.step1_empathy.slice(0, 50)}...` : ''
+    },
+    why: {
+      ohereKey: 'E竊担竭｡',
+      label: '譬ｹ諡 + 閭ｽ蜉帶価隱・,
+      color: '#0891b2',
+      tooltip: `E・域ｹ諡・・ ${oh.evidence ? oh.evidence.slice(0, 50) + '...' : '莉ｮ隱ｬ縺ｮ譬ｹ諡'}`,
+      strategy: strat.step2_recognition ? `竭｡謇ｿ隱・ ${strat.step2_recognition.slice(0, 50)}...` : ''
+    },
+    match: {
+      ohereKey: 'R竊担竭｢',
+      label: 'Recommendation + 譛ｪ譚･謠千､ｺ',
+      color: '#059669',
+      tooltip: `R・域耳螂ｨ・・ ${oh.recommendation ? oh.recommendation.slice(0, 50) + '...' : '繧｢繝励Ο繝ｼ繝∵耳螂ｨ'}`,
+      strategy: strat.step3_future ? `竭｢譛ｪ譚･: ${strat.step3_future.slice(0, 50)}...` : ''
+    },
+    benefit: {
+      ohereKey: 'S竭｣',
+      label: 'IBM險ｴ豎ゅヵ繧ｧ繝ｼ繧ｺ',
+      color: '#d97706',
+      tooltip: `S竭｣IBM險ｴ豎・ ${strat.step4_ibm ? strat.step4_ibm.slice(0, 60) + '...' : 'IBM險ｴ豎よ姶逡･'}`,
+      strategy: strat.step4_ibm ? `竭｣IBM: ${strat.step4_ibm.slice(0, 50)}...` : ''
+    },
+    cta: {
+      ohereKey: 'S竭､',
+      label: '髱｢隲・ｪ伜ｰ弱ヵ繧ｧ繝ｼ繧ｺ',
+      color: '#be185d',
+      tooltip: `S竭､髱｢隲・ｪ伜ｰ・ ${strat.step5_meeting ? strat.step5_meeting.slice(0, 60) + '...' : '髱｢隲・ｪ伜ｰ取姶逡･'}`,
+      strategy: strat.step5_meeting ? `竭､隱伜ｰ・ ${strat.step5_meeting.slice(0, 50)}...` : ''
+    }
+  };
+
+  Object.entries(traces).forEach(([secId, trace]) => {
+    const msHead = document.querySelector(`#ms-${secId} .ms-head`);
+    if (!msHead) return;
+    // 譌｢蟄倥ヰ繝・ず繧貞炎髯､縺励※縺九ｉ蜀崎ｿｽ蜉
+    msHead.querySelectorAll('.ohere-trace-badge').forEach(b => b.remove());
+    const badge = document.createElement('span');
+    badge.className = 'ohere-trace-badge';
+    badge.setAttribute('title', trace.tooltip + (trace.strategy ? '\n\n' + trace.strategy : ''));
+    badge.style.cssText = `background:${trace.color}1a;color:${trace.color};border:1px solid ${trace.color}40;`;
+    badge.innerHTML = `<span style="font-weight:900">${trace.ohereKey}</span> ${trace.label}`;
+    msHead.appendChild(badge);
+  });
+}
+
 // 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP5: 繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ 繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ・・BM蟆ら畑6霆ｸ・・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// STEP5: 繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ 繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ + Phase2: 謾ｹ蝟・Ν繝ｼ繝・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
 function renderSelfReview() {
   const sr = S.selfReview;
   const box = $('selfReviewBox');
@@ -2521,21 +2936,38 @@ function renderSelfReview() {
 
   const sc = sr.scores || {};
   const axes = [
-    { key: 'templateFreedom',    label: '繝・Φ繝励Ξ繝ｼ繝域─',       icon: '統', invert: false },
-    { key: 'candidateSpecificity', label: '蛟呵｣懆・崋譛画ｧ',        icon: '側', invert: false },
-    { key: 'ibmness',            label: 'IBM繧峨＠縺・,             icon: '塙', invert: false },
-    { key: 'appealConsistency',  label: '險ｴ豎ゅ・荳雋ｫ諤ｧ',          icon: '識', invert: false },
-    { key: 'motivationAlignment', label: '霆｢閨ｷ蜍墓ｩ溘→縺ｮ謨ｴ蜷域ｧ',   icon: '庁', invert: false }
+    { key: 'templateFreedom',     label: '繝・Φ繝励Ξ繝ｼ繝域─',     icon: '統' },
+    { key: 'candidateSpecificity', label: '蛟呵｣懆・崋譛画ｧ',       icon: '側' },
+    { key: 'ibmness',             label: 'IBM繧峨＠縺・,           icon: '塙' },
+    { key: 'appealConsistency',   label: '險ｴ豎ゅ・荳雋ｫ諤ｧ',        icon: '識' },
+    { key: 'motivationAlignment', label: '霆｢閨ｷ蜍墓ｩ溘→縺ｮ謨ｴ蜷域ｧ',  icon: '庁' }
   ];
   const replyRate = parseInt(sr.replyRate) || 0;
   const rateClass = replyRate >= 50 ? 'sr-rate-high' : replyRate >= 30 ? 'sr-rate-mid' : 'sr-rate-low';
   const avgScore = Math.round(axes.reduce((s, a) => s + (parseInt(sc[a.key]) || 0), 0) / axes.length);
-  const impHtml = (sr.improvements || []).map(imp => `
-    <div class="sr-imp-item">
-      <div class="sr-imp-axis">${esc(imp.axis)}</div>
-      <div class="sr-imp-issue">笞・・${esc(imp.issue)}</div>
-      <div class="sr-imp-fix">庁 ${esc(imp.fix)}</div>
-    </div>`).join('');
+  const reviewRound = S.reviewRound || 1;
+
+  // 謾ｹ蝟・欠鞫・窶・1繧ｯ繝ｪ繝・け蜀咲函謌舌・繧ｿ繝ｳ莉倥″ (Phase2)
+  const SEC_MAP = {
+    '繝・Φ繝励Ξ繝ｼ繝域─': 'intro', '蛟呵｣懆・崋譛画ｧ': 'intro', 'IBM繧峨＠縺・: 'benefit',
+    '險ｴ豎ゅ・荳雋ｫ諤ｧ': 'match', '霆｢閨ｷ蜍墓ｩ溘→縺ｮ謨ｴ蜷域ｧ': 'why'
+  };
+  const impHtml = (sr.improvements || []).map((imp, idx) => {
+    const secId = SEC_MAP[imp.axis] || 'benefit';
+    const secLabel = { subject:'莉ｶ蜷・, intro:'蜀帝ｭ譁・, why:'逅・罰', match:'謗･轤ｹ', benefit:'繝｡繝ｪ繝・ヨ', cta:'隱伜ｰ取枚' };
+    return `
+      <div class="sr-imp-item" id="sr-imp-${idx}">
+        <div class="sr-imp-head">
+          <div style="flex:1">
+            <div class="sr-imp-axis">${esc(imp.axis)}</div>
+            <div class="sr-imp-issue">笞・・${esc(imp.issue)}</div>
+            <div class="sr-imp-fix">庁 謾ｹ蝟・｡・ ${esc(imp.fix)}</div>
+          </div>
+          <button class="sr-fix-btn" onclick="applyImprovementToSection('${secId}', ${idx})">
+            笨ｦ ${esc(secLabel[secId] || secId)}繧呈隼蝟・          </button>
+        </div>
+      </div>`;
+  }).join('');
 
   box.style.display = 'block';
   box.innerHTML = `
@@ -2543,6 +2975,7 @@ function renderSelfReview() {
       <div class="sr-title">
         <span class="sr-icon">笨ｦ</span>
         AI繧ｻ繝ｫ繝輔Ξ繝薙Η繝ｼ <span class="sr-ibm-badge">IBM蟆ら畑迚・/span>
+        ${reviewRound > 1 ? `<span class="sr-round-badge">隨ｬ${reviewRound}蝗・/span>` : ''}
       </div>
       <div class="sr-reply-wrap">
         <span class="sr-reply-label">霑比ｿ｡邇・ｺ域ｸｬ</span>
@@ -2564,8 +2997,69 @@ function renderSelfReview() {
     <div class="sr-avg-row">
       <span class="sr-avg-label">邱丞粋繧ｹ繧ｳ繧｢</span>
       <span class="sr-avg-score">${avgScore}<span style="font-size:13px;font-weight:400">/100</span></span>
+      <button class="sr-rerun-btn" onclick="rerunSelfReview()">竊ｻ 蜀肴治轤ｹ</button>
     </div>
-    ${impHtml ? `<div class="sr-imp-section"><div class="sr-imp-title">謾ｹ蝟・欠鞫・/div>${impHtml}</div>` : ''}`;
+    ${impHtml
+      ? `<div class="sr-imp-section"><div class="sr-imp-title">謾ｹ蝟・欠鞫・窶・繝懊ち繝ｳ縺ｧ1繧ｯ繝ｪ繝・け謾ｹ蝟・/div>${impHtml}</div>`
+      : `<div class="sr-imp-section" style="padding:10px 0"><div style="font-size:12px;color:#4ade80;padding:8px">笨・謾ｹ蝟・欠鞫倥↑縺・窶・鬮伜刀雉ｪ縺ｪ繧ｹ繧ｫ繧ｦ繝医〒縺・/div></div>`}`;
+}
+
+/** Phase2: 謾ｹ蝟・欠鞫倥°繧牙ｯｾ雎｡繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ繧但I縺ｧ蜀咲函謌・*/
+async function applyImprovementToSection(secId, impIdx) {
+  const imp = (S.selfReview?.improvements || [])[impIdx];
+  if (!imp) return;
+  const btn = document.querySelector(`#sr-imp-${impIdx} .sr-fix-btn`);
+  if (btn) { btn.textContent = '逕滓・荳ｭ...'; btn.disabled = true; }
+  try {
+    await regenSectionWithFix(secId, imp.fix);
+    if (btn) { btn.textContent = '笨・驕ｩ逕ｨ螳御ｺ・; btn.style.background = '#059669'; }
+    setTimeout(() => {
+      if (btn) { btn.textContent = `笨ｦ 蜀肴隼蝟Я; btn.style.background = ''; btn.disabled = false; }
+      if (hasApiKey()) rerunSelfReview();
+    }, 1500);
+  } catch (e) {
+    if (btn) { btn.textContent = '繧ｨ繝ｩ繝ｼ'; btn.disabled = false; }
+  }
+}
+
+/** Phase2: 謾ｹ蝟・欠遉ｺ莉倥″繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ蜀咲函謌・*/
+async function regenSectionWithFix(sec, fixInstruction) {
+  const c = S.candidate, j = S.job, a = S.analysis;
+  const current = $('ta-' + sec)?.value || S.mail[sec] || '';
+  const ibmAppeals = (S.selectedAppealIds || []).map(id => {
+    const ap = IBM_APPEALS.find(x => x.id === id);
+    return ap ? `${ap.name}: ${ap.ibmStrength.slice(0, 60)}` : '';
+  }).filter(Boolean).join('\n');
+
+  const res = await fetch(API_URL, {
+    method: 'POST', headers: apiHeaders(),
+    body: JSON.stringify({
+      model: md(),
+      messages: [
+        { role: 'system', content: '縺ゅ↑縺溘・譌･譛ｬ縺ｮ繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ゅせ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ縺ｮ迚ｹ螳壹そ繧ｯ繧ｷ繝ｧ繝ｳ繧呈隼蝟・＠縺ｾ縺吶・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
+        { role: 'user', content: `## 謾ｹ蝟・ｯｾ雎｡繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ: ${sec}\n## 迴ｾ蝨ｨ縺ｮ譁・ｫ:\n${current}\n\n## 謾ｹ蝟・欠遉ｺ・亥ｿ・★蜿肴丐縺吶ｋ縺薙→・・\n${fixInstruction}\n\n## IBM險ｴ豎ゅ・繝偵Φ繝茨ｼ郁・辟ｶ縺ｫ邨・∩霎ｼ繧・・\n${ibmAppeals}\n\n## 蛟呵｣懆・ュ蝣ｱ: ${c.role}・・{c.company}・峨√せ繧ｭ繝ｫ: ${c.skills}縲∝ｿ怜髄: ${c.reason || '荳肴・'}\n## 豎ゆｺｺ諠・ｱ: ${j.position}・・{j.company || 'IBM'}・噂n\n謾ｹ蝟・欠遉ｺ繧貞ｮ悟・縺ｫ蜿肴丐縺励◆譁ｰ縺励＞譁・ｫ繧堤函謌舌＠縺ｦ縺上□縺輔＞縲・I縺｣縺ｽ縺・ｮ壼梛陦ｨ迴ｾ縺ｯ遖∵ｭ｢縲・SON: {"${sec}": "謾ｹ蝟・ｾ後ユ繧ｭ繧ｹ繝・}` }
+      ],
+      temperature: 0.8, response_format: { type: 'json_object' }
+    })
+  });
+  if (!res.ok) throw new Error('API error');
+  const parsed = JSON.parse((await res.json()).choices[0].message.content);
+  S.mail[sec] = parsed[sec];
+  const ta = $('ta-' + sec);
+  if (ta) { ta.value = parsed[sec]; autoResize(ta); updateCC('ta-' + sec, 'cc-' + sec); }
+  if ($('pvBox')?.classList.contains('on')) $('pvBox').textContent = buildFull();
+}
+
+/** Phase2: 謾ｹ蝟・ｾ後↓蜀肴治轤ｹ */
+async function rerunSelfReview() {
+  S.reviewRound = (S.reviewRound || 1) + 1;
+  const box = $('selfReviewBox');
+  if (box) {
+    box.innerHTML = `<div class="sr-loading"><div class="spin" style="width:20px;height:20px;border-width:2px;margin:0 auto 8px"></div><div style="font-size:12px;color:#94a3b8">隨ｬ${S.reviewRound}蝗樊治轤ｹ荳ｭ...</div></div>`;
+  }
+  if (hasApiKey()) {
+    try { await callSelfReviewAPI(); } catch { /* silent */ }
+  }
 }
 
 function renderProcessLog() {
@@ -2654,9 +3148,10 @@ $('logToggle').addEventListener('click', () => {
 // 笏笏 譁ｰ隕丈ｽ懈・ 笏笏
 function restart() {
   document.querySelectorAll('input[type=text], textarea').forEach(el => { if (!el.closest('.topbar')) el.value = ''; });
-  S.candidate = {}; S.job = {}; S.analysis = null; S.mail = null; S.selfReview = null; S.selectedAppeals = []; S.learningData = {};
+  S.candidate = {}; S.job = {}; S.analysis = null; S.mail = null; S.selfReview = null; S.selectedAppeals = []; S.selectedAppealIds = []; S.learningData = {};
   S.currentHistoryId = null;
   S.currentProjectId = null;
+  S.reviewRound = 1;
   // 繝励Ο繧ｸ繧ｧ繧ｯ繝磯∈謚槭ヰ繝ｼ縺ｮ繧｢繧ｯ繝・ぅ繝也憾諷九ｒ繝ｪ繧ｻ繝・ヨ
   document.querySelectorAll('.proj-sel-btn').forEach(b => b.classList.remove('active'));
   go(1);

@@ -1044,3 +1044,195 @@ textarea.tall { min-height:110px; }
   transition: all .15s;
 }
 .proj-del-btn:hover { background: var(--red-l); color: var(--red); border-color: var(--red); }
+
+/* ══════════════════════════════════════════
+   Phase2 — IBM専用訴求ライブラリ UI
+══════════════════════════════════════════ */
+
+/* IBM訴求マトリクスバナー */
+.ibm-matrix-banner {
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  grid-column: span 99;
+}
+.imb-type-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.imb-type-badge {
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.imb-type-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #93c5fd;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.imb-hint {
+  font-size: 12px;
+  color: #bfdbfe;
+  line-height: 1.7;
+}
+
+/* IBM訴求グリッド */
+.ibm-appeal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+/* IBM訴求アイテム */
+.ibm-appeal-item { position: relative; }
+.ibm-appeal-item input[type=checkbox] { position: absolute; opacity: 0; width: 0; height: 0; }
+.ibm-appeal-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--bg);
+  transition: all .15s;
+  height: 100%;
+}
+.ibm-appeal-label:hover {
+  border-color: var(--ap-color, var(--accent));
+  background: var(--ap-color-l, var(--accent-l));
+}
+.ibm-appeal-item.checked .ibm-appeal-label,
+.ibm-appeal-item.rank1 .ibm-appeal-label,
+.ibm-appeal-item.rank2 .ibm-appeal-label,
+.ibm-appeal-item.rank3 .ibm-appeal-label {
+  border-color: var(--ap-color, var(--accent));
+  background: var(--ap-color-l, var(--accent-l));
+}
+.ibm-appeal-item.checked .ibm-appeal-label { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ap-color, #2563eb) 20%, transparent); }
+.ibm-appeal-item.rank1 .ibm-appeal-label { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ap-color, #2563eb) 30%, transparent); }
+.ibm-ap-head {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.ibm-ap-icon { font-size: 16px; flex-shrink: 0; }
+.ibm-ap-name { font-size: 14px; font-weight: 800; color: var(--text); flex: 1; }
+.ibm-ap-rank {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+.rank-1   { background: #fee2e2; color: #dc2626; }
+.rank-2   { background: #fef3c7; color: #d97706; }
+.rank-3   { background: #d1fae5; color: #059669; }
+.rank-rec { background: var(--purple-l); color: var(--purple); }
+.ibm-ap-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.ibm-ap-strength {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.6;
+  background: rgba(0,0,0,.04);
+  border-radius: 4px;
+  padding: 5px 8px;
+  display: none;
+}
+.ibm-appeal-item.checked .ibm-ap-strength,
+.ibm-appeal-item.rank1 .ibm-ap-strength,
+.ibm-appeal-item.rank2 .ibm-ap-strength {
+  display: block;
+}
+.ibm-ap-reason {
+  font-size: 11px;
+  color: var(--purple);
+  background: var(--purple-l);
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+/* ══════════════════════════════════════════
+   Phase2 — セルフレビュー改善ループ
+══════════════════════════════════════════ */
+
+.sr-imp-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.sr-fix-btn {
+  flex-shrink: 0;
+  padding: 6px 13px;
+  border: 1.5px solid #4ade80;
+  border-radius: 6px;
+  background: transparent;
+  color: #4ade80;
+  font: 700 11px inherit;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+.sr-fix-btn:hover { background: #4ade80; color: #0f172a; }
+.sr-fix-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+.sr-rerun-btn {
+  margin-left: auto;
+  padding: 5px 13px;
+  border: 1px solid #334155;
+  border-radius: 5px;
+  background: transparent;
+  color: #94a3b8;
+  font: 600 11px inherit;
+  cursor: pointer;
+  transition: all .15s;
+}
+.sr-rerun-btn:hover { background: #1e293b; color: #e2e8f0; }
+
+.sr-round-badge {
+  font-size: 10px;
+  font-weight: 700;
+  background: #d97706;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+/* ══════════════════════════════════════════
+   Phase2 — OHEREトレーサビリティバッジ
+══════════════════════════════════════════ */
+.ohere-trace-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+  cursor: help;
+  letter-spacing: .3px;
+  vertical-align: middle;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  overflow: hidden;
+  white-space: nowrap;
+}

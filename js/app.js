@@ -7,21 +7,113 @@
  *   - 返信結果記録: S.learningData.scoutAction.result を更新するUIを追加
  */
 
-// ── 訴求ポイントマスタ ──
-const ALL_APPEALS = [
-  { id: 'tech',      name: '技術的挑戦',       desc: '最新技術・難しい課題への挑戦機会' },
-  { id: 'career',    name: 'キャリアアップ',    desc: '職位・役割・影響範囲の拡大' },
-  { id: 'scale',     name: '大規模プロジェクト', desc: '大きな規模・インパクトのある開発' },
-  { id: 'startup',   name: 'スタートアップ成長', desc: '急成長フェーズへの参画・事業貢献' },
-  { id: 'autonomy',  name: '裁量・自由度',       desc: '技術選定・設計の意思決定権' },
-  { id: 'mgmt',      name: 'マネジメント機会',   desc: 'チームリード・組織づくりへの関与' },
-  { id: 'remote',    name: '働き方改善',         desc: 'リモート・フレックス・ワークライフ' },
-  { id: 'salary',    name: '年収アップ',         desc: '報酬・待遇の向上' },
-  { id: 'social',    name: '社会貢献性',         desc: '世の中へのインパクト・ミッション共感' },
-  { id: 'global',    name: 'グローバル環境',     desc: '英語・海外チームとの協業機会' },
-  { id: 'team',      name: '優秀なチーム',       desc: 'ハイレベルな仲間・刺激ある環境' },
-  { id: 'stability', name: '安定・安心感',       desc: '事業の安定性・会社の信頼性' },
+// ══════════════════════════════════════════
+// Phase2: IBM専用訴求ライブラリ
+// ══════════════════════════════════════════
+
+/**
+ * IBM訴求マスタ（11軸）
+ * color: カードのアクセントカラー  ibmStrength: IBMが実際に強い点（具体訴求文のヒント）
+ */
+const IBM_APPEALS = [
+  {
+    id: 'ai_transformation', name: 'AI Transformation', icon: '✦',
+    color: '#6d28d9', colorL: '#f5f3ff',
+    desc: 'IBMのAI変革プロジェクト・watsonx活用機会',
+    ibmStrength: 'IBMはwatsonx.aiを中心に金融・製造・医療など各業界のAI変革を主導。候補者がAIを「作る側」ではなく「社会に実装する側」に立てる。',
+    effectiveFor: ['技術スペシャリスト型', 'PM・マネジメント型', '市場価値向上型']
+  },
+  {
+    id: 'watsonx', name: 'watsonx', icon: '🔬',
+    color: '#0891b2', colorL: '#ecfeff',
+    desc: 'IBMの生成AI基盤watsonxへの深関与',
+    ibmStrength: 'watsonxはオープンソースLLMをエンタープライズで使える唯一の基盤。GPTとは異なり「自社データで動く」AIを構築できる。',
+    effectiveFor: ['技術スペシャリスト型', '市場価値向上型']
+  },
+  {
+    id: 'global', name: 'グローバル環境', icon: '🌏',
+    color: '#2563eb', colorL: '#eff6ff',
+    desc: '170カ国・多国籍チームとの協業機会',
+    ibmStrength: 'IBMは170カ国に拠点を持ち、日本のプロジェクトでも常に海外チームと協働。英語が実務レベルで使え、外資系の中でも圧倒的なグローバル規模。',
+    effectiveFor: ['グローバル志向型', '市場価値向上型', '技術スペシャリスト型']
+  },
+  {
+    id: 'scale', name: '大規模案件', icon: '🏗',
+    color: '#059669', colorL: '#ecfdf5',
+    desc: '国家・業界インフラ規模のプロジェクト',
+    ibmStrength: '銀行・官公庁・製造業の基幹システムから医療DXまで、個人では体験できない超大規模案件に携われる。スタートアップでは絶対に積めない経験スケール。',
+    effectiveFor: ['PM・マネジメント型', 'キャリアアップ型', '技術スペシャリスト型']
+  },
+  {
+    id: 'social', name: '社会貢献', icon: '🌱',
+    color: '#16a34a', colorL: '#f0fdf4',
+    desc: 'IBMの社会課題解決・ESGプロジェクト',
+    ibmStrength: '医療・教育・気候変動・行政DXなど社会インフラへの貢献機会。「稼ぐAI」ではなく「社会を変えるAI」というキャリアストーリーが作れる。',
+    effectiveFor: ['安定志向型', '社会貢献志向型', 'PM・マネジメント型']
+  },
+  {
+    id: 'training', name: '育成制度', icon: '📚',
+    color: '#d97706', colorL: '#fffbeb',
+    desc: 'IBM内部認定・世界水準の育成プログラム',
+    ibmStrength: 'IBMのBadge/認定プログラム・Think Academyは業界標準。スキルが「IBMブランド付き」で市場価値として可視化される。社内異動・ローテーションも豊富。',
+    effectiveFor: ['キャリアアップ型', '市場価値向上型', '安定志向型']
+  },
+  {
+    id: 'workstyle', name: '働き方', icon: '🏠',
+    color: '#7c3aed', colorL: '#f5f3ff',
+    desc: 'フレックス・リモート・ハイブリッドワーク',
+    ibmStrength: 'IBM Japanはフレックス勤務・リモートワークが定着。育児・副業・地方在住も対応。年間を通じた柔軟な働き方は外資系の中でも充実度が高い。',
+    effectiveFor: ['安定志向型', 'キャリアアップ型']
+  },
+  {
+    id: 'benefits', name: '福利厚生', icon: '🎁',
+    color: '#be185d', colorL: '#fdf2f8',
+    desc: '外資系水準の報酬・ベネフィット体系',
+    ibmStrength: '外資系標準の給与レンジ・株式報酬・確定拠出年金・語学支援。大手日系との比較で「透明性の高い評価と報酬」が訴求ポイント。',
+    effectiveFor: ['安定志向型', 'キャリアアップ型']
+  },
+  {
+    id: 'brand', name: 'IBMブランド', icon: '🔷',
+    color: '#1d4ed8', colorL: '#dbeafe',
+    desc: '112年の実績・世界的信頼ブランド',
+    ibmStrength: '「IBMにいた」という経歴の市場価値は別格。特にエンタープライズ領域では信頼の証。転職後も「IBMバックグラウンド」としてキャリアに機能し続ける。',
+    effectiveFor: ['市場価値向上型', '安定志向型', 'キャリアアップ型']
+  },
+  {
+    id: 'autonomy', name: '裁量', icon: '🎯',
+    color: '#dc2626', colorL: '#fef2f2',
+    desc: '技術選定・設計の意思決定権',
+    ibmStrength: 'IBMのコンサル・エンジニアは顧客の技術戦略を立案するポジションが多く、社内承認フローが整備された上での大きな裁量が与えられる。',
+    effectiveFor: ['技術スペシャリスト型', 'PM・マネジメント型', '市場価値向上型']
+  },
+  {
+    id: 'tech_env', name: '技術環境', icon: '⚙️',
+    color: '#0f766e', colorL: '#f0fdfa',
+    desc: 'OSS・エッジ・クラウドなど最先端技術スタック',
+    ibmStrength: 'RedHat/OpenShift・Kubernetes・Terraform・Instana・Qiskitなど業界標準OSSの中心にいる。技術スタック自体が市場価値に直結する環境。',
+    effectiveFor: ['技術スペシャリスト型', '市場価値向上型']
+  },
 ];
+
+/**
+ * 候補者タイプ × IBM訴求 相性マトリクス
+ * rank: 1=必須, 2=有効, 3=補助
+ */
+const IBM_MATRIX = {
+  '技術スペシャリスト型':  ['ai_transformation','watsonx','tech_env','scale','autonomy','global'],
+  'PM・マネジメント型':    ['scale','ai_transformation','autonomy','social','global','brand'],
+  'キャリアアップ型':       ['training','career_up','brand','scale','workstyle','benefits'],
+  '市場価値向上型':         ['ai_transformation','watsonx','brand','tech_env','global','training'],
+  '安定志向型':             ['brand','benefits','workstyle','social','training','stability'],
+};
+
+// 後方互換のため旧IDマッピングも保持
+const ALL_APPEALS = IBM_APPEALS.map(a => ({ id: a.id, name: a.name, desc: a.desc }));
+
+/** 候補者タイプから推奨IBM訴求IDリストを返す（順序付き） */
+function getIbmAppealsForType(typeCategory) {
+  return IBM_MATRIX[typeCategory] || ['ai_transformation','brand','scale','global','tech_env','training'];
+}
 
 const $ = id => document.getElementById(id);
 const md = () => $('mdl').value;
@@ -321,26 +413,71 @@ function renderAnalysis() {
 }
 
 // ══════════════════════════════════════════
-// STEP3: 訴求セレクターレンダリング
+// STEP3: IBM専用 訴求セレクターレンダリング (Phase2)
 // ══════════════════════════════════════════
 function renderAppealSelector() {
-  const a = S.analysis, rec = a.recommendedAppeals || [];
-  const reasons = a.appealReasons || {};
+  const a = S.analysis;
+  const typeCategory = a.candidateTypeCategory || a.candidateType || '';
+  const rec = a.recommendedAppeals || getIbmAppealsForType(typeCategory);
   const priMap = {};
   (a.appealPriority || []).forEach(p => { if (p.appealId) priMap[p.appealId] = { reason: p.reason, rank: p.rank }; });
 
-  $('appealGrid').innerHTML = ALL_APPEALS.map(ap => {
-    const isRec    = rec.includes(ap.id);
-    const priInfo  = priMap[ap.id];
-    const reason   = priInfo ? `${priInfo.rank}位推奨 — ${priInfo.reason}` : (reasons[ap.id] || '');
-    const badge    = priInfo ? `<span class="ai-rec-badge">${priInfo.rank}位</span>` : (isRec ? '<span class="ai-rec-badge">AI推奨</span>' : '');
-    return `<div class="appeal-item"><input type="checkbox" id="ap_${ap.id}" value="${ap.id}" ${isRec ? 'checked' : ''}><label class="appeal-label" for="ap_${ap.id}"><div class="appeal-check">${isRec ? '✓' : ''}</div><div class="appeal-info"><div class="appeal-name">${ap.name}${badge}</div><div class="appeal-desc">${ap.desc}</div>${reason ? `<div class="appeal-reason">${reason}</div>` : ''}</div></label></div>`;
-  }).join('');
+  // マトリクス推奨順でソート：推奨上位を先頭に、それ以外を後ろに
+  const matrixOrder = getIbmAppealsForType(typeCategory);
+  const sorted = [
+    ...matrixOrder.map(id => IBM_APPEALS.find(a => a.id === id)).filter(Boolean),
+    ...IBM_APPEALS.filter(a => !matrixOrder.includes(a.id))
+  ];
 
-  document.querySelectorAll('.appeal-item input[type=checkbox]').forEach(cb => {
-    cb.addEventListener('change', () => { cb.nextElementSibling.querySelector('.appeal-check').textContent = cb.checked ? '✓' : ''; });
+  // タイプ専用ヒントバナー
+  const typeHint = {
+    '技術スペシャリスト型':  '技術スペシャリスト型はAI Transformation・watsonx・技術環境が最も刺さります。IBMが「技術を社会に実装する場」であることを前面に出してください。',
+    'PM・マネジメント型':    'PM・マネジメント型は大規模案件・AI変革・裁量の訴求が有効です。IBMのプロジェクト規模と意思決定権の大きさを具体的に伝えてください。',
+    'キャリアアップ型':       'キャリアアップ型には育成制度・IBMブランド・大規模案件が響きます。「IBMにいた」という経歴価値と体系的な成長機会を強調してください。',
+    '市場価値向上型':         '市場価値向上型はAI×IBM×グローバルの組み合わせが最強です。IBMのAI変革経験が市場で最も希少な実績になることを訴求してください。',
+    '安定志向型':             '安定志向型にはIBMブランド・福利厚生・働き方・社会貢献が有効です。IBMの112年の実績と安定した事業基盤を具体的に示してください。',
+  };
+
+  $('appealGrid').innerHTML = `
+    <div class="ibm-matrix-banner">
+      <div class="imb-type-row">
+        <span class="imb-type-badge">${esc(typeCategory || '未分類')}</span>
+        <span class="imb-type-label">候補者タイプ × IBM訴求 マトリクス最適化</span>
+      </div>
+      <div class="imb-hint">${esc(typeHint[typeCategory] || '候補者タイプに合わせたIBM訴求を選択してください。')}</div>
+    </div>
+    <div class="ibm-appeal-grid">` +
+    sorted.map(ap => {
+      const isRec   = rec.includes(ap.id);
+      const priInfo = priMap[ap.id];
+      const rank    = priInfo ? priInfo.rank : (isRec ? '推奨' : '');
+      const reason  = priInfo ? priInfo.reason : '';
+      const rankClass = priInfo?.rank === 1 ? 'rank1' : priInfo?.rank === 2 ? 'rank2' : priInfo?.rank === 3 ? 'rank3' : isRec ? 'recommended' : '';
+      return `
+        <div class="ibm-appeal-item ${rankClass}">
+          <input type="checkbox" id="ap_${ap.id}" value="${ap.id}" ${isRec ? 'checked' : ''}>
+          <label class="ibm-appeal-label" for="ap_${ap.id}" style="--ap-color:${ap.color};--ap-color-l:${ap.colorL}">
+            <div class="ibm-ap-head">
+              <span class="ibm-ap-icon">${ap.icon}</span>
+              <span class="ibm-ap-name">${esc(ap.name)}</span>
+              ${rank ? `<span class="ibm-ap-rank rank-${rank === '推奨' ? 'rec' : rank}">${rank === '推奨' ? 'AI推奨' : rank + '位'}</span>` : ''}
+            </div>
+            <div class="ibm-ap-desc">${esc(ap.desc)}</div>
+            <div class="ibm-ap-strength">${esc(ap.ibmStrength)}</div>
+            ${reason ? `<div class="ibm-ap-reason">💡 ${esc(reason)}</div>` : ''}
+          </label>
+        </div>`;
+    }).join('') + `</div>`;
+
+  document.querySelectorAll('.ibm-appeal-item input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const item = cb.closest('.ibm-appeal-item');
+      if (cb.checked) item.classList.add('checked'); else item.classList.remove('checked');
+    });
+    // 初期状態反映
+    if (cb.checked) cb.closest('.ibm-appeal-item').classList.add('checked');
   });
-  $('strategyNote').innerHTML = `<strong>AIのアプローチ戦略メモ：</strong>${esc(a.strategyNote || '')}`;
+  $('strategyNote').innerHTML = `<strong>IBMアプローチ戦略メモ：</strong>${esc(a.strategyNote || '')}`;
 }
 
 // ══════════════════════════════════════════
@@ -348,8 +485,10 @@ function renderAppealSelector() {
 // ══════════════════════════════════════════
 async function generateMail() {
   S.selectedAppeals = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => {
-    const ap = ALL_APPEALS.find(a => a.id === cb.value); return ap ? ap.name : '';
+    const ap = IBM_APPEALS.find(a => a.id === cb.value); return ap ? ap.name : cb.value;
   }).filter(Boolean);
+  // IBM訴求IDも保持（プロンプト精度向上のため）
+  S.selectedAppealIds = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => cb.value);
   if (S.selectedAppeals.length === 0) { err('訴求ポイントを少なくとも1つ選択してください。'); return; }
   showLoad(5);
   try { if (hasApiKey()) await callMailAPI(); else demoMail(); }
@@ -394,10 +533,13 @@ function renderMail() {
     S.learningData.scoutAction.selectedAppeals  = S.selectedAppeals;
     S.learningData.scoutAction.generatedSubject = S.mail?.subject || '';
   }
+  // Phase2-3: OHEREトレーサビリティバッジを各セクションヘッダーに表示
+  renderOhereTraceBadges();
   // 履歴に自動保存してフィードバックUIを描画
   saveScoutHistory();
   renderFeedbackUI();
   // AIセルフレビューを非同期で実行（APIあれば本物、なければdemoで実行済み）
+  S.reviewRound = 1;
   if (hasApiKey()) {
     const srBox = $('selfReviewBox');
     if (srBox) { srBox.innerHTML = '<div class="sr-loading"><div class="spin" style="width:20px;height:20px;border-width:2px;margin:0 auto 8px"></div><div style="font-size:12px;color:var(--muted)">AIがスカウト文を採点中...</div></div>'; srBox.style.display = 'block'; }
@@ -405,8 +547,80 @@ function renderMail() {
   }
 }
 
+/**
+ * Phase2-3: OHEREトレーサビリティ
+ * 各スカウトセクションが「OHEREのどのフェーズから来ているか」をバッジで可視化
+ */
+function renderOhereTraceBadges() {
+  const a = S.analysis;
+  if (!a) return;
+  const oh = a.ohere || {};
+  const strat = oh.scoutStrategy || {};
+  const temp = a.temperature || {};
+  const cs = a.careerStory || {};
+
+  // セクション → OHERE根拠マッピング
+  const traces = {
+    subject: {
+      ohereKey: 'O',
+      label: 'Observation',
+      color: '#2563eb',
+      tooltip: `O（観察）: ${oh.observation ? oh.observation.slice(0, 60) + '...' : '候補者の経歴事実'}`,
+      strategy: ''
+    },
+    intro: {
+      ohereKey: 'H→S①②',
+      label: '仮説 + 共感・能力承認',
+      color: '#7c3aed',
+      tooltip: `H（仮説）: ${oh.hypothesis ? oh.hypothesis.slice(0, 50) + '...' : '候補者の人物像仮説'}`,
+      strategy: strat.step1_empathy ? `①共感: ${strat.step1_empathy.slice(0, 50)}...` : ''
+    },
+    why: {
+      ohereKey: 'E→S②',
+      label: '根拠 + 能力承認',
+      color: '#0891b2',
+      tooltip: `E（根拠）: ${oh.evidence ? oh.evidence.slice(0, 50) + '...' : '仮説の根拠'}`,
+      strategy: strat.step2_recognition ? `②承認: ${strat.step2_recognition.slice(0, 50)}...` : ''
+    },
+    match: {
+      ohereKey: 'R→S③',
+      label: 'Recommendation + 未来提示',
+      color: '#059669',
+      tooltip: `R（推奨）: ${oh.recommendation ? oh.recommendation.slice(0, 50) + '...' : 'アプローチ推奨'}`,
+      strategy: strat.step3_future ? `③未来: ${strat.step3_future.slice(0, 50)}...` : ''
+    },
+    benefit: {
+      ohereKey: 'S④',
+      label: 'IBM訴求フェーズ',
+      color: '#d97706',
+      tooltip: `S④IBM訴求: ${strat.step4_ibm ? strat.step4_ibm.slice(0, 60) + '...' : 'IBM訴求戦略'}`,
+      strategy: strat.step4_ibm ? `④IBM: ${strat.step4_ibm.slice(0, 50)}...` : ''
+    },
+    cta: {
+      ohereKey: 'S⑤',
+      label: '面談誘導フェーズ',
+      color: '#be185d',
+      tooltip: `S⑤面談誘導: ${strat.step5_meeting ? strat.step5_meeting.slice(0, 60) + '...' : '面談誘導戦略'}`,
+      strategy: strat.step5_meeting ? `⑤誘導: ${strat.step5_meeting.slice(0, 50)}...` : ''
+    }
+  };
+
+  Object.entries(traces).forEach(([secId, trace]) => {
+    const msHead = document.querySelector(`#ms-${secId} .ms-head`);
+    if (!msHead) return;
+    // 既存バッジを削除してから再追加
+    msHead.querySelectorAll('.ohere-trace-badge').forEach(b => b.remove());
+    const badge = document.createElement('span');
+    badge.className = 'ohere-trace-badge';
+    badge.setAttribute('title', trace.tooltip + (trace.strategy ? '\n\n' + trace.strategy : ''));
+    badge.style.cssText = `background:${trace.color}1a;color:${trace.color};border:1px solid ${trace.color}40;`;
+    badge.innerHTML = `<span style="font-weight:900">${trace.ohereKey}</span> ${trace.label}`;
+    msHead.appendChild(badge);
+  });
+}
+
 // ══════════════════════════════════════════
-// STEP5: セルフレビュー レンダリング（IBM専用6軸）
+// STEP5: セルフレビュー レンダリング + Phase2: 改善ループ
 // ══════════════════════════════════════════
 function renderSelfReview() {
   const sr = S.selfReview;
@@ -415,21 +629,39 @@ function renderSelfReview() {
 
   const sc = sr.scores || {};
   const axes = [
-    { key: 'templateFreedom',    label: 'テンプレート感',       icon: '📝', invert: false },
-    { key: 'candidateSpecificity', label: '候補者固有性',        icon: '👤', invert: false },
-    { key: 'ibmness',            label: 'IBMらしさ',             icon: '🔷', invert: false },
-    { key: 'appealConsistency',  label: '訴求の一貫性',          icon: '🎯', invert: false },
-    { key: 'motivationAlignment', label: '転職動機との整合性',   icon: '💡', invert: false }
+    { key: 'templateFreedom',     label: 'テンプレート感',     icon: '📝' },
+    { key: 'candidateSpecificity', label: '候補者固有性',       icon: '👤' },
+    { key: 'ibmness',             label: 'IBMらしさ',           icon: '🔷' },
+    { key: 'appealConsistency',   label: '訴求の一貫性',        icon: '🎯' },
+    { key: 'motivationAlignment', label: '転職動機との整合性',  icon: '💡' }
   ];
   const replyRate = parseInt(sr.replyRate) || 0;
   const rateClass = replyRate >= 50 ? 'sr-rate-high' : replyRate >= 30 ? 'sr-rate-mid' : 'sr-rate-low';
   const avgScore = Math.round(axes.reduce((s, a) => s + (parseInt(sc[a.key]) || 0), 0) / axes.length);
-  const impHtml = (sr.improvements || []).map(imp => `
-    <div class="sr-imp-item">
-      <div class="sr-imp-axis">${esc(imp.axis)}</div>
-      <div class="sr-imp-issue">⚠️ ${esc(imp.issue)}</div>
-      <div class="sr-imp-fix">💡 ${esc(imp.fix)}</div>
-    </div>`).join('');
+  const reviewRound = S.reviewRound || 1;
+
+  // 改善指摘 — 1クリック再生成ボタン付き (Phase2)
+  const SEC_MAP = {
+    'テンプレート感': 'intro', '候補者固有性': 'intro', 'IBMらしさ': 'benefit',
+    '訴求の一貫性': 'match', '転職動機との整合性': 'why'
+  };
+  const impHtml = (sr.improvements || []).map((imp, idx) => {
+    const secId = SEC_MAP[imp.axis] || 'benefit';
+    const secLabel = { subject:'件名', intro:'冒頭文', why:'理由', match:'接点', benefit:'メリット', cta:'誘導文' };
+    return `
+      <div class="sr-imp-item" id="sr-imp-${idx}">
+        <div class="sr-imp-head">
+          <div style="flex:1">
+            <div class="sr-imp-axis">${esc(imp.axis)}</div>
+            <div class="sr-imp-issue">⚠️ ${esc(imp.issue)}</div>
+            <div class="sr-imp-fix">💡 改善案: ${esc(imp.fix)}</div>
+          </div>
+          <button class="sr-fix-btn" onclick="applyImprovementToSection('${secId}', ${idx})">
+            ✦ ${esc(secLabel[secId] || secId)}を改善
+          </button>
+        </div>
+      </div>`;
+  }).join('');
 
   box.style.display = 'block';
   box.innerHTML = `
@@ -437,6 +669,7 @@ function renderSelfReview() {
       <div class="sr-title">
         <span class="sr-icon">✦</span>
         AIセルフレビュー <span class="sr-ibm-badge">IBM専用版</span>
+        ${reviewRound > 1 ? `<span class="sr-round-badge">第${reviewRound}回</span>` : ''}
       </div>
       <div class="sr-reply-wrap">
         <span class="sr-reply-label">返信率予測</span>
@@ -458,8 +691,69 @@ function renderSelfReview() {
     <div class="sr-avg-row">
       <span class="sr-avg-label">総合スコア</span>
       <span class="sr-avg-score">${avgScore}<span style="font-size:13px;font-weight:400">/100</span></span>
+      <button class="sr-rerun-btn" onclick="rerunSelfReview()">↻ 再採点</button>
     </div>
-    ${impHtml ? `<div class="sr-imp-section"><div class="sr-imp-title">改善指摘</div>${impHtml}</div>` : ''}`;
+    ${impHtml
+      ? `<div class="sr-imp-section"><div class="sr-imp-title">改善指摘 — ボタンで1クリック改善</div>${impHtml}</div>`
+      : `<div class="sr-imp-section" style="padding:10px 0"><div style="font-size:12px;color:#4ade80;padding:8px">✓ 改善指摘なし — 高品質なスカウトです</div></div>`}`;
+}
+
+/** Phase2: 改善指摘から対象セクションをAIで再生成 */
+async function applyImprovementToSection(secId, impIdx) {
+  const imp = (S.selfReview?.improvements || [])[impIdx];
+  if (!imp) return;
+  const btn = document.querySelector(`#sr-imp-${impIdx} .sr-fix-btn`);
+  if (btn) { btn.textContent = '生成中...'; btn.disabled = true; }
+  try {
+    await regenSectionWithFix(secId, imp.fix);
+    if (btn) { btn.textContent = '✓ 適用完了'; btn.style.background = '#059669'; }
+    setTimeout(() => {
+      if (btn) { btn.textContent = `✦ 再改善`; btn.style.background = ''; btn.disabled = false; }
+      if (hasApiKey()) rerunSelfReview();
+    }, 1500);
+  } catch (e) {
+    if (btn) { btn.textContent = 'エラー'; btn.disabled = false; }
+  }
+}
+
+/** Phase2: 改善指示付きセクション再生成 */
+async function regenSectionWithFix(sec, fixInstruction) {
+  const c = S.candidate, j = S.job, a = S.analysis;
+  const current = $('ta-' + sec)?.value || S.mail[sec] || '';
+  const ibmAppeals = (S.selectedAppealIds || []).map(id => {
+    const ap = IBM_APPEALS.find(x => x.id === id);
+    return ap ? `${ap.name}: ${ap.ibmStrength.slice(0, 60)}` : '';
+  }).filter(Boolean).join('\n');
+
+  const res = await fetch(API_URL, {
+    method: 'POST', headers: apiHeaders(),
+    body: JSON.stringify({
+      model: md(),
+      messages: [
+        { role: 'system', content: 'あなたは日本のトップリクルーターです。スカウトメールの特定セクションを改善します。JSONのみ返してください。' },
+        { role: 'user', content: `## 改善対象セクション: ${sec}\n## 現在の文章:\n${current}\n\n## 改善指示（必ず反映すること）:\n${fixInstruction}\n\n## IBM訴求のヒント（自然に組み込む）:\n${ibmAppeals}\n\n## 候補者情報: ${c.role}（${c.company}）、スキル: ${c.skills}、志向: ${c.reason || '不明'}\n## 求人情報: ${j.position}（${j.company || 'IBM'}）\n\n改善指示を完全に反映した新しい文章を生成してください。AIっぽい定型表現は禁止。JSON: {"${sec}": "改善後テキスト"}` }
+      ],
+      temperature: 0.8, response_format: { type: 'json_object' }
+    })
+  });
+  if (!res.ok) throw new Error('API error');
+  const parsed = JSON.parse((await res.json()).choices[0].message.content);
+  S.mail[sec] = parsed[sec];
+  const ta = $('ta-' + sec);
+  if (ta) { ta.value = parsed[sec]; autoResize(ta); updateCC('ta-' + sec, 'cc-' + sec); }
+  if ($('pvBox')?.classList.contains('on')) $('pvBox').textContent = buildFull();
+}
+
+/** Phase2: 改善後に再採点 */
+async function rerunSelfReview() {
+  S.reviewRound = (S.reviewRound || 1) + 1;
+  const box = $('selfReviewBox');
+  if (box) {
+    box.innerHTML = `<div class="sr-loading"><div class="spin" style="width:20px;height:20px;border-width:2px;margin:0 auto 8px"></div><div style="font-size:12px;color:#94a3b8">第${S.reviewRound}回採点中...</div></div>`;
+  }
+  if (hasApiKey()) {
+    try { await callSelfReviewAPI(); } catch { /* silent */ }
+  }
 }
 
 function renderProcessLog() {
@@ -550,9 +844,10 @@ $('logToggle').addEventListener('click', () => {
 // ── 新規作成 ──
 function restart() {
   document.querySelectorAll('input[type=text], textarea').forEach(el => { if (!el.closest('.topbar')) el.value = ''; });
-  S.candidate = {}; S.job = {}; S.analysis = null; S.mail = null; S.selfReview = null; S.selectedAppeals = []; S.learningData = {};
+  S.candidate = {}; S.job = {}; S.analysis = null; S.mail = null; S.selfReview = null; S.selectedAppeals = []; S.selectedAppealIds = []; S.learningData = {};
   S.currentHistoryId = null;
   S.currentProjectId = null;
+  S.reviewRound = 1;
   // プロジェクト選択バーのアクティブ状態をリセット
   document.querySelectorAll('.proj-sel-btn').forEach(b => b.classList.remove('active'));
   go(1);
