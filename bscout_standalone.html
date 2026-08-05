@@ -2535,8 +2535,8 @@ function batchDemoResult(c, j) {
     topAppeal: wantsChallenge ? '技術的挑戦' : 'キャリアアップ',
     topAppealReason: `転職志向と求人の魅力が一致しており、${wantsChallenge ? '技術的挑戦' : 'キャリアの拡大'}を訴求することで返信率が高まります。`,
     avoidPoint: '「安定性」「大手のブランド力」は響かない可能性',
-    subject: `【${c.role}のご実績に注目】${j.company || '弊社'}・${j.position}についてご相談`,
-    mailBody: `突然のご連絡、誠に失礼いたします。${j.company || '弊社'}の採用担当と申します。\n${c.company}にて${c.role}としてご活躍中の貴殿、特に${sk0}のご経験を拝見し、ぜひ一度お話しさせていただきたいとご連絡いたしました。\n今回ご紹介する${j.position}では、${j.description.slice(0, 50)}…という業務をお任せしたいと考えています。\nまずは30分程度のカジュアルなお話しの機会をいただけますでしょうか。ご都合のよいお日時を2〜3つお知らせいただけますと幸いです。`
+    subject: `${c.company}での${sk0}ご経験について — ${j.position}のご相談`,
+    mailBody: `${c.company}で${c.role}として${c.experience.slice(0, 40)}...という経験を積まれてきた点に注目し、ご連絡しました。\n${sk0}の実務経験と${hasLead ? 'チームリードとしての実績' : '高い実装力'}は、今回の${j.position}ポジションが求めているプロフィールと非常に合致しています。\n${j.description.slice(0, 50)}…という業務をお任せしたいと考えています。\n30分ほど、選考を前提としないカジュアルなお話しの機会をいただけますか？`
   };
 }
 
