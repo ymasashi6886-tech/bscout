@@ -1,0 +1,36 @@
+# .gitignore — Bスカウト
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── エディタ ──
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Node.js（将来のnpm導入時） ──
+node_modules/
+npm-debug.log*
+yarn-error.log*
+package-lock.json
+
+# ── 環境変数（絶対にコミットしない） ──
+.env
+.env.local
+.env.*.local
+*.env
+
+# ── Netlify ──
+.netlify/
+
+# ── 一時ファイル ──
+*.tmp
+*.log
+dist/
+build/
+
+# ── 旧バージョン（アーカイブ） ──
+b_scout_app.html

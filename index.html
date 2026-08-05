@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bスカウト — 採用AIエージェント</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Loading -->
+<div class="overlay" id="ov">
+  <div class="load-card">
+    <div class="spin"></div>
+    <div style="font-size:15px;font-weight:800;color:var(--text)">AIリクルーターが分析中</div>
+    <div style="font-size:12px;color:var(--muted);margin-top:4px">トップリクルーターの思考を再現しています</div>
+    <div class="load-steps" id="lsteps">
+      <div class="ls" id="ls1"><div class="ls-dot"></div>候補者のキャリアパターンを分類</div>
+      <div class="ls" id="ls2"><div class="ls-dot"></div>転職動機・志向を推測</div>
+      <div class="ls" id="ls3"><div class="ls-dot"></div>求人とのマッチポイントを分析</div>
+      <div class="ls" id="ls4"><div class="ls-dot"></div>訴求戦略を策定</div>
+      <div class="ls" id="ls5"><div class="ls-dot"></div>スカウト文を生成</div>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="logo">B</div>
+    <div class="brand">
+      <div class="brand-name">Bスカウト</div>
+      <div class="brand-sub">AI Recruiter Agent</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="btn btn-ghost btn-sm" id="historyBtn" onclick="openHistory()" style="font-size:12px">📋 履歴</button>
+    <button class="batch-toggle-btn" id="batchModeBtn">◫ バッチ処理</button>
+    <div class="mode-pill" id="modePill">
+      <div class="mode-dot demo" id="modeDot"></div>
+      <div class="mode-label" id="modeLabel">接続確認中...</div>
+    </div>
+    <select class="model-sel" id="mdl">
+      <option value="gpt-4o">GPT-4o</option>
+      <option value="gpt-4o-mini">GPT-4o-mini</option>
+      <option value="gpt-4-turbo">GPT-4 Turbo</option>
+    </select>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- Stepper -->
+  <div class="stepper">
+    <div class="st active" id="si1"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
+    <div class="st"        id="si2"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
+    <div class="st"        id="si3"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
+    <div class="st"        id="si4"><div class="st-num">4</div><span class="st-label">文章生成</span></div>
+    <div class="st"        id="si5"><div class="st-num">5</div><span class="st-label">編集・完成</span></div>
+  </div>
+
+  <div class="err-bar" id="errBar"></div>
+
+  <!-- ==================== PANEL 1 ==================== -->
+  <div class="panel on" id="p1">
+    <div class="onboard-banner">
+      <div class="ob-title">Bスカウト — 採用AIエージェント</div>
+      <div class="ob-sub">トップリクルーターが30分かけて考えた「候補者の分析・訴求戦略・スカウト文」を、AIが2分で再現します。<br>候補者情報と求人情報を入力するだけで、その人だけに刺さるスカウトを生成します。</div>
+      <div class="ob-steps">
+        <div class="ob-step"><div class="ob-step-n">1</div>候補者・求人情報を入力</div>
+        <div class="ob-step"><div class="ob-step-n">2</div>AIがリクルーター視点で分析</div>
+        <div class="ob-step"><div class="ob-step-n">3</div>訴求ポイントを選択・確認</div>
+        <div class="ob-step"><div class="ob-step-n">4</div>スカウト文を自動生成</div>
+        <div class="ob-step"><div class="ob-step-n">5</div>編集してコピー</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:#dbeafe;color:#1d4ed8">候</div>
+          候補者情報
+        </div>
+        <span style="font-size:12px;color:var(--muted)"><span style="color:var(--red)">*</span> 必須項目</span>
+      </div>
+      <div class="card-body">
+        <div class="grid2">
+          <div class="fg">
+            <label>現在の会社<span class="req">*</span></label>
+            <input type="text" id="c_co" placeholder="例：株式会社〇〇テック">
+          </div>
+          <div class="fg">
+            <label>現在の職種<span class="req">*</span></label>
+            <input type="text" id="c_role" placeholder="例：バックエンドエンジニア（リード）">
+          </div>
+          <div class="fg s2">
+            <label>経験概要<span class="req">*</span></label>
+            <textarea id="c_exp" class="tall" placeholder="例：Javaを使ったEC基盤開発5年。直近2年はチームリード（5名）。月間1000万PVのサービスを担当し、マイクロサービス化を主導。パフォーマンス改善でレスポンスタイムを60%削減。"></textarea>
+            <div class="hint">具体的な数値・規模・成果を書くほどAI分析の精度が上がります</div>
+          </div>
+          <div class="fg">
+            <label>スキル<span class="req">*</span></label>
+            <textarea id="c_sk" placeholder="例：Java, Spring Boot, AWS(EC2/RDS/Lambda), Docker, Kubernetes, MySQL, Redis, チームマネジメント"></textarea>
+          </div>
+          <div class="fg">
+            <label>過去の代表プロジェクト</label>
+            <textarea id="c_pj" placeholder="例：ECリニューアル（PL・7名・6ヶ月）、決済基盤マイクロサービス移行（アーキテクト担当）"></textarea>
+          </div>
+          <div class="fg s2">
+            <label>転職理由・キャリア志向</label>
+            <textarea id="c_why" placeholder="例：技術的な挑戦をしたい、マネジメントより手を動かしたい、成長フェーズのスタートアップで事業をつくる側に関わりたい、年収を上げたい"></textarea>
+            <div class="hint">ここが充実するほどAIの「訴求戦略」の精度が大幅に向上します</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:#fce7f3;color:#be185d">求</div>
+          求人情報
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="grid2">
+          <div class="fg">
+            <label>募集ポジション名<span class="req">*</span></label>
+            <input type="text" id="j_pos" placeholder="例：シニアバックエンドエンジニア">
+          </div>
+          <div class="fg">
+            <label>会社名</label>
+            <input type="text" id="j_co" placeholder="例：株式会社スタートアップ">
+          </div>
+          <div class="fg s2">
+            <label>仕事内容<span class="req">*</span></label>
+            <textarea id="j_desc" class="tall" placeholder="例：急成長フィンテックSaaSのバックエンド開発。マイクロサービスアーキテクチャの設計〜実装まで担当。技術選定・アーキテクチャ決定の裁量あり。チーム5名、今後拡大予定。"></textarea>
+          </div>
+          <div class="fg">
+            <label>求める経験・スキル<span class="req">*</span></label>
+            <textarea id="j_req" placeholder="例：バックエンド開発3年以上、JVM系言語経験、AWS設計運用経験、マイクロサービス経験者優遇"></textarea>
+          </div>
+          <div class="fg">
+            <label>会社・ポジションの魅力<span class="req">*</span></label>
+            <textarea id="j_ap" placeholder="例：シリーズB・急成長、技術的裁量大・アーキテクチャを自分で決められる、フルリモート可、優秀なエンジニアチーム、年収700〜1000万"></textarea>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ai" id="analyzeBtn">
+            <span style="font-size:16px">✦</span> AIリクルーターが分析開始
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PANEL 1.5: AI補完質問 ==================== -->
+  <div class="panel" id="p15">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:#fef3c7;color:#92400e">?</div>
+          AIエージェント — 追加情報の確認
+        </div>
+        <span style="font-size:12px;color:var(--muted)">スキップして分析に進むことも可能です</span>
+      </div>
+      <div class="card-body">
+        <div class="iq-bar-wrap">
+          <span class="iq-label">入力情報品質スコア</span>
+          <div class="iq-bar"><div class="iq-fill" id="iqFill" style="width:0%"></div></div>
+          <span class="iq-score" id="iqScore">—</span>
+        </div>
+        <div class="aq-intro" id="aqIntro"></div>
+        <div class="aq-list" id="aqList"></div>
+        <p class="aq-skip-note">回答できない項目はスキップしてください。入力した内容はAI分析の精度向上に使われます。</p>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="b15to1">← 情報を修正</button>
+          <button class="btn btn-ghost" id="b15skip">このまま分析する →</button>
+          <button class="btn btn-ai" id="b15analyze">
+            <span style="font-size:15px">✦</span> 補完して分析開始
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PANEL BATCH: バッチ処理 ==================== -->
+  <div class="panel" id="pBatch">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:var(--purple-l);color:var(--purple)">◫</div>
+          バッチ処理 — 複数候補者を一括分析・スカウト生成
+        </div>
+        <button class="btn btn-ghost btn-sm" id="batchAddBtn">＋ 候補者を追加</button>
+      </div>
+      <div class="card-body">
+        <div class="batch-intro">
+          複数の候補者に対して、<strong>同じ求人情報</strong>でまとめて分析・スカウト文を生成します。
+          各候補者の最低限の情報（会社・職種・経験・スキル）を入力してください。求人情報はSTEP1で入力したものを使用します。
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px 16px;margin-bottom:16px;font-size:12px;">
+          <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px">使用する求人情報</div>
+          <div id="batchJobSummary" style="color:var(--text);line-height:1.8">—</div>
+        </div>
+        <div class="batch-candidates" id="batchCandidates"></div>
+        <div class="batch-progress" id="batchProgress">
+          <div class="spin" style="width:18px;height:18px;border-width:2px;margin:0"></div>
+          <span id="batchProgressText">分析中...</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="batchBackBtn">← 通常モードに戻る</button>
+          <button class="btn btn-ai" id="batchRunBtn" disabled>
+            <span style="font-size:15px">✦</span> 一括分析・スカウト生成
+          </button>
+        </div>
+        <div class="batch-result" id="batchResult">
+          <div style="font-size:13px;font-weight:800;margin-bottom:12px;padding-top:16px;border-top:1px solid var(--border)">分析・生成結果</div>
+          <div class="batch-result-grid" id="batchResultGrid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PANEL 2: AI分析（OHEREフレーム） ==================== -->
+  <div class="panel" id="p2">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:#ede9fe;color:#6d28d9">分</div>
+          AIリクルーター判断レポート
+        </div>
+        <button class="btn btn-ghost btn-sm" id="reAnalyzeBtn">✦ 再分析</button>
+      </div>
+      <div class="card-body">
+        <div class="section-desc">
+          AIがトップリクルーターの視点で候補者を分析しました。<strong>OHEREフレーム</strong>で思考プロセスを確認し、訴求戦略を決定してください。
+        </div>
+
+        <!-- マッチスコア -->
+        <div class="score-wrap">
+          <span class="score-label">マッチスコア</span>
+          <div class="score-bar"><div class="score-fill" id="sBar" style="width:0%"></div></div>
+          <span class="score-n" id="sNum">—</span>
+          <span class="score-lv" id="sLv"></span>
+        </div>
+
+        <!-- 候補者温度感AI -->
+        <div class="p2-section-title">
+          <span class="p2-section-icon" style="background:#fef3c7;color:#92400e">🌡</span>
+          候補者温度感AI
+          <span class="p2-section-badge" style="background:#fef3c7;color:#92400e">転職意欲推測</span>
+        </div>
+        <div class="temperature-wrap" id="temperatureBlock">
+          <div class="temp-stars">—</div>
+        </div>
+
+        <!-- キャリアストーリーAI -->
+        <div class="p2-section-title" style="margin-top:20px">
+          <span class="p2-section-icon" style="background:#dbeafe;color:#1d4ed8">📖</span>
+          キャリアストーリーAI
+          <span class="p2-section-badge" style="background:#dbeafe;color:#1d4ed8">過去→現在→未来</span>
+        </div>
+        <div class="career-story-wrap" id="careerStoryBlock"></div>
+
+        <!-- OHEREフレーム -->
+        <div class="p2-section-title" style="margin-top:20px">
+          <span class="p2-section-icon" style="background:#ede9fe;color:#6d28d9">✦</span>
+          OHEREフレーム — トップリクルーターの思考プロセス
+          <span class="p2-section-badge" style="background:#ede9fe;color:#6d28d9">5段階分析</span>
+        </div>
+        <div class="ohere-wrap" id="ohereBlock"></div>
+
+        <!-- 既存分析グリッド（候補者タイプ・接点・避ける訴求） -->
+        <div class="analysis-grid" id="aGrid" style="margin-top:16px"></div>
+
+        <!-- 訴求優先順位 -->
+        <div style="margin-top:20px">
+          <div class="ab-label" style="margin-bottom:12px">
+            <div class="ab-dot" style="background:var(--accent)"></div>
+            訴求ポイント優先順位 — なぜこの順番なのか
+          </div>
+          <div class="priority-list" id="priorityList"></div>
+        </div>
+
+        <!-- 採用担当者ガイダンス -->
+        <div style="margin-top:20px">
+          <div class="ab-label" style="margin-bottom:12px">
+            <div class="ab-dot" style="background:var(--green)"></div>
+            採用担当者へのアプローチガイダンス
+            <span class="learning-badge">学習データ対象</span>
+          </div>
+          <div class="guidance-list" id="guidanceList"></div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="b2to1">← 情報を修正</button>
+          <button class="btn btn-primary" id="b2to3">訴求ポイントを選択 →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PANEL 3: 戦略決定 ==================== -->
+  <div class="panel" id="p3">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:#d1fae5;color:#065f46">戦</div>
+          アプローチ戦略決定
+        </div>
+        <span style="font-size:12px;color:var(--muted)">AIの推奨に初期チェックを入れています</span>
+      </div>
+      <div class="card-body">
+        <div class="appeal-intro">
+          <strong>AIがこの候補者に「刺さる」と判断した訴求ポイント</strong>に初期チェックが入っています。チェックを調整してからスカウト文を生成してください。
+        </div>
+        <div class="appeal-grid" id="appealGrid"></div>
+        <div class="strategy-note" id="strategyNote"></div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="b3to2">← 分析結果に戻る</button>
+          <button class="btn btn-ai" id="genMailBtn">
+            <span style="font-size:15px">✦</span> 選択した訴求でスカウト文を生成
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PANEL 5: 編集・完成 ==================== -->
+  <div class="panel" id="p5">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:#d1fae5;color:#065f46">✉</div>
+          スカウトメール — 編集・完成
+        </div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-ghost btn-sm" id="pvBtn">プレビュー</button>
+          <button class="btn btn-ghost btn-sm" id="regenAllBtn">✦ 全文再生成</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="section-desc">
+          各セクションを直接編集できます。「✦ 再生成」でそのセクションだけ生み直せます。編集完了後、「全文コピー」でメールに貼り付けてください。
+        </div>
+        <div class="preview-box" id="pvBox"></div>
+        <div class="mail-sections" id="mSections">
+          <div class="ms" id="ms-subject">
+            <div class="ms-head">
+              <div class="ms-label">📧 件名 <span class="ms-badge mb-req">必須</span></div>
+              <button class="regen-btn" data-sec="subject">✦ 再生成</button>
+            </div>
+            <div class="ms-body"><textarea class="subj" id="ta-subject" rows="2"></textarea></div>
+          </div>
+          <div class="ms" id="ms-intro">
+            <div class="ms-head">
+              <div class="ms-label">👋 冒頭文 <span class="ms-badge mb-req">候補者固有</span></div>
+              <button class="regen-btn" data-sec="intro">✦ 再生成</button>
+            </div>
+            <div class="ms-body"><textarea id="ta-intro" rows="4"></textarea><div class="cc" id="cc-intro"></div></div>
+          </div>
+          <div class="ms" id="ms-why">
+            <div class="ms-head">
+              <div class="ms-label">🔍 なぜ声をかけたか <span class="ms-badge mb-req">候補者固有</span></div>
+              <button class="regen-btn" data-sec="why">✦ 再生成</button>
+            </div>
+            <div class="ms-body"><textarea id="ta-why" rows="3"></textarea><div class="cc" id="cc-why"></div></div>
+          </div>
+          <div class="ms" id="ms-match">
+            <div class="ms-head">
+              <div class="ms-label">🔗 ポジションとの接点 <span class="ms-badge mb-ai">AI分析</span></div>
+              <button class="regen-btn" data-sec="match">✦ 再生成</button>
+            </div>
+            <div class="ms-body"><textarea id="ta-match" rows="3"></textarea><div class="cc" id="cc-match"></div></div>
+          </div>
+          <div class="ms" id="ms-benefit">
+            <div class="ms-head">
+              <div class="ms-label">✨ 候補者へのメリット <span class="ms-badge mb-ai">訴求戦略反映</span></div>
+              <button class="regen-btn" data-sec="benefit">✦ 再生成</button>
+            </div>
+            <div class="ms-body"><textarea id="ta-benefit" rows="4"></textarea><div class="cc" id="cc-benefit"></div></div>
+          </div>
+          <div class="ms" id="ms-cta">
+            <div class="ms-head">
+              <div class="ms-label">📅 カジュアル面談への誘導 <span class="ms-badge mb-req">必須</span></div>
+              <button class="regen-btn" data-sec="cta">✦ 再生成</button>
+            </div>
+            <div class="ms-body"><textarea id="ta-cta" rows="3"></textarea></div>
+          </div>
+        </div>
+        <div class="act-bar">
+          <div style="display:flex;gap:8px">
+            <button class="copy-btn" id="cpAll">
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              全文コピー
+            </button>
+            <button class="copy-btn" id="cpSubj">件名コピー</button>
+          </div>
+          <button class="btn btn-ghost btn-sm" id="restartBtn">新規作成</button>
+        </div>
+
+        <!-- フィードバックUI -->
+        <div class="feedback-box" id="feedbackBox"></div>
+
+        <!-- ✦ AIセルフレビュー（IBM専用6軸採点） -->
+        <div class="self-review-box" id="selfReviewBox" style="display:none"></div>
+
+        <div class="reason-box">
+          <div class="reason-title">💡 採用担当者へのメモ — なぜこの候補者にスカウトを送るべきか</div>
+          <div class="reason-body" id="reasonTxt"></div>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn btn-ghost btn-sm" id="logToggle" style="font-size:11px">判断プロセスログを表示 ▼</button>
+          <div id="logBox" style="display:none;margin-top:8px">
+            <div style="font-size:11px;color:var(--muted);margin-bottom:6px">将来的な学習機能のためにAIの判断プロセスを記録しています</div>
+            <div class="process-log" id="procLog"></div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="b5to3">← 訴求を変更</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PANEL HISTORY: スカウト履歴 ==================== -->
+  <div class="panel" id="pHistory">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:#f0fdf4;color:#15803d">📋</div>
+          スカウト履歴
+        </div>
+        <button class="btn btn-ghost btn-sm" id="historyBackBtn" onclick="go(1)">← 戻る</button>
+      </div>
+      <div class="card-body">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:16px">
+          生成したスカウトは自動保存されます。送信後のフィードバック（返信・面談・採用）を記録すると、将来のAI精度向上に活用されます。
+        </div>
+        <div id="historyGrid"></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer"><p>Made with IBM Bob</p></footer>
+
+<!-- JS: 読み込み順序は必ず storage → ai → app -->
+<script src="js/storage.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
