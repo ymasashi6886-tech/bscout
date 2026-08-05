@@ -1,37 +1,115 @@
 /**
- * ai.js — OpenAI API 通信・プロンプト管理
+ * ai.js — OpenAI API / IBM watsonx.ai 通信・プロンプト管理
  *
- * 将来的な拡張ポイント:
- *   - IBM watsonx.ai への切り替えは API_URL と apiHeaders() を変更するだけ
- *   - モデル選択の拡張（Llama, Granite 等）
- *   - ストリーミングレスポンス対応
+ * Phase3a: プロンプト強化・watsonx切り替えロジック・修正ログfew-shot注入
+ *
+ * バックエンド切り替え方法:
+ *   1. BSCOUT_BACKEND = 'openai' | 'watsonx' を localStorage に設定
+ *   2. watsonx選択時: BSCOUT_WX_URL / BSCOUT_WX_TOKEN も設定が必要
+ *   3. IS_NETLIFY=true 時はサーバー側プロキシが自動判定
  */
 
+// ══════════════════════════════════════════
+// Phase3b: バックエンド切り替えロジック
+// ══════════════════════════════════════════
+
+/** 現在のバックエンド: 'openai' | 'watsonx' */
+function currentBackend() {
+  return localStorage.getItem('bscout_backend') || 'openai';
+}
+
+/** watsonxエンドポイント（設定されていれば使用） */
+function watsonxUrl() {
+  return localStorage.getItem('bscout_wx_url') ||
+    'https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29';
+}
+
 // ── エンドポイント自動判定 ──
-// Netlify上: /api/proxy 経由（APIキーはサーバー側で管理）
-// ローカル:  OpenAI APIに直接接続
 const IS_NETLIFY = location.hostname !== 'localhost'
   && location.protocol === 'https:'
   && !location.hostname.includes('127.0.0.1');
 
-const API_URL = IS_NETLIFY
-  ? '/api/proxy'
-  : 'https://api.openai.com/v1/chat/completions';
+function getApiUrl() {
+  if (IS_NETLIFY) return '/api/proxy';
+  if (currentBackend() === 'watsonx') return watsonxUrl();
+  return 'https://api.openai.com/v1/chat/completions';
+}
+// 後方互換
+const API_URL = 'https://api.openai.com/v1/chat/completions';
 
 // ── APIキー管理ユーティリティ ──
-function hasApiKey()  { return IS_NETLIFY || !!localStorage.getItem('bscout_apikey'); }
+function hasApiKey()  { return IS_NETLIFY || !!localStorage.getItem('bscout_apikey') || !!localStorage.getItem('bscout_wx_token'); }
 
 function apiHeaders() {
   const h = { 'Content-Type': 'application/json' };
   if (!IS_NETLIFY) {
-    const k = localStorage.getItem('bscout_apikey');
-    if (k) h['Authorization'] = 'Bearer ' + k;
+    if (currentBackend() === 'watsonx') {
+      const tok = localStorage.getItem('bscout_wx_token');
+      if (tok) h['Authorization'] = 'Bearer ' + tok;
+    } else {
+      const k = localStorage.getItem('bscout_apikey');
+      if (k) h['Authorization'] = 'Bearer ' + k;
+    }
   }
   return h;
 }
 
+/**
+ * Phase3b: watsonx用リクエストボディへの変換
+ * OpenAI形式のmessages → watsonx Granite/Llama形式に変換
+ */
+function buildRequestBody(messages, temperature, model) {
+  if (currentBackend() === 'watsonx' && !IS_NETLIFY) {
+    // watsonx text generation API形式
+    const systemMsg = messages.find(m => m.role === 'system')?.content || '';
+    const userMsg   = messages.find(m => m.role === 'user')?.content || '';
+    const wxModel   = localStorage.getItem('bscout_wx_model') || 'ibm/granite-13b-instruct-v2';
+    return {
+      model_id: wxModel,
+      project_id: localStorage.getItem('bscout_wx_project') || '',
+      input: `${systemMsg}\n\n${userMsg}`,
+      parameters: {
+        decoding_method: 'greedy',
+        max_new_tokens: 2000,
+        temperature: temperature || 0.7,
+        stop_sequences: []
+      }
+    };
+  }
+  // OpenAI形式（デフォルト）
+  return {
+    model: model || md(),
+    messages,
+    temperature: temperature || 0.7,
+    response_format: { type: 'json_object' }
+  };
+}
+
+/**
+ * Phase3b: watsonxレスポンスをOpenAI形式に正規化
+ */
+function parseApiResponse(data) {
+  if (currentBackend() === 'watsonx' && !IS_NETLIFY) {
+    // watsonx形式: { results: [{ generated_text: "..." }] }
+    const text = data?.results?.[0]?.generated_text || '{}';
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    return jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(text);
+  }
+  // OpenAI形式
+  return JSON.parse(data.choices[0].message.content);
+}
+
 function ensureLocalKey() {
   if (IS_NETLIFY) return true;
+  if (currentBackend() === 'watsonx') {
+    let tok = localStorage.getItem('bscout_wx_token');
+    if (!tok) {
+      tok = window.prompt('IBM watsonx IAMトークンを入力してください:') || '';
+      if (!tok) return false;
+      localStorage.setItem('bscout_wx_token', tok);
+    }
+    return true;
+  }
   let k = localStorage.getItem('bscout_apikey');
   if (!k) {
     k = window.prompt('OpenAI APIキーを入力してください（ローカル実行時のみ）:') || '';
@@ -41,9 +119,10 @@ function ensureLocalKey() {
   return true;
 }
 
-// ── 接続モード表示（ページ読み込み時に自動実行） ──
+// ── 接続モード表示 ──
 (async function checkMode() {
   const dot = $('modeDot'), lbl = $('modeLabel');
+  const backend = currentBackend();
   if (IS_NETLIFY) {
     try {
       const r = await fetch('/api/proxy', {
@@ -59,20 +138,85 @@ function ensureLocalKey() {
       dot.className = 'mode-dot demo';
       lbl.innerHTML = '<strong>デモモード</strong> — 環境変数未設定';
     }
+  } else if (backend === 'watsonx') {
+    const hasTok = !!localStorage.getItem('bscout_wx_token');
+    dot.className = hasTok ? 'mode-dot ai' : 'mode-dot demo';
+    lbl.innerHTML = hasTok
+      ? '<strong>watsonx接続済み</strong> — IBM Cloud'
+      : '<strong>watsonx未設定</strong> — トークン入力要';
   } else {
-    dot.className = 'mode-dot demo';
-    lbl.innerHTML = '<strong>ローカル</strong> — デモ動作中';
+    const hasKey = !!localStorage.getItem('bscout_apikey');
+    dot.className = hasKey ? 'mode-dot ai' : 'mode-dot demo';
+    lbl.innerHTML = hasKey ? '<strong>OpenAI接続済み</strong> — ローカル' : '<strong>デモモード</strong> — APIキー未設定';
   }
 })();
 
 // ══════════════════════════════════════════
-// STEP2: 候補者分析 API
+// Phase3a: IBM実績ナレッジベース（プロンプト注入用）
+// ══════════════════════════════════════════
+/**
+ * IBMの具体的強み・数値・事例をプロンプトに埋め込むことで
+ * AIが「IBMらしい」具体的な文章を生成できるようになる
+ */
+const IBM_KNOWLEDGE = {
+  scale:    '170カ国・28万人・Fortune500の90%以上がIBMの顧客。日本IBMは約7000名。',
+  ai:       'watsonx.aiはGranite・Llama3等OSSモデルを企業データで動かすエンタープライズAI基盤。2023年より本格展開。金融・医療・製造分野で国内外の大手企業に導入実績。',
+  cloud:    'IBM CloudはRed Hat OpenShiftベースのハイブリッドクラウド。AWSやAzureと並ぶエンタープライズクラウドの一角。Kubernetes普及の立役者であるRed Hatを2019年340億ドルで買収。',
+  oss:      'Red Hat / OpenShift / Kubernetes / Terraform / Ansible / Qiskit など業界標準OSSの中核を担う。IBMに転職=OSSエコシステムの中心に立つことを意味する。',
+  global:   'プロジェクトは日本発でも海外チームと協業が常態。英語メール・Slack・週次英語会議は入社初日から。TOEIC600点台でも入社後に伸びるケースが多い。',
+  training: 'IBM Skills Build・SkillsBadge認定は400種以上。年間トレーニング予算は1人あたり数十万円規模。社内公募制度で2〜3年ごとに別チームへの異動も一般的。',
+  social:   '2021年よりESGコミットメント強化。気候変動・医療アクセス・デジタルデバイド解消のプロジェクトに技術者として関与できる。IBMのProject Debaterは教育領域でも活用中。',
+  stability:'1911年創業・112年の実績。リーマンショック・コロナ禍も黒字継続。外資系の中では最も雇用安定性が高い部類。平均勤続年数は日系大手に匹敵。',
+  salary:   '東京基準でエンジニア中途採用の年収レンジは700万〜1500万円。グレード制で透明性が高く、評価による昇給が明確。確定拠出年金・RSU（株式報酬）も充実。',
+  workstyle:'フレックスタイム・週3〜4日リモート標準。コアタイムなし（チーム合意ベース）。育休取得率は男性30%以上。副業原則OKの部門が増加中。',
+};
+
+/**
+ * 候補者タイプ・選択訴求から最も有効なIBM知識を3〜4件選んで返す
+ */
+function selectIbmKnowledge(typeCategory, appealIds) {
+  const MAP = {
+    '技術スペシャリスト型': ['ai','oss','cloud','global'],
+    'PM・マネジメント型':   ['scale','ai','global','social'],
+    'キャリアアップ型':      ['training','scale','stability','salary'],
+    '市場価値向上型':        ['ai','oss','global','training'],
+    '安定志向型':            ['stability','salary','workstyle','training'],
+  };
+  const appealMap = {
+    'ai_transformation': ['ai','cloud'],
+    'watsonx':           ['ai','oss'],
+    'global':            ['global','scale'],
+    'scale':             ['scale','stability'],
+    'social':            ['social'],
+    'training':          ['training'],
+    'workstyle':         ['workstyle'],
+    'benefits':          ['salary','stability'],
+    'brand':             ['stability','scale'],
+    'autonomy':          ['oss','ai'],
+    'tech_env':          ['oss','cloud'],
+  };
+  const keys = new Set([
+    ...(MAP[typeCategory] || ['ai','scale','global']),
+    ...(appealIds || []).flatMap(id => appealMap[id] || [])
+  ]);
+  return [...keys].slice(0, 4).map(k => IBM_KNOWLEDGE[k]).filter(Boolean).join('\n');
+}
+
+// ══════════════════════════════════════════
+// STEP2: 候補者分析 API（Phase3a: IBM知識注入）
 // ══════════════════════════════════════════
 async function callAnalysisAPI() {
   const c = S.candidate, j = S.job;
   if (!IS_NETLIFY && !ensureLocalKey()) { demoAnalysis(); throw new Error('demo'); }
 
-  const prompt = `あなたは日本のトップヘッドハンターです。以下の候補者情報と求人情報を分析し、正確なJSONのみを返してください。
+  // Phase3a: 分析プロンプトにIBM知識を注入（まだタイプ未確定なので全軸の代表を投入）
+  const ibmKnowledgeForAnalysis = [IBM_KNOWLEDGE.ai, IBM_KNOWLEDGE.scale, IBM_KNOWLEDGE.global, IBM_KNOWLEDGE.training].join('\n');
+
+  const prompt = `あなたは日本のIBMトップリクルーターです。以下の候補者情報と求人情報を分析し、正確なJSONのみを返してください。
+
+## IBM基礎情報（分析・訴求選択の参考に）
+${ibmKnowledgeForAnalysis}
+
 
 ## 候補者情報
 - 現在の会社: ${c.company}
@@ -151,22 +295,17 @@ brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）
 
 上記IBM専用IDのみ使用。旧ID（tech/career/startup等）は使わないこと。`;
 
-  const res = await fetch(API_URL, {
+  const messages = [
+    { role: 'system', content: 'あなたはIBM日本の採用担当トップリクルーターです。候補者分析の専門家として、IBM専用の11軸訴求マスタを使ってJSONのみ返してください。' },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST',
     headers: apiHeaders(),
-    body: JSON.stringify({
-      model: md(),
-      messages: [
-        { role: 'system', content: 'あなたは優秀なヘッドハンターです。JSONのみ返してください。' },
-        { role: 'user', content: prompt }
-      ],
-      temperature: 0.7,
-      response_format: { type: 'json_object' }
-    })
+    body: JSON.stringify(buildRequestBody(messages, 0.7))
   });
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API error ${res.status}`); }
-  const d = await res.json();
-  S.analysis = JSON.parse(d.choices[0].message.content);
+  S.analysis = parseApiResponse(await res.json());
   hideLoad(); renderAnalysis(); go(2);
 }
 
@@ -184,10 +323,15 @@ async function callMailAPI() {
   const temp = a.temperature || {};
 
   const successExamples = j.successExamples || '';
-  // IBM訴求ライブラリから選択訴求のibmStrengthを取得してプロンプトに埋め込む（Phase2）
-  // S.selectedAppealIds はフロント側で設定されるが、callMailAPIはS参照なのでここで取得
+
+  // Phase3a: IBM知識注入（候補者タイプ + 訴求IDに基づいて最適な知識を選択）
+  const ibmKnowledge = selectIbmKnowledge(typeCategory, S.selectedAppealIds || []);
+
+  // Phase3a: 修正ログfew-shot注入（同タイプの過去修正パターンを参考例として渡す）
+  const fewShotExamples = buildFewShotFromEditLogs(typeCategory, sel);
+
+  // IBM訴求ibmStrengthヒント（Phase2から継続）
   const ibmStrengthHints = sel.map(name => {
-    // nameからIBM_APPEALSを逆引き（ai.jsからはwindow経由でアクセス）
     if (typeof IBM_APPEALS !== 'undefined') {
       const ap = IBM_APPEALS.find(x => x.name === name);
       return ap ? `【${ap.name}】${ap.ibmStrength}` : name;
@@ -195,28 +339,28 @@ async function callMailAPI() {
     return name;
   }).join('\n');
 
-  const prompt = `あなたは日本のトップリクルーターです。以下の情報をもとに、AIっぽさのないスカウトメールを生成してください。JSONのみ返してください。
+  const prompt = `あなたは日本のIBMトップリクルーターです。以下の情報をもとに、AIっぽさのないスカウトメールを生成してください。JSONのみ返してください。
 
 ## 候補者情報
-- 氏名候補者: ${c.role}（${c.company}）
+- 候補者プロフィール: ${c.role}（${c.company}）
 - スキル: ${c.skills}
 - 転職志向: ${c.reason || '不明'}
 - 候補者タイプ: ${typeCategory}
 - 転職温度感: ${temp.label || '不明'}（★${temp.stars || '?'}）
 
 ## 求人情報
-- ポジション: ${j.position}（${j.company || ''}）
+- ポジション: ${j.position}（${j.company || 'IBM'}）
 - 内容: ${j.description}
 - 歓迎要件: ${j.preferred || '未記入'}
 - 魅力: ${j.appeal}
-${successExamples ? `\n## 過去の成功スカウト例（参考にして同水準の切り口を使うこと）\n${successExamples}` : ''}
+${successExamples ? `\n## 過去の成功スカウト例（同水準の切り口を使うこと）\n${successExamples}` : ''}
 
-## AI分析結果（スカウト文に反映すること）
+## AI分析結果（スカウト文に必ず反映すること）
 - キャリアストーリー: ${story.narrative || a.motivationHypothesis || ''}
 - 訴求優先順位:
 ${priText}
 - 選択した訴求ポイント: ${sel.join('、')}
-- IBM訴求の具体的内容（benefitセクションで必ず1〜2つ自然に言及すること）:
+- IBM訴求の具体的内容（benefitで1〜2つ自然に言及）:
 ${ibmStrengthHints}
 - 避けるべき訴求: ${a.avoidPoints || ''}
 - スカウト戦略:
@@ -226,6 +370,10 @@ ${ibmStrengthHints}
   ④IBM訴求: ${strat.step4_ibm || ''}
   ⑤面談誘導: ${strat.step5_meeting || ''}
 
+## IBM実績ナレッジ（文章に自然に組み込むこと — コピペ禁止・自分の言葉で）
+${ibmKnowledge}
+${fewShotExamples ? `\n## 過去のリクルーター修正パターン（参考例 — 同じ方向性で書くこと）\n${fewShotExamples}` : ''}
+
 ## 絶対に守るルール（違反禁止）
 1. 「突然のご連絡失礼します」「プロフィールを拝見しました」「貴殿」など定型表現を使わない
 2. 冒頭文は必ず候補者の「具体的な経歴・実績・スキル」への言及から始める
@@ -233,6 +381,7 @@ ${ibmStrengthHints}
 4. テンプレ的な文章にしない。この候補者だけに送るメールとして書く
 5. 読んだ相手が「自分のことをちゃんと見てくれている」と感じる文体にする
 6. ストーリー構造（共感→能力承認→未来→IBM→面談）を自然な流れで組み込む
+7. IBMの強みを「概念」ではなく「具体的数値・事例」で語る（IBM知識を活用すること）
 
 ## 返すJSONの構造
 {
@@ -240,16 +389,20 @@ ${ibmStrengthHints}
   "intro": "冒頭文（3〜4文・候補者固有の経験・実績から始まる・共感＋能力承認フェーズ）",
   "why": "なぜ声をかけたか（2〜3文・具体的な経歴への言及・候補者固有）",
   "match": "ポジションとの接点（2〜3文・スキルマッチを具体的に・未来提示を含む）",
-  "benefit": "候補者へのメリット（2〜3文・IBM訴求を反映・選択した訴求を自然に組み込む）",
+  "benefit": "候補者へのメリット（2〜3文・IBM訴求をIBM実績ナレッジを使って具体的に語る）",
   "cta": "カジュアル面談への誘導（2文・プレッシャーなし・選考なしのカジュアルな誘い）"
 }`;
 
-  const res = await fetch(API_URL, {
+  const mailMessages = [
+    { role: 'system', content: 'あなたは日本のIBMトップリクルーターです。AIっぽさを排除した人間らしいスカウトメールを書きます。IBMの具体的事実・数値を使って語ることが得意です。JSONのみ返してください。' },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({ model: md(), messages: [{ role: 'system', content: 'あなたは日本のトップリクルーターです。AIっぽさを排除した人間らしいスカウトメールを書くことが得意です。JSONのみ返してください。' }, { role: 'user', content: prompt }], temperature: 0.8, response_format: { type: 'json_object' } })
+    body: JSON.stringify(buildRequestBody(mailMessages, 0.8))
   });
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
-  S.mail = JSON.parse((await res.json()).choices[0].message.content);
+  S.mail = parseApiResponse(await res.json());
   if (S.learningData.scoutAction) { S.learningData.scoutAction.selectedAppeals = S.selectedAppeals; S.learningData.scoutAction.generatedSubject = S.mail.subject || ''; }
   hideLoad(); renderMail(); renderProcessLog(); go(5);
 }
@@ -316,20 +469,16 @@ ${fullMail}
 
 improvementsは最も改善すべき2〜3点のみ。問題がない軸は含めない。`;
 
-  const res = await fetch(API_URL, {
+  const srMessages = [
+    { role: 'system', content: 'あなたはIBMスカウトメール採点の専門家です。厳格に採点します。JSONのみ返してください。' },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({
-      model: md(),
-      messages: [
-        { role: 'system', content: 'あなたはスカウトメール採点の専門家です。IBMのスカウトメールを厳格に採点します。JSONのみ返してください。' },
-        { role: 'user', content: prompt }
-      ],
-      temperature: 0.5,
-      response_format: { type: 'json_object' }
-    })
+    body: JSON.stringify(buildRequestBody(srMessages, 0.5))
   });
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
-  S.selfReview = JSON.parse((await res.json()).choices[0].message.content);
+  S.selfReview = parseApiResponse(await res.json());
   renderSelfReview();
 }
 

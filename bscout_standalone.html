@@ -1712,7 +1712,7 @@ textarea.tall { min-height:110px; }
 
 
 <script>
-// === storage.js ===
+// storage.js
 /**
  * storage.js 窶・繝ｭ繝ｼ繧ｫ繝ｫ繧ｹ繝医Ξ繝ｼ繧ｸ邂｡逅・・learningData 讒矩
  *
@@ -1944,35 +1944,137 @@ function deleteHistoryEntry(id) {
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
 }
 
-// === ai.js ===
+// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// Phase3a: 菫ｮ豁｣繝ｭ繧ｰfew-shot讒狗ｯ・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+
 /**
- * ai.js 窶・OpenAI API 騾壻ｿ｡繝ｻ繝励Ο繝ｳ繝励ヨ邂｡逅・ *
- * 蟆・擂逧・↑諡｡蠑ｵ繝昴う繝ｳ繝・
- *   - IBM watsonx.ai 縺ｸ縺ｮ蛻・ｊ譖ｿ縺医・ API_URL 縺ｨ apiHeaders() 繧貞､画峩縺吶ｋ縺縺・ *   - 繝｢繝・Ν驕ｸ謚槭・諡｡蠑ｵ・・lama, Granite 遲会ｼ・ *   - 繧ｹ繝医Μ繝ｼ繝溘Φ繧ｰ繝ｬ繧ｹ繝昴Φ繧ｹ蟇ｾ蠢・ */
+ * 闢・ｩ阪＠縺滉ｿｮ豁｣繝ｭ繧ｰ縺九ｉ縲窟I譯・竊・繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ菫ｮ豁｣迚医阪・few-shot繧呈ｧ狗ｯ・ * 蜷後§蛟呵｣懆・ち繧､繝励・蜷後§繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ縺ｮ菫ｮ豁｣繝代ち繝ｼ繝ｳ繧呈怙螟ｧ3莉ｶ霑斐☆
+ *
+ * @param {string} typeCategory - 蛟呵｣懆・ち繧､繝・ * @param {string[]} selectedAppeals - 驕ｸ謚槭＠縺溯ｨｴ豎ょ錐繝ｪ繧ｹ繝・ * @returns {string} few-shot繝・く繧ｹ繝茨ｼ医・繝ｭ繝ｳ繝励ヨ豕ｨ蜈･逕ｨ・・ */
+function buildFewShotFromEditLogs(typeCategory, selectedAppeals) {
+  const logs = loadEditLogs();
+  if (!logs || logs.length === 0) return '';
+
+  // 蜷後ち繧､繝励・繝ｭ繧ｰ繧貞━蜈医∵怙螟ｧ3莉ｶ
+  const relevant = logs
+    .filter(l => l.meta?.candidateType === typeCategory && l.edited && l.aiVersion)
+    .slice(0, 3);
+
+  if (relevant.length === 0) return '';
+
+  return relevant.map((l, i) => {
+    const secLabel = { subject: '莉ｶ蜷・, intro: '蜀帝ｭ譁・, why: '逅・罰', match: '謗･轤ｹ', benefit: '繝｡繝ｪ繝・ヨ', cta: '隱伜ｰ取枚' };
+    return `蜿り・ｾ・{i + 1}縲・{secLabel[l.section] || l.section}縲・AI譯・ ${(l.aiVersion || '').slice(0, 80)}...
+菫ｮ豁｣蠕・ ${(l.edited || '').slice(0, 80)}...`;
+  }).join('\n\n');
+}
+
+// ai.js
+/**
+ * ai.js 窶・OpenAI API / IBM watsonx.ai 騾壻ｿ｡繝ｻ繝励Ο繝ｳ繝励ヨ邂｡逅・ *
+ * Phase3a: 繝励Ο繝ｳ繝励ヨ蠑ｷ蛹悶・watsonx蛻・ｊ譖ｿ縺医Ο繧ｸ繝・け繝ｻ菫ｮ豁｣繝ｭ繧ｰfew-shot豕ｨ蜈･
+ *
+ * 繝舌ャ繧ｯ繧ｨ繝ｳ繝牙・繧頑崛縺域婿豕・
+ *   1. BSCOUT_BACKEND = 'openai' | 'watsonx' 繧・localStorage 縺ｫ險ｭ螳・ *   2. watsonx驕ｸ謚樊凾: BSCOUT_WX_URL / BSCOUT_WX_TOKEN 繧りｨｭ螳壹′蠢・ｦ・ *   3. IS_NETLIFY=true 譎ゅ・繧ｵ繝ｼ繝舌・蛛ｴ繝励Ο繧ｭ繧ｷ縺瑚・蜍募愛螳・ */
+
+// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// Phase3b: 繝舌ャ繧ｯ繧ｨ繝ｳ繝牙・繧頑崛縺医Ο繧ｸ繝・け
+// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+
+/** 迴ｾ蝨ｨ縺ｮ繝舌ャ繧ｯ繧ｨ繝ｳ繝・ 'openai' | 'watsonx' */
+function currentBackend() {
+  return localStorage.getItem('bscout_backend') || 'openai';
+}
+
+/** watsonx繧ｨ繝ｳ繝峨・繧､繝ｳ繝茨ｼ郁ｨｭ螳壹＆繧後※縺・ｌ縺ｰ菴ｿ逕ｨ・・*/
+function watsonxUrl() {
+  return localStorage.getItem('bscout_wx_url') ||
+    'https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29';
+}
 
 // 笏笏 繧ｨ繝ｳ繝峨・繧､繝ｳ繝郁・蜍募愛螳・笏笏
-// Netlify荳・ /api/proxy 邨檎罰・・PI繧ｭ繝ｼ縺ｯ繧ｵ繝ｼ繝舌・蛛ｴ縺ｧ邂｡逅・ｼ・// 繝ｭ繝ｼ繧ｫ繝ｫ:  OpenAI API縺ｫ逶ｴ謗･謗･邯・const IS_NETLIFY = location.hostname !== 'localhost'
+const IS_NETLIFY = location.hostname !== 'localhost'
   && location.protocol === 'https:'
   && !location.hostname.includes('127.0.0.1');
 
-const API_URL = IS_NETLIFY
-  ? '/api/proxy'
-  : 'https://api.openai.com/v1/chat/completions';
+function getApiUrl() {
+  if (IS_NETLIFY) return '/api/proxy';
+  if (currentBackend() === 'watsonx') return watsonxUrl();
+  return 'https://api.openai.com/v1/chat/completions';
+}
+// 蠕梧婿莠呈鋤
+const API_URL = 'https://api.openai.com/v1/chat/completions';
 
 // 笏笏 API繧ｭ繝ｼ邂｡逅・Θ繝ｼ繝・ぅ繝ｪ繝・ぅ 笏笏
-function hasApiKey()  { return IS_NETLIFY || !!localStorage.getItem('bscout_apikey'); }
+function hasApiKey()  { return IS_NETLIFY || !!localStorage.getItem('bscout_apikey') || !!localStorage.getItem('bscout_wx_token'); }
 
 function apiHeaders() {
   const h = { 'Content-Type': 'application/json' };
   if (!IS_NETLIFY) {
-    const k = localStorage.getItem('bscout_apikey');
-    if (k) h['Authorization'] = 'Bearer ' + k;
+    if (currentBackend() === 'watsonx') {
+      const tok = localStorage.getItem('bscout_wx_token');
+      if (tok) h['Authorization'] = 'Bearer ' + tok;
+    } else {
+      const k = localStorage.getItem('bscout_apikey');
+      if (k) h['Authorization'] = 'Bearer ' + k;
+    }
   }
   return h;
 }
 
+/**
+ * Phase3b: watsonx逕ｨ繝ｪ繧ｯ繧ｨ繧ｹ繝医・繝・ぅ縺ｸ縺ｮ螟画鋤
+ * OpenAI蠖｢蠑上・messages 竊・watsonx Granite/Llama蠖｢蠑上↓螟画鋤
+ */
+function buildRequestBody(messages, temperature, model) {
+  if (currentBackend() === 'watsonx' && !IS_NETLIFY) {
+    // watsonx text generation API蠖｢蠑・    const systemMsg = messages.find(m => m.role === 'system')?.content || '';
+    const userMsg   = messages.find(m => m.role === 'user')?.content || '';
+    const wxModel   = localStorage.getItem('bscout_wx_model') || 'ibm/granite-13b-instruct-v2';
+    return {
+      model_id: wxModel,
+      project_id: localStorage.getItem('bscout_wx_project') || '',
+      input: `${systemMsg}\n\n${userMsg}`,
+      parameters: {
+        decoding_method: 'greedy',
+        max_new_tokens: 2000,
+        temperature: temperature || 0.7,
+        stop_sequences: []
+      }
+    };
+  }
+  // OpenAI蠖｢蠑擾ｼ医ョ繝輔か繝ｫ繝茨ｼ・  return {
+    model: model || md(),
+    messages,
+    temperature: temperature || 0.7,
+    response_format: { type: 'json_object' }
+  };
+}
+
+/**
+ * Phase3b: watsonx繝ｬ繧ｹ繝昴Φ繧ｹ繧丹penAI蠖｢蠑上↓豁｣隕丞喧
+ */
+function parseApiResponse(data) {
+  if (currentBackend() === 'watsonx' && !IS_NETLIFY) {
+    // watsonx蠖｢蠑・ { results: [{ generated_text: "..." }] }
+    const text = data?.results?.[0]?.generated_text || '{}';
+    const jsonMatch = text.match(/\{[\s\S]*\}/);
+    return jsonMatch ? JSON.parse(jsonMatch[0]) : JSON.parse(text);
+  }
+  // OpenAI蠖｢蠑・  return JSON.parse(data.choices[0].message.content);
+}
+
 function ensureLocalKey() {
   if (IS_NETLIFY) return true;
+  if (currentBackend() === 'watsonx') {
+    let tok = localStorage.getItem('bscout_wx_token');
+    if (!tok) {
+      tok = window.prompt('IBM watsonx IAM繝医・繧ｯ繝ｳ繧貞・蜉帙＠縺ｦ縺上□縺輔＞:') || '';
+      if (!tok) return false;
+      localStorage.setItem('bscout_wx_token', tok);
+    }
+    return true;
+  }
   let k = localStorage.getItem('bscout_apikey');
   if (!k) {
     k = window.prompt('OpenAI API繧ｭ繝ｼ繧貞・蜉帙＠縺ｦ縺上□縺輔＞・医Ο繝ｼ繧ｫ繝ｫ螳溯｡梧凾縺ｮ縺ｿ・・') || '';
@@ -1982,9 +2084,10 @@ function ensureLocalKey() {
   return true;
 }
 
-// 笏笏 謗･邯壹Δ繝ｼ繝芽｡ｨ遉ｺ・医・繝ｼ繧ｸ隱ｭ縺ｿ霎ｼ縺ｿ譎ゅ↓閾ｪ蜍募ｮ溯｡鯉ｼ・笏笏
+// 笏笏 謗･邯壹Δ繝ｼ繝芽｡ｨ遉ｺ 笏笏
 (async function checkMode() {
   const dot = $('modeDot'), lbl = $('modeLabel');
+  const backend = currentBackend();
   if (IS_NETLIFY) {
     try {
       const r = await fetch('/api/proxy', {
@@ -2000,20 +2103,80 @@ function ensureLocalKey() {
       dot.className = 'mode-dot demo';
       lbl.innerHTML = '<strong>繝・Δ繝｢繝ｼ繝・/strong> 窶・迺ｰ蠅・､画焚譛ｪ險ｭ螳・;
     }
+  } else if (backend === 'watsonx') {
+    const hasTok = !!localStorage.getItem('bscout_wx_token');
+    dot.className = hasTok ? 'mode-dot ai' : 'mode-dot demo';
+    lbl.innerHTML = hasTok
+      ? '<strong>watsonx謗･邯壽ｸ医∩</strong> 窶・IBM Cloud'
+      : '<strong>watsonx譛ｪ險ｭ螳・/strong> 窶・繝医・繧ｯ繝ｳ蜈･蜉幄ｦ・;
   } else {
-    dot.className = 'mode-dot demo';
-    lbl.innerHTML = '<strong>繝ｭ繝ｼ繧ｫ繝ｫ</strong> 窶・繝・Δ蜍穂ｽ應ｸｭ';
+    const hasKey = !!localStorage.getItem('bscout_apikey');
+    dot.className = hasKey ? 'mode-dot ai' : 'mode-dot demo';
+    lbl.innerHTML = hasKey ? '<strong>OpenAI謗･邯壽ｸ医∩</strong> 窶・繝ｭ繝ｼ繧ｫ繝ｫ' : '<strong>繝・Δ繝｢繝ｼ繝・/strong> 窶・API繧ｭ繝ｼ譛ｪ險ｭ螳・;
   }
 })();
 
 // 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
-// STEP2: 蛟呵｣懆・・譫・API
+// Phase3a: IBM螳溽ｸｾ繝翫Ξ繝・ず繝吶・繧ｹ・医・繝ｭ繝ｳ繝励ヨ豕ｨ蜈･逕ｨ・・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+/**
+ * IBM縺ｮ蜈ｷ菴鍋噪蠑ｷ縺ｿ繝ｻ謨ｰ蛟､繝ｻ莠倶ｾ九ｒ繝励Ο繝ｳ繝励ヨ縺ｫ蝓九ａ霎ｼ繧縺薙→縺ｧ
+ * AI縺後栗BM繧峨＠縺・榊・菴鍋噪縺ｪ譁・ｫ繧堤函謌舌〒縺阪ｋ繧医≧縺ｫ縺ｪ繧・ */
+const IBM_KNOWLEDGE = {
+  scale:    '170繧ｫ蝗ｽ繝ｻ28荳・ｺｺ繝ｻFortune500縺ｮ90%莉･荳翫′IBM縺ｮ鬘ｧ螳｢縲よ律譛ｬIBM縺ｯ邏・000蜷阪・,
+  ai:       'watsonx.ai縺ｯGranite繝ｻLlama3遲碓SS繝｢繝・Ν繧剃ｼ∵･ｭ繝・・繧ｿ縺ｧ蜍輔°縺吶お繝ｳ繧ｿ繝ｼ繝励Λ繧､繧ｺAI蝓ｺ逶､縲・023蟷ｴ繧医ｊ譛ｬ譬ｼ螻暮幕縲る≡陞阪・蛹ｻ逋ゅ・陬ｽ騾蛻・㍽縺ｧ蝗ｽ蜀・､悶・螟ｧ謇倶ｼ∵･ｭ縺ｫ蟆主・螳溽ｸｾ縲・,
+  cloud:    'IBM Cloud縺ｯRed Hat OpenShift繝吶・繧ｹ縺ｮ繝上う繝悶Μ繝・ラ繧ｯ繝ｩ繧ｦ繝峨・WS繧Бzure縺ｨ荳ｦ縺ｶ繧ｨ繝ｳ繧ｿ繝ｼ繝励Λ繧､繧ｺ繧ｯ繝ｩ繧ｦ繝峨・荳隗偵・ubernetes譎ｮ蜿翫・遶句ｽｹ閠・〒縺ゅｋRed Hat繧・019蟷ｴ340蜆・ラ繝ｫ縺ｧ雋ｷ蜿弱・,
+  oss:      'Red Hat / OpenShift / Kubernetes / Terraform / Ansible / Qiskit 縺ｪ縺ｩ讌ｭ逡梧ｨ呎ｺ飽SS縺ｮ荳ｭ譬ｸ繧呈球縺・・BM縺ｫ霆｢閨ｷ=OSS繧ｨ繧ｳ繧ｷ繧ｹ繝・Β縺ｮ荳ｭ蠢・↓遶九▽縺薙→繧呈э蜻ｳ縺吶ｋ縲・,
+  global:   '繝励Ο繧ｸ繧ｧ繧ｯ繝医・譌･譛ｬ逋ｺ縺ｧ繧よｵｷ螟悶メ繝ｼ繝縺ｨ蜊疲･ｭ縺悟ｸｸ諷九り恭隱槭Γ繝ｼ繝ｫ繝ｻSlack繝ｻ騾ｱ谺｡闍ｱ隱樔ｼ夊ｭｰ縺ｯ蜈･遉ｾ蛻晄律縺九ｉ縲５OEIC600轤ｹ蜿ｰ縺ｧ繧ょ・遉ｾ蠕後↓莨ｸ縺ｳ繧九こ繝ｼ繧ｹ縺悟､壹＞縲・,
+  training: 'IBM Skills Build繝ｻSkillsBadge隱榊ｮ壹・400遞ｮ莉･荳翫ょｹｴ髢薙ヨ繝ｬ繝ｼ繝九Φ繧ｰ莠育ｮ励・1莠ｺ縺ゅ◆繧頑焚蜊∽ｸ・・隕乗ｨ｡縲ら､ｾ蜀・・蜍溷宛蠎ｦ縺ｧ2縲・蟷ｴ縺斐→縺ｫ蛻･繝√・繝縺ｸ縺ｮ逡ｰ蜍輔ｂ荳闊ｬ逧・・,
+  social:   '2021蟷ｴ繧医ｊESG繧ｳ繝溘ャ繝医Γ繝ｳ繝亥ｼｷ蛹悶よｰ怜吝､牙虚繝ｻ蛹ｻ逋ゅい繧ｯ繧ｻ繧ｹ繝ｻ繝・ず繧ｿ繝ｫ繝・ヰ繧､繝芽ｧ｣豸医・繝励Ο繧ｸ繧ｧ繧ｯ繝医↓謚陦楢・→縺励※髢｢荳弱〒縺阪ｋ縲・BM縺ｮProject Debater縺ｯ謨呵ご鬆伜沺縺ｧ繧よｴｻ逕ｨ荳ｭ縲・,
+  stability:'1911蟷ｴ蜑ｵ讌ｭ繝ｻ112蟷ｴ縺ｮ螳溽ｸｾ縲ゅΜ繝ｼ繝槭Φ繧ｷ繝ｧ繝・け繝ｻ繧ｳ繝ｭ繝顔ｦ阪ｂ鮟貞ｭ礼ｶ咏ｶ壹ょ､冶ｳ・ｳｻ縺ｮ荳ｭ縺ｧ縺ｯ譛繧る寐逕ｨ螳牙ｮ壽ｧ縺碁ｫ倥＞驛ｨ鬘槭ょｹｳ蝮・共邯壼ｹｴ謨ｰ縺ｯ譌･邉ｻ螟ｧ謇九↓蛹ｹ謨ｵ縲・,
+  salary:   '譚ｱ莠ｬ蝓ｺ貅悶〒繧ｨ繝ｳ繧ｸ繝九い荳ｭ騾疲治逕ｨ縺ｮ蟷ｴ蜿弱Ξ繝ｳ繧ｸ縺ｯ700荳・・500荳・・縲ゅげ繝ｬ繝ｼ繝牙宛縺ｧ騾乗・諤ｧ縺碁ｫ倥￥縲∬ｩ穂ｾ｡縺ｫ繧医ｋ譏・ｵｦ縺梧・遒ｺ縲ら｢ｺ螳壽侠蜃ｺ蟷ｴ驥代・RSU・域ｪ蠑丞ｱ驟ｬ・峨ｂ蜈・ｮ溘・,
+  workstyle:'繝輔Ξ繝・け繧ｹ繧ｿ繧､繝繝ｻ騾ｱ3縲・譌･繝ｪ繝｢繝ｼ繝域ｨ呎ｺ悶ゅさ繧｢繧ｿ繧､繝縺ｪ縺暦ｼ医メ繝ｼ繝蜷域э繝吶・繧ｹ・峨りご莨大叙蠕礼紫縺ｯ逕ｷ諤ｧ30%莉･荳翫ょ憶讌ｭ蜴溷援OK縺ｮ驛ｨ髢縺悟｢怜刈荳ｭ縲・,
+};
+
+/**
+ * 蛟呵｣懆・ち繧､繝励・驕ｸ謚櫁ｨｴ豎ゅ°繧画怙繧よ怏蜉ｹ縺ｪIBM遏･隴倥ｒ3縲・莉ｶ驕ｸ繧薙〒霑斐☆
+ */
+function selectIbmKnowledge(typeCategory, appealIds) {
+  const MAP = {
+    '謚陦薙せ繝壹す繝｣繝ｪ繧ｹ繝亥梛': ['ai','oss','cloud','global'],
+    'PM繝ｻ繝槭ロ繧ｸ繝｡繝ｳ繝亥梛':   ['scale','ai','global','social'],
+    '繧ｭ繝｣繝ｪ繧｢繧｢繝・・蝙・:      ['training','scale','stability','salary'],
+    '蟶ょｴ萓｡蛟､蜷台ｸ雁梛':        ['ai','oss','global','training'],
+    '螳牙ｮ壼ｿ怜髄蝙・:            ['stability','salary','workstyle','training'],
+  };
+  const appealMap = {
+    'ai_transformation': ['ai','cloud'],
+    'watsonx':           ['ai','oss'],
+    'global':            ['global','scale'],
+    'scale':             ['scale','stability'],
+    'social':            ['social'],
+    'training':          ['training'],
+    'workstyle':         ['workstyle'],
+    'benefits':          ['salary','stability'],
+    'brand':             ['stability','scale'],
+    'autonomy':          ['oss','ai'],
+    'tech_env':          ['oss','cloud'],
+  };
+  const keys = new Set([
+    ...(MAP[typeCategory] || ['ai','scale','global']),
+    ...(appealIds || []).flatMap(id => appealMap[id] || [])
+  ]);
+  return [...keys].slice(0, 4).map(k => IBM_KNOWLEDGE[k]).filter(Boolean).join('\n');
+}
+
 // 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
+// STEP2: 蛟呵｣懆・・譫・API・・hase3a: IBM遏･隴俶ｳｨ蜈･・・// 笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武笊絶武
 async function callAnalysisAPI() {
   const c = S.candidate, j = S.job;
   if (!IS_NETLIFY && !ensureLocalKey()) { demoAnalysis(); throw new Error('demo'); }
 
-  const prompt = `縺ゅ↑縺溘・譌･譛ｬ縺ｮ繝医ャ繝励・繝・ラ繝上Φ繧ｿ繝ｼ縺ｧ縺吶ゆｻ･荳九・蛟呵｣懆・ュ蝣ｱ縺ｨ豎ゆｺｺ諠・ｱ繧貞・譫舌＠縲∵ｭ｣遒ｺ縺ｪJSON縺ｮ縺ｿ繧定ｿ斐＠縺ｦ縺上□縺輔＞縲・
+  // Phase3a: 蛻・梵繝励Ο繝ｳ繝励ヨ縺ｫIBM遏･隴倥ｒ豕ｨ蜈･・医∪縺繧ｿ繧､繝玲悴遒ｺ螳壹↑縺ｮ縺ｧ蜈ｨ霆ｸ縺ｮ莉｣陦ｨ繧呈兜蜈･・・  const ibmKnowledgeForAnalysis = [IBM_KNOWLEDGE.ai, IBM_KNOWLEDGE.scale, IBM_KNOWLEDGE.global, IBM_KNOWLEDGE.training].join('\n');
+
+  const prompt = `縺ゅ↑縺溘・譌･譛ｬ縺ｮIBM繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ゆｻ･荳九・蛟呵｣懆・ュ蝣ｱ縺ｨ豎ゆｺｺ諠・ｱ繧貞・譫舌＠縲∵ｭ｣遒ｺ縺ｪJSON縺ｮ縺ｿ繧定ｿ斐＠縺ｦ縺上□縺輔＞縲・
+## IBM蝓ｺ遉取ュ蝣ｱ・亥・譫舌・險ｴ豎る∈謚槭・蜿り・↓・・${ibmKnowledgeForAnalysis}
+
+
 ## 蛟呵｣懆・ュ蝣ｱ
 - 迴ｾ蝨ｨ縺ｮ莨夂､ｾ: ${c.company}
 - 迴ｾ蝨ｨ縺ｮ閨ｷ遞ｮ: ${c.role}
@@ -2089,22 +2252,17 @@ social・育､ｾ莨夊ｲ｢迪ｮ・・ training・郁ご謌仙宛蠎ｦ・�
 brand・・BM繝悶Λ繝ｳ繝会ｼ・ autonomy・郁｣・㍼・・ tech_env・域橿陦鍋腸蠅・ｼ・
 荳願ｨ露BM蟆ら畑ID縺ｮ縺ｿ菴ｿ逕ｨ縲よ立ID・・ech/career/startup遲会ｼ峨・菴ｿ繧上↑縺・％縺ｨ縲Ａ;
 
-  const res = await fetch(API_URL, {
+  const messages = [
+    { role: 'system', content: '縺ゅ↑縺溘・IBM譌･譛ｬ縺ｮ謗｡逕ｨ諡・ｽ薙ヨ繝・・繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ょ呵｣懆・・譫舌・蟆る摩螳ｶ縺ｨ縺励※縲！BM蟆ら畑縺ｮ11霆ｸ險ｴ豎ゅ・繧ｹ繧ｿ繧剃ｽｿ縺｣縺ｦJSON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST',
     headers: apiHeaders(),
-    body: JSON.stringify({
-      model: md(),
-      messages: [
-        { role: 'system', content: '縺ゅ↑縺溘・蜆ｪ遘縺ｪ繝倥ャ繝峨ワ繝ｳ繧ｿ繝ｼ縺ｧ縺吶・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
-        { role: 'user', content: prompt }
-      ],
-      temperature: 0.7,
-      response_format: { type: 'json_object' }
-    })
+    body: JSON.stringify(buildRequestBody(messages, 0.7))
   });
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API error ${res.status}`); }
-  const d = await res.json();
-  S.analysis = JSON.parse(d.choices[0].message.content);
+  S.analysis = parseApiResponse(await res.json());
   hideLoad(); renderAnalysis(); go(2);
 }
 
@@ -2122,31 +2280,36 @@ async function callMailAPI() {
   const temp = a.temperature || {};
 
   const successExamples = j.successExamples || '';
-  // IBM險ｴ豎ゅΛ繧､繝悶Λ繝ｪ縺九ｉ驕ｸ謚櫁ｨｴ豎ゅ・ibmStrength繧貞叙蠕励＠縺ｦ繝励Ο繝ｳ繝励ヨ縺ｫ蝓九ａ霎ｼ繧・・hase2・・  // S.selectedAppealIds 縺ｯ繝輔Ο繝ｳ繝亥・縺ｧ險ｭ螳壹＆繧後ｋ縺後…allMailAPI縺ｯS蜿ら・縺ｪ縺ｮ縺ｧ縺薙％縺ｧ蜿門ｾ・  const ibmStrengthHints = sel.map(name => {
-    // name縺九ｉIBM_APPEALS繧帝・ｼ輔″・・i.js縺九ｉ縺ｯwindow邨檎罰縺ｧ繧｢繧ｯ繧ｻ繧ｹ・・    if (typeof IBM_APPEALS !== 'undefined') {
+
+  // Phase3a: IBM遏･隴俶ｳｨ蜈･・亥呵｣懆・ち繧､繝・+ 險ｴ豎・D縺ｫ蝓ｺ縺･縺・※譛驕ｩ縺ｪ遏･隴倥ｒ驕ｸ謚橸ｼ・  const ibmKnowledge = selectIbmKnowledge(typeCategory, S.selectedAppealIds || []);
+
+  // Phase3a: 菫ｮ豁｣繝ｭ繧ｰfew-shot豕ｨ蜈･・亥酔繧ｿ繧､繝励・驕主悉菫ｮ豁｣繝代ち繝ｼ繝ｳ繧貞盾閠・ｾ九→縺励※貂｡縺呻ｼ・  const fewShotExamples = buildFewShotFromEditLogs(typeCategory, sel);
+
+  // IBM險ｴ豎ＪbmStrength繝偵Φ繝茨ｼ・hase2縺九ｉ邯咏ｶ夲ｼ・  const ibmStrengthHints = sel.map(name => {
+    if (typeof IBM_APPEALS !== 'undefined') {
       const ap = IBM_APPEALS.find(x => x.name === name);
       return ap ? `縲・{ap.name}縲・{ap.ibmStrength}` : name;
     }
     return name;
   }).join('\n');
 
-  const prompt = `縺ゅ↑縺溘・譌･譛ｬ縺ｮ繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ゆｻ･荳九・諠・ｱ繧偵ｂ縺ｨ縺ｫ縲、I縺｣縺ｽ縺輔・縺ｪ縺・せ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ繧堤函謌舌＠縺ｦ縺上□縺輔＞縲・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・
+  const prompt = `縺ゅ↑縺溘・譌･譛ｬ縺ｮIBM繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶ゆｻ･荳九・諠・ｱ繧偵ｂ縺ｨ縺ｫ縲、I縺｣縺ｽ縺輔・縺ｪ縺・せ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ繧堤函謌舌＠縺ｦ縺上□縺輔＞縲・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・
 ## 蛟呵｣懆・ュ蝣ｱ
-- 豌丞錐蛟呵｣懆・ ${c.role}・・{c.company}・・- 繧ｹ繧ｭ繝ｫ: ${c.skills}
+- 蛟呵｣懆・・繝ｭ繝輔ぅ繝ｼ繝ｫ: ${c.role}・・{c.company}・・- 繧ｹ繧ｭ繝ｫ: ${c.skills}
 - 霆｢閨ｷ蠢怜髄: ${c.reason || '荳肴・'}
 - 蛟呵｣懆・ち繧､繝・ ${typeCategory}
 - 霆｢閨ｷ貂ｩ蠎ｦ諢・ ${temp.label || '荳肴・'}・遺・${temp.stars || '?'}・・
 ## 豎ゆｺｺ諠・ｱ
-- 繝昴ず繧ｷ繝ｧ繝ｳ: ${j.position}・・{j.company || ''}・・- 蜀・ｮｹ: ${j.description}
+- 繝昴ず繧ｷ繝ｧ繝ｳ: ${j.position}・・{j.company || 'IBM'}・・- 蜀・ｮｹ: ${j.description}
 - 豁楢ｿ手ｦ∽ｻｶ: ${j.preferred || '譛ｪ險伜・'}
 - 鬲・鴨: ${j.appeal}
-${successExamples ? `\n## 驕主悉縺ｮ謌仙粥繧ｹ繧ｫ繧ｦ繝井ｾ具ｼ亥盾閠・↓縺励※蜷梧ｰｴ貅悶・蛻・ｊ蜿｣繧剃ｽｿ縺・％縺ｨ・噂n${successExamples}` : ''}
+${successExamples ? `\n## 驕主悉縺ｮ謌仙粥繧ｹ繧ｫ繧ｦ繝井ｾ具ｼ亥酔豌ｴ貅悶・蛻・ｊ蜿｣繧剃ｽｿ縺・％縺ｨ・噂n${successExamples}` : ''}
 
-## AI蛻・梵邨先棡・医せ繧ｫ繧ｦ繝域枚縺ｫ蜿肴丐縺吶ｋ縺薙→・・- 繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼ: ${story.narrative || a.motivationHypothesis || ''}
+## AI蛻・梵邨先棡・医せ繧ｫ繧ｦ繝域枚縺ｫ蠢・★蜿肴丐縺吶ｋ縺薙→・・- 繧ｭ繝｣繝ｪ繧｢繧ｹ繝医・繝ｪ繝ｼ: ${story.narrative || a.motivationHypothesis || ''}
 - 險ｴ豎ょ━蜈磯・ｽ・
 ${priText}
 - 驕ｸ謚槭＠縺溯ｨｴ豎ゅ・繧､繝ｳ繝・ ${sel.join('縲・)}
-- IBM險ｴ豎ゅ・蜈ｷ菴鍋噪蜀・ｮｹ・・enefit繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ縺ｧ蠢・★1縲・縺､閾ｪ辟ｶ縺ｫ險蜿翫☆繧九％縺ｨ・・
+- IBM險ｴ豎ゅ・蜈ｷ菴鍋噪蜀・ｮｹ・・enefit縺ｧ1縲・縺､閾ｪ辟ｶ縺ｫ險蜿奇ｼ・
 ${ibmStrengthHints}
 - 驕ｿ縺代ｋ縺ｹ縺崎ｨｴ豎・ ${a.avoidPoints || ''}
 - 繧ｹ繧ｫ繧ｦ繝域姶逡･:
@@ -2156,26 +2319,33 @@ ${ibmStrengthHints}
   竭｣IBM險ｴ豎・ ${strat.step4_ibm || ''}
   竭､髱｢隲・ｪ伜ｰ・ ${strat.step5_meeting || ''}
 
+## IBM螳溽ｸｾ繝翫Ξ繝・ず・域枚遶縺ｫ閾ｪ辟ｶ縺ｫ邨・∩霎ｼ繧縺薙→ 窶・繧ｳ繝斐・遖∵ｭ｢繝ｻ閾ｪ蛻・・險闡峨〒・・${ibmKnowledge}
+${fewShotExamples ? `\n## 驕主悉縺ｮ繝ｪ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ菫ｮ豁｣繝代ち繝ｼ繝ｳ・亥盾閠・ｾ・窶・蜷後§譁ｹ蜷第ｧ縺ｧ譖ｸ縺上％縺ｨ・噂n${fewShotExamples}` : ''}
+
 ## 邨ｶ蟇ｾ縺ｫ螳医ｋ繝ｫ繝ｼ繝ｫ・磯＆蜿咲ｦ∵ｭ｢・・1. 縲檎ｪ∫┯縺ｮ縺秘｣邨｡螟ｱ遉ｼ縺励∪縺吶阪後・繝ｭ繝輔ぅ繝ｼ繝ｫ繧呈享隕九＠縺ｾ縺励◆縲阪瑚ｲｴ谿ｿ縲阪↑縺ｩ螳壼梛陦ｨ迴ｾ繧剃ｽｿ繧上↑縺・2. 蜀帝ｭ譁・・蠢・★蛟呵｣懆・・縲悟・菴鍋噪縺ｪ邨梧ｭｴ繝ｻ螳溽ｸｾ繝ｻ繧ｹ繧ｭ繝ｫ縲阪∈縺ｮ險蜿翫°繧牙ｧ九ａ繧・3. 莉ｶ蜷阪・蛟呵｣懆・崋譛峨・蜀・ｮｹ・郁・遞ｮ繝ｻ螳溽ｸｾ繝ｻ繧ｹ繧ｭ繝ｫ・峨ｒ蠢・★蜈･繧後ｋ
 4. 繝・Φ繝励Ξ逧・↑譁・ｫ縺ｫ縺励↑縺・ゅ％縺ｮ蛟呵｣懆・□縺代↓騾√ｋ繝｡繝ｼ繝ｫ縺ｨ縺励※譖ｸ縺・5. 隱ｭ繧薙□逶ｸ謇九′縲瑚・蛻・・縺薙→繧偵■繧・ｓ縺ｨ隕九※縺上ｌ縺ｦ縺・ｋ縲阪→諢溘§繧区枚菴薙↓縺吶ｋ
 6. 繧ｹ繝医・繝ｪ繝ｼ讒矩・亥・諢溪・閭ｽ蜉帶価隱坂・譛ｪ譚･竊棚BM竊帝擇隲・ｼ峨ｒ閾ｪ辟ｶ縺ｪ豬√ｌ縺ｧ邨・∩霎ｼ繧
-
+7. IBM縺ｮ蠑ｷ縺ｿ繧偵梧ｦょｿｵ縲阪〒縺ｯ縺ｪ縺上悟・菴鍋噪謨ｰ蛟､繝ｻ莠倶ｾ九阪〒隱槭ｋ・・BM遏･隴倥ｒ豢ｻ逕ｨ縺吶ｋ縺薙→・・
 ## 霑斐☆JSON縺ｮ讒矩
 {
   "subject": "莉ｶ蜷搾ｼ・0蟄嶺ｻ･蜀・・蛟呵｣懆・崋譛峨・螳溽ｸｾ繧・ｼｷ縺ｿ縺ｫ險蜿奇ｼ・,
   "intro": "蜀帝ｭ譁・ｼ・縲・譁・・蛟呵｣懆・崋譛峨・邨碁ｨ薙・螳溽ｸｾ縺九ｉ蟋九∪繧九・蜈ｱ諢滂ｼ玖・蜉帶価隱阪ヵ繧ｧ繝ｼ繧ｺ・・,
   "why": "縺ｪ縺懷｣ｰ繧偵°縺代◆縺具ｼ・縲・譁・・蜈ｷ菴鍋噪縺ｪ邨梧ｭｴ縺ｸ縺ｮ險蜿翫・蛟呵｣懆・崋譛会ｼ・,
   "match": "繝昴ず繧ｷ繝ｧ繝ｳ縺ｨ縺ｮ謗･轤ｹ・・縲・譁・・繧ｹ繧ｭ繝ｫ繝槭ャ繝√ｒ蜈ｷ菴鍋噪縺ｫ繝ｻ譛ｪ譚･謠千､ｺ繧貞性繧・・,
-  "benefit": "蛟呵｣懆・∈縺ｮ繝｡繝ｪ繝・ヨ・・縲・譁・・IBM險ｴ豎ゅｒ蜿肴丐繝ｻ驕ｸ謚槭＠縺溯ｨｴ豎ゅｒ閾ｪ辟ｶ縺ｫ邨・∩霎ｼ繧・・,
+  "benefit": "蛟呵｣懆・∈縺ｮ繝｡繝ｪ繝・ヨ・・縲・譁・・IBM險ｴ豎ゅｒIBM螳溽ｸｾ繝翫Ξ繝・ず繧剃ｽｿ縺｣縺ｦ蜈ｷ菴鍋噪縺ｫ隱槭ｋ・・,
   "cta": "繧ｫ繧ｸ繝･繧｢繝ｫ髱｢隲・∈縺ｮ隱伜ｰ趣ｼ・譁・・繝励Ξ繝・す繝｣繝ｼ縺ｪ縺励・驕ｸ閠・↑縺励・繧ｫ繧ｸ繝･繧｢繝ｫ縺ｪ隱倥＞・・
 }`;
 
-  const res = await fetch(API_URL, {
+  const mailMessages = [
+    { role: 'system', content: '縺ゅ↑縺溘・譌･譛ｬ縺ｮIBM繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶・I縺｣縺ｽ縺輔ｒ謗帝勁縺励◆莠ｺ髢薙ｉ縺励＞繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ繧呈嶌縺阪∪縺吶・BM縺ｮ蜈ｷ菴鍋噪莠句ｮ溘・謨ｰ蛟､繧剃ｽｿ縺｣縺ｦ隱槭ｋ縺薙→縺悟ｾ玲э縺ｧ縺吶・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({ model: md(), messages: [{ role: 'system', content: '縺ゅ↑縺溘・譌･譛ｬ縺ｮ繝医ャ繝励Μ繧ｯ繝ｫ繝ｼ繧ｿ繝ｼ縺ｧ縺吶・I縺｣縺ｽ縺輔ｒ謗帝勁縺励◆莠ｺ髢薙ｉ縺励＞繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ繧呈嶌縺上％縺ｨ縺悟ｾ玲э縺ｧ縺吶・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ }, { role: 'user', content: prompt }], temperature: 0.8, response_format: { type: 'json_object' } })
+    body: JSON.stringify(buildRequestBody(mailMessages, 0.8))
   });
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
-  S.mail = JSON.parse((await res.json()).choices[0].message.content);
+  S.mail = parseApiResponse(await res.json());
   if (S.learningData.scoutAction) { S.learningData.scoutAction.selectedAppeals = S.selectedAppeals; S.learningData.scoutAction.generatedSubject = S.mail.subject || ''; }
   hideLoad(); renderMail(); renderProcessLog(); go(5);
 }
@@ -2231,20 +2401,16 @@ ${fullMail}
 
 improvements縺ｯ譛繧よ隼蝟・☆縺ｹ縺・縲・轤ｹ縺ｮ縺ｿ縲ょ撫鬘後′縺ｪ縺・ｻｸ縺ｯ蜷ｫ繧√↑縺・Ａ;
 
-  const res = await fetch(API_URL, {
+  const srMessages = [
+    { role: 'system', content: '縺ゅ↑縺溘・IBM繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ謗｡轤ｹ縺ｮ蟆る摩螳ｶ縺ｧ縺吶ょ宍譬ｼ縺ｫ謗｡轤ｹ縺励∪縺吶・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({
-      model: md(),
-      messages: [
-        { role: 'system', content: '縺ゅ↑縺溘・繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ謗｡轤ｹ縺ｮ蟆る摩螳ｶ縺ｧ縺吶・BM縺ｮ繧ｹ繧ｫ繧ｦ繝医Γ繝ｼ繝ｫ繧貞宍譬ｼ縺ｫ謗｡轤ｹ縺励∪縺吶・SON縺ｮ縺ｿ霑斐＠縺ｦ縺上□縺輔＞縲・ },
-        { role: 'user', content: prompt }
-      ],
-      temperature: 0.5,
-      response_format: { type: 'json_object' }
-    })
+    body: JSON.stringify(buildRequestBody(srMessages, 0.5))
   });
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
-  S.selfReview = JSON.parse((await res.json()).choices[0].message.content);
+  S.selfReview = parseApiResponse(await res.json());
   renderSelfReview();
 }
 
@@ -2314,7 +2480,7 @@ async function runBatchSingle(c, j) {
   return { cand: c, ...data };
 }
 
-// === app.js ===
+// app.js
 /**
  * app.js 窶・UI蛻ｶ蠕｡繝ｻ繧､繝吶Φ繝亥・逅・・繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ
  *

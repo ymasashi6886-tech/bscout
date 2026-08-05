@@ -240,3 +240,34 @@ function deleteHistoryEntry(id) {
   const history = loadScoutHistory().filter(h => h.id !== id);
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
 }
+
+// ══════════════════════════════════════════
+// Phase3a: 修正ログfew-shot構築
+// ══════════════════════════════════════════
+
+/**
+ * 蓄積した修正ログから「AI案 → リクルーター修正版」のfew-shotを構築
+ * 同じ候補者タイプ・同じセクションの修正パターンを最大3件返す
+ *
+ * @param {string} typeCategory - 候補者タイプ
+ * @param {string[]} selectedAppeals - 選択した訴求名リスト
+ * @returns {string} few-shotテキスト（プロンプト注入用）
+ */
+function buildFewShotFromEditLogs(typeCategory, selectedAppeals) {
+  const logs = loadEditLogs();
+  if (!logs || logs.length === 0) return '';
+
+  // 同タイプのログを優先、最大3件
+  const relevant = logs
+    .filter(l => l.meta?.candidateType === typeCategory && l.edited && l.aiVersion)
+    .slice(0, 3);
+
+  if (relevant.length === 0) return '';
+
+  return relevant.map((l, i) => {
+    const secLabel = { subject: '件名', intro: '冒頭文', why: '理由', match: '接点', benefit: 'メリット', cta: '誘導文' };
+    return `参考例${i + 1}【${secLabel[l.section] || l.section}】
+AI案: ${(l.aiVersion || '').slice(0, 80)}...
+修正後: ${(l.edited || '').slice(0, 80)}...`;
+  }).join('\n\n');
+}
