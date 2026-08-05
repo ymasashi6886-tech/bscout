@@ -630,7 +630,104 @@ brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）
 }
 
 // ══════════════════════════════════════════
-// STEP5: スカウト文生成 API（v1.2強化版）
+// STEP4: Story Planner API（v1.3新規）
+// ══════════════════════════════════════════
+/**
+ * トップリクルーターが文章を書く前に行う「会話設計」をAIで再現する。
+ * 直接文章を書かせるのではなく、まず「何をどの順番で伝えるか」を設計する。
+ */
+async function callStoryPlannerAPI() {
+  const c = S.candidate, j = S.job, a = S.analysis, sel = S.selectedAppeals;
+  const typeCategory = a.candidateTypeCategory || a.candidateType || '';
+  const ohere = a.ohere || {};
+  const strat = ohere.scoutStrategy || {};
+  const temp = a.temperature || {};
+  const pri = a.appealPriority || [];
+
+  // 候補者タイプ別の冒頭フォーカスヒント
+  const openingHints = selectOpeningPatterns(typeCategory, c);
+  // IBM知識（訴求設計の参考に）
+  const ibmKnowledge = selectIbmKnowledge(typeCategory, S.selectedAppealIds || []);
+
+  const prompt = `あなたは日本のIBMトップリクルーターです。文章を書く前の「会話設計」をJSONで返してください。
+
+## 目的
+トップリクルーターが文章を書く前に考えていること：
+- 何に触れるか（冒頭フォーカス）
+- 何を最初に承認するか（能力承認）
+- どんな未来を想像させるか（キャリア仮説）
+- IBMをどの順番で・どの訴求で出すか
+- どう締めるか（クロージングスタイル）
+
+## 候補者情報
+- プロフィール: ${c.role}（${c.company}）
+- スキル: ${c.skills}
+- 経験: ${c.experience || '未記入'}
+- 転職志向: ${c.reason || '不明'}
+- 候補者タイプ: ${typeCategory}
+- 転職温度感: ${temp.label || '不明'}（★${temp.stars || '?'}）
+
+## OHERE分析（設計の根拠に使う）
+- 観察（O）: ${ohere.observation || ''}
+- 仮説（H）: ${ohere.hypothesis || ''}
+- 根拠（E）: ${ohere.evidence || ''}
+- 推奨（R）: ${ohere.recommendation || ''}
+- 戦略:
+  ①共感: ${strat.step1_empathy || ''}
+  ②能力承認: ${strat.step2_recognition || ''}
+  ③未来提示: ${strat.step3_future || ''}
+  ④IBM訴求: ${strat.step4_ibm || ''}
+  ⑤面談誘導: ${strat.step5_meeting || ''}
+
+## 訴求優先順位
+${pri.map(p => `${p.rank}位: ${p.appealName}（${p.reason || ''}）`).join('\n')}
+
+## 採用担当者が選択した訴求
+${sel.join('、')}
+
+## IBM実績知識（訴求設計の参考に）
+${ibmKnowledge}
+
+## 冒頭フォーカスの候補（参考）
+${openingHints.map((p, i) => `候補${i + 1}: 「${p}」`).join('\n')}
+
+## 返すJSONの構造（厳守）
+{
+  "openingFocus": "冒頭で必ず触れる候補者の具体的な経験・実績（1〜2文。この候補者ならではのもの。「〇〇という経験」形式で）",
+  "capabilityToAcknowledge": "最初に承認する能力・実績（1〜2文。具体的な評価。「〇〇ができる方」「〇〇を経験した方は少ない」など）",
+  "careerHypothesis": "この候補者が次のキャリアで実現したいこと（推測）（1〜2文。「〜を求めているのではないか」形式で）",
+  "ibmAppeals": [
+    { "rank": 1, "appeal": "訴求名", "reason": "なぜこの訴求がこの候補者に刺さるか（2〜3文・候補者の経歴・志向と紐づけて）", "ibmExample": "IBMの具体的な強みを1文で（数値・事例を含む）" },
+    { "rank": 2, "appeal": "訴求名", "reason": "なぜ2位なのか（2〜3文）", "ibmExample": "IBMの具体的な強みを1文で" },
+    { "rank": 3, "appeal": "訴求名", "reason": "なぜ3位なのか（1〜2文）", "ibmExample": "IBMの具体的な強みを1文で" }
+  ],
+  "conversationFlow": [
+    { "step": 1, "phase": "共感", "content": "この候補者への共感メッセージ（具体的に・1文）" },
+    { "step": 2, "phase": "能力承認", "content": "承認する具体的な能力・実績（1文）" },
+    { "step": 3, "phase": "未来提示", "content": "このポジションで実現できる未来の描写（1文）" },
+    { "step": 4, "phase": "IBM訴求", "content": "IBMならではの訴求（具体的・1文）" },
+    { "step": 5, "phase": "面談誘導", "content": "プレッシャーを与えない面談への誘い（1文）" }
+  ],
+  "closingStyle": "情報交換型 / カジュアル型 / 提案型 のいずれか",
+  "closingReason": "そのクロージングスタイルを選んだ理由（1文）",
+  "writingTone": "この候補者への文体指示（1文。例：「技術的な具体性を重視し、短めの文で論理的に」）",
+  "avoidInThisScout": "このスカウトで絶対に避けるべき表現・訴求（1〜2文）"
+}`;
+
+  const msgs = [
+    { role: 'system', content: 'あなたは日本のIBMトップリクルーターです。文章を書く前の「会話設計」の専門家です。JSONのみ返してください。' },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
+    method: 'POST', headers: apiHeaders(),
+    body: JSON.stringify(buildRequestBody(msgs, 0.75))
+  });
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
+  S.storyPlan = parseApiResponse(await res.json());
+}
+
+// ══════════════════════════════════════════
+// STEP5: スカウト文生成 API（v1.3: Story Planner依存版）
 // ══════════════════════════════════════════
 async function callMailAPI() {
   const c = S.candidate, j = S.job, a = S.analysis, sel = S.selectedAppeals;
@@ -646,35 +743,43 @@ async function callMailAPI() {
   const ibmKnowledge = selectIbmKnowledge(typeCategory, S.selectedAppealIds || []);
   // Phase3a: 修正ログfew-shot注入
   const fewShotExamples = buildFewShotFromEditLogs(typeCategory, sel);
-  // IBM訴求ibmStrengthヒント
-  const ibmStrengthHints = sel.map(name => {
-    if (typeof IBM_APPEALS !== 'undefined') {
-      const ap = IBM_APPEALS.find(x => x.name === name);
-      return ap ? `【${ap.name}】${ap.ibmStrength}` : name;
-    }
-    return name;
-  }).join('\n');
 
-  // v1.2: 冒頭パターン選択（ランダム3件）
-  const openingPatterns = selectOpeningPatterns(typeCategory, c);
   // v1.2: 文体スタイル選択
   const style = selectStyle(typeCategory, c);
   // v1.2: 成功スカウト例の特徴抽出（キャッシュ or 実行）
   let successExampleHint = '';
   if (j.successExamples) {
-    // キャッシュがなければ分析実行（非同期だが既に呼ばれている前提でキャッシュを参照）
     if (!S._successExampleCache || S._successExampleCache.src !== j.successExamples) {
       S._successExampleCache = { src: j.successExamples, result: await analyzeSuccessExample(j.successExamples) };
     }
     successExampleHint = buildSuccessExampleHint(S._successExampleCache?.result);
   }
 
+  // v1.3: Story Planner依存 — 会話設計をプロンプトに反映
+  const sp = S.storyPlan || {};
+  const spAppeals = (sp.ibmAppeals || []).map(a => `${a.rank}位: ${a.appeal}（${a.reason || ''}）例: ${a.ibmExample || ''}`).join('\n');
+  const spFlow = (sp.conversationFlow || []).map(f => `STEP${f.step} ${f.phase}: ${f.content}`).join('\n');
+
   const bannedList = BANNED_PHRASES.slice(0, 12).join('、');
 
-  const prompt = `あなたは日本のIBMトップリクルーターです。以下の情報をもとに、本当に人間が書いたように見えるスカウトメールを生成してください。JSONのみ返してください。
+  const prompt = `あなたは日本のIBMトップリクルーターです。以下の「会話設計」に忠実に従い、本当に人間が書いたように見えるスカウトメールを生成してください。JSONのみ返してください。
+
+## ★ Story Planner（会話設計）— 最優先で従うこと ★
+この設計はトップリクルーターが文章を書く前に考えたものです。必ずこの設計通りに書いてください。
+
+【冒頭フォーカス】${sp.openingFocus || '候補者の具体的な経験から始める'}
+【能力承認】${sp.capabilityToAcknowledge || '候補者の最も際立つ強みを承認する'}
+【キャリア仮説】${sp.careerHypothesis || '候補者の転職志向を踏まえた未来'}
+【会話フロー】
+${spFlow || '共感 → 能力承認 → 未来提示 → IBM訴求 → 面談誘導'}
+【IBM訴求設計】
+${spAppeals || sel.join('、')}
+【クロージングスタイル】${sp.closingStyle || 'カジュアル型'}（理由: ${sp.closingReason || ''}）
+【文体指示】${sp.writingTone || style.tone}
+【この候補者に絶対避けること】${sp.avoidInThisScout || ''}
 
 ## 候補者情報
-- 候補者プロフィール: ${c.role}（${c.company}）
+- プロフィール: ${c.role}（${c.company}）
 - スキル: ${c.skills}
 - 転職志向: ${c.reason || '不明'}
 - 候補者タイプ: ${typeCategory}
@@ -687,56 +792,32 @@ async function callMailAPI() {
 - 魅力: ${j.appeal}
 ${successExampleHint ? `\n${successExampleHint}` : ''}
 
-## AI分析結果（スカウト文に必ず反映すること）
-- キャリアストーリー: ${story.narrative || a.motivationHypothesis || ''}
-- 訴求優先順位:
-${priText}
-- 選択した訴求ポイント: ${sel.join('、')}
-- IBM訴求の具体的内容（benefitで1〜2つ自然に言及）:
-${ibmStrengthHints}
-- 避けるべき訴求: ${a.avoidPoints || ''}
-- スカウト戦略:
-  ①共感: ${strat.step1_empathy || ''}
-  ②能力承認: ${strat.step2_recognition || ''}
-  ③未来提示: ${strat.step3_future || ''}
-  ④IBM訴求: ${strat.step4_ibm || ''}
-  ⑤面談誘導: ${strat.step5_meeting || ''}
+## キャリアストーリー
+${story.narrative || a.motivationHypothesis || ''}
 
 ## IBM実績ナレッジ（自分の言葉で自然に組み込む — コピペ禁止）
 ${ibmKnowledge}
-${fewShotExamples ? `\n## 過去のリクルーター修正パターン（参考 — 同じ方向性で書くこと）\n${fewShotExamples}` : ''}
-
-## 文体スタイル指示（${style.label}）
-- トーン: ${style.tone}
-- 文長: ${style.sentenceLength}
-- 段落改行: ${style.lineBreak}
-- 距離感: ${style.distance}
-- 避けること: ${style.avoid}
-- 例文イメージ: 「${style.example}」
-
-## 冒頭の書き出しパターン（以下の3つのうち最も自然なものをベースに冒頭文を書くこと）
-${openingPatterns.map((p, i) => `パターン${i + 1}: 「${p}」`).join('\n')}
+${fewShotExamples ? `\n## 過去のリクルーター修正パターン（参考）\n${fewShotExamples}` : ''}
 
 ## 絶対禁止表現（1語でも使ったら失格）
 ${bannedList}
-その他: AIっぽい婉曲表現・過剰敬語・回りくどい誘導 すべて禁止。
 
 ## 生成ルール
-1. 冒頭は必ず候補者の具体的な経歴・実績・スキルへの言及から始める
+1. Story Plannerの「冒頭フォーカス」から始める。定型表現で始めない
 2. 「プロフィールを拝見」「ご活躍」「ご縁」など定型表現を一切使わない
 3. 件名は候補者固有の実績・スキルを入れる（40字以内）
-4. この候補者だけに送るメールとして書く。テンプレ感ゼロ
-5. IBMの強みは「概念」ではなく「具体的数値・事例」で語る
-6. ストーリー構造（共感→能力承認→未来→IBM→面談）を自然な流れで
+4. Story Plannerの「会話フロー」の順番通りに各セクションを構成する
+5. IBM訴求は Story Planner の「IBM訴求設計」の順番・内容で語る
+6. Story Plannerの「クロージングスタイル」でCTAを書く
 
 ## 返すJSONの構造
 {
   "subject": "件名（40字以内・候補者固有の実績や強みに言及）",
-  "intro": "冒頭文（3〜4文・候補者固有の経験・実績から始まる・共感＋能力承認フェーズ）",
-  "why": "なぜ声をかけたか（2〜3文・具体的な経歴への言及・候補者固有）",
-  "match": "ポジションとの接点（2〜3文・スキルマッチを具体的に・未来提示を含む）",
-  "benefit": "候補者へのメリット（2〜3文・IBM訴求をIBM実績ナレッジを使って具体的に語る）",
-  "cta": "カジュアル面談への誘導（2文・プレッシャーなし・選考なしのカジュアルな誘い）"
+  "intro": "冒頭文（3〜4文・Story Plannerの冒頭フォーカス・能力承認に従う）",
+  "why": "なぜ声をかけたか（2〜3文・Story Plannerのキャリア仮説・会話フローSTEP1〜2に従う）",
+  "match": "ポジションとの接点（2〜3文・会話フローSTEP3未来提示に従う）",
+  "benefit": "候補者へのメリット（2〜3文・Story PlannerのIBM訴求設計1〜2位を使って具体的に）",
+  "cta": "カジュアル面談への誘導（2文・Story Plannerのクロージングスタイルで書く）"
 }`;
 
   const mailMessages = [
@@ -760,11 +841,11 @@ ${bannedList}
   // 違反情報をステートに保存（UIで警告表示に使用）
   S.bannedViolations = violations;
 
-  hideLoad(); renderMail(); renderProcessLog(); go(5);
+  hideLoad(); renderMail(); renderProcessLog(); go(6);
 }
 
 // ══════════════════════════════════════════
-// STEP5: セルフレビュー API（v1.2刷新版）
+// STEP6: セルフレビュー API（v1.2刷新版）
 // 返信率予測を廃止 → 5軸 + 改善コメント
 // ══════════════════════════════════════════
 async function callSelfReviewAPI() {

@@ -103,8 +103,9 @@
     <div class="st active" id="si1"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
     <div class="st"        id="si2"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
     <div class="st"        id="si3"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
-    <div class="st"        id="si4"><div class="st-num">4</div><span class="st-label">文章生成</span></div>
-    <div class="st"        id="si5"><div class="st-num">5</div><span class="st-label">編集・完成</span></div>
+    <div class="st"        id="si4"><div class="st-num">4</div><span class="st-label">会話設計</span></div>
+    <div class="st"        id="si5"><div class="st-num">5</div><span class="st-label">文章生成</span></div>
+    <div class="st"        id="si6"><div class="st-num">6</div><span class="st-label">編集・完成</span></div>
   </div>
 
   <div class="err-bar" id="errBar"></div>
@@ -398,16 +399,112 @@
       </div>
       <div class="card-body">
         <div class="appeal-intro">
-          <strong>AIがこの候補者に「刺さる」と判断した訴求ポイント</strong>に初期チェックが入っています。チェックを調整してからスカウト文を生成してください。
+          <strong>AIがこの候補者に「刺さる」と判断した訴求ポイント</strong>に初期チェックが入っています。チェックを調整してから会話設計に進んでください。
         </div>
         <div class="appeal-grid" id="appealGrid"></div>
         <div class="strategy-note" id="strategyNote"></div>
         <div class="btn-row">
           <button class="btn btn-ghost" id="b3to2">← 分析結果に戻る</button>
-          <button class="btn btn-ai" id="genMailBtn">
-            <span style="font-size:15px">✦</span> 選択した訴求でスカウト文を生成
+          <button class="btn btn-ai" id="genStoryBtn">
+            <span style="font-size:15px">✦</span> 選択した訴求で会話設計へ
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PANEL 4: Story Planner（会話設計）==================== -->
+  <div class="panel" id="p4">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:#fef3c7;color:#92400e">✦</div>
+          Story Planner — 会話設計
+        </div>
+        <span style="font-size:12px;color:var(--muted)">文章を書く前にトップリクルーターが考えること</span>
+      </div>
+      <div class="card-body" id="storyPlanBody">
+        <div class="sp-loading" id="spLoading">
+          <div class="spin" style="width:24px;height:24px;border-width:2.5px;margin:0 auto 10px"></div>
+          <div style="font-size:13px;color:var(--muted)">会話設計を生成中...</div>
+        </div>
+        <div id="spContent" style="display:none">
+
+          <!-- 会話設計のサマリー -->
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#2563eb"></div>
+              冒頭フォーカス — 最初に何に触れるか
+            </div>
+            <div class="sp-value" id="sp-openingFocus"></div>
+          </div>
+
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#7c3aed"></div>
+              能力承認 — 最初に何を認めるか
+            </div>
+            <div class="sp-value" id="sp-capability"></div>
+          </div>
+
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#059669"></div>
+              キャリア仮説 — どんな未来を想像させるか
+            </div>
+            <div class="sp-value" id="sp-hypothesis"></div>
+          </div>
+
+          <!-- IBM訴求設計 -->
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#d97706"></div>
+              IBM訴求設計 — どの訴求をどの順番で
+            </div>
+            <div class="sp-appeals" id="sp-appeals"></div>
+          </div>
+
+          <!-- 会話フロー -->
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#be185d"></div>
+              会話フロー — STEP1〜5の設計
+            </div>
+            <div class="sp-flow" id="sp-flow"></div>
+          </div>
+
+          <!-- クロージング + 文体 -->
+          <div class="sp-meta-row">
+            <div class="sp-meta-item">
+              <div class="sp-meta-label">クロージングスタイル</div>
+              <div class="sp-meta-value" id="sp-closing"></div>
+            </div>
+            <div class="sp-meta-item">
+              <div class="sp-meta-label">文体指示</div>
+              <div class="sp-meta-value" id="sp-tone"></div>
+            </div>
+            <div class="sp-meta-item sp-meta-avoid">
+              <div class="sp-meta-label">⚠️ 避けること</div>
+              <div class="sp-meta-value" id="sp-avoid"></div>
+            </div>
+          </div>
+
+          <!-- 編集ノート（採用担当者が修正メモを残せる） -->
+          <div class="sp-edit-note-wrap">
+            <div class="sp-section-label" style="margin-bottom:6px">
+              <div class="sp-dot" style="background:#6b7280"></div>
+              採用担当者メモ（任意）— 設計への追記・修正
+            </div>
+            <textarea id="sp-note" class="sp-note" placeholder="例: 冒頭はもっとカジュアルに。IBM訴求は2位のグローバルを前に出したい。" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row" style="padding:16px 22px;border-top:1px solid var(--border);margin:0">
+        <button class="btn btn-ghost" id="b4to3">← 戦略決定に戻る</button>
+        <button class="btn btn-ghost" id="regenStoryBtn">↻ 再設計</button>
+        <button class="btn btn-ai" id="genMailBtn">
+          <span style="font-size:15px">✦</span> この設計でスカウト文を生成
+        </button>
       </div>
     </div>
   </div>

@@ -1326,6 +1326,204 @@ textarea.tall { min-height:110px; }
 .wx-panel-footer .btn-ghost:hover { background: #1e293b; color: #e2e8f0; }
 .wx-panel-footer .btn-primary { font-size: 12px; padding: 7px 16px; }
 
+/* ══════════════════════════════════════════
+   v1.3 — Story Planner（会話設計）UI
+══════════════════════════════════════════ */
+
+/* ローディング */
+.sp-loading {
+  text-align: center;
+  padding: 32px 0;
+}
+
+/* セクション共通 */
+.sp-section {
+  margin-bottom: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sp-section:last-of-type { border-bottom: none; }
+
+.sp-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.sp-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%; flex-shrink: 0;
+}
+.sp-value {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.7;
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+}
+
+/* IBM訴求設計 */
+.sp-appeals {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sp-appeal-item {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 12px;
+}
+.sp-appeal-rank {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.sp-appeal-rank.rank-2 { background: #7c3aed; }
+.sp-appeal-rank.rank-3 { background: #059669; }
+.sp-appeal-body {}
+.sp-appeal-name {
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 3px;
+}
+.sp-appeal-reason {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 4px;
+}
+.sp-appeal-example {
+  font-size: 11px;
+  color: var(--accent);
+  background: var(--accent-l);
+  border-radius: 4px;
+  padding: 4px 8px;
+  line-height: 1.5;
+}
+
+/* 会話フロー */
+.sp-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.sp-flow-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+}
+.sp-flow-item:last-child { border-bottom: none; }
+.sp-flow-step {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  background: #1f2937;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.sp-flow-phase {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+  min-width: 56px;
+  padding-top: 4px;
+}
+.sp-flow-content {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  flex: 1;
+}
+
+/* メタ情報行（クロージング / 文体 / 避けること） */
+.sp-meta-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+.sp-meta-avoid {
+  grid-column: span 2;
+}
+.sp-meta-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 12px;
+}
+.sp-meta-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 5px;
+}
+.sp-meta-value {
+  font-size: 12px;
+  color: var(--text);
+  line-height: 1.55;
+}
+.sp-meta-avoid .sp-meta-value { color: var(--amber); }
+
+/* 採用担当者メモ */
+.sp-edit-note-wrap {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.sp-note {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 12px;
+  resize: vertical;
+  min-height: 70px;
+  transition: border-color .15s;
+}
+.sp-note:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+
+/* 学習バッジ（Story Planner用） */
+.sp-learning-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #fce7f3;
+  color: #be185d;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
 </style>
 </head>
 <body>
@@ -1425,8 +1623,9 @@ textarea.tall { min-height:110px; }
     <div class="st active" id="si1"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
     <div class="st"        id="si2"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
     <div class="st"        id="si3"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
-    <div class="st"        id="si4"><div class="st-num">4</div><span class="st-label">文章生成</span></div>
-    <div class="st"        id="si5"><div class="st-num">5</div><span class="st-label">編集・完成</span></div>
+    <div class="st"        id="si4"><div class="st-num">4</div><span class="st-label">会話設計</span></div>
+    <div class="st"        id="si5"><div class="st-num">5</div><span class="st-label">文章生成</span></div>
+    <div class="st"        id="si6"><div class="st-num">6</div><span class="st-label">編集・完成</span></div>
   </div>
 
   <div class="err-bar" id="errBar"></div>
@@ -1720,16 +1919,112 @@ textarea.tall { min-height:110px; }
       </div>
       <div class="card-body">
         <div class="appeal-intro">
-          <strong>AIがこの候補者に「刺さる」と判断した訴求ポイント</strong>に初期チェックが入っています。チェックを調整してからスカウト文を生成してください。
+          <strong>AIがこの候補者に「刺さる」と判断した訴求ポイント</strong>に初期チェックが入っています。チェックを調整してから会話設計に進んでください。
         </div>
         <div class="appeal-grid" id="appealGrid"></div>
         <div class="strategy-note" id="strategyNote"></div>
         <div class="btn-row">
           <button class="btn btn-ghost" id="b3to2">← 分析結果に戻る</button>
-          <button class="btn btn-ai" id="genMailBtn">
-            <span style="font-size:15px">✦</span> 選択した訴求でスカウト文を生成
+          <button class="btn btn-ai" id="genStoryBtn">
+            <span style="font-size:15px">✦</span> 選択した訴求で会話設計へ
           </button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== PANEL 4: Story Planner（会話設計）==================== -->
+  <div class="panel" id="p4">
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title">
+          <div class="icon-chip" style="background:#fef3c7;color:#92400e">✦</div>
+          Story Planner — 会話設計
+        </div>
+        <span style="font-size:12px;color:var(--muted)">文章を書く前にトップリクルーターが考えること</span>
+      </div>
+      <div class="card-body" id="storyPlanBody">
+        <div class="sp-loading" id="spLoading">
+          <div class="spin" style="width:24px;height:24px;border-width:2.5px;margin:0 auto 10px"></div>
+          <div style="font-size:13px;color:var(--muted)">会話設計を生成中...</div>
+        </div>
+        <div id="spContent" style="display:none">
+
+          <!-- 会話設計のサマリー -->
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#2563eb"></div>
+              冒頭フォーカス — 最初に何に触れるか
+            </div>
+            <div class="sp-value" id="sp-openingFocus"></div>
+          </div>
+
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#7c3aed"></div>
+              能力承認 — 最初に何を認めるか
+            </div>
+            <div class="sp-value" id="sp-capability"></div>
+          </div>
+
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#059669"></div>
+              キャリア仮説 — どんな未来を想像させるか
+            </div>
+            <div class="sp-value" id="sp-hypothesis"></div>
+          </div>
+
+          <!-- IBM訴求設計 -->
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#d97706"></div>
+              IBM訴求設計 — どの訴求をどの順番で
+            </div>
+            <div class="sp-appeals" id="sp-appeals"></div>
+          </div>
+
+          <!-- 会話フロー -->
+          <div class="sp-section">
+            <div class="sp-section-label">
+              <div class="sp-dot" style="background:#be185d"></div>
+              会話フロー — STEP1〜5の設計
+            </div>
+            <div class="sp-flow" id="sp-flow"></div>
+          </div>
+
+          <!-- クロージング + 文体 -->
+          <div class="sp-meta-row">
+            <div class="sp-meta-item">
+              <div class="sp-meta-label">クロージングスタイル</div>
+              <div class="sp-meta-value" id="sp-closing"></div>
+            </div>
+            <div class="sp-meta-item">
+              <div class="sp-meta-label">文体指示</div>
+              <div class="sp-meta-value" id="sp-tone"></div>
+            </div>
+            <div class="sp-meta-item sp-meta-avoid">
+              <div class="sp-meta-label">⚠️ 避けること</div>
+              <div class="sp-meta-value" id="sp-avoid"></div>
+            </div>
+          </div>
+
+          <!-- 編集ノート（採用担当者が修正メモを残せる） -->
+          <div class="sp-edit-note-wrap">
+            <div class="sp-section-label" style="margin-bottom:6px">
+              <div class="sp-dot" style="background:#6b7280"></div>
+              採用担当者メモ（任意）— 設計への追記・修正
+            </div>
+            <textarea id="sp-note" class="sp-note" placeholder="例: 冒頭はもっとカジュアルに。IBM訴求は2位のグローバルを前に出したい。" rows="3"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row" style="padding:16px 22px;border-top:1px solid var(--border);margin:0">
+        <button class="btn btn-ghost" id="b4to3">← 戦略決定に戻る</button>
+        <button class="btn btn-ghost" id="regenStoryBtn">↻ 再設計</button>
+        <button class="btn btn-ai" id="genMailBtn">
+          <span style="font-size:15px">✦</span> この設計でスカウト文を生成
+        </button>
       </div>
     </div>
   </div>
@@ -1877,10 +2172,14 @@ const S = {
   job: {},
   analysis: null,      // ohere / careerStory / temperature フィールドを含む
   selectedAppeals: [],
+  selectedAppealIds: [],
+  storyPlan: null,     // v1.3: Story Planner（会話設計）の結果
   mail: null,
-  selfReview: null,    // callSelfReviewAPI() の結果（IBM専用6軸採点）
+  selfReview: null,    // callSelfReviewAPI() の結果（5軸採点）
+  bannedViolations: [], // v1.2: 禁止表現スキャン結果
   processLog: {},
   learningData: {},
+  reviewRound: 1,
   currentHistoryId: null,  // 保存済み履歴ID（フィードバック更新時に使用）
   currentProjectId: null   // Phase1.5: 選択中の求人プロジェクトID
 };
@@ -2003,7 +2302,7 @@ function exportEditLogs() {
 function buildLearningData() {
   const a = S.analysis, c = S.candidate, j = S.job;
   S.learningData = {
-    version: '1.1',
+    version: '1.3',
     createdAt: new Date().toISOString(),
     projectId: S.currentProjectId || null,
     candidate: {
@@ -2032,8 +2331,22 @@ function buildLearningData() {
       company:     j.company,
       description: j.description
     },
+    // v1.3: Story Planner（会話設計）を学習データに保存
+    storyPlan: S.storyPlan ? {
+      openingFocus:              S.storyPlan.openingFocus || '',
+      capabilityToAcknowledge:   S.storyPlan.capabilityToAcknowledge || '',
+      careerHypothesis:          S.storyPlan.careerHypothesis || '',
+      closingStyle:              S.storyPlan.closingStyle || '',
+      writingTone:               S.storyPlan.writingTone || '',
+      ibmAppealsRanking:         (S.storyPlan.ibmAppeals || []).map(a => ({ rank: a.rank, appeal: a.appeal })),
+      conversationFlowSummary:   (S.storyPlan.conversationFlow || []).map(f => f.phase).join(' → '),
+      recruiterNote:             S.storyPlan._recruiterNote || '',
+      // 採用担当者が設計を修正した場合の差分（次の storyPlanEdits で上書き）
+      wasEdited:                 false
+    } : null,
     scoutAction: {
       selectedAppeals:  [],
+      selectedAppealIds: [],
       generatedSubject: '',
       sentAt: null,
       result: {
@@ -2044,6 +2357,34 @@ function buildLearningData() {
       }
     }
   };
+}
+
+/**
+ * v1.3: Story Planner の修正ログを保存
+ * 採用担当者がメモや再設計を行った場合に呼ぶ
+ */
+function saveStoryPlanEdit(originalPlan, note) {
+  if (!originalPlan) return;
+  const logs = loadEditLogs();
+  const entry = {
+    id:        Date.now().toString(),
+    savedAt:   new Date().toISOString(),
+    type:      'storyPlanEdit',
+    meta: {
+      candidateType:  (S.analysis || {}).candidateTypeCategory || '',
+      temperature:    ((S.analysis || {}).temperature || {}).stars || null,
+      selectedAppeals: S.selectedAppeals || []
+    },
+    storyPlan: {
+      openingFocus:    originalPlan.openingFocus || '',
+      closingStyle:    originalPlan.closingStyle || '',
+      ibmAppealsTop1:  (originalPlan.ibmAppeals || [])[0]?.appeal || '',
+      flowSummary:     (originalPlan.conversationFlow || []).map(f => f.phase).join(' → ')
+    },
+    recruiterNote: note || ''
+  };
+  logs.unshift(entry);
+  localStorage.setItem(EDITLOG_KEY, JSON.stringify(logs.slice(0, 200)));
 }
 
 // ══════════════════════════════════════════
@@ -2767,7 +3108,104 @@ brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）
 }
 
 // ══════════════════════════════════════════
-// STEP5: スカウト文生成 API（v1.2強化版）
+// STEP4: Story Planner API（v1.3新規）
+// ══════════════════════════════════════════
+/**
+ * トップリクルーターが文章を書く前に行う「会話設計」をAIで再現する。
+ * 直接文章を書かせるのではなく、まず「何をどの順番で伝えるか」を設計する。
+ */
+async function callStoryPlannerAPI() {
+  const c = S.candidate, j = S.job, a = S.analysis, sel = S.selectedAppeals;
+  const typeCategory = a.candidateTypeCategory || a.candidateType || '';
+  const ohere = a.ohere || {};
+  const strat = ohere.scoutStrategy || {};
+  const temp = a.temperature || {};
+  const pri = a.appealPriority || [];
+
+  // 候補者タイプ別の冒頭フォーカスヒント
+  const openingHints = selectOpeningPatterns(typeCategory, c);
+  // IBM知識（訴求設計の参考に）
+  const ibmKnowledge = selectIbmKnowledge(typeCategory, S.selectedAppealIds || []);
+
+  const prompt = `あなたは日本のIBMトップリクルーターです。文章を書く前の「会話設計」をJSONで返してください。
+
+## 目的
+トップリクルーターが文章を書く前に考えていること：
+- 何に触れるか（冒頭フォーカス）
+- 何を最初に承認するか（能力承認）
+- どんな未来を想像させるか（キャリア仮説）
+- IBMをどの順番で・どの訴求で出すか
+- どう締めるか（クロージングスタイル）
+
+## 候補者情報
+- プロフィール: ${c.role}（${c.company}）
+- スキル: ${c.skills}
+- 経験: ${c.experience || '未記入'}
+- 転職志向: ${c.reason || '不明'}
+- 候補者タイプ: ${typeCategory}
+- 転職温度感: ${temp.label || '不明'}（★${temp.stars || '?'}）
+
+## OHERE分析（設計の根拠に使う）
+- 観察（O）: ${ohere.observation || ''}
+- 仮説（H）: ${ohere.hypothesis || ''}
+- 根拠（E）: ${ohere.evidence || ''}
+- 推奨（R）: ${ohere.recommendation || ''}
+- 戦略:
+  ①共感: ${strat.step1_empathy || ''}
+  ②能力承認: ${strat.step2_recognition || ''}
+  ③未来提示: ${strat.step3_future || ''}
+  ④IBM訴求: ${strat.step4_ibm || ''}
+  ⑤面談誘導: ${strat.step5_meeting || ''}
+
+## 訴求優先順位
+${pri.map(p => `${p.rank}位: ${p.appealName}（${p.reason || ''}）`).join('\n')}
+
+## 採用担当者が選択した訴求
+${sel.join('、')}
+
+## IBM実績知識（訴求設計の参考に）
+${ibmKnowledge}
+
+## 冒頭フォーカスの候補（参考）
+${openingHints.map((p, i) => `候補${i + 1}: 「${p}」`).join('\n')}
+
+## 返すJSONの構造（厳守）
+{
+  "openingFocus": "冒頭で必ず触れる候補者の具体的な経験・実績（1〜2文。この候補者ならではのもの。「〇〇という経験」形式で）",
+  "capabilityToAcknowledge": "最初に承認する能力・実績（1〜2文。具体的な評価。「〇〇ができる方」「〇〇を経験した方は少ない」など）",
+  "careerHypothesis": "この候補者が次のキャリアで実現したいこと（推測）（1〜2文。「〜を求めているのではないか」形式で）",
+  "ibmAppeals": [
+    { "rank": 1, "appeal": "訴求名", "reason": "なぜこの訴求がこの候補者に刺さるか（2〜3文・候補者の経歴・志向と紐づけて）", "ibmExample": "IBMの具体的な強みを1文で（数値・事例を含む）" },
+    { "rank": 2, "appeal": "訴求名", "reason": "なぜ2位なのか（2〜3文）", "ibmExample": "IBMの具体的な強みを1文で" },
+    { "rank": 3, "appeal": "訴求名", "reason": "なぜ3位なのか（1〜2文）", "ibmExample": "IBMの具体的な強みを1文で" }
+  ],
+  "conversationFlow": [
+    { "step": 1, "phase": "共感", "content": "この候補者への共感メッセージ（具体的に・1文）" },
+    { "step": 2, "phase": "能力承認", "content": "承認する具体的な能力・実績（1文）" },
+    { "step": 3, "phase": "未来提示", "content": "このポジションで実現できる未来の描写（1文）" },
+    { "step": 4, "phase": "IBM訴求", "content": "IBMならではの訴求（具体的・1文）" },
+    { "step": 5, "phase": "面談誘導", "content": "プレッシャーを与えない面談への誘い（1文）" }
+  ],
+  "closingStyle": "情報交換型 / カジュアル型 / 提案型 のいずれか",
+  "closingReason": "そのクロージングスタイルを選んだ理由（1文）",
+  "writingTone": "この候補者への文体指示（1文。例：「技術的な具体性を重視し、短めの文で論理的に」）",
+  "avoidInThisScout": "このスカウトで絶対に避けるべき表現・訴求（1〜2文）"
+}`;
+
+  const msgs = [
+    { role: 'system', content: 'あなたは日本のIBMトップリクルーターです。文章を書く前の「会話設計」の専門家です。JSONのみ返してください。' },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
+    method: 'POST', headers: apiHeaders(),
+    body: JSON.stringify(buildRequestBody(msgs, 0.75))
+  });
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
+  S.storyPlan = parseApiResponse(await res.json());
+}
+
+// ══════════════════════════════════════════
+// STEP5: スカウト文生成 API（v1.3: Story Planner依存版）
 // ══════════════════════════════════════════
 async function callMailAPI() {
   const c = S.candidate, j = S.job, a = S.analysis, sel = S.selectedAppeals;
@@ -2783,35 +3221,43 @@ async function callMailAPI() {
   const ibmKnowledge = selectIbmKnowledge(typeCategory, S.selectedAppealIds || []);
   // Phase3a: 修正ログfew-shot注入
   const fewShotExamples = buildFewShotFromEditLogs(typeCategory, sel);
-  // IBM訴求ibmStrengthヒント
-  const ibmStrengthHints = sel.map(name => {
-    if (typeof IBM_APPEALS !== 'undefined') {
-      const ap = IBM_APPEALS.find(x => x.name === name);
-      return ap ? `【${ap.name}】${ap.ibmStrength}` : name;
-    }
-    return name;
-  }).join('\n');
 
-  // v1.2: 冒頭パターン選択（ランダム3件）
-  const openingPatterns = selectOpeningPatterns(typeCategory, c);
   // v1.2: 文体スタイル選択
   const style = selectStyle(typeCategory, c);
   // v1.2: 成功スカウト例の特徴抽出（キャッシュ or 実行）
   let successExampleHint = '';
   if (j.successExamples) {
-    // キャッシュがなければ分析実行（非同期だが既に呼ばれている前提でキャッシュを参照）
     if (!S._successExampleCache || S._successExampleCache.src !== j.successExamples) {
       S._successExampleCache = { src: j.successExamples, result: await analyzeSuccessExample(j.successExamples) };
     }
     successExampleHint = buildSuccessExampleHint(S._successExampleCache?.result);
   }
 
+  // v1.3: Story Planner依存 — 会話設計をプロンプトに反映
+  const sp = S.storyPlan || {};
+  const spAppeals = (sp.ibmAppeals || []).map(a => `${a.rank}位: ${a.appeal}（${a.reason || ''}）例: ${a.ibmExample || ''}`).join('\n');
+  const spFlow = (sp.conversationFlow || []).map(f => `STEP${f.step} ${f.phase}: ${f.content}`).join('\n');
+
   const bannedList = BANNED_PHRASES.slice(0, 12).join('、');
 
-  const prompt = `あなたは日本のIBMトップリクルーターです。以下の情報をもとに、本当に人間が書いたように見えるスカウトメールを生成してください。JSONのみ返してください。
+  const prompt = `あなたは日本のIBMトップリクルーターです。以下の「会話設計」に忠実に従い、本当に人間が書いたように見えるスカウトメールを生成してください。JSONのみ返してください。
+
+## ★ Story Planner（会話設計）— 最優先で従うこと ★
+この設計はトップリクルーターが文章を書く前に考えたものです。必ずこの設計通りに書いてください。
+
+【冒頭フォーカス】${sp.openingFocus || '候補者の具体的な経験から始める'}
+【能力承認】${sp.capabilityToAcknowledge || '候補者の最も際立つ強みを承認する'}
+【キャリア仮説】${sp.careerHypothesis || '候補者の転職志向を踏まえた未来'}
+【会話フロー】
+${spFlow || '共感 → 能力承認 → 未来提示 → IBM訴求 → 面談誘導'}
+【IBM訴求設計】
+${spAppeals || sel.join('、')}
+【クロージングスタイル】${sp.closingStyle || 'カジュアル型'}（理由: ${sp.closingReason || ''}）
+【文体指示】${sp.writingTone || style.tone}
+【この候補者に絶対避けること】${sp.avoidInThisScout || ''}
 
 ## 候補者情報
-- 候補者プロフィール: ${c.role}（${c.company}）
+- プロフィール: ${c.role}（${c.company}）
 - スキル: ${c.skills}
 - 転職志向: ${c.reason || '不明'}
 - 候補者タイプ: ${typeCategory}
@@ -2824,56 +3270,32 @@ async function callMailAPI() {
 - 魅力: ${j.appeal}
 ${successExampleHint ? `\n${successExampleHint}` : ''}
 
-## AI分析結果（スカウト文に必ず反映すること）
-- キャリアストーリー: ${story.narrative || a.motivationHypothesis || ''}
-- 訴求優先順位:
-${priText}
-- 選択した訴求ポイント: ${sel.join('、')}
-- IBM訴求の具体的内容（benefitで1〜2つ自然に言及）:
-${ibmStrengthHints}
-- 避けるべき訴求: ${a.avoidPoints || ''}
-- スカウト戦略:
-  ①共感: ${strat.step1_empathy || ''}
-  ②能力承認: ${strat.step2_recognition || ''}
-  ③未来提示: ${strat.step3_future || ''}
-  ④IBM訴求: ${strat.step4_ibm || ''}
-  ⑤面談誘導: ${strat.step5_meeting || ''}
+## キャリアストーリー
+${story.narrative || a.motivationHypothesis || ''}
 
 ## IBM実績ナレッジ（自分の言葉で自然に組み込む — コピペ禁止）
 ${ibmKnowledge}
-${fewShotExamples ? `\n## 過去のリクルーター修正パターン（参考 — 同じ方向性で書くこと）\n${fewShotExamples}` : ''}
-
-## 文体スタイル指示（${style.label}）
-- トーン: ${style.tone}
-- 文長: ${style.sentenceLength}
-- 段落改行: ${style.lineBreak}
-- 距離感: ${style.distance}
-- 避けること: ${style.avoid}
-- 例文イメージ: 「${style.example}」
-
-## 冒頭の書き出しパターン（以下の3つのうち最も自然なものをベースに冒頭文を書くこと）
-${openingPatterns.map((p, i) => `パターン${i + 1}: 「${p}」`).join('\n')}
+${fewShotExamples ? `\n## 過去のリクルーター修正パターン（参考）\n${fewShotExamples}` : ''}
 
 ## 絶対禁止表現（1語でも使ったら失格）
 ${bannedList}
-その他: AIっぽい婉曲表現・過剰敬語・回りくどい誘導 すべて禁止。
 
 ## 生成ルール
-1. 冒頭は必ず候補者の具体的な経歴・実績・スキルへの言及から始める
+1. Story Plannerの「冒頭フォーカス」から始める。定型表現で始めない
 2. 「プロフィールを拝見」「ご活躍」「ご縁」など定型表現を一切使わない
 3. 件名は候補者固有の実績・スキルを入れる（40字以内）
-4. この候補者だけに送るメールとして書く。テンプレ感ゼロ
-5. IBMの強みは「概念」ではなく「具体的数値・事例」で語る
-6. ストーリー構造（共感→能力承認→未来→IBM→面談）を自然な流れで
+4. Story Plannerの「会話フロー」の順番通りに各セクションを構成する
+5. IBM訴求は Story Planner の「IBM訴求設計」の順番・内容で語る
+6. Story Plannerの「クロージングスタイル」でCTAを書く
 
 ## 返すJSONの構造
 {
   "subject": "件名（40字以内・候補者固有の実績や強みに言及）",
-  "intro": "冒頭文（3〜4文・候補者固有の経験・実績から始まる・共感＋能力承認フェーズ）",
-  "why": "なぜ声をかけたか（2〜3文・具体的な経歴への言及・候補者固有）",
-  "match": "ポジションとの接点（2〜3文・スキルマッチを具体的に・未来提示を含む）",
-  "benefit": "候補者へのメリット（2〜3文・IBM訴求をIBM実績ナレッジを使って具体的に語る）",
-  "cta": "カジュアル面談への誘導（2文・プレッシャーなし・選考なしのカジュアルな誘い）"
+  "intro": "冒頭文（3〜4文・Story Plannerの冒頭フォーカス・能力承認に従う）",
+  "why": "なぜ声をかけたか（2〜3文・Story Plannerのキャリア仮説・会話フローSTEP1〜2に従う）",
+  "match": "ポジションとの接点（2〜3文・会話フローSTEP3未来提示に従う）",
+  "benefit": "候補者へのメリット（2〜3文・Story PlannerのIBM訴求設計1〜2位を使って具体的に）",
+  "cta": "カジュアル面談への誘導（2文・Story Plannerのクロージングスタイルで書く）"
 }`;
 
   const mailMessages = [
@@ -2897,11 +3319,11 @@ ${bannedList}
   // 違反情報をステートに保存（UIで警告表示に使用）
   S.bannedViolations = violations;
 
-  hideLoad(); renderMail(); renderProcessLog(); go(5);
+  hideLoad(); renderMail(); renderProcessLog(); go(6);
 }
 
 // ══════════════════════════════════════════
-// STEP5: セルフレビュー API（v1.2刷新版）
+// STEP6: セルフレビュー API（v1.2刷新版）
 // 返信率予測を廃止 → 5軸 + 改善コメント
 // ══════════════════════════════════════════
 async function callSelfReviewAPI() {
@@ -3254,16 +3676,18 @@ function getIbmAppealsForType(typeCategory) {
 const $ = id => document.getElementById(id);
 const md = () => $('mdl').value;
 
-// ── パネル遷移 ──
+// ── パネル遷移（v1.3: ステッパー6段階対応）──
 function go(n) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
   if      (n === '15')      { $('p15').classList.add('on'); }
   else if (n === 'Batch')   { $('pBatch').classList.add('on'); }
   else if (n === 'History') { $('pHistory').classList.add('on'); }
   else {
-    document.getElementById('p' + n).classList.add('on');
-    for (let i = 1; i <= 5; i++) {
-      const el = $('si' + i); el.classList.remove('active', 'done');
+    const panelEl = document.getElementById('p' + n);
+    if (panelEl) panelEl.classList.add('on');
+    for (let i = 1; i <= 6; i++) {
+      const el = $('si' + i); if (!el) continue;
+      el.classList.remove('active', 'done');
       if      (i < n)   el.classList.add('done');
       else if (i === n) el.classList.add('active');
     }
@@ -3325,13 +3749,19 @@ $('analyzeBtn').addEventListener('click', () => {
   else { runAnalysis(); }
 });
 
-// ── ボタンイベント一覧 ──
+// ── ボタンイベント一覧（v1.3: Story Planner対応）──
 $('reAnalyzeBtn').addEventListener('click', runAnalysis);
 $('b2to1').addEventListener('click',  () => go(1));
 $('b2to3').addEventListener('click',  () => { renderAppealSelector(); go(3); });
 $('b3to2').addEventListener('click',  () => go(2));
+// v1.3: STEP3 → STEP4（Story Planner）
+$('genStoryBtn').addEventListener('click', generateStoryPlan);
+// v1.3: STEP4 ボタン
+$('b4to3').addEventListener('click',  () => go(3));
+$('regenStoryBtn').addEventListener('click', generateStoryPlan);
+// genMailBtn は STEP4（Story Planner確認後）からトリガー
 $('genMailBtn').addEventListener('click', generateMail);
-$('b5to3').addEventListener('click',  () => go(3));
+$('b5to3').addEventListener('click',  () => go(4));
 $('regenAllBtn').addEventListener('click', generateMail);
 $('pvBtn').addEventListener('click',  togglePreview);
 $('restartBtn').addEventListener('click', restart);
@@ -3617,15 +4047,124 @@ function renderAppealSelector() {
 }
 
 // ══════════════════════════════════════════
-// STEP5: スカウト文生成・レンダリング
+// STEP4: Story Planner — 会話設計生成
 // ══════════════════════════════════════════
-async function generateMail() {
+async function generateStoryPlan() {
+  // 訴求選択を先に確定
   S.selectedAppeals = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => {
     const ap = IBM_APPEALS.find(a => a.id === cb.value); return ap ? ap.name : cb.value;
   }).filter(Boolean);
-  // IBM訴求IDも保持（プロンプト精度向上のため）
   S.selectedAppealIds = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => cb.value);
   if (S.selectedAppeals.length === 0) { err('訴求ポイントを少なくとも1つ選択してください。'); return; }
+
+  // PANEL 4に遷移してローディング状態を見せる
+  go(4);
+  $('spLoading').style.display = 'block';
+  $('spContent').style.display = 'none';
+
+  try {
+    if (hasApiKey()) {
+      await callStoryPlannerAPI();
+    } else {
+      demoStoryPlan();
+    }
+    renderStoryPlanner();
+  } catch (e) {
+    demoStoryPlan();
+    renderStoryPlanner();
+  }
+}
+
+/** デモ用 Story Plan（APIなし時） */
+function demoStoryPlan() {
+  const c = S.candidate, a = S.analysis || {};
+  const typeCategory = a.candidateTypeCategory || '技術スペシャリスト型';
+  const sk0 = (c.skills || '').split(/[,、\s]/)[0].trim();
+  S.storyPlan = {
+    openingFocus: `${c.role}として${c.experience ? c.experience.slice(0, 30) + '...' : sk0 + 'の経験'}まで担当されている点に着目しました。`,
+    capabilityToAcknowledge: `${sk0}を実務レベルで使いこなしながら、チームの成果に貢献できるエンジニアとして評価しています。`,
+    careerHypothesis: `技術的な挑戦の機会を求めており、より大きなスケールのプロジェクトで自分の力を試したいと考えているのではないでしょうか。`,
+    ibmAppeals: [
+      { rank: 1, appeal: S.selectedAppeals[0] || 'AI Transformation', reason: '候補者の技術的志向とIBMのAI実装力が合致しています。', ibmExample: 'watsonxによる業界AI変革プロジェクトに中心メンバーとして関われます。' },
+      { rank: 2, appeal: S.selectedAppeals[1] || '大規模案件', reason: '現職ではスケールに制約がある可能性があり、IBM規模の案件が刺さります。', ibmExample: '国内メガバンクや官公庁向けの基幹システム、数百億規模のプロジェクトです。' },
+      { rank: 3, appeal: S.selectedAppeals[2] || 'グローバル環境', reason: '市場価値向上の観点でグローバル経験が訴求ポイントになります。', ibmExample: '170カ国・入社初日から英語Slack・週次英語会議が当たり前です。' },
+    ],
+    conversationFlow: [
+      { step: 1, phase: '共感', content: `${c.company}での経験を積みながら、次のステージを考えているタイミングではないかと感じました。` },
+      { step: 2, phase: '能力承認', content: `${sk0}の経験は、業界でも希少な実力です。` },
+      { step: 3, phase: '未来提示', content: `IBMでは、その経験をさらに大きなスケールで活かせるポジションがあります。` },
+      { step: 4, phase: 'IBM訴求', content: `watsonxによるAI変革プロジェクトに、設計段階から関われます。` },
+      { step: 5, phase: '面談誘導', content: `30分、選考なしのカジュアルな情報交換からでも構いません。` },
+    ],
+    closingStyle: '情報交換型',
+    closingReason: '転職意思が固まっていない可能性があり、プレッシャーをかけないアプローチが有効',
+    writingTone: '技術的な具体性を重視し、短めの文で論理的に。距離感は近め。',
+    avoidInThisScout: '過剰な敬語・回りくどい誘導・「ぜひ」「ご縁」などの定型表現。IBMの説明が長くなりすぎること。'
+  };
+}
+
+/** Story Plannerの内容をUIに描画 */
+function renderStoryPlanner() {
+  const sp = S.storyPlan;
+  if (!sp) return;
+
+  $('spLoading').style.display = 'none';
+  $('spContent').style.display = 'block';
+
+  // 冒頭フォーカス・能力承認・キャリア仮説
+  $('sp-openingFocus').textContent = sp.openingFocus || '';
+  $('sp-capability').textContent   = sp.capabilityToAcknowledge || '';
+  $('sp-hypothesis').textContent   = sp.careerHypothesis || '';
+
+  // IBM訴求設計
+  const rankColors = ['', 'rank-1', 'rank-2', 'rank-3'];
+  $('sp-appeals').innerHTML = (sp.ibmAppeals || []).map(a => `
+    <div class="sp-appeal-item">
+      <div class="sp-appeal-rank ${rankColors[a.rank] || ''}">${a.rank}</div>
+      <div class="sp-appeal-body">
+        <div class="sp-appeal-name">${esc(a.appeal)}</div>
+        <div class="sp-appeal-reason">${esc(a.reason)}</div>
+        ${a.ibmExample ? `<div class="sp-appeal-example">💡 ${esc(a.ibmExample)}</div>` : ''}
+      </div>
+    </div>`).join('');
+
+  // 会話フロー
+  $('sp-flow').innerHTML = (sp.conversationFlow || []).map(f => `
+    <div class="sp-flow-item">
+      <div class="sp-flow-step">${f.step}</div>
+      <div class="sp-flow-phase">${esc(f.phase)}</div>
+      <div class="sp-flow-content">${esc(f.content)}</div>
+    </div>`).join('');
+
+  // メタ情報
+  const closingBadge = {
+    '情報交換型': '🤝',
+    'カジュアル型': '☕',
+    '提案型': '💼',
+  };
+  $('sp-closing').textContent = `${closingBadge[sp.closingStyle] || ''} ${sp.closingStyle || ''}` + (sp.closingReason ? `（${sp.closingReason}）` : '');
+  $('sp-tone').textContent    = sp.writingTone || '';
+  $('sp-avoid').textContent   = sp.avoidInThisScout || '';
+
+  // メモをクリア
+  const noteEl = $('sp-note');
+  if (noteEl) noteEl.value = sp._recruiterNote || '';
+
+  // 学習データにstoryPlanを保存
+  if (S.learningData) S.learningData.storyPlan = { ...sp };
+}
+
+// ══════════════════════════════════════════
+// STEP5: スカウト文生成・レンダリング（v1.3: Story Planner依存）
+// ══════════════════════════════════════════
+async function generateMail() {
+  // Story Plannerのメモを保存
+  const noteEl = $('sp-note');
+  if (noteEl && S.storyPlan) {
+    S.storyPlan._recruiterNote = noteEl.value;
+    // 学習データにメモも保存
+    if (S.learningData?.storyPlan) S.learningData.storyPlan._recruiterNote = noteEl.value;
+  }
   showLoad(5);
   try { if (hasApiKey()) await callMailAPI(); else demoMail(); }
   catch (e) { hideLoad(); err('生成エラー: ' + e.message); demoMail(); hideLoad(); }
@@ -3643,7 +4182,7 @@ function demoMail() {
     benefit: `${sel.includes('技術的挑戦') ? 'IBMでは最先端AI・クラウド技術に関わる大規模プロジェクトに携わることができ、' : sel.includes('グローバル環境') ? 'IBMのグローバル環境で170カ国以上のチームと協業できる機会があり、' : 'IBMという環境では、'}${j.appeal.split(/[,、\n]/)[0].trim()}という特徴があります。\n${c.reason ? '「' + c.reason.slice(0, 30) + '...」という志向に応える環境です。' : 'これまでの経験を次のステージで活かしていただけます。'}`,
     cta:     `30分ほど、選考を前提としないカジュアルなお話しの機会をいただけますか？\n「興味はあるけど転職は考えていない」という方でも大歓迎です。ご都合のよいお日時をいただけますと幸いです。`
   };
-  hideLoad(); renderMail(); renderProcessLog(); go(5);
+  hideLoad(); renderMail(); renderProcessLog(); go(6);
   // デモ用のセルフレビュー（v1.2新5軸版・遅延実行）
   setTimeout(() => {
     S.selfReview = {
@@ -3990,7 +4529,9 @@ $('logToggle').addEventListener('click', () => {
 // ── 新規作成 ──
 function restart() {
   document.querySelectorAll('input[type=text], textarea').forEach(el => { if (!el.closest('.topbar')) el.value = ''; });
-  S.candidate = {}; S.job = {}; S.analysis = null; S.mail = null; S.selfReview = null; S.selectedAppeals = []; S.selectedAppealIds = []; S.learningData = {};
+  S.candidate = {}; S.job = {}; S.analysis = null; S.storyPlan = null; S.mail = null;
+  S.selfReview = null; S.selectedAppeals = []; S.selectedAppealIds = []; S.learningData = {};
+  S.bannedViolations = []; S._successExampleCache = null;
   S.currentHistoryId = null;
   S.currentProjectId = null;
   S.reviewRound = 1;

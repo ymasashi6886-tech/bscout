@@ -204,16 +204,18 @@ function getIbmAppealsForType(typeCategory) {
 const $ = id => document.getElementById(id);
 const md = () => $('mdl').value;
 
-// ── パネル遷移 ──
+// ── パネル遷移（v1.3: ステッパー6段階対応）──
 function go(n) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
   if      (n === '15')      { $('p15').classList.add('on'); }
   else if (n === 'Batch')   { $('pBatch').classList.add('on'); }
   else if (n === 'History') { $('pHistory').classList.add('on'); }
   else {
-    document.getElementById('p' + n).classList.add('on');
-    for (let i = 1; i <= 5; i++) {
-      const el = $('si' + i); el.classList.remove('active', 'done');
+    const panelEl = document.getElementById('p' + n);
+    if (panelEl) panelEl.classList.add('on');
+    for (let i = 1; i <= 6; i++) {
+      const el = $('si' + i); if (!el) continue;
+      el.classList.remove('active', 'done');
       if      (i < n)   el.classList.add('done');
       else if (i === n) el.classList.add('active');
     }
@@ -275,13 +277,19 @@ $('analyzeBtn').addEventListener('click', () => {
   else { runAnalysis(); }
 });
 
-// ── ボタンイベント一覧 ──
+// ── ボタンイベント一覧（v1.3: Story Planner対応）──
 $('reAnalyzeBtn').addEventListener('click', runAnalysis);
 $('b2to1').addEventListener('click',  () => go(1));
 $('b2to3').addEventListener('click',  () => { renderAppealSelector(); go(3); });
 $('b3to2').addEventListener('click',  () => go(2));
+// v1.3: STEP3 → STEP4（Story Planner）
+$('genStoryBtn').addEventListener('click', generateStoryPlan);
+// v1.3: STEP4 ボタン
+$('b4to3').addEventListener('click',  () => go(3));
+$('regenStoryBtn').addEventListener('click', generateStoryPlan);
+// genMailBtn は STEP4（Story Planner確認後）からトリガー
 $('genMailBtn').addEventListener('click', generateMail);
-$('b5to3').addEventListener('click',  () => go(3));
+$('b5to3').addEventListener('click',  () => go(4));
 $('regenAllBtn').addEventListener('click', generateMail);
 $('pvBtn').addEventListener('click',  togglePreview);
 $('restartBtn').addEventListener('click', restart);
@@ -567,15 +575,124 @@ function renderAppealSelector() {
 }
 
 // ══════════════════════════════════════════
-// STEP5: スカウト文生成・レンダリング
+// STEP4: Story Planner — 会話設計生成
 // ══════════════════════════════════════════
-async function generateMail() {
+async function generateStoryPlan() {
+  // 訴求選択を先に確定
   S.selectedAppeals = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => {
     const ap = IBM_APPEALS.find(a => a.id === cb.value); return ap ? ap.name : cb.value;
   }).filter(Boolean);
-  // IBM訴求IDも保持（プロンプト精度向上のため）
   S.selectedAppealIds = [...document.querySelectorAll('#appealGrid input:checked')].map(cb => cb.value);
   if (S.selectedAppeals.length === 0) { err('訴求ポイントを少なくとも1つ選択してください。'); return; }
+
+  // PANEL 4に遷移してローディング状態を見せる
+  go(4);
+  $('spLoading').style.display = 'block';
+  $('spContent').style.display = 'none';
+
+  try {
+    if (hasApiKey()) {
+      await callStoryPlannerAPI();
+    } else {
+      demoStoryPlan();
+    }
+    renderStoryPlanner();
+  } catch (e) {
+    demoStoryPlan();
+    renderStoryPlanner();
+  }
+}
+
+/** デモ用 Story Plan（APIなし時） */
+function demoStoryPlan() {
+  const c = S.candidate, a = S.analysis || {};
+  const typeCategory = a.candidateTypeCategory || '技術スペシャリスト型';
+  const sk0 = (c.skills || '').split(/[,、\s]/)[0].trim();
+  S.storyPlan = {
+    openingFocus: `${c.role}として${c.experience ? c.experience.slice(0, 30) + '...' : sk0 + 'の経験'}まで担当されている点に着目しました。`,
+    capabilityToAcknowledge: `${sk0}を実務レベルで使いこなしながら、チームの成果に貢献できるエンジニアとして評価しています。`,
+    careerHypothesis: `技術的な挑戦の機会を求めており、より大きなスケールのプロジェクトで自分の力を試したいと考えているのではないでしょうか。`,
+    ibmAppeals: [
+      { rank: 1, appeal: S.selectedAppeals[0] || 'AI Transformation', reason: '候補者の技術的志向とIBMのAI実装力が合致しています。', ibmExample: 'watsonxによる業界AI変革プロジェクトに中心メンバーとして関われます。' },
+      { rank: 2, appeal: S.selectedAppeals[1] || '大規模案件', reason: '現職ではスケールに制約がある可能性があり、IBM規模の案件が刺さります。', ibmExample: '国内メガバンクや官公庁向けの基幹システム、数百億規模のプロジェクトです。' },
+      { rank: 3, appeal: S.selectedAppeals[2] || 'グローバル環境', reason: '市場価値向上の観点でグローバル経験が訴求ポイントになります。', ibmExample: '170カ国・入社初日から英語Slack・週次英語会議が当たり前です。' },
+    ],
+    conversationFlow: [
+      { step: 1, phase: '共感', content: `${c.company}での経験を積みながら、次のステージを考えているタイミングではないかと感じました。` },
+      { step: 2, phase: '能力承認', content: `${sk0}の経験は、業界でも希少な実力です。` },
+      { step: 3, phase: '未来提示', content: `IBMでは、その経験をさらに大きなスケールで活かせるポジションがあります。` },
+      { step: 4, phase: 'IBM訴求', content: `watsonxによるAI変革プロジェクトに、設計段階から関われます。` },
+      { step: 5, phase: '面談誘導', content: `30分、選考なしのカジュアルな情報交換からでも構いません。` },
+    ],
+    closingStyle: '情報交換型',
+    closingReason: '転職意思が固まっていない可能性があり、プレッシャーをかけないアプローチが有効',
+    writingTone: '技術的な具体性を重視し、短めの文で論理的に。距離感は近め。',
+    avoidInThisScout: '過剰な敬語・回りくどい誘導・「ぜひ」「ご縁」などの定型表現。IBMの説明が長くなりすぎること。'
+  };
+}
+
+/** Story Plannerの内容をUIに描画 */
+function renderStoryPlanner() {
+  const sp = S.storyPlan;
+  if (!sp) return;
+
+  $('spLoading').style.display = 'none';
+  $('spContent').style.display = 'block';
+
+  // 冒頭フォーカス・能力承認・キャリア仮説
+  $('sp-openingFocus').textContent = sp.openingFocus || '';
+  $('sp-capability').textContent   = sp.capabilityToAcknowledge || '';
+  $('sp-hypothesis').textContent   = sp.careerHypothesis || '';
+
+  // IBM訴求設計
+  const rankColors = ['', 'rank-1', 'rank-2', 'rank-3'];
+  $('sp-appeals').innerHTML = (sp.ibmAppeals || []).map(a => `
+    <div class="sp-appeal-item">
+      <div class="sp-appeal-rank ${rankColors[a.rank] || ''}">${a.rank}</div>
+      <div class="sp-appeal-body">
+        <div class="sp-appeal-name">${esc(a.appeal)}</div>
+        <div class="sp-appeal-reason">${esc(a.reason)}</div>
+        ${a.ibmExample ? `<div class="sp-appeal-example">💡 ${esc(a.ibmExample)}</div>` : ''}
+      </div>
+    </div>`).join('');
+
+  // 会話フロー
+  $('sp-flow').innerHTML = (sp.conversationFlow || []).map(f => `
+    <div class="sp-flow-item">
+      <div class="sp-flow-step">${f.step}</div>
+      <div class="sp-flow-phase">${esc(f.phase)}</div>
+      <div class="sp-flow-content">${esc(f.content)}</div>
+    </div>`).join('');
+
+  // メタ情報
+  const closingBadge = {
+    '情報交換型': '🤝',
+    'カジュアル型': '☕',
+    '提案型': '💼',
+  };
+  $('sp-closing').textContent = `${closingBadge[sp.closingStyle] || ''} ${sp.closingStyle || ''}` + (sp.closingReason ? `（${sp.closingReason}）` : '');
+  $('sp-tone').textContent    = sp.writingTone || '';
+  $('sp-avoid').textContent   = sp.avoidInThisScout || '';
+
+  // メモをクリア
+  const noteEl = $('sp-note');
+  if (noteEl) noteEl.value = sp._recruiterNote || '';
+
+  // 学習データにstoryPlanを保存
+  if (S.learningData) S.learningData.storyPlan = { ...sp };
+}
+
+// ══════════════════════════════════════════
+// STEP5: スカウト文生成・レンダリング（v1.3: Story Planner依存）
+// ══════════════════════════════════════════
+async function generateMail() {
+  // Story Plannerのメモを保存
+  const noteEl = $('sp-note');
+  if (noteEl && S.storyPlan) {
+    S.storyPlan._recruiterNote = noteEl.value;
+    // 学習データにメモも保存
+    if (S.learningData?.storyPlan) S.learningData.storyPlan._recruiterNote = noteEl.value;
+  }
   showLoad(5);
   try { if (hasApiKey()) await callMailAPI(); else demoMail(); }
   catch (e) { hideLoad(); err('生成エラー: ' + e.message); demoMail(); hideLoad(); }
@@ -593,7 +710,7 @@ function demoMail() {
     benefit: `${sel.includes('技術的挑戦') ? 'IBMでは最先端AI・クラウド技術に関わる大規模プロジェクトに携わることができ、' : sel.includes('グローバル環境') ? 'IBMのグローバル環境で170カ国以上のチームと協業できる機会があり、' : 'IBMという環境では、'}${j.appeal.split(/[,、\n]/)[0].trim()}という特徴があります。\n${c.reason ? '「' + c.reason.slice(0, 30) + '...」という志向に応える環境です。' : 'これまでの経験を次のステージで活かしていただけます。'}`,
     cta:     `30分ほど、選考を前提としないカジュアルなお話しの機会をいただけますか？\n「興味はあるけど転職は考えていない」という方でも大歓迎です。ご都合のよいお日時をいただけますと幸いです。`
   };
-  hideLoad(); renderMail(); renderProcessLog(); go(5);
+  hideLoad(); renderMail(); renderProcessLog(); go(6);
   // デモ用のセルフレビュー（v1.2新5軸版・遅延実行）
   setTimeout(() => {
     S.selfReview = {
@@ -940,7 +1057,9 @@ $('logToggle').addEventListener('click', () => {
 // ── 新規作成 ──
 function restart() {
   document.querySelectorAll('input[type=text], textarea').forEach(el => { if (!el.closest('.topbar')) el.value = ''; });
-  S.candidate = {}; S.job = {}; S.analysis = null; S.mail = null; S.selfReview = null; S.selectedAppeals = []; S.selectedAppealIds = []; S.learningData = {};
+  S.candidate = {}; S.job = {}; S.analysis = null; S.storyPlan = null; S.mail = null;
+  S.selfReview = null; S.selectedAppeals = []; S.selectedAppealIds = []; S.learningData = {};
+  S.bannedViolations = []; S._successExampleCache = null;
   S.currentHistoryId = null;
   S.currentProjectId = null;
   S.reviewRound = 1;

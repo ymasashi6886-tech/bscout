@@ -16,10 +16,14 @@ const S = {
   job: {},
   analysis: null,      // ohere / careerStory / temperature フィールドを含む
   selectedAppeals: [],
+  selectedAppealIds: [],
+  storyPlan: null,     // v1.3: Story Planner（会話設計）の結果
   mail: null,
-  selfReview: null,    // callSelfReviewAPI() の結果（IBM専用6軸採点）
+  selfReview: null,    // callSelfReviewAPI() の結果（5軸採点）
+  bannedViolations: [], // v1.2: 禁止表現スキャン結果
   processLog: {},
   learningData: {},
+  reviewRound: 1,
   currentHistoryId: null,  // 保存済み履歴ID（フィードバック更新時に使用）
   currentProjectId: null   // Phase1.5: 選択中の求人プロジェクトID
 };
@@ -142,7 +146,7 @@ function exportEditLogs() {
 function buildLearningData() {
   const a = S.analysis, c = S.candidate, j = S.job;
   S.learningData = {
-    version: '1.1',
+    version: '1.3',
     createdAt: new Date().toISOString(),
     projectId: S.currentProjectId || null,
     candidate: {
@@ -171,8 +175,22 @@ function buildLearningData() {
       company:     j.company,
       description: j.description
     },
+    // v1.3: Story Planner（会話設計）を学習データに保存
+    storyPlan: S.storyPlan ? {
+      openingFocus:              S.storyPlan.openingFocus || '',
+      capabilityToAcknowledge:   S.storyPlan.capabilityToAcknowledge || '',
+      careerHypothesis:          S.storyPlan.careerHypothesis || '',
+      closingStyle:              S.storyPlan.closingStyle || '',
+      writingTone:               S.storyPlan.writingTone || '',
+      ibmAppealsRanking:         (S.storyPlan.ibmAppeals || []).map(a => ({ rank: a.rank, appeal: a.appeal })),
+      conversationFlowSummary:   (S.storyPlan.conversationFlow || []).map(f => f.phase).join(' → '),
+      recruiterNote:             S.storyPlan._recruiterNote || '',
+      // 採用担当者が設計を修正した場合の差分（次の storyPlanEdits で上書き）
+      wasEdited:                 false
+    } : null,
     scoutAction: {
       selectedAppeals:  [],
+      selectedAppealIds: [],
       generatedSubject: '',
       sentAt: null,
       result: {
@@ -183,6 +201,34 @@ function buildLearningData() {
       }
     }
   };
+}
+
+/**
+ * v1.3: Story Planner の修正ログを保存
+ * 採用担当者がメモや再設計を行った場合に呼ぶ
+ */
+function saveStoryPlanEdit(originalPlan, note) {
+  if (!originalPlan) return;
+  const logs = loadEditLogs();
+  const entry = {
+    id:        Date.now().toString(),
+    savedAt:   new Date().toISOString(),
+    type:      'storyPlanEdit',
+    meta: {
+      candidateType:  (S.analysis || {}).candidateTypeCategory || '',
+      temperature:    ((S.analysis || {}).temperature || {}).stars || null,
+      selectedAppeals: S.selectedAppeals || []
+    },
+    storyPlan: {
+      openingFocus:    originalPlan.openingFocus || '',
+      closingStyle:    originalPlan.closingStyle || '',
+      ibmAppealsTop1:  (originalPlan.ibmAppeals || [])[0]?.appeal || '',
+      flowSummary:     (originalPlan.conversationFlow || []).map(f => f.phase).join(' → ')
+    },
+    recruiterNote: note || ''
+  };
+  logs.unshift(entry);
+  localStorage.setItem(EDITLOG_KEY, JSON.stringify(logs.slice(0, 200)));
 }
 
 // ══════════════════════════════════════════
