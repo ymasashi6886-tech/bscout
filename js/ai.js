@@ -998,6 +998,7 @@ ${story.narrative || a.motivationHypothesis || ''}
 ## IBM実績ナレッジ（自分の言葉で自然に組み込む — コピペ禁止）
 ${ibmKnowledge}
 ${fewShotExamples ? `\n## 過去のリクルーター修正パターン（参考）\n${fewShotExamples}` : ''}
+${buildFewShotFromLearnedScouts(typeCategory)}
 
 ## 絶対禁止表現（1語でも使ったら失格）
 ${bannedList}
@@ -1203,6 +1204,46 @@ async function runBatchSingle(c, j) {
   if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
   const data = parseApiResponse(await res.json());
   return { cand: c, ...data };
+}
+
+// ══════════════════════════════════════════
+// スカウト学習機能 — 良いスカウト文ライブラリ
+// ══════════════════════════════════════════
+
+const SCOUT_LEARN_KEY = 'bscout_learned_scouts';
+
+/** 学習済みスカウト文ライブラリを取得 */
+function getLearnedScouts() {
+  try { return JSON.parse(localStorage.getItem(SCOUT_LEARN_KEY) || '[]'); } catch { return []; }
+}
+
+/** 学習済みスカウト文ライブラリを保存 */
+function saveLearnedScouts(list) {
+  localStorage.setItem(SCOUT_LEARN_KEY, JSON.stringify(list));
+}
+
+/**
+ * 学習済みスカウト文からfew-shotを生成してプロンプト注入文を返す
+ * @param {string} typeCategory - 候補者タイプ（タグフィルタ用）
+ * @returns {string} プロンプト注入文
+ */
+function buildFewShotFromLearnedScouts(typeCategory) {
+  const list = getLearnedScouts();
+  if (!list || list.length === 0) return '';
+
+  // 同タイプのものを優先、最大3件
+  const sorted = [
+    ...list.filter(s => s.tags?.includes(typeCategory)),
+    ...list.filter(s => !s.tags?.includes(typeCategory))
+  ].slice(0, 3);
+
+  if (sorted.length === 0) return '';
+
+  return `## 過去の優良スカウト文（文体・構成の参考に）
+以下は採用担当者が「これが良い」と登録したスカウト文の実例です。直接コピーせず、エッセンス（文体・距離感・構成の流れ）を自然に取り込んでください。
+
+` + sorted.map((s, i) => `### 参考${i + 1}${s.label ? `（${s.label}）` : ''}
+${s.body}`).join('\n\n');
 }
 
 // ══════════════════════════════════════════

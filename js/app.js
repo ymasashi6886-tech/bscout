@@ -309,14 +309,30 @@ function esc(s)    { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;
 // STEP1: フォーム入力 → 分析開始
 // ══════════════════════════════════════════
 $('analyzeBtn').addEventListener('click', () => {
-  const c = {
-    company:    $('c_co').value.trim(),
-    role:       $('c_role').value.trim(),
-    experience: $('c_exp').value.trim(),
-    skills:     $('c_sk').value.trim(),
-    projects:   $('c_pj').value.trim(),
-    reason:     $('c_why').value.trim()
-  };
+  // 手動フォームが非表示（=貼り付け解析済み）の場合は S.candidate を優先使用
+  const manualVisible = $('manualForm') && $('manualForm').style.display !== 'none';
+
+  let c;
+  if (manualVisible || !S.candidate?.company) {
+    c = {
+      company:    $('c_co').value.trim(),
+      role:       $('c_role').value.trim(),
+      experience: $('c_exp').value.trim(),
+      skills:     $('c_sk').value.trim(),
+      projects:   $('c_pj').value.trim(),
+      reason:     $('c_why').value.trim()
+    };
+  } else {
+    // 貼り付け解析後: S.candidate の内容を使い、フリーコメントを転職理由に追記
+    c = { ...S.candidate };
+  }
+
+  // フリーコメントを転職理由に追記
+  const freeComment = $('c_freecomment')?.value.trim();
+  if (freeComment) {
+    c.reason = (c.reason ? c.reason + '\n【補足】' : '【補足】') + freeComment;
+  }
+
   const j = {
     position:        $('j_pos').value.trim(),
     company:         $('j_co').value.trim(),
@@ -326,7 +342,8 @@ $('analyzeBtn').addEventListener('click', () => {
     appeal:          $('j_ap').value.trim(),
     successExamples: $('j_success')?.value.trim() || ''
   };
-  if (!c.company) { err('「現在の会社」を入力してください。'); return; }
+
+  if (!c.company) { err('「現在の会社」を入力してください。プロフィールを貼り付けるか、手動で入力してください。'); return; }
   if (!c.role)    { err('「現在の職種」を入力してください。'); return; }
   if (!c.experience || c.experience.length < 10) { err('「経験概要」をもう少し詳しく入力してください（例：チーム規模・担当業務・成果など）。'); return; }
   if (!c.skills)  { err('「スキル」を入力してください（例：Java, AWS, チームリード など）。'); return; }
@@ -595,6 +612,34 @@ function renderAppealSelector() {
     '安定志向型':             '安定志向型にはIBMブランド・福利厚生・働き方・社会貢献が有効です。IBMの112年の実績と安定した事業基盤を具体的に示してください。',
   };
 
+  // ④ 訴求UI改善: トップ3を上部に大きく、残りを折りたたみ
+  const top3   = sorted.filter(ap => priMap[ap.id]?.rank <= 3 && priMap[ap.id]?.rank >= 1)
+                        .sort((a, b) => priMap[a.id].rank - priMap[b.id].rank);
+  const others = sorted.filter(ap => !(priMap[ap.id]?.rank >= 1 && priMap[ap.id]?.rank <= 3));
+
+  function renderApItem(ap, forceChecked = false) {
+    const isRec    = rec.includes(ap.id);
+    const priInfo  = priMap[ap.id];
+    const rank     = priInfo ? priInfo.rank : (isRec ? '推奨' : '');
+    const reason   = priInfo ? priInfo.reason : '';
+    const rankClass = priInfo?.rank === 1 ? 'rank1' : priInfo?.rank === 2 ? 'rank2' : priInfo?.rank === 3 ? 'rank3' : isRec ? 'recommended' : '';
+    const checked  = forceChecked || isRec;
+    return `
+      <div class="ibm-appeal-item ${rankClass}">
+        <input type="checkbox" id="ap_${ap.id}" value="${ap.id}" ${checked ? 'checked' : ''}>
+        <label class="ibm-appeal-label" for="ap_${ap.id}" style="--ap-color:${ap.color};--ap-color-l:${ap.colorL}">
+          <div class="ibm-ap-head">
+            <span class="ibm-ap-icon">${ap.icon}</span>
+            <span class="ibm-ap-name">${esc(ap.name)}</span>
+            ${rank ? `<span class="ibm-ap-rank rank-${rank === '推奨' ? 'rec' : rank}">${rank === '推奨' ? 'AI推奨' : rank + '位'}</span>` : ''}
+          </div>
+          <div class="ibm-ap-desc">${esc(ap.desc)}</div>
+          <div class="ibm-ap-strength">${esc(ap.ibmStrength)}</div>
+          ${reason ? `<div class="ibm-ap-reason">💡 ${esc(reason)}</div>` : ''}
+        </label>
+      </div>`;
+  }
+
   $('appealGrid').innerHTML = `
     <div class="ibm-matrix-banner">
       <div class="imb-type-row">
@@ -603,28 +648,19 @@ function renderAppealSelector() {
       </div>
       <div class="imb-hint">${esc(typeHint[typeCategory] || '候補者タイプに合わせたIBM訴求を選択してください。')}</div>
     </div>
-    <div class="ibm-appeal-grid">` +
-    sorted.map(ap => {
-      const isRec   = rec.includes(ap.id);
-      const priInfo = priMap[ap.id];
-      const rank    = priInfo ? priInfo.rank : (isRec ? '推奨' : '');
-      const reason  = priInfo ? priInfo.reason : '';
-      const rankClass = priInfo?.rank === 1 ? 'rank1' : priInfo?.rank === 2 ? 'rank2' : priInfo?.rank === 3 ? 'rank3' : isRec ? 'recommended' : '';
-      return `
-        <div class="ibm-appeal-item ${rankClass}">
-          <input type="checkbox" id="ap_${ap.id}" value="${ap.id}" ${isRec ? 'checked' : ''}>
-          <label class="ibm-appeal-label" for="ap_${ap.id}" style="--ap-color:${ap.color};--ap-color-l:${ap.colorL}">
-            <div class="ibm-ap-head">
-              <span class="ibm-ap-icon">${ap.icon}</span>
-              <span class="ibm-ap-name">${esc(ap.name)}</span>
-              ${rank ? `<span class="ibm-ap-rank rank-${rank === '推奨' ? 'rec' : rank}">${rank === '推奨' ? 'AI推奨' : rank + '位'}</span>` : ''}
-            </div>
-            <div class="ibm-ap-desc">${esc(ap.desc)}</div>
-            <div class="ibm-ap-strength">${esc(ap.ibmStrength)}</div>
-            ${reason ? `<div class="ibm-ap-reason">💡 ${esc(reason)}</div>` : ''}
-          </label>
-        </div>`;
-    }).join('') + `</div>`;
+    ${top3.length > 0 ? `
+    <div class="appeal-top3-label">
+      <span class="appeal-top3-badge">AI厳選 トップ3訴求</span>
+      <span class="appeal-top3-sub">この候補者に最も刺さると判断した訴求ポイントです</span>
+    </div>
+    <div class="ibm-appeal-grid appeal-top3-grid">${top3.map(ap => renderApItem(ap, true)).join('')}</div>
+    <div class="appeal-others-toggle" id="appealOthersToggle" onclick="toggleOtherAppeals()">
+      <span id="appealOthersToggleText">▼ 他の訴求を見る（${others.length}件）</span>
+    </div>
+    <div class="ibm-appeal-grid appeal-others-grid" id="appealOthersGrid" style="display:none">
+      ${others.map(ap => renderApItem(ap)).join('')}
+    </div>` : `
+    <div class="ibm-appeal-grid">${sorted.map(ap => renderApItem(ap)).join('')}</div>`}`;
 
   document.querySelectorAll('.ibm-appeal-item input[type=checkbox]').forEach(cb => {
     cb.addEventListener('change', () => {
@@ -635,6 +671,19 @@ function renderAppealSelector() {
     if (cb.checked) cb.closest('.ibm-appeal-item').classList.add('checked');
   });
   $('strategyNote').innerHTML = `<strong>IBMアプローチ戦略メモ：</strong>${esc(a.strategyNote || '')}`;
+}
+
+function toggleOtherAppeals() {
+  const grid   = $('appealOthersGrid');
+  const toggle = $('appealOthersToggle');
+  const text   = $('appealOthersToggleText');
+  if (!grid) return;
+  const isOpen = grid.style.display !== 'none';
+  grid.style.display = isOpen ? 'none' : 'grid';
+  if (text) text.textContent = isOpen
+    ? `▼ 他の訴求を見る（${grid.querySelectorAll('.ibm-appeal-item').length}件）`
+    : `▲ 折りたたむ`;
+  if (toggle) toggle.classList.toggle('open', !isOpen);
 }
 
 // ══════════════════════════════════════════
@@ -890,12 +939,21 @@ async function generateMail() {
   if (noteEl && S.storyPlan) {
     S.storyPlan._recruiterNote = noteEl.value;
     if (S.learningData?.storyPlan) S.learningData.storyPlan._recruiterNote = noteEl.value;
-    // v1.4: メモがあれば編集ログに保存
     if (noteEl.value.trim()) saveStoryPlanEdit(S.storyPlan, noteEl.value);
   }
   showLoad(5);
-  try { if (hasApiKey()) await callMailAPI(); else demoMail(); }
-  catch (e) { hideLoad(); err('生成エラー: ' + e.message); demoMail(); hideLoad(); }
+  try {
+    if (hasApiKey()) {
+      await callMailAPI();
+    } else {
+      demoMail();
+    }
+  } catch (e) {
+    // ① STEP5エラー修正: API失敗時は hideLoad せずデモにフォールバック（demoMailの中でhideLoad+go(6)が呼ばれる）
+    console.warn('generateMail error, falling back to demo:', e.message);
+    err('スカウト生成でエラーが発生しました（デモモードで表示します）: ' + e.message);
+    demoMail();
+  }
 }
 
 function demoMail() {
@@ -1317,6 +1375,17 @@ function restart() {
   S.reviewRound = 1;
   // プロジェクト選択バーのアクティブ状態をリセット
   document.querySelectorAll('.proj-sel-btn').forEach(b => b.classList.remove('active'));
+  // ② シンプルフォームUIをリセット
+  const pasteGuide = $('pasteGuide');
+  const parsedSummary = $('parsedSummary');
+  const freeCommentWrap = $('freeCommentWrap');
+  const manualForm = $('manualForm');
+  const simpleCandidateWrap = $('simpleCandidateWrap');
+  if (pasteGuide)            pasteGuide.style.display            = 'block';
+  if (parsedSummary)         parsedSummary.style.display         = 'none';
+  if (freeCommentWrap)       freeCommentWrap.style.display       = 'none';
+  if (manualForm)            manualForm.style.display            = 'none';
+  if (simpleCandidateWrap)   simpleCandidateWrap.style.display   = 'block';
   go(1);
 }
 
@@ -1414,12 +1483,53 @@ async function parseProfile() {
   const msg = `✓ ${sourceName}から${filled}項目を読み取りました（${confLabel[parsed.confidence] || ''}）${missingTxt}`;
   setPasteStatus(msg, parsed.confidence === 'low' ? 'error' : 'ok');
 
-  // パネルを閉じる（high・medium の場合のみ）
+  // S.candidate に解析結果を保存（analyzeBtn時に再利用）
+  S.candidate = {
+    company:    parsed.company    || '',
+    role:       parsed.role       || '',
+    experience: parsed.experience || '',
+    skills:     parsed.skills     || '',
+    projects:   parsed.projects   || '',
+    reason:     parsed.reason     || ''
+  };
+
+  // サマリー表示（high・medium の場合）
   if (parsed.confidence !== 'low') {
-    setTimeout(() => {
-      togglePastePanel();
-    }, 1200);
+    showParsedSummary(parsed, sourceName, filled);
+    setTimeout(() => togglePastePanel(), 1200);
   }
+}
+
+/** 解析済みサマリーを表示し、ガイダンスを非表示にする */
+function showParsedSummary(parsed, sourceName, filled) {
+  const guide    = $('pasteGuide');
+  const summary  = $('parsedSummary');
+  const freeWrap = $('freeCommentWrap');
+  const title    = $('psSummaryTitle');
+  const fields   = $('psSummaryFields');
+  if (!summary) return;
+
+  if (guide)    guide.style.display    = 'none';
+  if (freeWrap) freeWrap.style.display = 'block';
+
+  const fieldDefs = [
+    { label: '会社',     val: parsed.company    },
+    { label: '職種',     val: parsed.role       },
+    { label: '経験',     val: parsed.experience },
+    { label: 'スキル',   val: parsed.skills     },
+    { label: 'PJ',       val: parsed.projects   },
+    { label: '転職理由', val: parsed.reason     },
+  ];
+
+  if (title) title.textContent = `${sourceName}から${filled}項目を読み取りました`;
+  if (fields) {
+    fields.innerHTML = fieldDefs
+      .filter(f => f.val)
+      .map(f => `<div class="ps-field"><span class="ps-field-label">${esc(f.label)}</span><span class="ps-field-val">${esc(f.val)}</span></div>`)
+      .join('');
+  }
+
+  summary.style.display = 'block';
 }
 
 /** ステータス表示ヘルパー */
@@ -1428,6 +1538,47 @@ function setPasteStatus(msg, type) {
   if (!el) return;
   el.textContent = msg;
   el.className = `paste-status ${type}`;
+}
+
+// ── 手動フォーム 開閉 ──
+function showManualForm() {
+  const mf   = $('manualForm');
+  const wrap  = $('simpleCandidateWrap');
+  if (mf) mf.style.display = 'block';
+  if (wrap) wrap.style.display = 'none';
+}
+
+function hideManualForm() {
+  const mf   = $('manualForm');
+  const wrap  = $('simpleCandidateWrap');
+  if (mf) mf.style.display = 'none';
+  if (wrap) wrap.style.display = 'block';
+
+  // 手動入力済みの場合はサマリーを生成して表示
+  const co  = $('c_co')?.value.trim();
+  const rol = $('c_role')?.value.trim();
+  if (co && rol) {
+    const fakeParsed = {
+      company:    co,
+      role:       rol,
+      experience: $('c_exp')?.value.trim() || '',
+      skills:     $('c_sk')?.value.trim()  || '',
+      projects:   $('c_pj')?.value.trim()  || '',
+      reason:     $('c_why')?.value.trim() || '',
+      sourceHint: 'unknown',
+      confidence: 'high',
+      missingFields: []
+    };
+    S.candidate = {
+      company:    fakeParsed.company,
+      role:       fakeParsed.role,
+      experience: fakeParsed.experience,
+      skills:     fakeParsed.skills,
+      projects:   fakeParsed.projects,
+      reason:     fakeParsed.reason
+    };
+    showParsedSummary(fakeParsed, '手動入力', Object.values(fakeParsed).filter(v => v && v !== 'unknown' && v !== 'high').length);
+  }
 }
 
 // ══════════════════════════════════════════
@@ -2390,3 +2541,101 @@ document.addEventListener('click', (e) => {
     panel.classList.remove('wx-panel-open');
   }
 });
+
+// ══════════════════════════════════════════
+// ③ スカウト学習機能 — 優良スカウト文ライブラリ管理
+// ══════════════════════════════════════════
+
+const CANDIDATE_TYPES_FOR_LEARN = [
+  '技術スペシャリスト型', 'PM・マネジメント型', 'キャリアアップ型', '市場価値向上型', '安定志向型'
+];
+
+/** 学習モーダルの開閉 */
+function openLearnModal() {
+  const modal = $('learnModal');
+  if (!modal) return;
+  renderLearnedScoutList();
+  modal.style.display = 'flex';
+}
+function closeLearnModal() {
+  const modal = $('learnModal');
+  if (modal) modal.style.display = 'none';
+}
+
+/** 登録済みスカウト文一覧を描画 */
+function renderLearnedScoutList() {
+  const list  = getLearnedScouts();
+  const el    = $('learnedScoutList');
+  const count = $('learnedScoutCount');
+  if (count) count.textContent = `${list.length}件登録済み`;
+  if (!el) return;
+
+  if (list.length === 0) {
+    el.innerHTML = '<div class="learn-empty">まだ登録されていません。下のフォームから優良スカウト文を登録してください。</div>';
+    return;
+  }
+
+  el.innerHTML = list.map((s, i) => `
+    <div class="learn-item" id="learnItem_${i}">
+      <div class="learn-item-head">
+        <span class="learn-item-label">${esc(s.label || `スカウト${i + 1}`)}</span>
+        <div class="learn-item-tags">
+          ${(s.tags || []).map(t => `<span class="learn-tag">${esc(t)}</span>`).join('')}
+        </div>
+        <button class="learn-del-btn" onclick="deleteLearnedScout(${i})">削除</button>
+      </div>
+      <div class="learn-item-preview">${esc((s.body || '').slice(0, 120))}${s.body?.length > 120 ? '...' : ''}</div>
+    </div>
+  `).join('');
+}
+
+/** スカウト文を学習ライブラリに登録 */
+function addLearnedScout() {
+  const labelEl = $('learnScoutLabel');
+  const bodyEl  = $('learnScoutBody');
+  const tagEls  = document.querySelectorAll('#learnTagCheckboxes input:checked');
+
+  const label = labelEl?.value.trim() || '';
+  const body  = bodyEl?.value.trim()  || '';
+
+  if (!body || body.length < 30) {
+    alert('スカウト文本文を30文字以上入力してください。');
+    return;
+  }
+
+  const tags = [...tagEls].map(el => el.value);
+  const list = getLearnedScouts();
+  list.push({
+    id:        Date.now(),
+    label:     label || `スカウト${list.length + 1}`,
+    body,
+    tags,
+    createdAt: new Date().toISOString()
+  });
+  saveLearnedScouts(list);
+
+  // フォームをリセット
+  if (labelEl) labelEl.value = '';
+  if (bodyEl)  bodyEl.value  = '';
+  document.querySelectorAll('#learnTagCheckboxes input').forEach(el => el.checked = false);
+
+  renderLearnedScoutList();
+
+  // 登録成功フィードバック
+  const btn = $('learnAddBtn');
+  if (btn) {
+    const orig = btn.textContent;
+    btn.textContent = '✓ 登録しました！';
+    btn.style.background = 'var(--green)';
+    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1800);
+  }
+}
+
+/** スカウト文を削除 */
+function deleteLearnedScout(index) {
+  if (!confirm('このスカウト文を削除しますか？')) return;
+  const list = getLearnedScouts();
+  list.splice(index, 1);
+  saveLearnedScouts(list);
+  renderLearnedScoutList();
+}

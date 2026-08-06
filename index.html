@@ -35,6 +35,7 @@
   </div>
   <div class="topbar-right">
     <button class="btn btn-ghost btn-sm" id="historyBtn" onclick="openHistory()" style="font-size:12px">📋 履歴</button>
+    <button class="btn btn-ghost btn-sm" onclick="openLearnModal()" style="font-size:12px" title="優良スカウト文を登録してAIの文体を学習させる">🧠 スカウト学習</button>
     <button class="batch-toggle-btn" id="batchModeBtn">◫ バッチ処理</button>
     <div class="mode-pill" id="modePill">
       <div class="mode-dot demo" id="modeDot"></div>
@@ -189,32 +190,68 @@
       </div>
 
       <div class="card-body">
-        <div class="grid2">
-          <div class="fg">
-            <label>現在の会社<span class="req">*</span></label>
-            <input type="text" id="c_co" placeholder="例：株式会社〇〇テック">
+        <!-- ② シンプル化: 貼り付け後の確認・追記エリア -->
+        <div class="simple-candidate-wrap" id="simpleCandidateWrap">
+          <!-- 貼り付け前: ガイダンス表示 -->
+          <div class="paste-guide" id="pasteGuide">
+            <div class="paste-guide-icon">📋</div>
+            <div class="paste-guide-text">
+              <strong>上の「📋 プロフィールを貼り付け」からスタート</strong><br>
+              BizReach・LinkedInのプロフィールをコピペするだけで、AIが自動で候補者情報を読み取ります。
+            </div>
+            <div class="paste-guide-or">または</div>
+            <button class="btn btn-ghost btn-sm" onclick="showManualForm()">手動で入力する</button>
           </div>
-          <div class="fg">
-            <label>現在の職種<span class="req">*</span></label>
-            <input type="text" id="c_role" placeholder="例：バックエンドエンジニア（リード）">
+
+          <!-- 貼り付け後: サマリー + 追記欄（pasteProfileで表示切り替え） -->
+          <div class="parsed-summary" id="parsedSummary" style="display:none">
+            <div class="ps-head">
+              <div class="ps-title" id="psSummaryTitle">読み取り完了</div>
+              <button class="btn btn-ghost btn-sm" onclick="showManualForm()" style="font-size:11px">✎ 詳細編集</button>
+            </div>
+            <div class="ps-fields" id="psSummaryFields"></div>
           </div>
-          <div class="fg s2">
-            <label>経験概要<span class="req">*</span></label>
-            <textarea id="c_exp" class="tall" placeholder="例：Javaを使ったEC基盤開発5年。直近2年はチームリード（5名）。月間1000万PVのサービスを担当し、マイクロサービス化を主導。パフォーマンス改善でレスポンスタイムを60%削減。"></textarea>
-            <div class="hint">具体的な数値・規模・成果を書くほどAI分析の精度が上がります</div>
+
+          <!-- 追記フリーコメント -->
+          <div class="freecomment-wrap" id="freeCommentWrap" style="display:none">
+            <label class="freecomment-label">📝 追記・補足（任意）</label>
+            <textarea class="freecomment-ta" id="c_freecomment" rows="3"
+              placeholder="例: 転職理由は「より大きな裁量で開発したい」と言っていた。英語は苦手そう。前職でAWSの設計を主導したと話していた。"></textarea>
+            <div class="hint">面談・会話で得た情報や気になった点を自由に追記できます。AIがスカウト戦略に反映します。</div>
           </div>
-          <div class="fg">
-            <label>スキル<span class="req">*</span></label>
-            <textarea id="c_sk" placeholder="例：Java, Spring Boot, AWS(EC2/RDS/Lambda), Docker, Kubernetes, MySQL, Redis, チームマネジメント"></textarea>
+        </div>
+
+        <!-- 手動入力フォーム（折りたたみ） -->
+        <div class="manual-form" id="manualForm" style="display:none">
+          <div class="manual-form-head">
+            <span style="font-size:12px;font-weight:700;color:var(--muted)">手動入力モード</span>
+            <button class="btn btn-ghost btn-sm" onclick="hideManualForm()" style="font-size:11px">▲ 閉じる</button>
           </div>
-          <div class="fg">
-            <label>過去の代表プロジェクト</label>
-            <textarea id="c_pj" placeholder="例：ECリニューアル（PL・7名・6ヶ月）、決済基盤マイクロサービス移行（アーキテクト担当）"></textarea>
-          </div>
-          <div class="fg s2">
-            <label>転職理由・キャリア志向</label>
-            <textarea id="c_why" placeholder="例：技術的な挑戦をしたい、マネジメントより手を動かしたい、成長フェーズのスタートアップで事業をつくる側に関わりたい、年収を上げたい"></textarea>
-            <div class="hint">ここが充実するほどAIの「訴求戦略」の精度が大幅に向上します</div>
+          <div class="grid2">
+            <div class="fg">
+              <label>現在の会社<span class="req">*</span></label>
+              <input type="text" id="c_co" placeholder="例：株式会社〇〇テック">
+            </div>
+            <div class="fg">
+              <label>現在の職種<span class="req">*</span></label>
+              <input type="text" id="c_role" placeholder="例：バックエンドエンジニア（リード）">
+            </div>
+            <div class="fg s2">
+              <label>経験概要<span class="req">*</span></label>
+              <textarea id="c_exp" class="tall" placeholder="例：Javaを使ったEC基盤開発5年。直近2年はチームリード（5名）。月間1000万PVのサービスを担当。"></textarea>
+            </div>
+            <div class="fg">
+              <label>スキル<span class="req">*</span></label>
+              <textarea id="c_sk" placeholder="例：Java, Spring Boot, AWS, Docker, Kubernetes"></textarea>
+            </div>
+            <div class="fg">
+              <label>過去の代表プロジェクト</label>
+              <textarea id="c_pj" placeholder="例：ECリニューアル（PL・7名・6ヶ月）"></textarea>
+            </div>
+            <div class="fg s2">
+              <label>転職理由・キャリア志向</label>
+              <textarea id="c_why" placeholder="例：技術的な挑戦をしたい、裁量が欲しい、年収を上げたい"></textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -848,6 +885,51 @@
   </div>
 
 </main>
+
+<!-- ③ スカウト学習モーダル -->
+<div class="modal-overlay" id="learnModal" style="display:none" onclick="if(event.target===this)closeLearnModal()">
+  <div class="modal-card" style="max-width:640px;width:90vw;max-height:90vh;display:flex;flex-direction:column">
+    <div class="modal-head">
+      <div class="modal-title">🧠 スカウト学習ライブラリ</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px">優良スカウト文を登録すると、AIが文体・構成を学習してスカウト文生成に反映します</div>
+      <button class="modal-close" onclick="closeLearnModal()">✕</button>
+    </div>
+    <div style="overflow-y:auto;flex:1;padding:0 20px 20px">
+      <!-- 登録済み一覧 -->
+      <div style="display:flex;align-items:center;gap:8px;margin:16px 0 8px">
+        <div style="font-size:13px;font-weight:800;color:var(--text)">登録済みスカウト文</div>
+        <span class="learn-count-badge" id="learnedScoutCount">0件登録済み</span>
+      </div>
+      <div id="learnedScoutList"></div>
+
+      <!-- 新規登録フォーム -->
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+        <div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px">＋ 新しいスカウト文を登録</div>
+        <div class="fg" style="margin-bottom:10px">
+          <label style="font-size:12px;font-weight:700">ラベル（任意）</label>
+          <input type="text" id="learnScoutLabel" placeholder="例: 技術系スペシャリスト向け・返信率50%超" style="font-size:13px">
+        </div>
+        <div class="fg" style="margin-bottom:10px">
+          <label style="font-size:12px;font-weight:700">スカウト文本文<span class="req">*</span></label>
+          <textarea id="learnScoutBody" rows="8"
+            placeholder="実際に送って効果があったスカウトメールの本文をそのまま貼り付けてください。&#10;&#10;AIはこの文章から「文体・改行リズム・距離感・CTAの言い回し」を学習し、スカウト生成時に自然に反映します。&#10;個人情報・社名は伏字にしても構いません。"
+            style="font-size:13px;min-height:160px;resize:vertical"></textarea>
+        </div>
+        <div class="fg" style="margin-bottom:14px">
+          <label style="font-size:12px;font-weight:700">候補者タイプ（任意・複数選択可）</label>
+          <div id="learnTagCheckboxes" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+            <label class="learn-tag-check"><input type="checkbox" value="技術スペシャリスト型"> 技術スペシャリスト型</label>
+            <label class="learn-tag-check"><input type="checkbox" value="PM・マネジメント型"> PM・マネジメント型</label>
+            <label class="learn-tag-check"><input type="checkbox" value="キャリアアップ型"> キャリアアップ型</label>
+            <label class="learn-tag-check"><input type="checkbox" value="市場価値向上型"> 市場価値向上型</label>
+            <label class="learn-tag-check"><input type="checkbox" value="安定志向型"> 安定志向型</label>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="learnAddBtn" onclick="addLearnedScout()">✦ このスカウト文を登録する</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer class="footer"><p>Made with IBM Bob</p></footer>
 
