@@ -153,8 +153,41 @@
           <div class="icon-chip" style="background:#dbeafe;color:#1d4ed8">候</div>
           候補者情報
         </div>
-        <span style="font-size:12px;color:var(--muted)"><span style="color:var(--red)">*</span> 必須項目</span>
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="btn btn-ghost btn-sm paste-profile-btn" id="pasteProfileBtn" onclick="togglePastePanel()" title="BizReach・LinkedIn等のプロフィールをコピペすると自動で入力">
+            📋 プロフィールを貼り付け
+          </button>
+          <span style="font-size:12px;color:var(--muted)"><span style="color:var(--red)">*</span> 必須</span>
+        </div>
       </div>
+
+      <!-- プロフィール貼り付けパネル -->
+      <div class="paste-panel" id="pastePanel" style="display:none">
+        <div class="paste-panel-inner">
+          <div class="paste-panel-header">
+            <div class="paste-panel-title">
+              📋 プロフィール自動解析
+              <span class="paste-panel-badge">BizReach / LinkedIn / Wantedly / 職務経歴書 対応</span>
+            </div>
+            <button class="paste-panel-close" onclick="togglePastePanel()">✕</button>
+          </div>
+          <div class="paste-panel-hint">
+            BizReach・LinkedIn などのプロフィールページを<strong>まるごとコピー</strong>して貼り付けてください。<br>
+            AIが自動で「会社名・職種・経験・スキル・転職理由」を読み取ってフォームを埋めます。
+          </div>
+          <textarea class="paste-ta" id="profilePasteArea" placeholder="ここにプロフィールテキストをペースト（Ctrl+V）してください...&#10;&#10;例）BizReachのプロフィール画面を全選択（Ctrl+A）→コピー（Ctrl+C）→ここにペースト" rows="8"></textarea>
+          <div class="paste-panel-actions">
+            <div class="paste-status" id="pasteStatus"></div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-ghost btn-sm" onclick="clearPasteArea()">クリア</button>
+              <button class="btn btn-ai" id="parseProfileBtn" onclick="parseProfile()">
+                <span style="font-size:14px">✦</span> AIが解析してフォームを埋める
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="card-body">
         <div class="grid2">
           <div class="fg">

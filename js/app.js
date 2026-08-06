@@ -1321,6 +1321,116 @@ function restart() {
 }
 
 // ══════════════════════════════════════════
+// プロフィール貼り付け自動解析 (v完成)
+// ══════════════════════════════════════════
+
+/** 貼り付けパネルの開閉 */
+function togglePastePanel() {
+  const panel = $('pastePanel');
+  const btn   = $('pasteProfileBtn');
+  if (!panel) return;
+  const isOpen = panel.style.display !== 'none';
+  panel.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.classList.toggle('active', !isOpen);
+  if (!isOpen) {
+    // 開いたら貼り付けエリアにフォーカス
+    setTimeout(() => $('profilePasteArea')?.focus(), 100);
+  }
+}
+
+/** 貼り付けエリアをクリア */
+function clearPasteArea() {
+  const ta = $('profilePasteArea');
+  if (ta) ta.value = '';
+  const st = $('pasteStatus');
+  if (st) { st.textContent = ''; st.className = 'paste-status'; }
+}
+
+/**
+ * プロフィールテキストを解析してフォームを埋める
+ * APIあり → parseProfileAPI() / APIなし → parseProfileFallback()
+ */
+async function parseProfile() {
+  const text = $('profilePasteArea')?.value.trim();
+  if (!text || text.length < 20) {
+    setPasteStatus('プロフィールテキストを貼り付けてください。', 'error'); return;
+  }
+
+  const btn = $('parseProfileBtn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin" style="width:14px;height:14px;border-width:2px;margin:0 2px -2px 0;display:inline-block"></span> 解析中...'; }
+  setPasteStatus('AIが解析中...', 'loading');
+
+  let parsed;
+  try {
+    if (hasApiKey()) {
+      parsed = await parseProfileAPI(text);
+    } else {
+      // デモモード：正規表現フォールバック
+      await new Promise(r => setTimeout(r, 600)); // UI上の体感
+      parsed = parseProfileFallback(text);
+    }
+  } catch (e) {
+    // API失敗時もフォールバック
+    parsed = parseProfileFallback(text);
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<span style="font-size:14px">✦</span> AIが解析してフォームを埋める'; }
+  }
+
+  if (!parsed) { setPasteStatus('解析に失敗しました。テキストを確認してください。', 'error'); return; }
+
+  // フォームに値を反映
+  const fields = [
+    { id: 'c_co',   val: parsed.company    },
+    { id: 'c_role', val: parsed.role       },
+    { id: 'c_exp',  val: parsed.experience },
+    { id: 'c_sk',   val: parsed.skills     },
+    { id: 'c_pj',   val: parsed.projects   },
+    { id: 'c_why',  val: parsed.reason     },
+  ];
+
+  let filled = 0;
+  fields.forEach(({ id, val }) => {
+    if (!val) return;
+    const el = $(id);
+    if (!el) return;
+    el.value = val;
+    // フィールドハイライトアニメーション
+    el.classList.remove('field-filled');
+    void el.offsetWidth; // reflow
+    el.classList.add('field-filled');
+    setTimeout(() => el.classList.remove('field-filled'), 2000);
+    filled++;
+    // textareaのリサイズ
+    if (el.tagName === 'TEXTAREA') autoResize(el);
+  });
+
+  // ステータス表示
+  const sourceLabel = { bizreach: 'BizReach', linkedin: 'LinkedIn', wantedly: 'Wantedly', resume: '職務経歴書', unknown: 'プロフィール' };
+  const sourceName = sourceLabel[parsed.sourceHint] || 'プロフィール';
+  const confLabel  = { high: '高精度', medium: '中精度（一部推測あり）', low: '低精度（手動確認推奨）' };
+  const missingTxt = (parsed.missingFields || []).length > 0
+    ? `　/ 不足: ${parsed.missingFields.join('・')}` : '';
+
+  const msg = `✓ ${sourceName}から${filled}項目を読み取りました（${confLabel[parsed.confidence] || ''}）${missingTxt}`;
+  setPasteStatus(msg, parsed.confidence === 'low' ? 'error' : 'ok');
+
+  // パネルを閉じる（high・medium の場合のみ）
+  if (parsed.confidence !== 'low') {
+    setTimeout(() => {
+      togglePastePanel();
+    }, 1200);
+  }
+}
+
+/** ステータス表示ヘルパー */
+function setPasteStatus(msg, type) {
+  const el = $('pasteStatus');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = `paste-status ${type}`;
+}
+
+// ══════════════════════════════════════════
 // 機能A: 情報品質チェック & AI補完質問
 // ══════════════════════════════════════════
 function calcInfoQuality(c) {

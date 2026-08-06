@@ -1204,3 +1204,114 @@ async function runBatchSingle(c, j) {
   const data = parseApiResponse(await res.json());
   return { cand: c, ...data };
 }
+
+// ══════════════════════════════════════════
+// プロフィール自動解析 API（v完成）
+// BizReach / LinkedIn / Wantedly / 職務経歴書など
+// コピペテキストから候補者情報を自動抽出
+// ══════════════════════════════════════════
+
+/**
+ * 貼り付けられたプロフィールテキストをAIが解析して
+ * 候補者情報の各フィールドに分解して返す
+ * @param {string} profileText - コピペされたプロフィール全文
+ * @returns {Promise<Object>} - { company, role, experience, skills, projects, reason }
+ */
+async function parseProfileAPI(profileText) {
+  const prompt = `以下は求職者のプロフィールテキストです（BizReach・LinkedIn・Wantedly・職務経歴書などからコピーされたもの）。
+このテキストから候補者情報を抽出し、JSONのみ返してください。
+
+## 入力テキスト
+${profileText.slice(0, 3000)}
+
+## 抽出ルール
+- company: 現在（最新）の会社名。「現在」「直近」「在籍中」などを手がかりにする。見つからなければ最も最近の勤め先。
+- role: 現在の職種・役職。「エンジニア」「マネージャー」「コンサルタント」などを抽出。
+- experience: 職務経歴の要約（3〜5文）。数値・規模・期間・成果を含めて書く。箇条書きではなく文章で。
+- skills: スキル一覧（カンマ区切り）。プログラミング言語・フレームワーク・ツール・資格など。
+- projects: 代表的なプロジェクト（2〜3件）。「プロジェクト名（役割・規模・期間）」形式で。
+- reason: 転職理由・志向の推測。「直接記載されていなければ経歴から推測して」と書く。
+- confidence: 抽出精度（"high"=情報が十分 / "medium"=一部推測あり / "low"=情報が少ない）
+- missingFields: 不足している情報のリスト（例: ["転職理由", "スキル詳細"]）
+- sourceHint: どのサービスのプロフィールと推測されるか（"bizreach"/"linkedin"/"wantedly"/"resume"/"unknown"）
+
+## 返すJSONの構造
+{
+  "company": "現在の会社名",
+  "role": "現在の職種・役職",
+  "experience": "職務経歴の要約文（数値・成果を含む3〜5文）",
+  "skills": "スキル一覧（カンマ区切り）",
+  "projects": "代表プロジェクト（2〜3件）",
+  "reason": "転職理由・志向（記載あれば抜粋、なければ経歴から推測）",
+  "confidence": "high/medium/low",
+  "missingFields": ["不足フィールド"],
+  "sourceHint": "bizreach/linkedin/wantedly/resume/unknown"
+}`;
+
+  const messages = [
+    { role: 'system', content: 'あなたは採用のプロです。求職者プロフィールから情報を正確に抽出します。JSONのみ返してください。' },
+    { role: 'user', content: prompt }
+  ];
+  const res = await fetch(getApiUrl(), {
+    method: 'POST', headers: apiHeaders(),
+    body: JSON.stringify(buildRequestBody(messages, 0.3))
+  });
+  if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || `API ${res.status}`); }
+  return parseApiResponse(await res.json());
+}
+
+/**
+ * APIなし時のフォールバック：正規表現ベースのプロフィール解析
+ * BizReach形式を想定した簡易パーサー
+ * @param {string} text
+ * @returns {Object}
+ */
+function parseProfileFallback(text) {
+  const lines = text.split(/\n/).map(l => l.trim()).filter(Boolean);
+  const all   = text;
+
+  // 会社名：「株式会社」「Inc」「Ltd」前後・太字っぽい行
+  const companyMatch = all.match(/(?:現職|在籍|現在)\s*[：:]\s*([^\n]{2,30})/i)
+    || all.match(/([\S]{2,15}(?:株式会社|合同会社|有限会社|Inc\.|Ltd\.|Corp\.)[\S]{0,10})/i)
+    || all.match(/(?:^|\n)([A-Za-z\u3040-\u9FFF]{2,20}(?:株式会社|合同会社|Inc|Ltd))/m);
+  const company = companyMatch ? companyMatch[1].trim() : '';
+
+  // 職種：「エンジニア」「マネージャー」「コンサルタント」「デザイナー」などを含む行
+  const roleMatch = all.match(/(?:職種|役職|ポジション)\s*[：:]\s*([^\n]{2,40})/i)
+    || lines.find(l => /(エンジニア|デベロッパー|マネージャー|コンサルタント|デザイナー|プロデューサー|ディレクター|アナリスト|スペシャリスト|リード|Engineer|Manager|Consultant|Designer)/i.test(l) && l.length < 40);
+  const role = roleMatch ? (typeof roleMatch === 'string' ? roleMatch : roleMatch[1].trim()) : '';
+
+  // スキル：「スキル」「得意」「技術」セクション後の行・箇条書き
+  const skillSection = all.match(/(?:スキル|技術スタック|保有スキル|言語|フレームワーク)[^\n]*\n([\s\S]{0,400}?)(?:\n\n|\n[^\s])/i);
+  let skills = '';
+  if (skillSection) {
+    skills = skillSection[1].replace(/[•\-・◆▶◉●○]\s*/g, '').split(/[,、\n]+/).map(s => s.trim()).filter(s => s.length > 1 && s.length < 30).join(', ');
+  }
+  if (!skills) {
+    // キャメルケース・技術っぽいワードを全文から拾う
+    const techWords = all.match(/\b(?:Java|Python|JavaScript|TypeScript|Go|Ruby|PHP|Swift|Kotlin|React|Vue|Angular|AWS|Azure|GCP|Docker|Kubernetes|MySQL|PostgreSQL|Redis|MongoDB|Terraform|Ansible|Spring|Rails|Django|Node\.js|Next\.js)\b/gi) || [];
+    skills = [...new Set(techWords)].join(', ');
+  }
+
+  // 経験：職歴セクション
+  const expLines = lines.filter(l => l.length > 20 && l.length < 120 && /(?:開発|設計|構築|主導|リード|担当|改善|推進|実装|導入|支援|提案|年|名|件|%|PV|万)/.test(l)).slice(0, 5);
+  const experience = expLines.join(' ');
+
+  // プロジェクト
+  const projMatch = all.match(/(?:プロジェクト|案件|実績)[^\n]*\n([\s\S]{0,300}?)(?:\n\n)/i);
+  const projects = projMatch ? projMatch[1].slice(0, 200).replace(/\n/g, ' / ') : '';
+
+  // 転職理由
+  const reasonMatch = all.match(/(?:転職理由|転職を考えている理由|希望|求めていること|キャリア志向)[^\n]*\n([^\n]{10,200})/i);
+  const reason = reasonMatch ? reasonMatch[1].trim() : '（プロフィールから推測：より大きなチャレンジ・キャリアアップを目指している可能性）';
+
+  const filled = [company, role, experience || skills].filter(Boolean).length;
+  const confidence = filled >= 3 ? 'medium' : 'low';
+  const missing = [];
+  if (!company)    missing.push('会社名');
+  if (!role)       missing.push('職種');
+  if (!experience) missing.push('経験概要');
+  if (!skills)     missing.push('スキル');
+
+  return { company, role, experience, skills, projects, reason, confidence, missingFields: missing, sourceHint: 'unknown' };
+}

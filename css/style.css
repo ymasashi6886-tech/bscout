@@ -2012,3 +2012,108 @@ textarea.tall { min-height:110px; }
   .mode-pill { display: none; }
   .dash-kpi-val { font-size: 22px; }
 }
+
+/* ══════════════════════════════════════
+   プロフィール貼り付け自動解析パネル
+════════════════════════════════════════ */
+.paste-profile-btn {
+  font-size: 12px;
+  font-weight: 700;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.paste-profile-btn:hover { background: var(--accent-l); }
+.paste-profile-btn.active { background: var(--accent); color: #fff; }
+
+.paste-panel {
+  border-bottom: 1px solid var(--border);
+  background: #f0f5ff;
+  animation: slideDown .18s ease;
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.paste-panel-inner {
+  padding: 16px 22px 18px;
+}
+.paste-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.paste-panel-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.paste-panel-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  letter-spacing: .3px;
+}
+.paste-panel-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+}
+.paste-panel-close:hover { color: var(--text); }
+.paste-panel-hint {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+.paste-ta {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  background: #fff;
+  color: var(--text);
+  resize: vertical;
+  transition: border-color .15s;
+  box-sizing: border-box;
+}
+.paste-ta:focus { outline: none; border-color: var(--accent); }
+.paste-panel-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.paste-status {
+  font-size: 12px;
+  font-weight: 700;
+  flex: 1;
+}
+.paste-status.ok    { color: var(--green); }
+.paste-status.error { color: var(--red); }
+.paste-status.loading { color: var(--accent); }
+
+/* 解析完了後のフォームハイライト */
+@keyframes fieldHighlight {
+  0%   { background: #dbeafe; }
+  100% { background: transparent; }
+}
+.field-filled {
+  animation: fieldHighlight 1.5s ease forwards;
+  border-color: var(--accent) !important;
+}
