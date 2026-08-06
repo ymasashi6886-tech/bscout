@@ -90,6 +90,7 @@
       </div>
     </div>
     <div class="wx-panel-footer">
+      <button class="btn btn-sm btn-ghost" onclick="exportEditLogs()" title="蓄積した修正ログ・学習データをJSONでダウンロード">📥 学習データを出力</button>
       <button class="btn btn-sm btn-ghost" onclick="clearWxSettings()">設定をクリア</button>
       <button class="btn btn-sm btn-primary" onclick="applyWxSettings()">適用して閉じる</button>
     </div>
@@ -100,12 +101,12 @@
 
   <!-- Stepper -->
   <div class="stepper">
-    <div class="st active" id="si1"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
-    <div class="st"        id="si2"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
-    <div class="st"        id="si3"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
-    <div class="st"        id="si4"><div class="st-num">4</div><span class="st-label">会話設計</span></div>
-    <div class="st"        id="si5"><div class="st-num">5</div><span class="st-label">文章生成</span></div>
-    <div class="st"        id="si6"><div class="st-num">6</div><span class="st-label">編集・完成</span></div>
+    <div class="st active" id="si1" title="候補者情報と求人情報を入力してください"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
+    <div class="st"        id="si2" title="AIがトップリクルーター視点で候補者を分析します"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
+    <div class="st"        id="si3" title="AIが推奨するIBM訴求ポイントを確認・選択します"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
+    <div class="st"        id="si4" title="AIがスカウト文を書く前の「会話設計」を行います"><div class="st-num">4</div><span class="st-label">会話設計</span></div>
+    <div class="st"        id="si5" title="会話設計に基づいてスカウト文が生成されます（このSTEPはありません）"><div class="st-num">5</div><span class="st-label">文章生成</span></div>
+    <div class="st"        id="si6" title="生成されたスカウト文を編集・コピーして完成です"><div class="st-num">6</div><span class="st-label">編集・完成</span></div>
   </div>
 
   <div class="err-bar" id="errBar"></div>

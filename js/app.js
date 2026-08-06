@@ -179,6 +179,67 @@ const IBM_APPEALS = [
     priority: 2,
     keywords: ['裁量', '技術選定', '意思決定', 'アーキテクチャ', '自律性'],
   },
+  // ── v1.5 追加6軸 ──
+  {
+    id: 'consulting', name: 'コンサルティング力', icon: '💡',
+    color: '#0369a1', colorL: '#e0f2fe',
+    desc: '技術×ビジネスのコンサルスキル獲得',
+    ibmStrength: 'IBMのコンサルタントは技術実装だけでなく経営層への提言・変革推進まで担う。エンジニアが「ビジネスを語れる人材」に成長できる唯一の場。',
+    ibmExample: 'Fortune500企業の経営幹部にAI戦略を直接提案するプロジェクトに、技術者として参加できます。',
+    effectiveFor: ['PM・マネジメント型', '市場価値向上型', 'キャリアアップ型'],
+    priority: 2,
+    keywords: ['コンサル', '提案力', '経営', 'ビジネス', 'ストラテジー', 'CXO'],
+  },
+  {
+    id: 'innovation', name: 'イノベーション文化', icon: '🚀',
+    color: '#7c3aed', colorL: '#f5f3ff',
+    desc: '社内起業・新規事業・研究開発への参画',
+    ibmStrength: 'IBMリサーチは量子コンピューティング・次世代AI・セキュリティの世界最先端研究機関。社内インキュベーション制度でアイデアを事業化できる環境がある。',
+    ibmExample: 'IBM Research参加者は年間数百件の特許を出願。社内提案から新製品が生まれるイノベーション文化があります。',
+    effectiveFor: ['技術スペシャリスト型', '市場価値向上型'],
+    priority: 3,
+    keywords: ['イノベーション', '研究', '量子', '特許', '新規事業', 'リサーチ'],
+  },
+  {
+    id: 'hybrid_cloud', name: 'ハイブリッドクラウド', icon: '☁️',
+    color: '#0891b2', colorL: '#ecfeff',
+    desc: 'Red Hat/OpenShiftによるハイブリッドクラウド設計',
+    ibmStrength: 'Red Hat買収（340億ドル）によりAWS・Azure・Google Cloud上で動くOpenShiftを提供。マルチクラウド設計の実務経験は市場最高水準の希少性。',
+    ibmExample: 'AWS・Azure・オンプレを横断するOpenShiftクラスター設計の実務経験は、IBM以外ではほぼ積めません。',
+    effectiveFor: ['技術スペシャリスト型', '市場価値向上型'],
+    priority: 2,
+    keywords: ['Red Hat', 'OpenShift', 'ハイブリッドクラウド', 'Kubernetes', 'マルチクラウド'],
+  },
+  {
+    id: 'diversity', name: 'ダイバーシティ', icon: '🌈',
+    color: '#0d9488', colorL: '#f0fdfa',
+    desc: '多様性・インクルージョン・DE&I施策',
+    ibmStrength: '1950年代から人種・性別の平等を宣言したIBMは、DE&I文化の先駆者。LGBTQ+・障がい者・シニア・外国籍社員の活躍事例が豊富。',
+    ibmExample: 'IBMのDE&I指数はForbes誌のTop100常連。多様な価値観を「事業の強み」として活かす文化が根付いています。',
+    effectiveFor: ['安定志向型', 'グローバル志向型'],
+    priority: 3,
+    keywords: ['ダイバーシティ', 'DE&I', 'インクルージョン', '多様性', 'LGBTQ'],
+  },
+  {
+    id: 'mentorship', name: '育成・メンター制度', icon: '🤝',
+    color: '#65a30d', colorL: '#f7fee7',
+    desc: 'IBMのメンター・コーチング文化',
+    ibmStrength: 'ほぼ全エンジニア・コンサルタントに社内メンターが存在。Agile・Design Thinking・Enterprise Design Thinkingの実践訓練も充実。',
+    ibmExample: 'IBM社内では上位グレードのメンターが必ずつき、半年〜1年単位で成長を伴走してもらえます。',
+    effectiveFor: ['キャリアアップ型', '安定志向型'],
+    priority: 3,
+    keywords: ['メンター', 'コーチング', 'Agile', 'Design Thinking', '育成', '成長'],
+  },
+  {
+    id: 'startup_dna', name: 'スタートアップ的裁量', icon: '⚡',
+    color: '#ea580c', colorL: '#fff7ed',
+    desc: '大企業でありながらスタートアップ的な動き方',
+    ibmStrength: 'IBMは2019年以降、IBM GarageメソッドによりMVP開発・デザインスプリント・アジャイル開発を社内標準化。大企業の安定性とスタートアップの速度を両立。',
+    ibmExample: 'IBMのGarageプロジェクトでは、顧客のMVPを4週間で実装・リリースするスプリントが当たり前です。',
+    effectiveFor: ['技術スペシャリスト型', 'キャリアアップ型'],
+    priority: 3,
+    keywords: ['スタートアップ', 'Garage', 'MVP', 'アジャイル', 'スプリント', '速度'],
+  },
 ];
 
 /**
@@ -186,11 +247,11 @@ const IBM_APPEALS = [
  * rank: 1=必須, 2=有効, 3=補助
  */
 const IBM_MATRIX = {
-  '技術スペシャリスト型':  ['ai_transformation','watsonx','tech_env','scale','autonomy','global'],
-  'PM・マネジメント型':    ['scale','ai_transformation','autonomy','social','global','brand'],
-  'キャリアアップ型':      ['training','career_change','brand','scale','workstyle','benefits'],
-  '市場価値向上型':        ['ai_transformation','watsonx','brand','tech_env','global','training'],
-  '安定志向型':            ['stability','brand','benefits','workstyle','social','training'],
+  '技術スペシャリスト型':  ['ai_transformation','watsonx','tech_env','scale','autonomy','global','hybrid_cloud','innovation'],
+  'PM・マネジメント型':    ['scale','ai_transformation','autonomy','social','global','brand','consulting','startup_dna'],
+  'キャリアアップ型':      ['training','career_change','brand','scale','workstyle','benefits','mentorship','consulting'],
+  '市場価値向上型':        ['ai_transformation','watsonx','brand','tech_env','global','training','innovation','hybrid_cloud'],
+  '安定志向型':            ['stability','brand','benefits','workstyle','social','training','diversity','mentorship'],
 };
 
 // 後方互換のため旧IDマッピングも保持
@@ -265,12 +326,14 @@ $('analyzeBtn').addEventListener('click', () => {
     appeal:          $('j_ap').value.trim(),
     successExamples: $('j_success')?.value.trim() || ''
   };
-  if (!c.company || !c.role || !c.experience || !c.skills) {
-    err('候補者情報の必須項目（会社・職種・経験概要・スキル）を入力してください。'); return;
-  }
-  if (!j.position || !j.description || !j.requirements || !j.appeal) {
-    err('求人情報の必須項目（ポジション・仕事内容・求める経験・魅力）を入力してください。'); return;
-  }
+  if (!c.company) { err('「現在の会社」を入力してください。'); return; }
+  if (!c.role)    { err('「現在の職種」を入力してください。'); return; }
+  if (!c.experience || c.experience.length < 10) { err('「経験概要」をもう少し詳しく入力してください（例：チーム規模・担当業務・成果など）。'); return; }
+  if (!c.skills)  { err('「スキル」を入力してください（例：Java, AWS, チームリード など）。'); return; }
+  if (!j.position)    { err('「募集ポジション名」を入力してください。'); return; }
+  if (!j.description) { err('「仕事内容」を入力してください。'); return; }
+  if (!j.requirements){ err('「求める経験・スキル」を入力してください。'); return; }
+  if (!j.appeal)      { err('「会社・ポジションの魅力」を入力してください。AI訴求の質に最も影響します。'); return; }
   clearErr(); S.candidate = c; S.job = j;
   const iq = calcInfoQuality(c);
   if (iq.score < 70) { renderAIQuestions(c, j, iq); go('15'); }
@@ -708,6 +771,9 @@ function _openSpEditMode() {
   const sp = S.storyPlan;
   if (!sp) return;
 
+  // v1.5 BUG FIX: 編集前スナップショットを保存して「キャンセル」で巻き戻せるようにする
+  S._spEditSnapshot = JSON.parse(JSON.stringify(sp));
+
   $('spViewMode').style.display = 'none';
   $('spEditMode').style.display = '';
   const btn = $('spEditToggleBtn');
@@ -791,6 +857,8 @@ function applySpEdit() {
   const note = $('sp-note')?.value || '';
   saveStoryPlanEdit(S.storyPlan, note);
   if (S.learningData?.storyPlan) S.learningData.storyPlan.wasEdited = true;
+  // v1.5: スナップショットをクリア（保存完了）
+  S._spEditSnapshot = null;
 
   // 表示モードに戻って再描画
   $('spEditMode').style.display = 'none';
@@ -800,8 +868,12 @@ function applySpEdit() {
   _renderSpViewMode(S.storyPlan);
 }
 
-/** キャンセル — S.storyPlanは変更しない（リアルタイム同期されているため再描画だけ） */
+/** v1.5 BUG FIX: キャンセル時はスナップショットから復元してS.storyPlanを巻き戻す */
 function cancelSpEdit() {
+  if (S._spEditSnapshot) {
+    S.storyPlan = JSON.parse(JSON.stringify(S._spEditSnapshot));
+    S._spEditSnapshot = null;
+  }
   $('spEditMode').style.display = 'none';
   $('spViewMode').style.display = '';
   const btn = $('spEditToggleBtn');
@@ -897,6 +969,8 @@ function renderMail() {
     S.learningData.scoutAction.selectedAppeals  = S.selectedAppeals;
     S.learningData.scoutAction.generatedSubject = S.mail?.subject || '';
   }
+  // v1.5 BUG FIX: storyPlan確定後に学習データを再構築
+  buildLearningData();
   // Phase2-3: OHEREトレーサビリティバッジを各セクションヘッダーに表示
   renderOhereTraceBadges();
   // 履歴に自動保存してフィードバックUIを描画
@@ -1016,6 +1090,18 @@ function renderSelfReview() {
        </div>`
     : '';
 
+  // v1.5: 高度品質チェック警告バナー
+  const aq = S.advancedQuality || {};
+  const aqWarnings = [];
+  if ((aq.templateIssues || []).length > 0) aqWarnings.push(`テンプレ表現: ${aq.templateIssues.join(' / ')}`);
+  if ((aq.longSentences || []).length > 0)  aqWarnings.push(`長文 ${aq.longSentences.length}文あり（平均${aq.avgSentenceLen}字）`);
+  if ((aq.repetitions  || []).length > 0)   aqWarnings.push(`繰り返し: 「${aq.repetitions.join('」「')}」`);
+  const advancedBanner = aqWarnings.length > 0
+    ? `<div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:6px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#92400e">
+        ⚡ AIっぽさチェック（v1.5）: ${aqWarnings.join('　/　')}
+       </div>`
+    : '';
+
   // 改善指摘 — v1.2: targetSection対応
   const secLabel = { subject:'件名', intro:'冒頭文', why:'理由', match:'接点', benefit:'メリット', cta:'誘導文' };
   const SEC_FALLBACK = {
@@ -1046,11 +1132,11 @@ function renderSelfReview() {
     <div class="sr-header">
       <div class="sr-title">
         <span class="sr-icon">✦</span>
-        AIセルフレビュー <span class="sr-ibm-badge">v1.2</span>
+        AIセルフレビュー <span class="sr-ibm-badge">v1.5</span>
         ${reviewRound > 1 ? `<span class="sr-round-badge">第${reviewRound}回</span>` : ''}
       </div>
     </div>
-    ${violationBanner}
+    ${violationBanner}${advancedBanner}
     <div class="sr-overall">${esc(sr.overallComment || '')}</div>
     <div class="sr-axes">
       ${axes.map(a => {
@@ -1100,19 +1186,19 @@ async function regenSectionWithFix(sec, fixInstruction) {
     return ap ? `${ap.name}: ${ap.ibmStrength.slice(0, 60)}` : '';
   }).filter(Boolean).join('\n');
 
-  const res = await fetch(API_URL, {
+  // v1.5 BUG FIX: API_URL直参照→getApiUrl(), OpenAI固定パース→parseApiResponse()
+  const sp = S.storyPlan || {};
+  const spCtx = sp.writingTone ? `文体指示: ${sp.writingTone}\n避けること: ${sp.avoidInThisScout || ''}` : '';
+  const msgs = [
+    { role: 'system', content: 'あなたは日本のIBMトップリクルーターです。スカウトメールの特定セクションを改善します。AIっぽい定型表現は一切使わないこと。JSONのみ返してください。' },
+    { role: 'user', content: `## 改善対象セクション: ${sec}\n## 現在の文章:\n${current}\n\n## 改善指示（必ず反映すること）:\n${fixInstruction}\n\n## IBM訴求のヒント（自然に組み込む）:\n${ibmAppeals}\n${spCtx ? '\n## Story Planner指示\n' + spCtx : ''}\n\n## 候補者情報: ${c.role}（${c.company}）、スキル: ${c.skills}、志向: ${c.reason || '不明'}\n## 求人情報: ${j.position}（${j.company || 'IBM'}）\n\n改善指示を完全に反映した新しい文章を生成してください。JSON: {"${sec}": "改善後テキスト"}` }
+  ];
+  const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
-    body: JSON.stringify({
-      model: md(),
-      messages: [
-        { role: 'system', content: 'あなたは日本のトップリクルーターです。スカウトメールの特定セクションを改善します。JSONのみ返してください。' },
-        { role: 'user', content: `## 改善対象セクション: ${sec}\n## 現在の文章:\n${current}\n\n## 改善指示（必ず反映すること）:\n${fixInstruction}\n\n## IBM訴求のヒント（自然に組み込む）:\n${ibmAppeals}\n\n## 候補者情報: ${c.role}（${c.company}）、スキル: ${c.skills}、志向: ${c.reason || '不明'}\n## 求人情報: ${j.position}（${j.company || 'IBM'}）\n\n改善指示を完全に反映した新しい文章を生成してください。AIっぽい定型表現は禁止。JSON: {"${sec}": "改善後テキスト"}` }
-      ],
-      temperature: 0.8, response_format: { type: 'json_object' }
-    })
+    body: JSON.stringify(buildRequestBody(msgs, 0.8))
   });
   if (!res.ok) throw new Error('API error');
-  const parsed = JSON.parse((await res.json()).choices[0].message.content);
+  const parsed = parseApiResponse(await res.json());
   S.mail[sec] = parsed[sec];
   const ta = $('ta-' + sec);
   if (ta) { ta.value = parsed[sec]; autoResize(ta); updateCC('ta-' + sec, 'cc-' + sec); }

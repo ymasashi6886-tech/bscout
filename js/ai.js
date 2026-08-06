@@ -121,6 +121,102 @@ async function fixBannedSections(violations) {
 }
 
 // ══════════════════════════════════════════
+// v1.5 — AIっぽさ高度除去エンジン
+// ══════════════════════════════════════════
+
+/**
+ * テンプレート臭い表現パターン（正規表現）
+ * BANNED_PHRASESの単語チェックより広いパターン検知
+ */
+const TEMPLATE_PATTERNS = [
+  // 〜させていただく 系
+  /させていただきました/,
+  /させていただければ/,
+  /させていただく/,
+  // AI的な過剰な配慮
+  /もし.*よろしければ/,
+  /ご都合.*よろしければ/,
+  /お気軽に.*ください/,
+  /お力になれれば/,
+  // 同じ文末パターン（「です。」が3回以上連続）
+  /です。[^]*?です。[^]*?です。/,
+  // 「〜と思います」「〜と存じます」の連続
+  /と思います。[^]*?と思います。/,
+  /と存じます/,
+  // 「弊社」多用
+  /弊社.*弊社.*弊社/,
+  // 「ぜひ」（BANNED_PHRASESに単独語あり、複合形も）
+  /ぜひとも/,
+  /ぜひご/,
+];
+
+/**
+ * v1.5: テンプレート臭いパターン検知
+ * @returns {string[]} 検知されたパターン説明の配列
+ */
+function detectTemplatePatterns(text) {
+  if (!text) return [];
+  const found = [];
+  TEMPLATE_PATTERNS.forEach((pattern, i) => {
+    if (pattern.test(text)) {
+      const labels = [
+        'させていただく（多用）','させていただければ','させていただく',
+        'もし〜よろしければ','ご都合〜よろしければ','お気軽にどうぞ',
+        'お力になれれば','「です。」3連続','「と思います」2連続',
+        'と存じます','弊社3連続','ぜひとも','ぜひご〜',
+      ];
+      found.push(labels[i] || `パターン${i}`);
+    }
+  });
+  return found;
+}
+
+/**
+ * v1.5: 一文の長さチェック（40字超の文を検知）
+ * @returns {{ long: string[], avgLen: number }}
+ */
+function checkSentenceLength(text) {
+  if (!text) return { long: [], avgLen: 0 };
+  const sentences = text
+    .split(/[。！？\n]/)
+    .map(s => s.trim())
+    .filter(s => s.length > 0);
+  const long = sentences.filter(s => s.replace(/[ぁ-ん]/g, '').length > 0 && s.length > 50);
+  const avgLen = sentences.length ? Math.round(sentences.reduce((a, s) => a + s.length, 0) / sentences.length) : 0;
+  return { long: long.slice(0, 3), avgLen };
+}
+
+/**
+ * v1.5: 繰り返し表現の検知（名詞・サ変動詞の2回以上使用）
+ * @returns {string[]} 繰り返し使用された表現
+ */
+function detectRepetitions(text) {
+  if (!text) return [];
+  // 4字以上の固有表現が2回以上出現するか
+  const matches = text.match(/[\u4e00-\u9fa5ぁ-んァ-ン]{4,}/g) || [];
+  const counts = {};
+  matches.forEach(w => { counts[w] = (counts[w] || 0) + 1; });
+  return Object.entries(counts)
+    .filter(([_, c]) => c >= 2)
+    .map(([w]) => w)
+    .slice(0, 5);
+}
+
+/**
+ * v1.5: スカウト全文の高度品質チェック（非同期不要・同期）
+ * BANNED_PHRASESチェックと組み合わせてセルフレビューに追加情報を提供
+ * @param {object} mail — {subject, intro, why, match, benefit, cta}
+ * @returns {{ templateIssues: string[], longSentences: string[], repetitions: string[], avgSentenceLen: number }}
+ */
+function advancedMailQualityCheck(mail) {
+  const fullText = Object.values(mail).filter(Boolean).join('\n');
+  const templateIssues = detectTemplatePatterns(fullText);
+  const { long: longSentences, avgLen } = checkSentenceLength(fullText);
+  const repetitions = detectRepetitions(fullText);
+  return { templateIssues, longSentences, repetitions, avgSentenceLen: avgLen };
+}
+
+// ══════════════════════════════════════════
 // v1.2 実装② — 冒頭パターンライブラリ
 // ══════════════════════════════════════════
 
@@ -526,6 +622,18 @@ function selectIbmKnowledge(typeCategory, appealIds) {
     'brand':             ['stability','scale'],
     'autonomy':          ['oss','ai'],
     'tech_env':          ['oss','cloud'],
+    // v1.5 BUG FIX: 14軸対応
+    'finance_dx':        ['scale','ai'],
+    'public_dx':         ['scale','social'],
+    'stability':         ['stability','salary'],
+    'career_change':     ['training','workstyle'],
+    // v1.5 追加軸
+    'consulting':        ['scale','ai','global'],
+    'innovation':        ['ai','oss'],
+    'diversity':         ['global','workstyle'],
+    'mentorship':        ['training','social'],
+    'startup_dna':       ['oss','ai'],
+    'hybrid_cloud':      ['cloud','oss'],
   };
   const keys = new Set([
     ...(MAP[typeCategory] || ['ai','scale','global']),
@@ -620,17 +728,21 @@ ${ibmKnowledgeForAnalysis}
   "strategyNote": "今回のアプローチで採用担当者が意識すべき戦略的ポイント（1〜2文）"
 }
 
-appealPriority/recommendedAppealsに使えるIDは（IBM専用14軸）:
+appealPriority/recommendedAppealsに使えるIDは（IBM専用20軸）:
 ai_transformation（AI変革）, watsonx（watsonx）, global（グローバル環境）, scale（大規模案件）,
 social（社会貢献）, training（育成制度）, workstyle（働き方）, benefits（福利厚生）,
 brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）,
-finance_dx（金融DX）, public_dx（官公庁・社会インフラDX）, stability（安定・長期雇用）, career_change（キャリアチェンジ支援）
+finance_dx（金融DX）, public_dx（官公庁・社会インフラDX）, stability（安定・長期雇用）, career_change（キャリアチェンジ支援）,
+consulting（コンサルティング力）, innovation（イノベーション文化）, hybrid_cloud（ハイブリッドクラウド）,
+diversity（ダイバーシティ）, mentorship（育成・メンター制度）, startup_dna（スタートアップ的裁量）
 
 上記IBM専用IDのみ使用。旧ID（tech/career/startup等）は使わないこと。
-finance_dxは金融業界経験者・金融志向の候補者に、public_dxは官公庁・公共事業関係者に、stabilityは安定志向型に、career_changeはキャリアチェンジ希望者に優先的に使うこと。`;
+・finance_dx: 金融業界経験者 ・public_dx: 官公庁・公共事業 ・stability: 安定志向型
+・career_change: キャリアチェンジ希望 ・consulting: PM志向・コンサル志向 ・innovation: 研究・新規事業志向
+・hybrid_cloud: クラウド設計経験者 ・diversity: DE&I重視 ・mentorship: 育成重視 ・startup_dna: スタートアップ経験者`;
 
   const messages = [
-    { role: 'system', content: 'あなたはIBM日本の採用担当トップリクルーターです。候補者分析の専門家として、IBM専用の14軸訴求マスタを使ってJSONのみ返してください。' },
+    { role: 'system', content: 'あなたはIBM日本の採用担当トップリクルーターです。候補者分析の専門家として、IBM専用の20軸訴求マスタを使ってJSONのみ返してください。' },
     { role: 'user', content: prompt }
   ];
   const res = await fetch(getApiUrl(), {
@@ -662,6 +774,24 @@ async function callStoryPlannerAPI() {
   const openingHints = selectOpeningPatterns(typeCategory, c);
   // IBM知識（訴求設計の参考に）
   const ibmKnowledge = selectIbmKnowledge(typeCategory, S.selectedAppealIds || []);
+
+  // v1.5: 成功スカウト例分析があればStory Plannerに反映
+  let successHintForSP = '';
+  if (j.successExamples) {
+    if (!S._successExampleCache || S._successExampleCache.src !== j.successExamples) {
+      const analyzed = await analyzeSuccessExample(j.successExamples).catch(() => null);
+      if (analyzed) S._successExampleCache = { src: j.successExamples, result: analyzed };
+    }
+    if (S._successExampleCache?.result) {
+      const r = S._successExampleCache.result;
+      successHintForSP = `\n## 過去の成功スカウト例から学んだパターン（会話設計の参考に）
+- 冒頭スタイル: ${r.openingStyle || ''}
+- 文体・距離感: ${[r.distanceFeel, r.avgSentenceLength].filter(Boolean).join(' / ')}
+- CTAの言い回し: ${r.ctaStyle || ''}
+- 良かった点: ${(r.strongPoints || []).join(' / ')}
+- 改行リズム: ${r.lineBreakRhythm || ''}`;
+    }
+  }
 
   const prompt = `あなたは日本のIBMトップリクルーターです。文章を書く前の「会話設計」をJSONで返してください。
 
@@ -704,6 +834,7 @@ ${ibmKnowledge}
 
 ## 冒頭フォーカスの候補（参考）
 ${openingHints.map((p, i) => `候補${i + 1}: 「${p}」`).join('\n')}
+${successHintForSP}
 
 ## 返すJSONの構造（厳守）
 {
@@ -849,11 +980,12 @@ ${bannedList}
   // v1.2 実装① — 禁止表現スキャン → 自動再生成
   const violations = scanMailForBanned(S.mail);
   if (violations.length > 0 && hasApiKey()) {
-    // バックグラウンドで違反セクションを修正（UIは既に表示済み）
     fixBannedSections(violations).catch(() => {});
   }
-  // 違反情報をステートに保存（UIで警告表示に使用）
   S.bannedViolations = violations;
+
+  // v1.5 — 高度品質チェック（同期・即座に実行）
+  S.advancedQuality = advancedMailQualityCheck(S.mail);
 
   hideLoad(); renderMail(); renderProcessLog(); go(6);
 }
@@ -867,8 +999,12 @@ async function callSelfReviewAPI() {
   const fullMail = `件名: ${m.subject || ''}\n\n${m.intro || ''}\n\n${m.why || ''}\n\n${m.match || ''}\n\n${m.benefit || ''}\n\n${m.cta || ''}`;
   const typeCategory = a.candidateTypeCategory || '';
   const temp = a.temperature || {};
-  // v1.2: 禁止表現チェック結果をレビューに渡す
   const bannedFound = (S.bannedViolations || []).map(v => `「${v.phrase}」(${v.label})`).join('、') || 'なし';
+  // v1.5: 高度品質チェック結果を評価に追加
+  const aq = S.advancedQuality || {};
+  const templateFound  = (aq.templateIssues  || []).join('、') || 'なし';
+  const longSentFound  = (aq.longSentences  || []).length > 0 ? `${aq.longSentences.length}文（平均${aq.avgSentenceLen}字）` : 'なし';
+  const repetFound     = (aq.repetitions    || []).join('、') || 'なし';
 
   const prompt = `あなたはIBMスカウトメール品質評価の専門家です。以下のスカウトメールを5軸で採点し、JSONのみ返してください。
 
@@ -882,6 +1018,9 @@ ${fullMail}
 - 避けるべき訴求: ${a.avoidPoints || ''}
 - 選択した訴求: ${(S.selectedAppeals || []).join('、')}
 - 禁止表現スキャン結果: ${bannedFound}
+- テンプレ表現検知（v1.5）: ${templateFound}
+- 長文検知（v1.5）: ${longSentFound}
+- 繰り返し表現（v1.5）: ${repetFound}
 
 ## 評価基準（5軸・各0〜100点）
 
