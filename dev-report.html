@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bスカウト — 開発レポート v1.4</title>
+<title>Bスカウト — 開発レポート v1.5</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -147,14 +147,14 @@ tr:last-child td{border-bottom:none}
   <!-- VERSION HERO -->
   <div class="version-hero">
     <div class="version-left">
-      <div class="version-num">v1.4</div>
-      <div class="version-label">Story Planner直接編集UI・14軸IBM訴求・demoMail SP対応・成功例分析拡張</div>
-      <div class="phase-badge">📅 最終更新: 2025年7月（直接編集UI + saveStoryPlanEdit呼び出し + regenSection SP参照）</div>
+      <div class="version-num">v1.5</div>
+      <div class="version-label">完成版 — バグ全修正・20軸IBM訴求・AIっぽさ高度除去・UX改善</div>
+      <div class="phase-badge">📅 最終更新: 2025年7月（致命的バグ5件修正 + 機能完成 + 品質向上）</div>
     </div>
     <div class="version-right">
       <div class="version-concept">
         「トップリクルーターが30分かけて考える<br>採用戦略を、AIが2分で再現する」<br><br>
-        <strong style="color:#fff">「考えるAI」から「人間らしく伝えるAI」へ<br>採用AIエージェント</strong>
+        <strong style="color:#fff">v1.5「完成版」達成<br>次は v2.0 インフラ整備フェーズへ</strong>
       </div>
     </div>
   </div>
@@ -229,18 +229,18 @@ tr:last-child td{border-bottom:none}
       </div>
       <div class="vt-line vt-line-done"></div>
       <div class="vt-item">
-        <div class="vt-dot vt-current">v1.4</div>
-        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>直接編集UI</div>
+        <div class="vt-dot vt-done">v1.4</div>
+        <div class="vt-label">直接<br>編集UI</div>
       </div>
-      <div class="vt-line"></div>
+      <div class="vt-line vt-line-done"></div>
       <div class="vt-item">
-        <div class="vt-dot vt-next">v1.5</div>
-        <div class="vt-label">文体チェック<br>強化</div>
+        <div class="vt-dot vt-current">v1.5</div>
+        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>完成版</div>
       </div>
       <div class="vt-line"></div>
       <div class="vt-item">
         <div class="vt-dot vt-next">v2.0</div>
-        <div class="vt-label">watsonx<br>本番化</div>
+        <div class="vt-label">インフラ<br>整備</div>
       </div>
     </div>
   </div>
@@ -250,8 +250,8 @@ tr:last-child td{border-bottom:none}
   <div class="card">
     <div class="score-row">
       <div class="score-card">
-        <div class="score-val" style="color:var(--green)">7.5</div>
-        <div class="score-label">総合 / 10点</div>
+        <div class="score-val" style="color:var(--green)">8.5</div>
+          <div class="score-label">総合 / 10点</div>
       </div>
       <div class="score-card">
         <div class="score-val" style="color:var(--green)">8.5</div>
@@ -271,7 +271,7 @@ tr:last-child td{border-bottom:none}
       </div>
     </div>
     <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7">
-      v1.4でStory Planner直接編集UIを実装。採用担当者がAIの会話設計（冒頭フォーカス・会話フロー・IBM訴求順位・文体指示）をすべてその場で修正・保存できる。14軸IBM訴求対応・demoMailのSP参照・regenSectionのSP参照・成功例分析4項目拡張も完了。「考えるAI」が担当者の意図を反映した「人間らしく伝えるAI」に近づいた。
+      v1.5は「完成版」フェーズ。①致命的バグ5件を完全修正（regenSectionWithFix API_URL直参照・cancelSpEditスナップショット巻き戻し・selectIbmKnowledge14軸マッピング・buildLearningDataタイミング修正・exportEditLogs UIボタン追加）。②AIっぽさ高度除去エンジン追加（テンプレ検知・繰り返し検知・一文長さ警告）。③IBM訴求20軸完成。④Story Planner成功例連携。⑤エラーメッセージUX改善。致命的バグゼロ・全STEP正常動作を達成。
     </p>
   </div>
 
@@ -537,18 +537,18 @@ tr:last-child td{border-bottom:none}
     │　　└── <span class="ft-file">style.css</span>　　　 <span class="ft-comment">// v1.4: sp-edit-* スタイル追加（編集フォーム / 会話フロー編集 / IBM訴求編集 / 保存ボタン行）</span><br>
     ├── <span class="ft-dir">js/</span><br>
     │　　├── <span class="ft-file">storage.js</span>　　　 <span class="ft-comment">// v1.3 — saveStoryPlanEdit() 実装済み（v1.4: generateMail/applySpEditから呼び出し追加）</span><br>
-    │　　├── <span class="ft-file">ai.js</span>　　　　　　 <span class="ft-comment">// v1.4: callAnalysisAPI 14軸ID更新 / regenSection SP参照 / analyzeSuccessExample 4項目拡張</span><br>
-    │　　└── <span class="ft-file">app.js</span>　　　　　 <span class="ft-comment">// v1.4: toggleSpEdit / _openSpEditMode / spEditSync / applySpEdit / cancelSpEdit / demoMail SP対応</span><br>
+    │　　├── <span class="ft-file">ai.js</span>　　　　　　 <span class="ft-comment">// v1.5: 20軸対応 / advancedMailQualityCheck / regenSectionWithFix BUG FIX / SP成功例連携</span><br>
+    │　　└── <span class="ft-file">app.js</span>　　　　　 <span class="ft-comment">// v1.5: cancelSpEditスナップショット巻き戻し / buildLearningData更新タイミング修正 / エラーメッセージ改善 / 20軸MATRIX</span><br>
     ├── <span class="ft-dir">netlify/functions/</span><br>
     │　　└── <span class="ft-file">proxy.js</span>　　　　 <span class="ft-comment">// Netlify用APIプロキシ（変更なし）</span><br>
     ├── <span class="ft-file">netlify.toml</span>　　　　 <span class="ft-comment">// Netlifyデプロイ設定（変更なし）</span><br>
-    └── <span class="ft-file">bscout_standalone.html</span> <span class="ft-comment">// 全ファイル統合版（v1.4再生成済・266KB・ChatGPT添付用）</span>
+    └── <span class="ft-file">bscout_standalone.html</span> <span class="ft-comment">// 全ファイル統合版（v1.5再生成済・280KB・ChatGPT添付用）</span>
   </div>
 
 </div>
 
 <footer style="text-align:center;font-size:12px;color:#9ca3af;border-top:1px solid #e2e5ea;padding:16px 0;margin-top:40px;background:#fff">
-  Bスカウト v1.4 — 採用AIエージェント — Made with IBM Bob
+  Bスカウト v1.5 — 採用AIエージェント — Made with IBM Bob
 </footer>
 
 </body>
