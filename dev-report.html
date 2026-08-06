@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bスカウト — 開発レポート v1.1</title>
+<title>Bスカウト — 開発レポート v1.4</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -147,14 +147,14 @@ tr:last-child td{border-bottom:none}
   <!-- VERSION HERO -->
   <div class="version-hero">
     <div class="version-left">
-      <div class="version-num">v1.1</div>
-      <div class="version-label">Phase3a/3b 完了 — IBM知識注入・watsonx切り替えUI・API統一</div>
-      <div class="phase-badge">📅 最終更新: 2025年7月（IBM_KNOWLEDGE注入 + watsonx設定パネル + regenSection/runBatchSingle API統一）</div>
+      <div class="version-num">v1.4</div>
+      <div class="version-label">Story Planner直接編集UI・14軸IBM訴求・demoMail SP対応・成功例分析拡張</div>
+      <div class="phase-badge">📅 最終更新: 2025年7月（直接編集UI + saveStoryPlanEdit呼び出し + regenSection SP参照）</div>
     </div>
     <div class="version-right">
       <div class="version-concept">
         「トップリクルーターが30分かけて考える<br>採用戦略を、AIが2分で再現する」<br><br>
-        <strong style="color:#fff">採用担当者の思考をAI化する<br>採用AIエージェント</strong>
+        <strong style="color:#fff">「考えるAI」から「人間らしく伝えるAI」へ<br>採用AIエージェント</strong>
       </div>
     </div>
   </div>
@@ -214,13 +214,28 @@ tr:last-child td{border-bottom:none}
       </div>
       <div class="vt-line vt-line-done"></div>
       <div class="vt-item">
-        <div class="vt-dot vt-current">v1.1</div>
-        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>Phase3完了</div>
+        <div class="vt-dot vt-done">v1.1</div>
+        <div class="vt-label">Phase3完了<br>IBM_KNOWLEDGE</div>
+      </div>
+      <div class="vt-line vt-line-done"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-done">v1.2</div>
+        <div class="vt-label">AIっぽさ除去<br>BANNED_30語</div>
+      </div>
+      <div class="vt-line vt-line-done"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-done">v1.3</div>
+        <div class="vt-label">Story Planner<br>6stepフロー</div>
+      </div>
+      <div class="vt-line vt-line-done"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-current">v1.4</div>
+        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>直接編集UI</div>
       </div>
       <div class="vt-line"></div>
       <div class="vt-item">
-        <div class="vt-dot vt-next">v1.2</div>
-        <div class="vt-label">IBM Cloud<br>移行</div>
+        <div class="vt-dot vt-next">v1.5</div>
+        <div class="vt-label">文体チェック<br>強化</div>
       </div>
       <div class="vt-line"></div>
       <div class="vt-item">
@@ -235,28 +250,28 @@ tr:last-child td{border-bottom:none}
   <div class="card">
     <div class="score-row">
       <div class="score-card">
-        <div class="score-val" style="color:var(--green)">6.5</div>
+        <div class="score-val" style="color:var(--green)">7.5</div>
         <div class="score-label">総合 / 10点</div>
       </div>
       <div class="score-card">
-        <div class="score-val" style="color:var(--green)">8</div>
+        <div class="score-val" style="color:var(--green)">8.5</div>
         <div class="score-label">基本機能</div>
       </div>
       <div class="score-card">
-        <div class="score-val" style="color:var(--amber)">6</div>
+        <div class="score-val" style="color:var(--green)">8</div>
         <div class="score-label">思考再現度</div>
       </div>
       <div class="score-card">
-        <div class="score-val" style="color:var(--amber)">6</div>
+        <div class="score-val" style="color:var(--green)">7.5</div>
         <div class="score-label">IBM専用化</div>
       </div>
       <div class="score-card">
-        <div class="score-val" style="color:var(--amber)">6</div>
+        <div class="score-val" style="color:var(--amber)">7</div>
         <div class="score-label">実用性</div>
       </div>
     </div>
     <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7">
-      Phase3a/3bでIBM_KNOWLEDGEナレッジ注入・watsonx切り替えUI・全APIコールの統一を実装。AIが「IBMらしい」具体的な数値・事例をプロンプトから得られるようになり、IBM専用化スコアが大幅改善。watsonxへの道が技術的に整備された。残課題：IBM Cloud移行・Cloudant永続化・チーム認証。
+      v1.4でStory Planner直接編集UIを実装。採用担当者がAIの会話設計（冒頭フォーカス・会話フロー・IBM訴求順位・文体指示）をすべてその場で修正・保存できる。14軸IBM訴求対応・demoMailのSP参照・regenSectionのSP参照・成功例分析4項目拡張も完了。「考えるAI」が担当者の意図を反映した「人間らしく伝えるAI」に近づいた。
     </p>
   </div>
 
@@ -327,8 +342,60 @@ tr:last-child td{border-bottom:none}
           <div class="phase-item"><span class="pi-done">✅</span>selectIbmKnowledge() — 候補者タイプ+訴求IDから最適な知識を3〜4件選択</div>
           <div class="phase-item"><span class="pi-done">✅</span><strong>watsonx切り替えUI</strong> — ⚙ボタンでバックエンド設定パネル（OpenAI / IBM watsonx 切り替え・IAMトークン・プロジェクトID・モデル選択）</div>
           <div class="phase-item"><span class="pi-done">✅</span>getApiUrl() / buildRequestBody() / parseApiResponse() — API呼び出し統一（全関数に適用完了）</div>
-          <div class="phase-item"><span class="pi-done">✅</span>regenSection() / runBatchSingle() を旧API_URL → getApiUrl() に統一</div>
-          <div class="phase-item"><span class="pi-done">✅</span>インフラ移行設計書（短期: Netlify / 中期: IBM Cloud Code Engine + Cloudant / 長期: watsonx.ai Granite）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-marker pm-done"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">v1.2 — AIっぽさ除去エンジン</div>
+          <span class="phase-tag pt-done">✅ 完了 → v1.2</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-done">✅</span>BANNED_PHRASES（30語）+ scanMailForBanned() + fixBannedSections()自動再生成</div>
+          <div class="phase-item"><span class="pi-done">✅</span>OPENING_PATTERNS（50例）+ selectOpeningPatterns() — 候補者タイプ別冒頭ライブラリ</div>
+          <div class="phase-item"><span class="pi-done">✅</span>STYLE_LIBRARY（5スタイル）+ selectStyle() — 文体ライブラリ</div>
+          <div class="phase-item"><span class="pi-done">✅</span>analyzeSuccessExample() — 成功スカウト例の特徴5軸抽出</div>
+          <div class="phase-item"><span class="pi-done">✅</span>IBM訴求14軸構造拡張（finance_dx / public_dx / stability / career_change 追加）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>セルフレビュー5軸刷新（返信率廃止 → humanness / candidateSpecificity / consistency / ibmness / evidenceQuality）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-marker pm-done"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">v1.3 — Story Planner</div>
+          <span class="phase-tag pt-done">✅ 完了 → v1.3</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-done">✅</span><strong>callStoryPlannerAPI()</strong> — 文章を書く前の「会話設計」をAIが生成（冒頭フォーカス/能力承認/キャリア仮説/IBM訴求設計/会話フロー5STEP/クロージングスタイル）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>PANEL4（Story Planner UI）追加 — 6stepフロー（STEP1→2→3→4→5→6）に更新</div>
+          <div class="phase-item"><span class="pi-done">✅</span>callMailAPI()をStory Planner依存化 — sp.conversationFlow / sp.ibmAppeals を最優先プロンプトとして使用</div>
+          <div class="phase-item"><span class="pi-done">✅</span>storyPlanEdits学習保存（storage.js: saveStoryPlanEdit実装・buildLearningData v1.3更新）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-marker pm-active"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">v1.4 — Story Planner直接編集UI</div>
+          <span class="phase-tag pt-active">✅ 完了 → v1.4（現在）</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-done">✅</span><strong>Story Planner直接編集UI</strong> — 冒頭フォーカス・能力承認・キャリア仮説・会話フロー5STEP・IBM訴求（訴求名/理由/例）・クロージングスタイル・文体指示・避けること をすべてin-place編集可能に</div>
+          <div class="phase-item"><span class="pi-done">✅</span>spEditSync() / spEditFlowSync() / spEditAppealSync() — リアルタイム同期（S.storyPlanに即反映）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>applySpEdit() — 保存時にsaveStoryPlanEdit()を呼んでログ保存 + 表示モードへ戻る</div>
+          <div class="phase-item"><span class="pi-done">✅</span>generateMail()にsaveStoryPlanEdit呼び出し追加（メモあれば記録）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>callAnalysisAPI()プロンプトを14軸IDに更新（finance_dx / public_dx / stability / career_change 正式対応）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>demoMail()をStory Planner依存化 — S.storyPlanが存在する場合はconversationFlow・ibmAppealsを使ってデモ文を構成</div>
+          <div class="phase-item"><span class="pi-done">✅</span>regenSection()にStory Plannerコンテキスト注入 — 冒頭フォーカス・文体指示・closingStyleを参照</div>
+          <div class="phase-item"><span class="pi-done">✅</span>analyzeSuccessExample()拡張 — lineBreakRhythm / avgSentenceLength / distanceFeel / ctaStyle の4項目追加</div>
         </div>
       </div>
     </div>
@@ -337,8 +404,24 @@ tr:last-child td{border-bottom:none}
       <div class="phase-marker pm-next"></div>
       <div class="phase-content">
         <div class="phase-head">
+          <div class="phase-name">v1.5 — 文体チェック・AIっぽさ除去強化</div>
+          <span class="phase-tag pt-next">次のバージョン</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-todo">⬜</span>文体チェック — 同じ表現の繰り返し検知・一文長さ調整・テンプレ感検知</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>冒頭パターン最適化（OPENING_PATTERNSの実効率向上）</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>候補者タイプとの近似度マッチングによる成功例活用精度向上</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>IBM訴求30〜50軸への拡張（現在14軸）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-marker pm-future"></div>
+      <div class="phase-content">
+        <div class="phase-head">
           <div class="phase-name">Phase 4 — IBM Cloud移行</div>
-          <span class="phase-tag pt-next">v1.2〜</span>
+          <span class="phase-tag pt-future">v2.0〜</span>
         </div>
         <div class="phase-items">
           <div class="phase-item"><span class="pi-todo">⬜</span>IBM Cloud Code Engine へのバックエンド移行（サーバーレスAPI）</div>
@@ -389,48 +472,58 @@ tr:last-child td{border-bottom:none}
     <tr><td><strong>求人プロジェクト保存・再利用（Phase1.5）</strong></td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
     <tr><td>リクルーター修正ログ収集基盤（Phase1.5）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
     <tr><td>歓迎要件・成功スカウト例フィールド（Phase1.5）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
-    <tr><td><strong>IBM専用訴求ライブラリ（11軸）🆕</strong></td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
-    <tr><td>候補者タイプ × IBM訴求 マトリクス自動最適化 🆕</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
-    <tr><td>セルフレビュー → 1クリック改善ループ 🆕</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>⚠️デモ制限</td></tr>
-    <tr><td>OHEREトレーサビリティバッジ 🆕</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
-    <tr><td><strong>IBM_KNOWLEDGEナレッジ注入（Phase3a）🆕</strong></td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
-    <tr><td>selectIbmKnowledge() — 知識自動選択 🆕</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
-    <tr><td><strong>watsonx設定パネルUI（Phase3b）🆕</strong></td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
-    <tr><td>getApiUrl/buildRequestBody/parseApiResponse統一 🆕</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td><strong>IBM専用訴求ライブラリ（14軸）🆕</strong></td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>候補者タイプ × IBM訴求 マトリクス自動最適化</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>セルフレビュー → 1クリック改善ループ</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>⚠️デモ制限</td></tr>
+    <tr><td>OHEREトレーサビリティバッジ</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>IBM_KNOWLEDGEナレッジ注入（Phase3a）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>watsonx設定パネルUI（Phase3b）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>BANNED_PHRASES（30語）禁止表現自動検出・再生成（v1.2）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>—</td></tr>
+    <tr><td>OPENING_PATTERNS（50例）冒頭ライブラリ（v1.2）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>STYLE_LIBRARY（5スタイル）文体ライブラリ（v1.2）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>セルフレビュー5軸刷新（返信率廃止）（v1.2）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td><strong>Story Planner — 会話設計API（v1.3）🆕</strong></td><td><span class="badge b-done">完成</span></td><td>✅</td><td>✅</td></tr>
+    <tr><td>callMailAPI()のStory Planner依存化（v1.3）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>—</td></tr>
+    <tr><td><strong>Story Planner直接編集UI（v1.4）🆕</strong></td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>callAnalysisAPI()14軸ID対応（v1.4）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>—</td></tr>
+    <tr><td>demoMail()のStory Planner依存化（v1.4）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>regenSection()のStory Planner参照（v1.4）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>—</td></tr>
+    <tr><td>analyzeSuccessExample()4項目拡張（v1.4）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>—</td></tr>
+    <tr><td>文体チェック（繰り返し検知・一文長さ調整）</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
     <tr><td>DB永続化（localStorage脱却）</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
     <tr><td>ユーザー認証（IBM App ID）</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
     <tr><td>IBM watsonx.ai Graniteモデル本番化</td><td><span class="badge b-partial">設定UI実装済</span></td><td>—</td><td>—</td></tr>
   </table>
 
   <!-- 次の優先課題 -->
-  <h2><span class="sec-num">🎯</span>Phase4 — 次に実装すべきこと</h2>
+  <h2><span class="sec-num">🎯</span>v1.5 — 次に実装すべきこと</h2>
   <div class="priority-list">
     <div class="priority-item">
       <div class="pri-num pri-critical">1</div>
       <div class="pri-body">
-        <div class="pri-title">IBM Cloud Code Engine へのバックエンド移行</div>
-        <div class="pri-desc">現在のNetlify Functionsプロキシを、IBM Cloud Code Engineのサーバーレスコンテナに移行。APIキーをサーバー環境変数として管理し、フロントエンドからのキー漏洩リスクをゼロにする。watsonx IAM認証も同時対応。</div>
+        <div class="pri-title">文体チェック強化 — 繰り返し検知・一文長さ調整</div>
+        <div class="pri-desc">禁止ワードチェック（v1.2）の次の段階。同じ表現の繰り返し検知、一文長さ調整（40字超の文を分割）、テンプレ感検知（連続する短文・箇条書き多用）を追加する。冒頭パターンの実効率も向上させる。</div>
       </div>
     </div>
     <div class="priority-item">
       <div class="pri-num pri-critical">2</div>
       <div class="pri-body">
-        <div class="pri-title">Cloudant DB — スカウト履歴の永続化</div>
-        <div class="pri-desc">現在のlocalStorage（ブラウザ限定・上限5MB）からIBM Cloudant（NoSQL）へ移行。チームメンバー間でスカウト履歴・修正ログ・学習データを共有できるようになる。IBM Cloud Packで無料枠あり。</div>
+        <div class="pri-title">成功スカウト例の近似度マッチング</div>
+        <div class="pri-desc">analyzeSuccessExample()の4項目拡張（v1.4）を活用し、候補者タイプとの近似度でどの成功例が最も参考になるかをスコアリングする。複数の成功例から最適なものを自動選択するロジックを追加する。</div>
       </div>
     </div>
     <div class="priority-item">
       <div class="pri-num pri-high">3</div>
       <div class="pri-body">
-        <div class="pri-title">IBM App ID — チーム認証</div>
-        <div class="pri-desc">IBM App IDによるIBM SSO認証を追加。採用チームメンバーがログインすることでユーザー別スカウト履歴・担当ポジション管理・修正ログの個人帰属が実現する。</div>
+        <div class="pri-title">IBM訴求30〜50軸への拡張</div>
+        <div class="pri-desc">現在14軸の訴求ライブラリを30〜50軸に拡張（業界別・ポジション別・年齢層別など）。IBM_MATRIXも更新し、より細かい候補者タイプ分類に対応させる。</div>
       </div>
     </div>
     <div class="priority-item">
       <div class="pri-num pri-med">4</div>
       <div class="pri-body">
-        <div class="pri-title">watsonx設定UIの動作検証（Granite接続テスト）</div>
-        <div class="pri-desc">Phase3bで設定パネルUIは完成。IBM Cloud環境でIAMトークン・プロジェクトID・Graniteモデルを設定し、実際にwatsonx経由でスカウト生成できることを確認。プロンプトのwatsonx最適化が必要になる可能性あり。</div>
+        <div class="pri-title">IBM Cloud Code Engine + Cloudant移行（Phase4）</div>
+        <div class="pri-desc">現在のNetlify Functionsプロキシを、IBM Cloud Code Engineのサーバーレスコンテナに移行。APIキーをサーバー環境変数として管理。localStorage→Cloudant永続化、IBM App ID認証もこのフェーズで実装。</div>
       </div>
     </div>
   </div>
@@ -439,23 +532,23 @@ tr:last-child td{border-bottom:none}
   <h2><span class="sec-num">📁</span>ファイル構成（コードレビュー参照先）</h2>
   <div class="file-tree">
     <span class="ft-dir">bscout/</span><br>
-    ├── <span class="ft-file">index.html</span>　　　　 <span class="ft-comment">// Phase3b: ⚙ watsonx設定パネルUI追加（バックエンド切り替え・IAMトークン・モデル選択）</span><br>
+    ├── <span class="ft-file">index.html</span>　　　　 <span class="ft-comment">// v1.4: PANEL4にSP直接編集UIを追加（spViewMode / spEditMode / spe-* フィールド）</span><br>
     ├── <span class="ft-dir">css/</span><br>
-    │　　└── <span class="ft-file">style.css</span>　　　 <span class="ft-comment">// Phase3b: watsonx設定パネルCSS追加（wx-panel / wx-toggle / wx-input）</span><br>
+    │　　└── <span class="ft-file">style.css</span>　　　 <span class="ft-comment">// v1.4: sp-edit-* スタイル追加（編集フォーム / 会話フロー編集 / IBM訴求編集 / 保存ボタン行）</span><br>
     ├── <span class="ft-dir">js/</span><br>
-    │　　├── <span class="ft-file">storage.js</span>　　　 <span class="ft-comment">// v1.1 — PROJECT_KEY/EDITLOG_KEY・求人プロジェクト管理・buildFewShotFromEditLogs()</span><br>
-    │　　├── <span class="ft-file">ai.js</span>　　　　　　 <span class="ft-comment">// Phase3a/3b: IBM_KNOWLEDGE注入・getApiUrl/buildRequestBody/parseApiResponse統一（全関数対応済）</span><br>
-    │　　└── <span class="ft-file">app.js</span>　　　　　 <span class="ft-comment">// Phase3b: toggleWxPanel/setBackend/applyWxSettings追加・IBM_MATRIX完成</span><br>
+    │　　├── <span class="ft-file">storage.js</span>　　　 <span class="ft-comment">// v1.3 — saveStoryPlanEdit() 実装済み（v1.4: generateMail/applySpEditから呼び出し追加）</span><br>
+    │　　├── <span class="ft-file">ai.js</span>　　　　　　 <span class="ft-comment">// v1.4: callAnalysisAPI 14軸ID更新 / regenSection SP参照 / analyzeSuccessExample 4項目拡張</span><br>
+    │　　└── <span class="ft-file">app.js</span>　　　　　 <span class="ft-comment">// v1.4: toggleSpEdit / _openSpEditMode / spEditSync / applySpEdit / cancelSpEdit / demoMail SP対応</span><br>
     ├── <span class="ft-dir">netlify/functions/</span><br>
     │　　└── <span class="ft-file">proxy.js</span>　　　　 <span class="ft-comment">// Netlify用APIプロキシ（変更なし）</span><br>
     ├── <span class="ft-file">netlify.toml</span>　　　　 <span class="ft-comment">// Netlifyデプロイ設定（変更なし）</span><br>
-    └── <span class="ft-file">bscout_standalone.html</span> <span class="ft-comment">// 全ファイル統合版（v1.1再生成済・ChatGPT添付用）</span>
+    └── <span class="ft-file">bscout_standalone.html</span> <span class="ft-comment">// 全ファイル統合版（v1.4再生成済・266KB・ChatGPT添付用）</span>
   </div>
 
 </div>
 
 <footer style="text-align:center;font-size:12px;color:#9ca3af;border-top:1px solid #e2e5ea;padding:16px 0;margin-top:40px;background:#fff">
-  Bスカウト v1.1 — 採用AIエージェント — Made with IBM Bob
+  Bスカウト v1.4 — 採用AIエージェント — Made with IBM Bob
 </footer>
 
 </body>
