@@ -721,22 +721,85 @@
     </div>
   </div>
 
-  <!-- ==================== PANEL HISTORY: スカウト履歴 ==================== -->
+  <!-- ==================== PANEL HISTORY: スカウト履歴 + ダッシュボード ==================== -->
   <div class="panel" id="pHistory">
     <div class="card">
       <div class="card-head">
         <div class="card-title">
           <div class="icon-chip" style="background:#f0fdf4;color:#15803d">📋</div>
-          スカウト履歴
+          <span id="historyPanelTitle">スカウト履歴</span>
         </div>
-        <button class="btn btn-ghost btn-sm" id="historyBackBtn" onclick="go(1)">← 戻る</button>
+        <button class="btn btn-ghost btn-sm" onclick="go(1)">← 戻る</button>
       </div>
-      <div class="card-body">
-        <div style="font-size:13px;color:var(--muted);margin-bottom:16px">
-          生成したスカウトは自動保存されます。送信後のフィードバック（返信・面談・採用）を記録すると、将来のAI精度向上に活用されます。
+
+      <!-- v3.0: タブナビ -->
+      <div class="history-tabs">
+        <button class="history-tab active" id="htab-history" onclick="switchHistoryTab('history')">📋 履歴一覧</button>
+        <button class="history-tab" id="htab-dashboard" onclick="switchHistoryTab('dashboard')">📊 ダッシュボード</button>
+        <button class="history-tab" id="htab-learning" onclick="switchHistoryTab('learning')">🧠 学習状況</button>
+      </div>
+
+      <!-- タブ: 履歴一覧 -->
+      <div class="history-tab-content on" id="htc-history">
+        <div class="card-body">
+          <!-- v3.0: 検索・フィルタ -->
+          <div class="history-filter-bar">
+            <input type="text" class="history-search" id="historySearch" placeholder="候補者名・会社名・ポジション名で検索..." oninput="filterHistory()">
+            <select class="history-filter-sel" id="historyFilterResult" onchange="filterHistory()">
+              <option value="">全て</option>
+              <option value="hired">採用</option>
+              <option value="meeting">面談</option>
+              <option value="replied">返信あり</option>
+              <option value="no_reply">返信なし</option>
+              <option value="pending">未記録</option>
+            </select>
+            <select class="history-filter-sel" id="historyFilterType" onchange="filterHistory()">
+              <option value="">全タイプ</option>
+              <option value="技術スペシャリスト型">技術スペシャリスト型</option>
+              <option value="PM・マネジメント型">PM・マネジメント型</option>
+              <option value="キャリアアップ型">キャリアアップ型</option>
+              <option value="市場価値向上型">市場価値向上型</option>
+              <option value="安定志向型">安定志向型</option>
+            </select>
+          </div>
+          <div id="historyCount" style="font-size:12px;color:var(--muted);margin-bottom:10px"></div>
+          <div id="historyGrid"></div>
         </div>
-        <div id="historyGrid"></div>
       </div>
+
+      <!-- タブ: ダッシュボード (v3.0) -->
+      <div class="history-tab-content" id="htc-dashboard">
+        <div class="card-body">
+          <div class="dash-section-title">📈 スカウト成果サマリー</div>
+          <div class="dash-kpi-row" id="dashKpiRow"></div>
+          <div class="dash-section-title" style="margin-top:24px">📉 スコアトレンド（直近20件）</div>
+          <div class="dash-chart-wrap">
+            <svg id="scoreTrendSvg" width="100%" height="120" viewBox="0 0 600 120" preserveAspectRatio="none"></svg>
+          </div>
+          <div class="dash-section-title" style="margin-top:24px">🏆 訴求ポイント × 返信率</div>
+          <div id="appealEffectGrid"></div>
+          <div class="dash-section-title" style="margin-top:24px">👥 候補者タイプ別 成果</div>
+          <div id="typeEffectGrid"></div>
+        </div>
+      </div>
+
+      <!-- タブ: 学習状況 (v4.0) -->
+      <div class="history-tab-content" id="htc-learning">
+        <div class="card-body">
+          <div class="dash-section-title">🧠 修正ログ学習状況</div>
+          <div class="learn-intro">採用担当者がAI生成文を修正するたびに学習データが蓄積されます。蓄積が進むほどAIの精度が向上します。</div>
+          <div class="learn-kpi-row" id="learnKpiRow"></div>
+          <div class="dash-section-title" style="margin-top:20px">🔍 修正パターン TOP（few-shot候補）</div>
+          <div id="learnPatternList"></div>
+          <div class="dash-section-title" style="margin-top:20px">📋 最近の修正ログ（直近10件）</div>
+          <div id="learnRecentLogs"></div>
+          <div style="margin-top:16px;display:flex;gap:8px">
+            <button class="btn btn-ghost btn-sm" onclick="exportEditLogs()" title="学習データをJSONでダウンロード">📥 学習データを出力</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportSettings()" title="全設定・履歴をバックアップ">📦 バックアップ</button>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 

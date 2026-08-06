@@ -147,14 +147,14 @@ tr:last-child td{border-bottom:none}
   <!-- VERSION HERO -->
   <div class="version-hero">
     <div class="version-left">
-      <div class="version-num">v2.0</div>
-      <div class="version-label">インフラ整備版 — watsonxプロキシ・IndexedDB・設定バックアップ</div>
-      <div class="phase-badge">📅 最終更新: 2025年7月（v1.5完成版 → v2.0インフラ整備）</div>
+      <div class="version-num">v3+4</div>
+      <div class="version-label">チーム利用 + 学習型AIエージェント — ダッシュボード・成果分析・修正ログ可視化</div>
+      <div class="phase-badge">📅 最終更新: 2025年7月（v2.0インフラ → v3.0チーム利用 + v4.0学習型AI）</div>
     </div>
     <div class="version-right">
       <div class="version-concept">
         「トップリクルーターが30分かけて考える<br>採用戦略を、AIが2分で再現する」<br><br>
-        <strong style="color:#fff">v2.0 インフラ整備完了<br>watsonx Netlify対応・IndexedDB永続化・設定バックアップ</strong>
+        <strong style="color:#fff">v3.0+v4.0 完了<br>返信率ダッシュボード・スコアトレンド・修正ログ学習可視化</strong>
       </div>
     </div>
   </div>
@@ -239,13 +239,18 @@ tr:last-child td{border-bottom:none}
       </div>
       <div class="vt-line vt-line-done"></div>
       <div class="vt-item">
-        <div class="vt-dot vt-current">v2.0</div>
-        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>インフラ整備</div>
+        <div class="vt-dot vt-done">v2.0</div>
+        <div class="vt-label">インフラ<br>整備</div>
+      </div>
+      <div class="vt-line vt-line-done"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-current">v3+4</div>
+        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>チーム+学習AI</div>
       </div>
       <div class="vt-line"></div>
       <div class="vt-item">
-        <div class="vt-dot vt-next">v3.0</div>
-        <div class="vt-label">チーム<br>利用</div>
+        <div class="vt-dot vt-next">v5.0</div>
+        <div class="vt-label">本番<br>IBM Cloud</div>
       </div>
     </div>
   </div>
@@ -441,17 +446,36 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="phase-row">
-      <div class="phase-marker pm-next"></div>
+      <div class="phase-marker pm-active"></div>
       <div class="phase-content">
         <div class="phase-head">
-          <div class="phase-name">v3.0 — チーム利用</div>
-          <span class="phase-tag pt-next">次のバージョン</span>
+          <div class="phase-name">v3.0 — チーム利用基盤（現在）</div>
+          <span class="phase-tag pt-active">✅ 完了 → v3.0（現在）</span>
         </div>
         <div class="phase-items">
-          <div class="phase-item"><span class="pi-todo">⬜</span>IBM App ID — SSO / チーム認証 / ユーザー別履歴管理</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>Cloudant DB — 完全なクラウド永続化（IndexedDBのサーバー版）</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>プロジェクト共有 — 求人情報・分析結果をチームで共有</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>返信結果フィードバック学習ループの本格稼働</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>履歴タブ3分割UI</strong> — 「📋 履歴一覧」「📊 ダッシュボード」「🧠 学習状況」の3タブに刷新</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>履歴検索・フィルタ</strong> — テキスト検索 + 結果フィルタ（採用/面談/返信/未記録）+ タイプ別フィルタ</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>IndexedDB全件表示</strong> — loadScoutHistoryAll()でlocalStorage 50件上限を突破した全履歴を表示</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>ダッシュボード KPI</strong> — 総スカウト数・平均スコア・返信率・面談率・採用率・未記録数を集計表示</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>スコアトレンド SVGグラフ</strong> — 直近20件の折れ線グラフ（エリアチャート）を生成・表示</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>訴求ポイント × 返信率</strong> — 訴求IDごとの返信率棒グラフ（フィードバック記録済みの件数から算出）</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>候補者タイプ別成果グリッド</strong> — タイプ別 件数・平均スコア・返信・面談・採用数を集計表示</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-marker pm-active"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">v4.0 — 学習型AIエージェント（現在）</div>
+          <span class="phase-tag pt-active">✅ 完了 → v4.0（現在）</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-done">✅</span><strong>修正ログ学習ダッシュボード</strong> — 「🧠 学習状況」タブに総修正ログ数・スカウト文修正数・Story Planner修正数・最多修正箇所・学習済みタイプ数を集計</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>修正パターン TOP5</strong> — セクション×候補者タイプでグループ化し、頻度順にfew-shot候補をランキング表示（AI案 → 修正後のサンプル表示）</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>最近の修正ログ直近10件</strong> — スカウト文修正・Story Planner修正の両方を時系列で表示</div>
+          <div class="phase-item"><span class="pi-done">✅</span>データ出力ボタン — 「📥 学習データ出力」「📦 バックアップ」を学習タブに設置</div>
         </div>
       </div>
     </div>
@@ -460,14 +484,15 @@ tr:last-child td{border-bottom:none}
       <div class="phase-marker pm-future"></div>
       <div class="phase-content">
         <div class="phase-head">
-          <div class="phase-name">v4.0 — 学習型AIエージェント</div>
+          <div class="phase-name">v5.0 — IBM Cloud本番化</div>
           <span class="phase-tag pt-future">将来</span>
         </div>
         <div class="phase-items">
-          <div class="phase-item"><span class="pi-todo">⬜</span>修正ログ学習 — 蓄積したfew-shotを自動適用してスカウト品質を継続向上</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>IBM App ID — SSO / チーム認証 / ユーザー別履歴管理</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>Cloudant DB — 完全なクラウド永続化（IndexedDBのサーバー版）</div>
           <div class="phase-item"><span class="pi-todo">⬜</span>watsonx.ai Granite本番モデルへの完全移行</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>Few-shot最適化ダッシュボード（修正パターンの可視化・管理）</div>
           <div class="phase-item"><span class="pi-todo">⬜</span>PDF/Word求人票の自動読み込み（文書AI）</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>チームでのプロジェクト・分析結果共有</div>
         </div>
       </div>
     </div>
@@ -513,8 +538,18 @@ tr:last-child td{border-bottom:none}
     <tr><td>demoMail()のStory Planner依存化（v1.4）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
     <tr><td>regenSection()のStory Planner参照（v1.4）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>—</td></tr>
     <tr><td>analyzeSuccessExample()4項目拡張（v1.4）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>—</td></tr>
-    <tr><td>文体チェック（繰り返し検知・一文長さ調整）</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
-    <tr><td>DB永続化（localStorage脱却）</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
+    <tr><td>文体チェック（繰り返し検知・一文長さ調整）（v1.5）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>IndexedDB永続化（v2.0）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>watsonx Netlifyプロキシ対応（v2.0）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>—</td></tr>
+    <tr><td>設定バックアップ/インポート（v2.0）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>接続テストUI（v2.0）</td><td><span class="badge b-done">完成</span></td><td>✅</td><td>—</td></tr>
+    <tr><td><strong>履歴タブ3分割（履歴/ダッシュボード/学習）（v3.0）🆕</strong></td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>履歴検索・フィルタ（v3.0）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>成果ダッシュボード KPI・SVGトレンドグラフ（v3.0）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>訴求ポイント×返信率棒グラフ（v3.0）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>候補者タイプ別成果グリッド（v3.0）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td><strong>修正ログ学習ダッシュボード KPI・TOP5（v4.0）🆕</strong></td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
+    <tr><td>最近の修正ログ直近10件表示（v4.0）</td><td><span class="badge b-done">完成</span></td><td>—</td><td>✅</td></tr>
     <tr><td>ユーザー認証（IBM App ID）</td><td><span class="badge b-todo">未実装</span></td><td>—</td><td>—</td></tr>
     <tr><td>IBM watsonx.ai Graniteモデル本番化</td><td><span class="badge b-partial">設定UI実装済</span></td><td>—</td><td>—</td></tr>
   </table>

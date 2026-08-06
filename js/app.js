@@ -1584,32 +1584,66 @@ function saveFeedbackNote() {
 }
 
 // ══════════════════════════════════════════
-// 機能D: スカウト履歴一覧パネル
+// 機能D: スカウト履歴パネル (v3.0: タブ・検索・ダッシュボード)
 // ══════════════════════════════════════════
-function openHistory() {
-  renderHistory();
+
+let _currentHistoryTab = 'history';
+let _historyAllCache   = [];  // IndexedDB全件キャッシュ
+
+/** 履歴パネルを開く（全件をIDBから非同期取得） */
+async function openHistory() {
   go('History');
+  // 全件をIDBから取得してキャッシュ
+  _historyAllCache = await loadScoutHistoryAll();
+  switchHistoryTab(_currentHistoryTab);
 }
 
+/** タブ切り替え */
+function switchHistoryTab(tab) {
+  _currentHistoryTab = tab;
+  ['history','dashboard','learning'].forEach(t => {
+    const btn = $('htab-' + t);
+    const con = $('htc-'  + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+    if (con) con.classList.toggle('on',     t === tab);
+  });
+  if (tab === 'history')   { renderHistory(); }
+  if (tab === 'dashboard') { renderDashboard(); }
+  if (tab === 'learning')  { renderLearningDashboard(); }
+}
+
+/** 結果ラベル共通 */
+const resultLabel = r => {
+  if (r.hired === true)            return '<span class="hr-badge hb-hired">採用</span>';
+  if (r.meetingScheduled === true) return '<span class="hr-badge hb-meeting">面談</span>';
+  if (r.replied === true)          return '<span class="hr-badge hb-replied">返信あり</span>';
+  if (r.replied === false)         return '<span class="hr-badge hb-no">返信なし</span>';
+  return '<span class="hr-badge hb-wait">未記録</span>';
+};
+
+/** 履歴一覧を描画（フィルタ適用済み） */
 function renderHistory() {
-  const history = loadScoutHistory();
   const grid = $('historyGrid');
   if (!grid) return;
 
+  const history = _historyAllCache.length > 0 ? _historyAllCache : loadScoutHistory();
+
   if (history.length === 0) {
     grid.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:14px">まだスカウト履歴がありません。<br>スカウト文を生成すると自動的に保存されます。</div>';
+    const cnt = $('historyCount'); if (cnt) cnt.textContent = '';
     return;
   }
 
-  const resultLabel = r => {
-    if (r.hired === true)            return '<span class="hr-badge hb-hired">採用</span>';
-    if (r.meetingScheduled === true) return '<span class="hr-badge hb-meeting">面談</span>';
-    if (r.replied === true)          return '<span class="hr-badge hb-replied">返信あり</span>';
-    if (r.replied === false)         return '<span class="hr-badge hb-no">返信なし</span>';
-    return '<span class="hr-badge hb-wait">未記録</span>';
-  };
+  const filtered = applyHistoryFilters(history);
+  const cnt = $('historyCount');
+  if (cnt) cnt.textContent = `全 ${history.length} 件中 ${filtered.length} 件を表示`;
 
-  grid.innerHTML = history.map(h => {
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div style="text-align:center;padding:40px 0;color:var(--muted);font-size:14px">条件に一致する履歴がありません。</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(h => {
     const d = new Date(h.savedAt);
     const dateStr = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
     const scoreColor = h.analysis.score >= 80 ? 'var(--green)' : h.analysis.score >= 65 ? 'var(--accent)' : 'var(--amber)';
@@ -1636,8 +1670,42 @@ function renderHistory() {
   }).join('');
 }
 
+/** フィルタ適用 */
+function applyHistoryFilters(history) {
+  const q    = ($('historySearch')?.value || '').toLowerCase();
+  const res  = $('historyFilterResult')?.value || '';
+  const type = $('historyFilterType')?.value || '';
+
+  return history.filter(h => {
+    // テキスト検索
+    if (q) {
+      const searchTarget = [
+        h.candidate.role, h.candidate.company,
+        h.job.position, h.job.company,
+        h.analysis.candidateTypeCategory, h.mail?.subject
+      ].filter(Boolean).join(' ').toLowerCase();
+      if (!searchTarget.includes(q)) return false;
+    }
+    // 結果フィルタ
+    if (res) {
+      const r = h.result;
+      if (res === 'hired'    && r.hired !== true)            return false;
+      if (res === 'meeting'  && r.meetingScheduled !== true) return false;
+      if (res === 'replied'  && r.replied !== true)          return false;
+      if (res === 'no_reply' && r.replied !== false)         return false;
+      if (res === 'pending'  && r.replied !== null)          return false;
+    }
+    // タイプフィルタ
+    if (type && h.analysis.candidateTypeCategory !== type) return false;
+    return true;
+  });
+}
+
+/** 検索/フィルタ変更時に再描画 */
+function filterHistory() { renderHistory(); }
+
 function loadHistoryEntry(id) {
-  const history = loadScoutHistory();
+  const history = _historyAllCache.length > 0 ? _historyAllCache : loadScoutHistory();
   const h = history.find(e => e.id === id); if (!h) return;
   S.candidate = { ...h.candidate };
   S.mail      = { ...(h.mail || {}) };
@@ -1650,7 +1718,243 @@ function loadHistoryEntry(id) {
 function removeHistoryEntry(id) {
   if (!confirm('この履歴を削除しますか？')) return;
   deleteHistoryEntry(id);
+  _historyAllCache = _historyAllCache.filter(h => h.id !== id);
   renderHistory();
+}
+
+// ══════════════════════════════════════════
+// v3.0: ダッシュボード — 成果集計
+// ══════════════════════════════════════════
+
+function renderDashboard() {
+  const history = _historyAllCache.length > 0 ? _historyAllCache : loadScoutHistory();
+  if (history.length === 0) {
+    ['dashKpiRow','appealEffectGrid','typeEffectGrid'].forEach(id => {
+      const el = $(id); if (el) el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:16px 0">まだスカウト履歴がありません。</div>';
+    });
+    return;
+  }
+
+  // ── KPI 集計 ──
+  const total   = history.length;
+  const replied = history.filter(h => h.result.replied === true).length;
+  const meeting = history.filter(h => h.result.meetingScheduled === true).length;
+  const hired   = history.filter(h => h.result.hired === true).length;
+  const recorded = history.filter(h => h.result.replied !== null).length;
+  const avgScore = Math.round(history.reduce((s, h) => s + (h.analysis.score || 0), 0) / total);
+  const replyRate = recorded > 0 ? Math.round(replied / recorded * 100) : 0;
+  const meetRate  = recorded > 0 ? Math.round(meeting / recorded * 100) : 0;
+  const hireRate  = recorded > 0 ? Math.round(hired   / recorded * 100) : 0;
+
+  const kpiRow = $('dashKpiRow');
+  if (kpiRow) kpiRow.innerHTML = [
+    { val: total,             label: '総スカウト数',     color: 'var(--text)'   },
+    { val: `${avgScore}点`,   label: '平均マッチスコア', color: avgScore >= 75 ? 'var(--green)' : 'var(--amber)' },
+    { val: `${replyRate}%`,   label: `返信率\n(${replied}/${recorded}件)`, color: 'var(--accent)' },
+    { val: `${meetRate}%`,    label: `面談率\n(${meeting}/${recorded}件)`, color: '#7c3aed' },
+    { val: `${hireRate}%`,    label: `採用率\n(${hired}/${recorded}件)`,   color: 'var(--green)' },
+    { val: `${total - recorded}`, label: 'フィードバック未記録', color: 'var(--muted)' },
+  ].map(k => `
+    <div class="dash-kpi">
+      <div class="dash-kpi-val" style="color:${k.color}">${k.val}</div>
+      <div class="dash-kpi-label">${k.label.replace('\n','<br>')}</div>
+    </div>`).join('');
+
+  // ── スコアトレンド SVG ──
+  renderScoreTrend(history);
+
+  // ── 訴求ポイント × 返信率 ──
+  renderAppealEffect(history);
+
+  // ── 候補者タイプ別成果 ──
+  renderTypeEffect(history);
+}
+
+/** スコアトレンド（直近20件 折れ線グラフ SVG） */
+function renderScoreTrend(history) {
+  const svg = $('scoreTrendSvg'); if (!svg) return;
+  const recent = history.slice(0, 20).reverse();
+  if (recent.length < 2) {
+    svg.innerHTML = '<text x="300" y="60" text-anchor="middle" fill="#9ca3af" font-size="12">データが2件以上になるとトレンドが表示されます</text>';
+    return;
+  }
+  const W = 600, H = 100, PAD = 20;
+  const scores = recent.map(h => h.analysis.score || 0);
+  const minS = Math.min(...scores) - 5;
+  const maxS = Math.max(...scores) + 5;
+  const xStep = (W - PAD * 2) / (recent.length - 1);
+  const yScale = s => PAD + (H - PAD * 2) * (1 - (s - minS) / (maxS - minS || 1));
+
+  const points = scores.map((s, i) => `${PAD + i * xStep},${yScale(s)}`).join(' ');
+  const areaPoints = `${PAD},${H - PAD} ` + points + ` ${PAD + (recent.length - 1) * xStep},${H - PAD}`;
+
+  svg.innerHTML = `
+    <polygon points="${areaPoints}" fill="rgba(37,99,235,.1)" />
+    <polyline points="${points}" fill="none" stroke="#2563eb" stroke-width="2" stroke-linejoin="round" />
+    ${scores.map((s, i) => `
+      <circle cx="${PAD + i * xStep}" cy="${yScale(s)}" r="3.5" fill="#2563eb" />
+      <text x="${PAD + i * xStep}" y="${yScale(s) - 7}" text-anchor="middle" font-size="9" fill="#57606a">${s}</text>
+    `).join('')}
+    <text x="${PAD}" y="${H + 2}" font-size="9" fill="#9ca3af">${recent[0] ? new Date(recent[0].savedAt).toLocaleDateString('ja-JP',{month:'short',day:'numeric'}) : ''}</text>
+    <text x="${W - PAD}" y="${H + 2}" text-anchor="end" font-size="9" fill="#9ca3af">${recent[recent.length-1] ? new Date(recent[recent.length-1].savedAt).toLocaleDateString('ja-JP',{month:'short',day:'numeric'}) : ''}</text>
+  `;
+}
+
+/** 訴求ポイント × 返信率 棒グラフ */
+function renderAppealEffect(history) {
+  const el = $('appealEffectGrid'); if (!el) return;
+  const recorded = history.filter(h => h.result.replied !== null);
+  if (recorded.length === 0) {
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">フィードバックを記録すると表示されます。</div>';
+    return;
+  }
+  // 訴求IDごとに集計
+  const appealMap = {};
+  recorded.forEach(h => {
+    (h.selectedAppeals || []).forEach(name => {
+      if (!appealMap[name]) appealMap[name] = { total: 0, replied: 0 };
+      appealMap[name].total++;
+      if (h.result.replied === true) appealMap[name].replied++;
+    });
+  });
+  const sorted = Object.entries(appealMap)
+    .filter(([, v]) => v.total >= 1)
+    .sort((a, b) => (b[1].replied / b[1].total) - (a[1].replied / a[1].total))
+    .slice(0, 10);
+
+  if (sorted.length === 0) { el.innerHTML = '<div style="color:var(--muted);font-size:13px">データ不足です。</div>'; return; }
+
+  el.innerHTML = sorted.map(([name, v]) => {
+    const pct = Math.round(v.replied / v.total * 100);
+    const color = pct >= 50 ? 'var(--green)' : pct >= 30 ? 'var(--accent)' : 'var(--amber)';
+    return `
+      <div class="appeal-effect-item">
+        <div class="aei-name">${esc(name)}</div>
+        <div class="aei-bar-wrap"><div class="aei-bar" style="width:${pct}%;background:${color}"></div></div>
+        <div class="aei-pct" style="color:${color}">${pct}%</div>
+        <div class="aei-count">${v.replied}/${v.total}件</div>
+      </div>`;
+  }).join('');
+}
+
+/** 候補者タイプ別成果グリッド */
+function renderTypeEffect(history) {
+  const el = $('typeEffectGrid'); if (!el) return;
+  const typeMap = {};
+  history.forEach(h => {
+    const t = h.analysis.candidateTypeCategory || '不明';
+    if (!typeMap[t]) typeMap[t] = { total: 0, replied: 0, meeting: 0, hired: 0, scoreSum: 0 };
+    typeMap[t].total++;
+    typeMap[t].scoreSum += h.analysis.score || 0;
+    if (h.result.replied === true)          typeMap[t].replied++;
+    if (h.result.meetingScheduled === true) typeMap[t].meeting++;
+    if (h.result.hired === true)            typeMap[t].hired++;
+  });
+  const sorted = Object.entries(typeMap).sort((a, b) => b[1].total - a[1].total);
+  el.innerHTML = sorted.map(([type, v]) => {
+    const avgScore = Math.round(v.scoreSum / v.total);
+    const scoreColor = avgScore >= 75 ? 'var(--green)' : 'var(--accent)';
+    return `
+      <div class="type-effect-item">
+        <div class="tei-name">${esc(type)}</div>
+        <div class="tei-stats">
+          <div class="tei-stat"><div class="tei-stat-val">${v.total}</div><div class="tei-stat-lbl">件数</div></div>
+          <div class="tei-stat"><div class="tei-stat-val" style="color:${scoreColor}">${avgScore}点</div><div class="tei-stat-lbl">平均スコア</div></div>
+          <div class="tei-stat"><div class="tei-stat-val" style="color:var(--accent)">${v.replied}</div><div class="tei-stat-lbl">返信</div></div>
+          <div class="tei-stat"><div class="tei-stat-val" style="color:#7c3aed">${v.meeting}</div><div class="tei-stat-lbl">面談</div></div>
+          <div class="tei-stat"><div class="tei-stat-val" style="color:var(--green)">${v.hired}</div><div class="tei-stat-lbl">採用</div></div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// v4.0: 学習状況ダッシュボード
+// ══════════════════════════════════════════
+
+function renderLearningDashboard() {
+  const logs = loadEditLogs();
+  const history = _historyAllCache.length > 0 ? _historyAllCache : loadScoutHistory();
+
+  // ── KPI ──
+  const kpiRow = $('learnKpiRow');
+  const mailLogs = logs.filter(l => l.type !== 'storyPlanEdit' && l.edited && l.aiVersion);
+  const spLogs   = logs.filter(l => l.type === 'storyPlanEdit');
+  const sections = ['subject','intro','why','match','benefit','cta'];
+  const secCounts = {};
+  mailLogs.forEach(l => { secCounts[l.section] = (secCounts[l.section] || 0) + 1; });
+  const topSec = Object.entries(secCounts).sort((a,b) => b[1]-a[1])[0];
+
+  if (kpiRow) kpiRow.innerHTML = [
+    { val: logs.length,      label: '総修正ログ数',           color: 'var(--text)' },
+    { val: mailLogs.length,  label: 'スカウト文修正',          color: 'var(--accent)' },
+    { val: spLogs.length,    label: 'Story Planner修正',      color: '#7c3aed' },
+    { val: topSec ? `${({subject:'件名',intro:'冒頭',why:'理由',match:'接点',benefit:'訴求',cta:'CTA'}[topSec[0]] || topSec[0])}\n(${topSec[1]}件)` : '—', label: '最多修正箇所', color: 'var(--amber)' },
+    { val: new Set(mailLogs.map(l => l.meta?.candidateType).filter(Boolean)).size, label: '学習済みタイプ数', color: 'var(--green)' },
+  ].map(k => `
+    <div class="dash-kpi">
+      <div class="dash-kpi-val" style="color:${k.color};font-size:${k.val.toString().length > 6 ? '18px' : '24px'}">${k.val.toString().replace('\n','<br>')}</div>
+      <div class="dash-kpi-label">${k.label}</div>
+    </div>`).join('');
+
+  // ── 修正パターン TOP ──
+  const patEl = $('learnPatternList');
+  if (patEl) {
+    if (mailLogs.length === 0) {
+      patEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">まだ修正ログがありません。スカウト文を編集すると学習データが蓄積されます。</div>';
+    } else {
+      // セクション×タイプでグループ化して頻度順
+      const grouped = {};
+      mailLogs.forEach(l => {
+        const key = `${l.section}__${l.meta?.candidateType || '不明'}`;
+        if (!grouped[key]) grouped[key] = { section: l.section, type: l.meta?.candidateType || '不明', logs: [] };
+        grouped[key].logs.push(l);
+      });
+      const sorted = Object.values(grouped).sort((a, b) => b.logs.length - a.logs.length).slice(0, 5);
+      const secLabel = { subject: '件名', intro: '冒頭文', why: '理由', match: '接点', benefit: '訴求', cta: 'CTA' };
+      patEl.innerHTML = sorted.map((g, i) => {
+        const sample = g.logs[0];
+        const rankCls = i === 0 ? '' : i === 1 ? ' r2' : ' r3';
+        return `
+          <div class="learn-pattern-item">
+            <div class="lpi-head">
+              <div class="lpi-rank${rankCls}">${i + 1}</div>
+              <span class="lpi-section">${secLabel[g.section] || g.section}</span>
+              <span style="font-size:11px;color:var(--muted)">${esc(g.type)}</span>
+              <span class="lpi-count">${g.logs.length}件</span>
+            </div>
+            <div class="lpi-ai">AI案: <span>${esc((sample.aiVersion || '').slice(0, 60))}...</span></div>
+            <div class="lpi-edited">修正後: <span>${esc((sample.edited || '').slice(0, 60))}...</span></div>
+          </div>`;
+      }).join('');
+    }
+  }
+
+  // ── 最近の修正ログ ──
+  const recentEl = $('learnRecentLogs');
+  if (recentEl) {
+    if (logs.length === 0) {
+      recentEl.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px 0">まだログがありません。</div>';
+    } else {
+      const secLabel = { subject: '件名', intro: '冒頭', why: '理由', match: '接点', benefit: '訴求', cta: 'CTA' };
+      recentEl.innerHTML = logs.slice(0, 10).map(l => {
+        const d = new Date(l.savedAt);
+        const dateStr = `${d.getMonth()+1}/${d.getDate()}`;
+        const isSpEdit = l.type === 'storyPlanEdit';
+        const secName = isSpEdit ? 'Story Plan' : (secLabel[l.section] || l.section || '—');
+        const bodyText = isSpEdit
+          ? `Story Planner修正: ${esc(l.storyPlan?.flowSummary || '')}${l.recruiterNote ? ' / メモ: ' + esc(l.recruiterNote.slice(0, 40)) : ''}`
+          : `${esc((l.aiVersion || '').slice(0, 30))}... → ${esc((l.edited || '').slice(0, 30))}...`;
+        return `
+          <div class="learn-log-item">
+            <span class="lli-sec">${secName}</span>
+            <span class="lli-type">${esc(l.meta?.candidateType || '—').slice(0, 10)}</span>
+            <span class="lli-body">${bodyText}</span>
+            <span class="lli-date">${dateStr}</span>
+          </div>`;
+      }).join('');
+    }
+  }
 }
 
 // ══════════════════════════════════════════
