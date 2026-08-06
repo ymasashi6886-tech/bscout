@@ -1928,6 +1928,98 @@ textarea.tall { min-height:110px; }
 .lli-body { flex: 1; color: var(--text); line-height: 1.5; }
 .lli-date { flex-shrink: 0; color: var(--muted); font-size: 11px; }
 
+/* ══════════════════════════════════════
+   完成: 署名入力欄 + モバイルレスポンシブ補完
+════════════════════════════════════════ */
+
+/* --- 署名欄 --- */
+.sign-row {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.sign-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  margin-bottom: 8px;
+}
+.sign-fields {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sign-input {
+  flex: 1;
+  min-width: 140px;
+  padding: 6px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color .15s;
+}
+.sign-input:focus { outline: none; border-color: var(--accent); }
+
+/* --- モバイルレスポンシブ補完 --- */
+@media (max-width: 700px) {
+  /* ヘッダー */
+  .topbar-right { gap: 6px; }
+  .model-sel { display: none; }
+  .batch-toggle-btn { display: none; }
+
+  /* ステッパー */
+  .stepper { gap: 2px; padding: 10px 8px; }
+  .st-label { display: none; }
+  .st-num { width: 26px; height: 26px; font-size: 12px; }
+
+  /* グリッド */
+  .grid2 { grid-template-columns: 1fr; }
+  .fg.s2 { grid-column: span 1; }
+
+  /* ダッシュボード KPI */
+  .dash-kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .learn-kpi-row { grid-template-columns: repeat(2, 1fr); }
+
+  /* 履歴タブ */
+  .history-tabs { padding: 0 12px; overflow-x: auto; }
+  .history-tab { padding: 8px 12px; font-size: 12px; white-space: nowrap; }
+  .history-filter-bar { flex-direction: column; }
+  .history-search { min-width: unset; width: 100%; }
+
+  /* 訴求グリッド */
+  .ibm-appeal-grid { grid-template-columns: 1fr; }
+
+  /* タイプ別成果 */
+  .tei-stats { flex-wrap: wrap; gap: 6px; }
+
+  /* 署名欄 */
+  .sign-fields { flex-direction: column; }
+  .sign-input { min-width: unset; width: 100%; }
+
+  /* バッチ */
+  .batch-cand-item { flex-direction: column; gap: 8px; }
+
+  /* 設定パネル */
+  .wx-panel-inner { width: 100%; max-width: 100%; padding: 16px; }
+  .wx-backup-row { flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+  .wrap { padding: 12px 10px 60px; }
+  .card-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .topbar { padding: 0 12px; }
+  .brand-sub { display: none; }
+  .mode-pill { display: none; }
+  .dash-kpi-val { font-size: 22px; }
+}
+
 </style>
 </head>
 <body>
@@ -2610,6 +2702,17 @@ textarea.tall { min-height:110px; }
             <div class="ms-body"><textarea id="ta-cta" rows="3"></textarea></div>
           </div>
         </div>
+
+        <!-- v完成: 署名入力欄 -->
+        <div class="sign-row">
+          <div class="sign-label">コピー時の署名（任意）</div>
+          <div class="sign-fields">
+            <input type="text" class="sign-input" id="signName" placeholder="担当者名（例：山田 太郎）">
+            <input type="text" class="sign-input" id="signComp" placeholder="会社名（例：IBM Japan）">
+            <input type="text" class="sign-input" id="signEmail" placeholder="メールアドレス（任意）">
+          </div>
+        </div>
+
         <div class="act-bar">
           <div style="display:flex;gap:8px">
             <button class="copy-btn" id="cpAll">
@@ -5699,7 +5802,11 @@ function togglePreview() {
   else { pv.textContent = buildFull(); pv.classList.add('on'); ms.style.display = 'none'; btn.textContent = '編集に戻る'; }
 }
 function buildFull() {
-  return `件名：${$('ta-subject')?.value || ''}\n\n━━━━━━━━━━━━━━━━━━━━━━\n\n${['intro', 'why', 'match', 'benefit', 'cta'].map(s => $('ta-' + s)?.value || '').join('\n\n')}\n\n[担当者名]\n[会社名] 採用担当`;
+  const name  = $('signName')?.value.trim()  || '[担当者名]';
+  const comp  = $('signComp')?.value.trim()  || '[会社名]';
+  const email = $('signEmail')?.value.trim();
+  const sign  = email ? `${name}\n${comp} 採用担当\n${email}` : `${name}\n${comp} 採用担当`;
+  return `件名：${$('ta-subject')?.value || ''}\n\n━━━━━━━━━━━━━━━━━━━━━━\n\n${['intro', 'why', 'match', 'benefit', 'cta'].map(s => $('ta-' + s)?.value || '').join('\n\n')}\n\n${sign}`;
 }
 
 $('cpAll').addEventListener('click',  () => { navigator.clipboard.writeText(buildFull()).then(() => flashCopy('cpAll', '✓ コピーしました')); });
@@ -5898,6 +6005,23 @@ async function runBatch() {
   }
   prog.classList.remove('on'); $('batchRunBtn').disabled = false;
   renderBatchResults(); $('batchResult').classList.add('on');
+
+  // v3.0: 成功したバッチ結果をIDBに保存
+  BATCH_RESULTS.filter(r => !r.error).forEach(r => {
+    const entry = {
+      id: Date.now().toString() + '_' + Math.random().toString(36).slice(2, 7),
+      savedAt: new Date().toISOString(),
+      projectId: S.currentProjectId || null,
+      candidate: { company: r.cand.company, role: r.cand.role, experience: r.cand.experience || '', skills: r.cand.skills || '', reason: r.cand.reason || '' },
+      job: { position: j.position, company: j.company },
+      analysis: { candidateTypeCategory: r.candidateTypeCategory || '', score: r.score || 0 },
+      mail: { subject: r.subject, intro: r.mailBody || '', why: '', match: '', benefit: '', cta: '' },
+      mailAi: { subject: r.subject, intro: r.mailBody || '' },
+      selectedAppeals: [],
+      result: { replied: null, meetingScheduled: null, hired: null, feedbackNote: '' }
+    };
+    idbPut('history', entry);
+  });
 }
 
 function batchDemoResult(c, j) {

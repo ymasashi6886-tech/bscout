@@ -1920,3 +1920,95 @@ textarea.tall { min-height:110px; }
 .lli-type { flex-shrink: 0; color: var(--muted); font-size: 11px; width: 90px; }
 .lli-body { flex: 1; color: var(--text); line-height: 1.5; }
 .lli-date { flex-shrink: 0; color: var(--muted); font-size: 11px; }
+
+/* ══════════════════════════════════════
+   完成: 署名入力欄 + モバイルレスポンシブ補完
+════════════════════════════════════════ */
+
+/* --- 署名欄 --- */
+.sign-row {
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.sign-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  margin-bottom: 8px;
+}
+.sign-fields {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.sign-input {
+  flex: 1;
+  min-width: 140px;
+  padding: 6px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color .15s;
+}
+.sign-input:focus { outline: none; border-color: var(--accent); }
+
+/* --- モバイルレスポンシブ補完 --- */
+@media (max-width: 700px) {
+  /* ヘッダー */
+  .topbar-right { gap: 6px; }
+  .model-sel { display: none; }
+  .batch-toggle-btn { display: none; }
+
+  /* ステッパー */
+  .stepper { gap: 2px; padding: 10px 8px; }
+  .st-label { display: none; }
+  .st-num { width: 26px; height: 26px; font-size: 12px; }
+
+  /* グリッド */
+  .grid2 { grid-template-columns: 1fr; }
+  .fg.s2 { grid-column: span 1; }
+
+  /* ダッシュボード KPI */
+  .dash-kpi-row { grid-template-columns: repeat(2, 1fr); }
+  .learn-kpi-row { grid-template-columns: repeat(2, 1fr); }
+
+  /* 履歴タブ */
+  .history-tabs { padding: 0 12px; overflow-x: auto; }
+  .history-tab { padding: 8px 12px; font-size: 12px; white-space: nowrap; }
+  .history-filter-bar { flex-direction: column; }
+  .history-search { min-width: unset; width: 100%; }
+
+  /* 訴求グリッド */
+  .ibm-appeal-grid { grid-template-columns: 1fr; }
+
+  /* タイプ別成果 */
+  .tei-stats { flex-wrap: wrap; gap: 6px; }
+
+  /* 署名欄 */
+  .sign-fields { flex-direction: column; }
+  .sign-input { min-width: unset; width: 100%; }
+
+  /* バッチ */
+  .batch-cand-item { flex-direction: column; gap: 8px; }
+
+  /* 設定パネル */
+  .wx-panel-inner { width: 100%; max-width: 100%; padding: 16px; }
+  .wx-backup-row { flex-direction: column; }
+}
+
+@media (max-width: 480px) {
+  .wrap { padding: 12px 10px 60px; }
+  .card-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .topbar { padding: 0 12px; }
+  .brand-sub { display: none; }
+  .mode-pill { display: none; }
+  .dash-kpi-val { font-size: 22px; }
+}

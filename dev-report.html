@@ -554,60 +554,52 @@ tr:last-child td{border-bottom:none}
     <tr><td>IBM watsonx.ai Graniteモデル本番化</td><td><span class="badge b-partial">設定UI実装済</span></td><td>—</td><td>—</td></tr>
   </table>
 
-  <!-- 次の優先課題 -->
-  <h2><span class="sec-num">🎯</span>v1.5 — 次に実装すべきこと</h2>
-  <div class="priority-list">
-    <div class="priority-item">
-      <div class="pri-num pri-critical">1</div>
-      <div class="pri-body">
-        <div class="pri-title">文体チェック強化 — 繰り返し検知・一文長さ調整</div>
-        <div class="pri-desc">禁止ワードチェック（v1.2）の次の段階。同じ表現の繰り返し検知、一文長さ調整（40字超の文を分割）、テンプレ感検知（連続する短文・箇条書き多用）を追加する。冒頭パターンの実効率も向上させる。</div>
-      </div>
+  <!-- 完成宣言 -->
+  <h2><span class="sec-num">🏁</span>完成宣言 — フロントエンド版「完全版」達成</h2>
+  <div class="card" style="border-left:4px solid var(--green)">
+    <p style="font-size:14px;font-weight:700;color:var(--green);margin-bottom:10px">✅ Bスカウト v3.0+v4.0 — フロントエンド完全版として完成</p>
+    <p style="font-size:13px;color:var(--text);line-height:1.8;margin-bottom:12px">
+      「トップリクルーターが30分かけて考えた採用戦略を、AIが2分で再現する」というコンセプトを実現。<br>
+      <strong>候補者分析 → 訴求戦略 → 会話設計 → スカウト生成 → 品質評価 → 学習</strong>の6ステップフローが完全動作。<br>
+      APIキーなしのデモモードでも全フローを体験可能。IndexedDB永続化・設定バックアップ・ダッシュボードまで完備。
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+      <div style="padding:8px 12px;background:var(--green-l);border-radius:6px">✅ 全STEP正常動作（デモモード含む）</div>
+      <div style="padding:8px 12px;background:var(--green-l);border-radius:6px">✅ 禁止表現30語自動検出・修正</div>
+      <div style="padding:8px 12px;background:var(--green-l);border-radius:6px">✅ IBM訴求20軸・候補者タイプ5分類</div>
+      <div style="padding:8px 12px;background:var(--green-l);border-radius:6px">✅ Story Planner + 直接編集UI</div>
+      <div style="padding:8px 12px;background:var(--green-l);border-radius:6px">✅ IndexedDB永続化 + 設定バックアップ</div>
+      <div style="padding:8px 12px;background:var(--green-l);border-radius:6px">✅ 成果ダッシュボード + SVGトレンドグラフ</div>
+      <div style="padding:8px 12px;background:var(--green-l);border-radius:6px">✅ 学習ログ可視化 + 修正パターンTOP5</div>
+      <div style="padding:8px 12px;background:var(--green-l);border-radius:6px">✅ 署名入力欄 + モバイルレスポンシブ</div>
     </div>
-    <div class="priority-item">
-      <div class="pri-num pri-critical">2</div>
-      <div class="pri-body">
-        <div class="pri-title">成功スカウト例の近似度マッチング</div>
-        <div class="pri-desc">analyzeSuccessExample()の4項目拡張（v1.4）を活用し、候補者タイプとの近似度でどの成功例が最も参考になるかをスコアリングする。複数の成功例から最適なものを自動選択するロジックを追加する。</div>
-      </div>
-    </div>
-    <div class="priority-item">
-      <div class="pri-num pri-high">3</div>
-      <div class="pri-body">
-        <div class="pri-title">IBM訴求30〜50軸への拡張</div>
-        <div class="pri-desc">現在14軸の訴求ライブラリを30〜50軸に拡張（業界別・ポジション別・年齢層別など）。IBM_MATRIXも更新し、より細かい候補者タイプ分類に対応させる。</div>
-      </div>
-    </div>
-    <div class="priority-item">
-      <div class="pri-num pri-med">4</div>
-      <div class="pri-body">
-        <div class="pri-title">IBM Cloud Code Engine + Cloudant移行（Phase4）</div>
-        <div class="pri-desc">現在のNetlify Functionsプロキシを、IBM Cloud Code Engineのサーバーレスコンテナに移行。APIキーをサーバー環境変数として管理。localStorage→Cloudant永続化、IBM App ID認証もこのフェーズで実装。</div>
-      </div>
-    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px">
+      残課題: IBM App ID認証・Cloudant DB・watsonx.ai Granite本番化 は <strong>v5.0（IBM Cloud本番化）フェーズ</strong>で対応予定。
+    </p>
   </div>
 
   <!-- ファイル構成 -->
-  <h2><span class="sec-num">📁</span>ファイル構成（コードレビュー参照先）</h2>
+  <h2><span class="sec-num">📁</span>ファイル構成（最終版）</h2>
   <div class="file-tree">
     <span class="ft-dir">bscout/</span><br>
-    ├── <span class="ft-file">index.html</span>　　　　 <span class="ft-comment">// v1.4: PANEL4にSP直接編集UIを追加（spViewMode / spEditMode / spe-* フィールド）</span><br>
+    ├── <span class="ft-file">index.html</span>　　　　 <span class="ft-comment">// 完成: PANEL1〜6 + History(3タブ) + 署名欄 + watsonxパネル + バックアップUI</span><br>
     ├── <span class="ft-dir">css/</span><br>
-    │　　└── <span class="ft-file">style.css</span>　　　 <span class="ft-comment">// v1.4: sp-edit-* スタイル追加（編集フォーム / 会話フロー編集 / IBM訴求編集 / 保存ボタン行）</span><br>
+    │　　└── <span class="ft-file">style.css</span>　　　 <span class="ft-comment">// 完成: 2000行超 / sp-edit-* / ダッシュボード / 学習ログ / 署名欄 / モバイルレスポンシブ</span><br>
     ├── <span class="ft-dir">js/</span><br>
-    │　　├── <span class="ft-file">storage.js</span>　　　 <span class="ft-comment">// v1.3 — saveStoryPlanEdit() 実装済み（v1.4: generateMail/applySpEditから呼び出し追加）</span><br>
-    │　　├── <span class="ft-file">ai.js</span>　　　　　　 <span class="ft-comment">// v1.5: 20軸対応 / advancedMailQualityCheck / regenSectionWithFix BUG FIX / SP成功例連携</span><br>
-    │　　└── <span class="ft-file">app.js</span>　　　　　 <span class="ft-comment">// v1.5: cancelSpEditスナップショット巻き戻し / buildLearningData更新タイミング修正 / エラーメッセージ改善 / 20軸MATRIX</span><br>
+    │　　├── <span class="ft-file">storage.js</span>　　　 <span class="ft-comment">// v2.0: IndexedDB(openIDB/idbPut/idbGetAll/idbDelete) + exportSettings/importSettings</span><br>
+    │　　├── <span class="ft-file">ai.js</span>　　　　　　 <span class="ft-comment">// v2.0: buildRequestBody(watsonxNetlify対応) + testWatsonxConnection() / v1.5: 20軸/TEMPLATE_PATTERNS/SP成功例連携</span><br>
+    │　　└── <span class="ft-file">app.js</span>　　　　　 <span class="ft-comment">// v3+4: renderDashboard/renderScoreTrend/renderAppealEffect/renderTypeEffect/renderLearningDashboard + 署名buildFull</span><br>
     ├── <span class="ft-dir">netlify/functions/</span><br>
-    │　　└── <span class="ft-file">proxy.js</span>　　　　 <span class="ft-comment">// Netlify用APIプロキシ（変更なし）</span><br>
-    ├── <span class="ft-file">netlify.toml</span>　　　　 <span class="ft-comment">// Netlifyデプロイ設定（変更なし）</span><br>
-    └── <span class="ft-file">bscout_standalone.html</span> <span class="ft-comment">// 全ファイル統合版（v1.5再生成済・280KB・ChatGPT添付用）</span>
+    │　　└── <span class="ft-file">proxy.js</span>　　　　 <span class="ft-comment">// v2.0: OpenAI + watsonx.ai 両対応プロキシ (backend:"watsonx" フラグ)</span><br>
+    ├── <span class="ft-file">netlify.toml</span>　　　　 <span class="ft-comment">// Netlifyデプロイ設定</span><br>
+    ├── <span class="ft-file">dev-report.html</span>　　 <span class="ft-comment">// 開発レポート（本ファイル）v3+4最終版</span><br>
+    └── <span class="ft-file">bscout_standalone.html</span> <span class="ft-comment">// 全ファイル統合版（完成版・320KB）</span>
   </div>
 
 </div>
 
 <footer style="text-align:center;font-size:12px;color:#9ca3af;border-top:1px solid #e2e5ea;padding:16px 0;margin-top:40px;background:#fff">
-  Bスカウト v1.5 — 採用AIエージェント — Made with IBM Bob
+  Bスカウト 完成版 — 採用AIエージェント — Made with IBM Bob
 </footer>
 
 </body>

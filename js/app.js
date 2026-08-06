@@ -1260,7 +1260,11 @@ function togglePreview() {
   else { pv.textContent = buildFull(); pv.classList.add('on'); ms.style.display = 'none'; btn.textContent = '編集に戻る'; }
 }
 function buildFull() {
-  return `件名：${$('ta-subject')?.value || ''}\n\n━━━━━━━━━━━━━━━━━━━━━━\n\n${['intro', 'why', 'match', 'benefit', 'cta'].map(s => $('ta-' + s)?.value || '').join('\n\n')}\n\n[担当者名]\n[会社名] 採用担当`;
+  const name  = $('signName')?.value.trim()  || '[担当者名]';
+  const comp  = $('signComp')?.value.trim()  || '[会社名]';
+  const email = $('signEmail')?.value.trim();
+  const sign  = email ? `${name}\n${comp} 採用担当\n${email}` : `${name}\n${comp} 採用担当`;
+  return `件名：${$('ta-subject')?.value || ''}\n\n━━━━━━━━━━━━━━━━━━━━━━\n\n${['intro', 'why', 'match', 'benefit', 'cta'].map(s => $('ta-' + s)?.value || '').join('\n\n')}\n\n${sign}`;
 }
 
 $('cpAll').addEventListener('click',  () => { navigator.clipboard.writeText(buildFull()).then(() => flashCopy('cpAll', '✓ コピーしました')); });
@@ -1459,6 +1463,23 @@ async function runBatch() {
   }
   prog.classList.remove('on'); $('batchRunBtn').disabled = false;
   renderBatchResults(); $('batchResult').classList.add('on');
+
+  // v3.0: 成功したバッチ結果をIDBに保存
+  BATCH_RESULTS.filter(r => !r.error).forEach(r => {
+    const entry = {
+      id: Date.now().toString() + '_' + Math.random().toString(36).slice(2, 7),
+      savedAt: new Date().toISOString(),
+      projectId: S.currentProjectId || null,
+      candidate: { company: r.cand.company, role: r.cand.role, experience: r.cand.experience || '', skills: r.cand.skills || '', reason: r.cand.reason || '' },
+      job: { position: j.position, company: j.company },
+      analysis: { candidateTypeCategory: r.candidateTypeCategory || '', score: r.score || 0 },
+      mail: { subject: r.subject, intro: r.mailBody || '', why: '', match: '', benefit: '', cta: '' },
+      mailAi: { subject: r.subject, intro: r.mailBody || '' },
+      selectedAppeals: [],
+      result: { replied: null, meetingScheduled: null, hired: null, feedbackNote: '' }
+    };
+    idbPut('history', entry);
+  });
 }
 
 function batchDemoResult(c, j) {
