@@ -1870,6 +1870,82 @@ function applyWxSettings() {
   location.reload();
 }
 
+// ══════════════════════════════════════════
+// v2.0: 接続テスト
+// ══════════════════════════════════════════
+/** watsonx / OpenAI への接続テストを実行し結果をUIに表示 */
+async function runConnectionTest() {
+  const btn    = $('wxTestBtn');
+  const result = $('wxTestResult');
+  if (!btn || !result) return;
+
+  // 設定を先に保存
+  applyWxSettingsOnly();
+
+  btn.textContent  = '接続中...';
+  btn.disabled     = true;
+  result.textContent = '—';
+  result.style.color = 'var(--muted)';
+
+  try {
+    const r = await testWatsonxConnection();
+    if (r.ok) {
+      result.textContent = '✓ 接続成功';
+      result.style.color = 'var(--green)';
+    } else {
+      result.textContent = `✗ ${r.error || '接続失敗'}`;
+      result.style.color = 'var(--red)';
+    }
+  } catch (e) {
+    result.textContent = `✗ ${e.message}`;
+    result.style.color = 'var(--red)';
+  } finally {
+    btn.textContent = '▶ テスト実行';
+    btn.disabled    = false;
+  }
+}
+
+/** パネルを閉じずに設定値だけ保存（接続テスト前呼び出し用） */
+function applyWxSettingsOnly() {
+  const fields = [
+    { id: 'wxApiKey',  key: 'bscout_apikey'    },
+    { id: 'wxToken',   key: 'bscout_wx_token'  },
+    { id: 'wxUrl',     key: 'bscout_wx_url'    },
+    { id: 'wxProject', key: 'bscout_wx_project'},
+    { id: 'wxModel',   key: 'bscout_wx_model'  },
+  ];
+  fields.forEach(({ id, key }) => {
+    const el = $(id);
+    if (el && el.value && el.value !== '••••••••') {
+      localStorage.setItem(key, el.value.trim());
+    }
+  });
+}
+
+// ══════════════════════════════════════════
+// v2.0: 設定インポート
+// ══════════════════════════════════════════
+/** バックアップ JSON ファイルから設定・履歴を復元する */
+async function handleSettingsImport(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const statusEl = $('importStatus');
+  if (statusEl) { statusEl.style.display = 'block'; statusEl.textContent = 'インポート中...'; statusEl.style.color = 'var(--muted)'; }
+
+  try {
+    const { imported, skipped } = await importSettings(file);
+    const msg = `✓ ${imported.length}件の設定を復元しました。ページを再読み込みして反映します。`;
+    if (statusEl) { statusEl.textContent = msg; statusEl.style.color = 'var(--green)'; }
+    // 3秒後に自動リロード
+    setTimeout(() => location.reload(), 3000);
+  } catch (e) {
+    if (statusEl) { statusEl.textContent = `✗ ${e.message}`; statusEl.style.color = 'var(--red)'; }
+  }
+  // ファイル入力をリセット（同一ファイルを再インポートできるように）
+  event.target.value = '';
+}
+
 // パネル外クリックで閉じる
 document.addEventListener('click', (e) => {
   const panel = $('wxPanel');

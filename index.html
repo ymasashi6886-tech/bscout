@@ -49,10 +49,10 @@
   </div>
 </header>
 
-<!-- watsonx 設定パネル -->
+<!-- watsonx 設定パネル (v2.0: 接続テスト・バックアップ機能追加) -->
 <div class="wx-panel" id="wxPanel">
   <div class="wx-panel-inner">
-    <div class="wx-panel-title">バックエンド設定</div>
+    <div class="wx-panel-title">バックエンド設定 <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:8px">v2.0</span></div>
     <div class="wx-row">
       <span class="wx-label">バックエンド</span>
       <div class="wx-toggle-group">
@@ -73,7 +73,7 @@
       </div>
       <div class="wx-row">
         <span class="wx-label">エンドポイントURL</span>
-        <input type="text" class="wx-input" id="wxUrl" placeholder="https://us-south.ml.cloud.ibm.com/..." oninput="saveWxField('bscout_wx_url', this.value)">
+        <input type="text" class="wx-input" id="wxUrl" placeholder="https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29" oninput="saveWxField('bscout_wx_url', this.value)">
       </div>
       <div class="wx-row">
         <span class="wx-label">プロジェクトID</span>
@@ -88,9 +88,31 @@
           <option value="meta-llama/llama-3-8b-instruct">Llama 3 8B Instruct</option>
         </select>
       </div>
+      <!-- v2.0: 接続テスト -->
+      <div class="wx-row" style="margin-top:6px">
+        <span class="wx-label">接続テスト</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="btn btn-sm btn-ghost" id="wxTestBtn" onclick="runConnectionTest()" style="min-width:100px">▶ テスト実行</button>
+          <span id="wxTestResult" style="font-size:12px;color:var(--muted)">—</span>
+        </div>
+      </div>
     </div>
+
+    <!-- v2.0: 設定バックアップ -->
+    <div class="wx-backup-section">
+      <div class="wx-backup-title">設定バックアップ</div>
+      <div class="wx-backup-row">
+        <button class="btn btn-sm btn-ghost" onclick="exportSettings()" title="APIキー・設定・履歴をJSONでバックアップ">📦 バックアップ出力</button>
+        <label class="btn btn-sm btn-ghost" style="cursor:pointer" title="バックアップJSONから設定・履歴を復元">
+          📂 インポート
+          <input type="file" id="settingsImportFile" accept=".json" style="display:none" onchange="handleSettingsImport(event)">
+        </label>
+        <button class="btn btn-sm btn-ghost" onclick="exportEditLogs()" title="蓄積した修正ログ・学習データをJSONでダウンロード">📥 学習データ出力</button>
+      </div>
+      <div id="importStatus" style="font-size:12px;color:var(--muted);margin-top:6px;display:none"></div>
+    </div>
+
     <div class="wx-panel-footer">
-      <button class="btn btn-sm btn-ghost" onclick="exportEditLogs()" title="蓄積した修正ログ・学習データをJSONでダウンロード">📥 学習データを出力</button>
       <button class="btn btn-sm btn-ghost" onclick="clearWxSettings()">設定をクリア</button>
       <button class="btn btn-sm btn-primary" onclick="applyWxSettings()">適用して閉じる</button>
     </div>

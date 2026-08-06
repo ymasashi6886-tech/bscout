@@ -1699,3 +1699,25 @@ textarea.tall { min-height:110px; }
   margin-left: 8px;
   vertical-align: middle;
 }
+
+/* ══════════════════════════════════════
+   v2.0: 設定パネル バックアップセクション
+════════════════════════════════════════ */
+.wx-backup-section {
+  border-top: 1px solid var(--border);
+  margin-top: 14px;
+  padding-top: 14px;
+}
+.wx-backup-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wx-backup-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

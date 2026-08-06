@@ -1707,6 +1707,28 @@ textarea.tall { min-height:110px; }
   vertical-align: middle;
 }
 
+/* ══════════════════════════════════════
+   v2.0: 設定パネル バックアップセクション
+════════════════════════════════════════ */
+.wx-backup-section {
+  border-top: 1px solid var(--border);
+  margin-top: 14px;
+  padding-top: 14px;
+}
+.wx-backup-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.wx-backup-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 </style>
 </head>
 <body>
@@ -1752,10 +1774,10 @@ textarea.tall { min-height:110px; }
   </div>
 </header>
 
-<!-- watsonx 設定パネル -->
+<!-- watsonx 設定パネル (v2.0: 接続テスト・バックアップ機能追加) -->
 <div class="wx-panel" id="wxPanel">
   <div class="wx-panel-inner">
-    <div class="wx-panel-title">バックエンド設定</div>
+    <div class="wx-panel-title">バックエンド設定 <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:8px">v2.0</span></div>
     <div class="wx-row">
       <span class="wx-label">バックエンド</span>
       <div class="wx-toggle-group">
@@ -1776,7 +1798,7 @@ textarea.tall { min-height:110px; }
       </div>
       <div class="wx-row">
         <span class="wx-label">エンドポイントURL</span>
-        <input type="text" class="wx-input" id="wxUrl" placeholder="https://us-south.ml.cloud.ibm.com/..." oninput="saveWxField('bscout_wx_url', this.value)">
+        <input type="text" class="wx-input" id="wxUrl" placeholder="https://us-south.ml.cloud.ibm.com/ml/v1/text/generation?version=2023-05-29" oninput="saveWxField('bscout_wx_url', this.value)">
       </div>
       <div class="wx-row">
         <span class="wx-label">プロジェクトID</span>
@@ -1791,9 +1813,31 @@ textarea.tall { min-height:110px; }
           <option value="meta-llama/llama-3-8b-instruct">Llama 3 8B Instruct</option>
         </select>
       </div>
+      <!-- v2.0: 接続テスト -->
+      <div class="wx-row" style="margin-top:6px">
+        <span class="wx-label">接続テスト</span>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="btn btn-sm btn-ghost" id="wxTestBtn" onclick="runConnectionTest()" style="min-width:100px">▶ テスト実行</button>
+          <span id="wxTestResult" style="font-size:12px;color:var(--muted)">—</span>
+        </div>
+      </div>
     </div>
+
+    <!-- v2.0: 設定バックアップ -->
+    <div class="wx-backup-section">
+      <div class="wx-backup-title">設定バックアップ</div>
+      <div class="wx-backup-row">
+        <button class="btn btn-sm btn-ghost" onclick="exportSettings()" title="APIキー・設定・履歴をJSONでバックアップ">📦 バックアップ出力</button>
+        <label class="btn btn-sm btn-ghost" style="cursor:pointer" title="バックアップJSONから設定・履歴を復元">
+          📂 インポート
+          <input type="file" id="settingsImportFile" accept=".json" style="display:none" onchange="handleSettingsImport(event)">
+        </label>
+        <button class="btn btn-sm btn-ghost" onclick="exportEditLogs()" title="蓄積した修正ログ・学習データをJSONでダウンロード">📥 学習データ出力</button>
+      </div>
+      <div id="importStatus" style="font-size:12px;color:var(--muted);margin-top:6px;display:none"></div>
+    </div>
+
     <div class="wx-panel-footer">
-      <button class="btn btn-sm btn-ghost" onclick="exportEditLogs()" title="蓄積した修正ログ・学習データをJSONでダウンロード">📥 学習データを出力</button>
       <button class="btn btn-sm btn-ghost" onclick="clearWxSettings()">設定をクリア</button>
       <button class="btn btn-sm btn-primary" onclick="applyWxSettings()">適用して閉じる</button>
     </div>
@@ -2433,14 +2477,167 @@ textarea.tall { min-height:110px; }
 /**
  * storage.js — ローカルストレージ管理・learningData 構造
  *
- * 将来的な拡張ポイント:
- *   - exportLearningData() : 学習データのエクスポート
- *   - IBM watsonx / DB 接続時は fetch() をここに集約
+ * v2.0 変更点:
+ *   - IndexedDB 永続化レイヤー追加（IDB_VERSION=1、DB名=bscout_db）
+ *   - 設定バックアップ/インポート（exportSettings / importSettings）
+ *   - スカウト履歴は localStorage（最大50件）+ IndexedDB（無制限）の二重保存
+ *   - 既存APIはすべて後方互換を維持
  */
 
 const HISTORY_KEY  = 'bscout_history';
 const PROJECT_KEY  = 'bscout_projects';   // Phase1.5: 求人プロジェクト
 const EDITLOG_KEY  = 'bscout_editlogs';   // Phase1.5: リクルーター修正ログ
+
+// ══════════════════════════════════════════
+// v2.0: IndexedDB 永続化レイヤー
+// ══════════════════════════════════════════
+
+const IDB_NAME    = 'bscout_db';
+const IDB_VERSION = 1;
+const IDB_STORES  = { history: 'id', editlogs: 'id', projects: 'id' };
+
+let _idb = null;
+
+/**
+ * IndexedDB を開く（初回のみ）
+ * @returns {Promise<IDBDatabase>}
+ */
+function openIDB() {
+  if (_idb) return Promise.resolve(_idb);
+  return new Promise((resolve, reject) => {
+    if (!window.indexedDB) { reject(new Error('IndexedDB 非対応')); return; }
+    const req = indexedDB.open(IDB_NAME, IDB_VERSION);
+    req.onupgradeneeded = e => {
+      const db = e.target.result;
+      Object.entries(IDB_STORES).forEach(([name, keyPath]) => {
+        if (!db.objectStoreNames.contains(name)) {
+          db.createObjectStore(name, { keyPath });
+        }
+      });
+    };
+    req.onsuccess = e => { _idb = e.target.result; resolve(_idb); };
+    req.onerror   = e => reject(e.target.error);
+  });
+}
+
+/**
+ * IndexedDB にレコードを upsert する
+ * @param {string} storeName - ストア名
+ * @param {Object} record    - keyPath フィールドを含むオブジェクト
+ */
+async function idbPut(storeName, record) {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve, reject) => {
+      const tx  = db.transaction(storeName, 'readwrite');
+      const req = tx.objectStore(storeName).put(record);
+      req.onsuccess = () => resolve(req.result);
+      req.onerror   = e => reject(e.target.error);
+    });
+  } catch { /* IndexedDB 非対応環境は無視 */ }
+}
+
+/**
+ * IndexedDB から全件取得（新しい順）
+ * @param {string} storeName
+ * @returns {Promise<Array>}
+ */
+async function idbGetAll(storeName) {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve, reject) => {
+      const tx  = db.transaction(storeName, 'readonly');
+      const req = tx.objectStore(storeName).getAll();
+      req.onsuccess = () => resolve((req.result || []).sort((a, b) => (b.savedAt || '') > (a.savedAt || '') ? 1 : -1));
+      req.onerror   = e => reject(e.target.error);
+    });
+  } catch { return []; }
+}
+
+/**
+ * IndexedDB からレコードを削除
+ * @param {string} storeName
+ * @param {string} id
+ */
+async function idbDelete(storeName, id) {
+  try {
+    const db = await openIDB();
+    return new Promise((resolve, reject) => {
+      const tx  = db.transaction(storeName, 'readwrite');
+      const req = tx.objectStore(storeName).delete(id);
+      req.onsuccess = () => resolve();
+      req.onerror   = e => reject(e.target.error);
+    });
+  } catch { /* 無視 */ }
+}
+
+// ══════════════════════════════════════════
+// v2.0: 設定バックアップ / インポート
+// ══════════════════════════════════════════
+
+/** バックアップ対象の localStorage キー */
+const BACKUP_KEYS = [
+  'bscout_backend',
+  'bscout_apikey',
+  'bscout_wx_token',
+  'bscout_wx_url',
+  'bscout_wx_project',
+  'bscout_wx_model',
+  'bscout_history',
+  'bscout_projects',
+  'bscout_editlogs'
+];
+
+/**
+ * 設定・履歴をすべて JSON ファイルとしてダウンロード
+ * （APIキー・トークンも含まれるため取り扱い注意の警告を付ける）
+ */
+function exportSettings() {
+  const data = {
+    version:    '2.0',
+    exportedAt: new Date().toISOString(),
+    warning:    'このファイルにはAPIキーが含まれます。安全な場所に保管してください。',
+    settings:   {}
+  };
+  BACKUP_KEYS.forEach(key => {
+    const val = localStorage.getItem(key);
+    if (val !== null) data.settings[key] = val;
+  });
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = `bscout_backup_${Date.now()}.json`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * JSON バックアップファイルから設定・履歴を復元
+ * @param {File} file - input[type=file] から取得した File オブジェクト
+ * @returns {Promise<{imported: string[], skipped: string[]}>}
+ */
+async function importSettings(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (!data.settings) { reject(new Error('不正なバックアップファイルです')); return; }
+        const imported = [], skipped = [];
+        Object.entries(data.settings).forEach(([key, val]) => {
+          if (BACKUP_KEYS.includes(key)) {
+            localStorage.setItem(key, val);
+            imported.push(key);
+          } else {
+            skipped.push(key);
+          }
+        });
+        resolve({ imported, skipped });
+      } catch (err) { reject(err); }
+    };
+    reader.onerror = () => reject(new Error('ファイルの読み込みに失敗しました'));
+    reader.readAsText(file, 'UTF-8');
+  });
+}
 
 // ── アプリ全体の状態オブジェクト ──
 const S = {
@@ -2664,7 +2861,7 @@ function saveStoryPlanEdit(originalPlan, note) {
 }
 
 // ══════════════════════════════════════════
-// スカウト履歴管理（既存）
+// スカウト履歴管理（v2.0: IndexedDB二重保存）
 // ══════════════════════════════════════════
 
 function saveScoutHistory() {
@@ -2697,7 +2894,10 @@ function saveScoutHistory() {
   if (idx >= 0) history[idx] = entry;
   else history.unshift(entry);
 
+  // localStorage（最大50件・高速アクセス用）
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 50)));
+  // v2.0: IndexedDB（無制限・永続化）
+  idbPut('history', entry);
   return id;
 }
 
@@ -2706,17 +2906,31 @@ function loadScoutHistory() {
   catch { return []; }
 }
 
+/**
+ * v2.0: IndexedDB から全履歴を取得（localStorage の上限を超えた履歴を含む）
+ * @returns {Promise<Array>}
+ */
+async function loadScoutHistoryAll() {
+  const idbEntries = await idbGetAll('history');
+  if (idbEntries.length === 0) return loadScoutHistory();  // fallback
+  return idbEntries;
+}
+
 function updateHistoryResult(id, result) {
   const history = loadScoutHistory();
   const entry = history.find(h => h.id === id);
   if (!entry) return;
   entry.result = { ...entry.result, ...result };
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  // v2.0: IndexedDB にも反映
+  idbPut('history', entry);
 }
 
 function deleteHistoryEntry(id) {
   const history = loadScoutHistory().filter(h => h.id !== id);
   localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  // v2.0: IndexedDB からも削除
+  idbDelete('history', id);
 }
 
 // ══════════════════════════════════════════
@@ -3237,34 +3451,89 @@ function apiHeaders() {
 }
 
 /**
- * Phase3b: watsonx用リクエストボディへの変換
- * OpenAI形式のmessages → watsonx Granite/Llama形式に変換
+ * Phase3b / v2.0: リクエストボディ構築
+ * - IS_NETLIFY + watsonx: backend:"watsonx" フラグ付きでプロキシに送信
+ * - IS_NETLIFY + openai: 従来通りOpenAI形式
+ * - ローカル watsonx: watsonx text generation API形式（直接接続）
+ * - ローカル openai: OpenAI形式（直接接続）
  */
 function buildRequestBody(messages, temperature, model) {
-  if (currentBackend() === 'watsonx' && !IS_NETLIFY) {
-    // watsonx text generation API形式
-    const systemMsg = messages.find(m => m.role === 'system')?.content || '';
-    const userMsg   = messages.find(m => m.role === 'user')?.content || '';
-    const wxModel   = localStorage.getItem('bscout_wx_model') || 'ibm/granite-13b-instruct-v2';
-    return {
-      model_id: wxModel,
-      project_id: localStorage.getItem('bscout_wx_project') || '',
-      input: `${systemMsg}\n\n${userMsg}`,
-      parameters: {
-        decoding_method: 'greedy',
-        max_new_tokens: 2000,
+  const backend = currentBackend();
+  const wxModel = localStorage.getItem('bscout_wx_model') || 'ibm/granite-13b-instruct-v2';
+
+  if (backend === 'watsonx') {
+    if (IS_NETLIFY) {
+      // v2.0: Netlify プロキシ経由 watsonx — backend フラグを付けた OpenAI 形式で送り、
+      // プロキシ側で watsonx 形式に変換させる
+      return {
+        backend: 'watsonx',
+        model:   wxModel,
+        messages,
         temperature: temperature || 0.7,
-        stop_sequences: []
-      }
-    };
+        project_id:  localStorage.getItem('bscout_wx_project') || ''
+      };
+    } else {
+      // ローカル直接接続（watsonx text generation API形式）
+      const systemMsg = messages.find(m => m.role === 'system')?.content || '';
+      const userMsg   = messages.find(m => m.role === 'user')?.content || '';
+      return {
+        model_id: wxModel,
+        project_id: localStorage.getItem('bscout_wx_project') || '',
+        input: `${systemMsg}\n\n${userMsg}`,
+        parameters: {
+          decoding_method: 'greedy',
+          max_new_tokens: 2000,
+          temperature: temperature || 0.7,
+          stop_sequences: []
+        }
+      };
+    }
   }
-  // OpenAI形式（デフォルト）
+
+  // OpenAI形式（デフォルト: Netlify経由 or ローカル直接接続）
   return {
     model: model || md(),
     messages,
     temperature: temperature || 0.7,
     response_format: { type: 'json_object' }
   };
+}
+
+// ══════════════════════════════════════════
+// v2.0: watsonx 接続テスト
+// ══════════════════════════════════════════
+/**
+ * watsonxへの接続テストを実行し、成功/失敗をコールバックで通知する。
+ * Netlify環境とローカル直接接続の両方に対応。
+ */
+async function testWatsonxConnection() {
+  const testMessages = [
+    { role: 'system', content: 'あなたはテストエージェントです。JSONのみ返してください。' },
+    { role: 'user',   content: '{"test": "ok"} と返してください。' }
+  ];
+  const body = buildRequestBody(testMessages, 0.1);
+  const url  = getApiUrl();
+
+  try {
+    const res = await fetch(url, {
+      method:  'POST',
+      headers: apiHeaders(),
+      body:    JSON.stringify(body)
+    });
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      throw new Error(e?.error || `HTTP ${res.status}`);
+    }
+    // レスポンスが返ってきたら成功
+    const data = await res.json();
+    // watsonx形式チェック
+    const hasResult  = !!data?.results?.[0]?.generated_text;
+    const hasChoices = !!data?.choices?.[0]?.message?.content;
+    if (!hasResult && !hasChoices) throw new Error('レスポンス形式が不正です');
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e.message };
+  }
 }
 
 /**
@@ -5776,6 +6045,82 @@ function applyWxSettings() {
   $('wxPanel').classList.remove('wx-panel-open');
   // 接続状態を再表示するためリロード
   location.reload();
+}
+
+// ══════════════════════════════════════════
+// v2.0: 接続テスト
+// ══════════════════════════════════════════
+/** watsonx / OpenAI への接続テストを実行し結果をUIに表示 */
+async function runConnectionTest() {
+  const btn    = $('wxTestBtn');
+  const result = $('wxTestResult');
+  if (!btn || !result) return;
+
+  // 設定を先に保存
+  applyWxSettingsOnly();
+
+  btn.textContent  = '接続中...';
+  btn.disabled     = true;
+  result.textContent = '—';
+  result.style.color = 'var(--muted)';
+
+  try {
+    const r = await testWatsonxConnection();
+    if (r.ok) {
+      result.textContent = '✓ 接続成功';
+      result.style.color = 'var(--green)';
+    } else {
+      result.textContent = `✗ ${r.error || '接続失敗'}`;
+      result.style.color = 'var(--red)';
+    }
+  } catch (e) {
+    result.textContent = `✗ ${e.message}`;
+    result.style.color = 'var(--red)';
+  } finally {
+    btn.textContent = '▶ テスト実行';
+    btn.disabled    = false;
+  }
+}
+
+/** パネルを閉じずに設定値だけ保存（接続テスト前呼び出し用） */
+function applyWxSettingsOnly() {
+  const fields = [
+    { id: 'wxApiKey',  key: 'bscout_apikey'    },
+    { id: 'wxToken',   key: 'bscout_wx_token'  },
+    { id: 'wxUrl',     key: 'bscout_wx_url'    },
+    { id: 'wxProject', key: 'bscout_wx_project'},
+    { id: 'wxModel',   key: 'bscout_wx_model'  },
+  ];
+  fields.forEach(({ id, key }) => {
+    const el = $(id);
+    if (el && el.value && el.value !== '••••••••') {
+      localStorage.setItem(key, el.value.trim());
+    }
+  });
+}
+
+// ══════════════════════════════════════════
+// v2.0: 設定インポート
+// ══════════════════════════════════════════
+/** バックアップ JSON ファイルから設定・履歴を復元する */
+async function handleSettingsImport(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const statusEl = $('importStatus');
+  if (statusEl) { statusEl.style.display = 'block'; statusEl.textContent = 'インポート中...'; statusEl.style.color = 'var(--muted)'; }
+
+  try {
+    const { imported, skipped } = await importSettings(file);
+    const msg = `✓ ${imported.length}件の設定を復元しました。ページを再読み込みして反映します。`;
+    if (statusEl) { statusEl.textContent = msg; statusEl.style.color = 'var(--green)'; }
+    // 3秒後に自動リロード
+    setTimeout(() => location.reload(), 3000);
+  } catch (e) {
+    if (statusEl) { statusEl.textContent = `✗ ${e.message}`; statusEl.style.color = 'var(--red)'; }
+  }
+  // ファイル入力をリセット（同一ファイルを再インポートできるように）
+  event.target.value = '';
 }
 
 // パネル外クリックで閉じる

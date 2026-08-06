@@ -483,34 +483,89 @@ function apiHeaders() {
 }
 
 /**
- * Phase3b: watsonx用リクエストボディへの変換
- * OpenAI形式のmessages → watsonx Granite/Llama形式に変換
+ * Phase3b / v2.0: リクエストボディ構築
+ * - IS_NETLIFY + watsonx: backend:"watsonx" フラグ付きでプロキシに送信
+ * - IS_NETLIFY + openai: 従来通りOpenAI形式
+ * - ローカル watsonx: watsonx text generation API形式（直接接続）
+ * - ローカル openai: OpenAI形式（直接接続）
  */
 function buildRequestBody(messages, temperature, model) {
-  if (currentBackend() === 'watsonx' && !IS_NETLIFY) {
-    // watsonx text generation API形式
-    const systemMsg = messages.find(m => m.role === 'system')?.content || '';
-    const userMsg   = messages.find(m => m.role === 'user')?.content || '';
-    const wxModel   = localStorage.getItem('bscout_wx_model') || 'ibm/granite-13b-instruct-v2';
-    return {
-      model_id: wxModel,
-      project_id: localStorage.getItem('bscout_wx_project') || '',
-      input: `${systemMsg}\n\n${userMsg}`,
-      parameters: {
-        decoding_method: 'greedy',
-        max_new_tokens: 2000,
+  const backend = currentBackend();
+  const wxModel = localStorage.getItem('bscout_wx_model') || 'ibm/granite-13b-instruct-v2';
+
+  if (backend === 'watsonx') {
+    if (IS_NETLIFY) {
+      // v2.0: Netlify プロキシ経由 watsonx — backend フラグを付けた OpenAI 形式で送り、
+      // プロキシ側で watsonx 形式に変換させる
+      return {
+        backend: 'watsonx',
+        model:   wxModel,
+        messages,
         temperature: temperature || 0.7,
-        stop_sequences: []
-      }
-    };
+        project_id:  localStorage.getItem('bscout_wx_project') || ''
+      };
+    } else {
+      // ローカル直接接続（watsonx text generation API形式）
+      const systemMsg = messages.find(m => m.role === 'system')?.content || '';
+      const userMsg   = messages.find(m => m.role === 'user')?.content || '';
+      return {
+        model_id: wxModel,
+        project_id: localStorage.getItem('bscout_wx_project') || '',
+        input: `${systemMsg}\n\n${userMsg}`,
+        parameters: {
+          decoding_method: 'greedy',
+          max_new_tokens: 2000,
+          temperature: temperature || 0.7,
+          stop_sequences: []
+        }
+      };
+    }
   }
-  // OpenAI形式（デフォルト）
+
+  // OpenAI形式（デフォルト: Netlify経由 or ローカル直接接続）
   return {
     model: model || md(),
     messages,
     temperature: temperature || 0.7,
     response_format: { type: 'json_object' }
   };
+}
+
+// ══════════════════════════════════════════
+// v2.0: watsonx 接続テスト
+// ══════════════════════════════════════════
+/**
+ * watsonxへの接続テストを実行し、成功/失敗をコールバックで通知する。
+ * Netlify環境とローカル直接接続の両方に対応。
+ */
+async function testWatsonxConnection() {
+  const testMessages = [
+    { role: 'system', content: 'あなたはテストエージェントです。JSONのみ返してください。' },
+    { role: 'user',   content: '{"test": "ok"} と返してください。' }
+  ];
+  const body = buildRequestBody(testMessages, 0.1);
+  const url  = getApiUrl();
+
+  try {
+    const res = await fetch(url, {
+      method:  'POST',
+      headers: apiHeaders(),
+      body:    JSON.stringify(body)
+    });
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      throw new Error(e?.error || `HTTP ${res.status}`);
+    }
+    // レスポンスが返ってきたら成功
+    const data = await res.json();
+    // watsonx形式チェック
+    const hasResult  = !!data?.results?.[0]?.generated_text;
+    const hasChoices = !!data?.choices?.[0]?.message?.content;
+    if (!hasResult && !hasChoices) throw new Error('レスポンス形式が不正です');
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e.message };
+  }
 }
 
 /**

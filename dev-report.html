@@ -147,14 +147,14 @@ tr:last-child td{border-bottom:none}
   <!-- VERSION HERO -->
   <div class="version-hero">
     <div class="version-left">
-      <div class="version-num">v1.5</div>
-      <div class="version-label">完成版 — バグ全修正・20軸IBM訴求・AIっぽさ高度除去・UX改善</div>
-      <div class="phase-badge">📅 最終更新: 2025年7月（致命的バグ5件修正 + 機能完成 + 品質向上）</div>
+      <div class="version-num">v2.0</div>
+      <div class="version-label">インフラ整備版 — watsonxプロキシ・IndexedDB・設定バックアップ</div>
+      <div class="phase-badge">📅 最終更新: 2025年7月（v1.5完成版 → v2.0インフラ整備）</div>
     </div>
     <div class="version-right">
       <div class="version-concept">
         「トップリクルーターが30分かけて考える<br>採用戦略を、AIが2分で再現する」<br><br>
-        <strong style="color:#fff">v1.5「完成版」達成<br>次は v2.0 インフラ整備フェーズへ</strong>
+        <strong style="color:#fff">v2.0 インフラ整備完了<br>watsonx Netlify対応・IndexedDB永続化・設定バックアップ</strong>
       </div>
     </div>
   </div>
@@ -234,13 +234,18 @@ tr:last-child td{border-bottom:none}
       </div>
       <div class="vt-line vt-line-done"></div>
       <div class="vt-item">
-        <div class="vt-dot vt-current">v1.5</div>
-        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>完成版</div>
+        <div class="vt-dot vt-done">v1.5</div>
+        <div class="vt-label">完成版<br>AIっぽさ除去</div>
+      </div>
+      <div class="vt-line vt-line-done"></div>
+      <div class="vt-item">
+        <div class="vt-dot vt-current">v2.0</div>
+        <div class="vt-label" style="color:var(--accent);font-weight:700">現在<br>インフラ整備</div>
       </div>
       <div class="vt-line"></div>
       <div class="vt-item">
-        <div class="vt-dot vt-next">v2.0</div>
-        <div class="vt-label">インフラ<br>整備</div>
+        <div class="vt-dot vt-next">v3.0</div>
+        <div class="vt-label">チーム<br>利用</div>
       </div>
     </div>
   </div>
@@ -250,28 +255,28 @@ tr:last-child td{border-bottom:none}
   <div class="card">
     <div class="score-row">
       <div class="score-card">
-        <div class="score-val" style="color:var(--green)">8.5</div>
+        <div class="score-val" style="color:var(--green)">9.0</div>
           <div class="score-label">総合 / 10点</div>
       </div>
       <div class="score-card">
-        <div class="score-val" style="color:var(--green)">8.5</div>
+        <div class="score-val" style="color:var(--green)">9.0</div>
         <div class="score-label">基本機能</div>
       </div>
       <div class="score-card">
-        <div class="score-val" style="color:var(--green)">8</div>
+        <div class="score-val" style="color:var(--green)">8.5</div>
         <div class="score-label">思考再現度</div>
       </div>
       <div class="score-card">
-        <div class="score-val" style="color:var(--green)">7.5</div>
+        <div class="score-val" style="color:var(--green)">8.0</div>
         <div class="score-label">IBM専用化</div>
       </div>
       <div class="score-card">
-        <div class="score-val" style="color:var(--amber)">7</div>
-        <div class="score-label">実用性</div>
+        <div class="score-val" style="color:var(--green)">8.0</div>
+        <div class="score-label">インフラ</div>
       </div>
     </div>
     <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7">
-      v1.5は「完成版」フェーズ。①致命的バグ5件を完全修正（regenSectionWithFix API_URL直参照・cancelSpEditスナップショット巻き戻し・selectIbmKnowledge14軸マッピング・buildLearningDataタイミング修正・exportEditLogs UIボタン追加）。②AIっぽさ高度除去エンジン追加（テンプレ検知・繰り返し検知・一文長さ警告）。③IBM訴求20軸完成。④Story Planner成功例連携。⑤エラーメッセージUX改善。致命的バグゼロ・全STEP正常動作を達成。
+      v2.0は「インフラ整備」フェーズ。①Netlify Function を OpenAI / IBM watsonx.ai 両対応プロキシに強化（backend:"watsonx" フラグで自動切り替え）。②IndexedDB 永続化レイヤー追加（openIDB/idbPut/idbGetAll/idbDelete — スカウト履歴の無制限保存）。③設定バックアップ/インポート（exportSettings / importSettings — APIキー・履歴をJSONでバックアップ）。④watsonx 接続テストボタン追加（testWatsonxConnection() — ✓成功/✗失敗をUIに即表示）。v1.5の全機能を引き継ぎ、チーム利用に向けたインフラを整備。
     </p>
   </div>
 
@@ -381,11 +386,11 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="phase-row">
-      <div class="phase-marker pm-active"></div>
+      <div class="phase-marker pm-done"></div>
       <div class="phase-content">
         <div class="phase-head">
           <div class="phase-name">v1.4 — Story Planner直接編集UI</div>
-          <span class="phase-tag pt-active">✅ 完了 → v1.4（現在）</span>
+          <span class="phase-tag pt-done">✅ 完了 → v1.4</span>
         </div>
         <div class="phase-items">
           <div class="phase-item"><span class="pi-done">✅</span><strong>Story Planner直接編集UI</strong> — 冒頭フォーカス・能力承認・キャリア仮説・会話フロー5STEP・IBM訴求（訴求名/理由/例）・クロージングスタイル・文体指示・避けること をすべてin-place編集可能に</div>
@@ -401,32 +406,51 @@ tr:last-child td{border-bottom:none}
     </div>
 
     <div class="phase-row">
-      <div class="phase-marker pm-next"></div>
+      <div class="phase-marker pm-done"></div>
       <div class="phase-content">
         <div class="phase-head">
-          <div class="phase-name">v1.5 — 文体チェック・AIっぽさ除去強化</div>
-          <span class="phase-tag pt-next">次のバージョン</span>
+          <div class="phase-name">v1.5 — 完成版（AIっぽさ高度除去・20軸IBM訴求）</div>
+          <span class="phase-tag pt-done">✅ 完了 → v1.5</span>
         </div>
         <div class="phase-items">
-          <div class="phase-item"><span class="pi-todo">⬜</span>文体チェック — 同じ表現の繰り返し検知・一文長さ調整・テンプレ感検知</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>冒頭パターン最適化（OPENING_PATTERNSの実効率向上）</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>候補者タイプとの近似度マッチングによる成功例活用精度向上</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>IBM訴求30〜50軸への拡張（現在14軸）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>致命的バグ5件完全修正（regenSectionWithFix/cancelSpEdit/selectIbmKnowledge/buildLearningData/exportEditLogs）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>TEMPLATE_PATTERNS（13パターン）+ detectRepetitions() + checkSentenceLength() — 高度AIっぽさ除去エンジン</div>
+          <div class="phase-item"><span class="pi-done">✅</span>IBM訴求20軸完成（consulting / innovation / hybrid_cloud / diversity / mentorship / startup_dna 追加）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>Story Planner成功例連携（callStoryPlannerAPIに_successExampleCacheを注入）</div>
+          <div class="phase-item"><span class="pi-done">✅</span>エラーメッセージUX改善（項目別具体的メッセージ）・ステッパーtooltip追加</div>
         </div>
       </div>
     </div>
 
     <div class="phase-row">
-      <div class="phase-marker pm-future"></div>
+      <div class="phase-marker pm-active"></div>
       <div class="phase-content">
         <div class="phase-head">
-          <div class="phase-name">Phase 4 — IBM Cloud移行</div>
-          <span class="phase-tag pt-future">v2.0〜</span>
+          <div class="phase-name">v2.0 — インフラ整備（現在）</div>
+          <span class="phase-tag pt-active">✅ 完了 → v2.0（現在）</span>
         </div>
         <div class="phase-items">
-          <div class="phase-item"><span class="pi-todo">⬜</span>IBM Cloud Code Engine へのバックエンド移行（サーバーレスAPI）</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>Cloudant DB — localStorage脱却・スカウト履歴の永続化</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>IBM App ID — チーム認証・ユーザー別履歴管理</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>Netlify Function watsonxプロキシ対応</strong> — backend:"watsonx" フラグで OpenAI / watsonx を自動切り替え。WX_URL / WX_TOKEN / WX_PROJECT_ID 環境変数で管理</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>buildRequestBody() v2.0強化</strong> — Netlify+watsonx時は backend フラグ付きで送信。ローカル直接接続も継続対応</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>IndexedDB永続化レイヤー</strong> — openIDB / idbPut / idbGetAll / idbDelete。スカウト履歴・修正ログ・プロジェクトをIndexedDBに二重保存（localStorage上限突破）</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>設定バックアップ/インポート</strong> — exportSettings() / importSettings() でAPIキー・履歴をJSONバックアップ・復元</div>
+          <div class="phase-item"><span class="pi-done">✅</span><strong>watsonx接続テストUI</strong> — testWatsonxConnection() + UIボタン「▶ テスト実行」→ ✓/✗即表示</div>
+          <div class="phase-item"><span class="pi-done">✅</span>loadScoutHistoryAll() — IndexedDB から全履歴取得（localStorage の50件上限を超えた分も含む）</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-marker pm-next"></div>
+      <div class="phase-content">
+        <div class="phase-head">
+          <div class="phase-name">v3.0 — チーム利用</div>
+          <span class="phase-tag pt-next">次のバージョン</span>
+        </div>
+        <div class="phase-items">
+          <div class="phase-item"><span class="pi-todo">⬜</span>IBM App ID — SSO / チーム認証 / ユーザー別履歴管理</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>Cloudant DB — 完全なクラウド永続化（IndexedDBのサーバー版）</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>プロジェクト共有 — 求人情報・分析結果をチームで共有</div>
           <div class="phase-item"><span class="pi-todo">⬜</span>返信結果フィードバック学習ループの本格稼働</div>
         </div>
       </div>
@@ -436,14 +460,14 @@ tr:last-child td{border-bottom:none}
       <div class="phase-marker pm-future"></div>
       <div class="phase-content">
         <div class="phase-head">
-          <div class="phase-name">Phase 5 — watsonx本番化</div>
-          <span class="phase-tag pt-future">v2.0〜</span>
+          <div class="phase-name">v4.0 — 学習型AIエージェント</div>
+          <span class="phase-tag pt-future">将来</span>
         </div>
         <div class="phase-items">
-          <div class="phase-item"><span class="pi-todo">⬜</span>watsonx.ai (Granite) モデルへの完全切り替え</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>修正ログ学習 — 蓄積したfew-shotを自動適用してスカウト品質を継続向上</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>watsonx.ai Granite本番モデルへの完全移行</div>
+          <div class="phase-item"><span class="pi-todo">⬜</span>Few-shot最適化ダッシュボード（修正パターンの可視化・管理）</div>
           <div class="phase-item"><span class="pi-todo">⬜</span>PDF/Word求人票の自動読み込み（文書AI）</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>バリエーション生成（トーン：丁寧/カジュアル/媒体別）</div>
-          <div class="phase-item"><span class="pi-todo">⬜</span>スコアが低い軸のセクションをハイライト</div>
         </div>
       </div>
     </div>
