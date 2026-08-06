@@ -1482,6 +1482,189 @@ textarea.tall { min-height:110px; }
 }
 .sp-meta-avoid .sp-meta-value { color: var(--amber); }
 
+/* ══════════════════════════════════════════
+   v1.4 — Story Planner 直接編集UI
+══════════════════════════════════════════ */
+
+/* 編集モード切替バー */
+.sp-edit-toggle-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin-bottom: 16px;
+}
+.sp-edit-toggle-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.sp-edit-toggle-btn {
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-l);
+  border: 1.5px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.sp-edit-toggle-btn:hover { background: var(--accent); color: #fff; }
+.sp-edit-toggle-btn.active { background: var(--accent); color: #fff; }
+
+/* 編集フォーム全体 */
+.sp-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.sp-edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.sp-edit-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--muted);
+  cursor: default;
+}
+.sp-edit-ta {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 11px;
+  resize: vertical;
+  min-height: 52px;
+  transition: border-color .15s;
+  box-sizing: border-box;
+}
+.sp-edit-ta:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+
+.sp-edit-sel {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 11px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.sp-edit-sel:focus { outline: none; border-color: var(--accent); }
+
+/* 会話フロー編集 */
+.sp-edit-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sp-edit-flow-item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 8px;
+  align-items: flex-start;
+}
+.sp-edit-flow-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-top: 9px;
+}
+.sp-edit-flow-step {
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  background: #1f2937;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sp-edit-flow-phase {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* IBM訴求編集 */
+.sp-edit-appeals {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sp-edit-appeal-item {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sp-edit-appeal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sp-edit-appeal-rank-badge {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sp-edit-appeal-rank-badge.r2 { background: #7c3aed; }
+.sp-edit-appeal-rank-badge.r3 { background: #059669; }
+.sp-edit-appeal-name-input {
+  flex: 1;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  padding: 5px 9px;
+  transition: border-color .15s;
+}
+.sp-edit-appeal-name-input:focus { outline: none; border-color: var(--accent); }
+.sp-edit-appeal-sub-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+/* 保存ボタン行 */
+.sp-edit-save-row {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0 4px;
+  border-top: 1px solid var(--border);
+  margin-top: 6px;
+}
+
 /* 採用担当者メモ */
 .sp-edit-note-wrap {
   margin-top: 16px;

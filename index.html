@@ -430,64 +430,156 @@
         </div>
         <div id="spContent" style="display:none">
 
-          <!-- 会話設計のサマリー -->
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#2563eb"></div>
-              冒頭フォーカス — 最初に何に触れるか
-            </div>
-            <div class="sp-value" id="sp-openingFocus"></div>
+          <!-- 編集モード切替 -->
+          <div class="sp-edit-toggle-bar">
+            <span class="sp-edit-toggle-label">会話設計を直接編集</span>
+            <button class="sp-edit-toggle-btn" id="spEditToggleBtn" onclick="toggleSpEdit()">✎ 編集モード</button>
           </div>
 
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#7c3aed"></div>
-              能力承認 — 最初に何を認めるか
-            </div>
-            <div class="sp-value" id="sp-capability"></div>
-          </div>
+          <!-- 表示モード -->
+          <div id="spViewMode">
 
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#059669"></div>
-              キャリア仮説 — どんな未来を想像させるか
+            <!-- 会話設計のサマリー -->
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#2563eb"></div>
+                冒頭フォーカス — 最初に何に触れるか
+              </div>
+              <div class="sp-value" id="sp-openingFocus"></div>
             </div>
-            <div class="sp-value" id="sp-hypothesis"></div>
-          </div>
 
-          <!-- IBM訴求設計 -->
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#d97706"></div>
-              IBM訴求設計 — どの訴求をどの順番で
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#7c3aed"></div>
+                能力承認 — 最初に何を認めるか
+              </div>
+              <div class="sp-value" id="sp-capability"></div>
             </div>
-            <div class="sp-appeals" id="sp-appeals"></div>
-          </div>
 
-          <!-- 会話フロー -->
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#be185d"></div>
-              会話フロー — STEP1〜5の設計
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#059669"></div>
+                キャリア仮説 — どんな未来を想像させるか
+              </div>
+              <div class="sp-value" id="sp-hypothesis"></div>
             </div>
-            <div class="sp-flow" id="sp-flow"></div>
-          </div>
 
-          <!-- クロージング + 文体 -->
-          <div class="sp-meta-row">
-            <div class="sp-meta-item">
-              <div class="sp-meta-label">クロージングスタイル</div>
-              <div class="sp-meta-value" id="sp-closing"></div>
+            <!-- IBM訴求設計 -->
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#d97706"></div>
+                IBM訴求設計 — どの訴求をどの順番で
+              </div>
+              <div class="sp-appeals" id="sp-appeals"></div>
             </div>
-            <div class="sp-meta-item">
-              <div class="sp-meta-label">文体指示</div>
-              <div class="sp-meta-value" id="sp-tone"></div>
+
+            <!-- 会話フロー -->
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#be185d"></div>
+                会話フロー — STEP1〜5の設計
+              </div>
+              <div class="sp-flow" id="sp-flow"></div>
             </div>
-            <div class="sp-meta-item sp-meta-avoid">
-              <div class="sp-meta-label">⚠️ 避けること</div>
-              <div class="sp-meta-value" id="sp-avoid"></div>
+
+            <!-- クロージング + 文体 -->
+            <div class="sp-meta-row">
+              <div class="sp-meta-item">
+                <div class="sp-meta-label">クロージングスタイル</div>
+                <div class="sp-meta-value" id="sp-closing"></div>
+              </div>
+              <div class="sp-meta-item">
+                <div class="sp-meta-label">文体指示</div>
+                <div class="sp-meta-value" id="sp-tone"></div>
+              </div>
+              <div class="sp-meta-item sp-meta-avoid">
+                <div class="sp-meta-label">⚠️ 避けること</div>
+                <div class="sp-meta-value" id="sp-avoid"></div>
+              </div>
             </div>
-          </div>
+
+          </div><!-- /#spViewMode -->
+
+          <!-- 編集モード（初期非表示） -->
+          <div id="spEditMode" style="display:none">
+            <div class="sp-edit-form">
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#2563eb"></div>
+                  冒頭フォーカス — 最初に何に触れるか
+                </label>
+                <textarea class="sp-edit-ta" id="spe-openingFocus" rows="2" oninput="spEditSync('openingFocus', this.value)"></textarea>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#7c3aed"></div>
+                  能力承認 — 最初に何を認めるか
+                </label>
+                <textarea class="sp-edit-ta" id="spe-capability" rows="2" oninput="spEditSync('capabilityToAcknowledge', this.value)"></textarea>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#059669"></div>
+                  キャリア仮説 — どんな未来を想像させるか
+                </label>
+                <textarea class="sp-edit-ta" id="spe-hypothesis" rows="2" oninput="spEditSync('careerHypothesis', this.value)"></textarea>
+              </div>
+
+              <!-- 会話フロー編集（STEP1〜5） -->
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#be185d"></div>
+                  会話フロー — STEP1〜5の設計
+                </label>
+                <div class="sp-edit-flow" id="spe-flowFields"></div>
+              </div>
+
+              <!-- IBM訴求順序変更 -->
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#d97706"></div>
+                  IBM訴求設計 — 理由と具体例を編集
+                </label>
+                <div class="sp-edit-appeals" id="spe-appealFields"></div>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#94a3b8"></div>
+                  クロージングスタイル
+                </label>
+                <select class="sp-edit-sel" id="spe-closingStyle" onchange="spEditSync('closingStyle', this.value)">
+                  <option value="情報交換型">情報交換型</option>
+                  <option value="カジュアル型">カジュアル型</option>
+                  <option value="提案型">提案型</option>
+                </select>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#94a3b8"></div>
+                  文体指示
+                </label>
+                <textarea class="sp-edit-ta" id="spe-writingTone" rows="2" oninput="spEditSync('writingTone', this.value)"></textarea>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label" style="color:var(--amber)">
+                  <div class="sp-dot" style="background:#d97706"></div>
+                  ⚠️ このスカウトで避けること
+                </label>
+                <textarea class="sp-edit-ta" id="spe-avoidInThisScout" rows="2" oninput="spEditSync('avoidInThisScout', this.value)"></textarea>
+              </div>
+
+              <div class="sp-edit-save-row">
+                <button class="btn btn-primary btn-sm" onclick="applySpEdit()">✓ 編集を保存して表示モードへ</button>
+                <button class="btn btn-ghost btn-sm" onclick="cancelSpEdit()">キャンセル</button>
+              </div>
+            </div>
+          </div><!-- /#spEditMode -->
 
           <!-- 編集ノート（採用担当者が修正メモを残せる） -->
           <div class="sp-edit-note-wrap">

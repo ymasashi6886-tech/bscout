@@ -1489,6 +1489,189 @@ textarea.tall { min-height:110px; }
 }
 .sp-meta-avoid .sp-meta-value { color: var(--amber); }
 
+/* ══════════════════════════════════════════
+   v1.4 — Story Planner 直接編集UI
+══════════════════════════════════════════ */
+
+/* 編集モード切替バー */
+.sp-edit-toggle-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  margin-bottom: 16px;
+}
+.sp-edit-toggle-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.sp-edit-toggle-btn {
+  padding: 5px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-l);
+  border: 1.5px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.sp-edit-toggle-btn:hover { background: var(--accent); color: #fff; }
+.sp-edit-toggle-btn.active { background: var(--accent); color: #fff; }
+
+/* 編集フォーム全体 */
+.sp-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.sp-edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.sp-edit-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--muted);
+  cursor: default;
+}
+.sp-edit-ta {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 11px;
+  resize: vertical;
+  min-height: 52px;
+  transition: border-color .15s;
+  box-sizing: border-box;
+}
+.sp-edit-ta:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,.10); }
+
+.sp-edit-sel {
+  width: 100%;
+  font: inherit;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 11px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.sp-edit-sel:focus { outline: none; border-color: var(--accent); }
+
+/* 会話フロー編集 */
+.sp-edit-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sp-edit-flow-item {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 8px;
+  align-items: flex-start;
+}
+.sp-edit-flow-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-top: 9px;
+}
+.sp-edit-flow-step {
+  width: 20px; height: 20px;
+  border-radius: 5px;
+  background: #1f2937;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sp-edit-flow-phase {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* IBM訴求編集 */
+.sp-edit-appeals {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sp-edit-appeal-item {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.sp-edit-appeal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sp-edit-appeal-rank-badge {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sp-edit-appeal-rank-badge.r2 { background: #7c3aed; }
+.sp-edit-appeal-rank-badge.r3 { background: #059669; }
+.sp-edit-appeal-name-input {
+  flex: 1;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  padding: 5px 9px;
+  transition: border-color .15s;
+}
+.sp-edit-appeal-name-input:focus { outline: none; border-color: var(--accent); }
+.sp-edit-appeal-sub-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .4px;
+}
+
+/* 保存ボタン行 */
+.sp-edit-save-row {
+  display: flex;
+  gap: 10px;
+  padding: 10px 0 4px;
+  border-top: 1px solid var(--border);
+  margin-top: 6px;
+}
+
 /* 採用担当者メモ */
 .sp-edit-note-wrap {
   margin-top: 16px;
@@ -1950,64 +2133,156 @@ textarea.tall { min-height:110px; }
         </div>
         <div id="spContent" style="display:none">
 
-          <!-- 会話設計のサマリー -->
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#2563eb"></div>
-              冒頭フォーカス — 最初に何に触れるか
-            </div>
-            <div class="sp-value" id="sp-openingFocus"></div>
+          <!-- 編集モード切替 -->
+          <div class="sp-edit-toggle-bar">
+            <span class="sp-edit-toggle-label">会話設計を直接編集</span>
+            <button class="sp-edit-toggle-btn" id="spEditToggleBtn" onclick="toggleSpEdit()">✎ 編集モード</button>
           </div>
 
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#7c3aed"></div>
-              能力承認 — 最初に何を認めるか
-            </div>
-            <div class="sp-value" id="sp-capability"></div>
-          </div>
+          <!-- 表示モード -->
+          <div id="spViewMode">
 
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#059669"></div>
-              キャリア仮説 — どんな未来を想像させるか
+            <!-- 会話設計のサマリー -->
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#2563eb"></div>
+                冒頭フォーカス — 最初に何に触れるか
+              </div>
+              <div class="sp-value" id="sp-openingFocus"></div>
             </div>
-            <div class="sp-value" id="sp-hypothesis"></div>
-          </div>
 
-          <!-- IBM訴求設計 -->
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#d97706"></div>
-              IBM訴求設計 — どの訴求をどの順番で
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#7c3aed"></div>
+                能力承認 — 最初に何を認めるか
+              </div>
+              <div class="sp-value" id="sp-capability"></div>
             </div>
-            <div class="sp-appeals" id="sp-appeals"></div>
-          </div>
 
-          <!-- 会話フロー -->
-          <div class="sp-section">
-            <div class="sp-section-label">
-              <div class="sp-dot" style="background:#be185d"></div>
-              会話フロー — STEP1〜5の設計
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#059669"></div>
+                キャリア仮説 — どんな未来を想像させるか
+              </div>
+              <div class="sp-value" id="sp-hypothesis"></div>
             </div>
-            <div class="sp-flow" id="sp-flow"></div>
-          </div>
 
-          <!-- クロージング + 文体 -->
-          <div class="sp-meta-row">
-            <div class="sp-meta-item">
-              <div class="sp-meta-label">クロージングスタイル</div>
-              <div class="sp-meta-value" id="sp-closing"></div>
+            <!-- IBM訴求設計 -->
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#d97706"></div>
+                IBM訴求設計 — どの訴求をどの順番で
+              </div>
+              <div class="sp-appeals" id="sp-appeals"></div>
             </div>
-            <div class="sp-meta-item">
-              <div class="sp-meta-label">文体指示</div>
-              <div class="sp-meta-value" id="sp-tone"></div>
+
+            <!-- 会話フロー -->
+            <div class="sp-section">
+              <div class="sp-section-label">
+                <div class="sp-dot" style="background:#be185d"></div>
+                会話フロー — STEP1〜5の設計
+              </div>
+              <div class="sp-flow" id="sp-flow"></div>
             </div>
-            <div class="sp-meta-item sp-meta-avoid">
-              <div class="sp-meta-label">⚠️ 避けること</div>
-              <div class="sp-meta-value" id="sp-avoid"></div>
+
+            <!-- クロージング + 文体 -->
+            <div class="sp-meta-row">
+              <div class="sp-meta-item">
+                <div class="sp-meta-label">クロージングスタイル</div>
+                <div class="sp-meta-value" id="sp-closing"></div>
+              </div>
+              <div class="sp-meta-item">
+                <div class="sp-meta-label">文体指示</div>
+                <div class="sp-meta-value" id="sp-tone"></div>
+              </div>
+              <div class="sp-meta-item sp-meta-avoid">
+                <div class="sp-meta-label">⚠️ 避けること</div>
+                <div class="sp-meta-value" id="sp-avoid"></div>
+              </div>
             </div>
-          </div>
+
+          </div><!-- /#spViewMode -->
+
+          <!-- 編集モード（初期非表示） -->
+          <div id="spEditMode" style="display:none">
+            <div class="sp-edit-form">
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#2563eb"></div>
+                  冒頭フォーカス — 最初に何に触れるか
+                </label>
+                <textarea class="sp-edit-ta" id="spe-openingFocus" rows="2" oninput="spEditSync('openingFocus', this.value)"></textarea>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#7c3aed"></div>
+                  能力承認 — 最初に何を認めるか
+                </label>
+                <textarea class="sp-edit-ta" id="spe-capability" rows="2" oninput="spEditSync('capabilityToAcknowledge', this.value)"></textarea>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#059669"></div>
+                  キャリア仮説 — どんな未来を想像させるか
+                </label>
+                <textarea class="sp-edit-ta" id="spe-hypothesis" rows="2" oninput="spEditSync('careerHypothesis', this.value)"></textarea>
+              </div>
+
+              <!-- 会話フロー編集（STEP1〜5） -->
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#be185d"></div>
+                  会話フロー — STEP1〜5の設計
+                </label>
+                <div class="sp-edit-flow" id="spe-flowFields"></div>
+              </div>
+
+              <!-- IBM訴求順序変更 -->
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#d97706"></div>
+                  IBM訴求設計 — 理由と具体例を編集
+                </label>
+                <div class="sp-edit-appeals" id="spe-appealFields"></div>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#94a3b8"></div>
+                  クロージングスタイル
+                </label>
+                <select class="sp-edit-sel" id="spe-closingStyle" onchange="spEditSync('closingStyle', this.value)">
+                  <option value="情報交換型">情報交換型</option>
+                  <option value="カジュアル型">カジュアル型</option>
+                  <option value="提案型">提案型</option>
+                </select>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label">
+                  <div class="sp-dot" style="background:#94a3b8"></div>
+                  文体指示
+                </label>
+                <textarea class="sp-edit-ta" id="spe-writingTone" rows="2" oninput="spEditSync('writingTone', this.value)"></textarea>
+              </div>
+
+              <div class="sp-edit-field">
+                <label class="sp-edit-label" style="color:var(--amber)">
+                  <div class="sp-dot" style="background:#d97706"></div>
+                  ⚠️ このスカウトで避けること
+                </label>
+                <textarea class="sp-edit-ta" id="spe-avoidInThisScout" rows="2" oninput="spEditSync('avoidInThisScout', this.value)"></textarea>
+              </div>
+
+              <div class="sp-edit-save-row">
+                <button class="btn btn-primary btn-sm" onclick="applySpEdit()">✓ 編集を保存して表示モードへ</button>
+                <button class="btn btn-ghost btn-sm" onclick="cancelSpEdit()">キャンセル</button>
+              </div>
+            </div>
+          </div><!-- /#spEditMode -->
 
           <!-- 編集ノート（採用担当者が修正メモを残せる） -->
           <div class="sp-edit-note-wrap">
@@ -2772,18 +3047,22 @@ async function analyzeSuccessExample(exampleText) {
   if (!exampleText || !hasApiKey()) return null;
   const msgs = [
     { role: 'system', content: 'スカウトメール分析の専門家です。JSONのみ返してください。' },
-    { role: 'user', content: `以下の成功スカウト例を分析し、「何が良いのか」を構造化してください。
+    { role: 'user', content: `以下の成功スカウト例を分析し、「何が良いのか」を構造化してください。v1.4では改行リズム・一文長さ・距離感・CTAの言い回しも必ず抽出してください。
 
 ## 成功スカウト例
 ${exampleText}
 
-## 返すJSONの構造
+## 返すJSONの構造（v1.4拡張版）
 {
   "openingStyle": "冒頭の書き方の特徴（1文）",
   "toneKeywords": ["文体を表すキーワード3〜5個"],
   "strongPoints": ["良い点を3〜5個、各15字以内"],
   "usableExpressions": ["そのまま転用できる表現・フレーズを2〜4個"],
-  "structurePattern": "全体の構成パターンの説明（2〜3文）"
+  "structurePattern": "全体の構成パターンの説明（2〜3文）",
+  "lineBreakRhythm": "改行のリズムの特徴（例: '2〜3文ごとに改行・段落が短め'など 1文）",
+  "avgSentenceLength": "平均的な一文の長さの特徴（例: '短文主体・30字前後'など 1文）",
+  "distanceFeel": "読者との距離感・温度感（例: '親近感あり・です/ます調で柔らかい'など 1文）",
+  "ctaStyle": "CTAの言い回しの特徴（例: '「気軽に」「話を聞くだけでもOK」という低圧アプローチ'など 1文）"
 }` }
   ];
   try {
@@ -2794,16 +3073,24 @@ ${exampleText}
 }
 
 /**
- * 成功例分析結果をプロンプト注入文に変換
+ * 成功例分析結果をプロンプト注入文に変換（v1.4: 拡張項目対応）
  */
 function buildSuccessExampleHint(analysis) {
   if (!analysis) return '';
+  const extraHints = [
+    analysis.lineBreakRhythm   ? `- 改行リズム: ${analysis.lineBreakRhythm}` : '',
+    analysis.avgSentenceLength ? `- 一文の長さ: ${analysis.avgSentenceLength}` : '',
+    analysis.distanceFeel      ? `- 距離感・温度感: ${analysis.distanceFeel}` : '',
+    analysis.ctaStyle          ? `- CTAの言い回し: ${analysis.ctaStyle}` : '',
+  ].filter(Boolean).join('\n');
+
   return `## 過去の成功スカウト例から学んだパターン（参考にして自然に活かすこと）
 - 冒頭スタイル: ${analysis.openingStyle || ''}
 - 文体の特徴: ${(analysis.toneKeywords || []).join('・')}
 - 良かった点: ${(analysis.strongPoints || []).join(' / ')}
 - 活かせる表現例: 「${(analysis.usableExpressions || []).join('」「')}」
 - 構成パターン: ${analysis.structurePattern || ''}
+${extraHints}
 ※ 上記はあくまで参考。コピーではなくエッセンスを自分の文章に自然に組み込むこと。`;
 }
 
@@ -3086,15 +3373,17 @@ ${ibmKnowledgeForAnalysis}
   "strategyNote": "今回のアプローチで採用担当者が意識すべき戦略的ポイント（1〜2文）"
 }
 
-appealPriority/recommendedAppealsに使えるIDは（IBM専用11軸）:
+appealPriority/recommendedAppealsに使えるIDは（IBM専用14軸）:
 ai_transformation（AI変革）, watsonx（watsonx）, global（グローバル環境）, scale（大規模案件）,
 social（社会貢献）, training（育成制度）, workstyle（働き方）, benefits（福利厚生）,
-brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）
+brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）,
+finance_dx（金融DX）, public_dx（官公庁・社会インフラDX）, stability（安定・長期雇用）, career_change（キャリアチェンジ支援）
 
-上記IBM専用IDのみ使用。旧ID（tech/career/startup等）は使わないこと。`;
+上記IBM専用IDのみ使用。旧ID（tech/career/startup等）は使わないこと。
+finance_dxは金融業界経験者・金融志向の候補者に、public_dxは官公庁・公共事業関係者に、stabilityは安定志向型に、career_changeはキャリアチェンジ希望者に優先的に使うこと。`;
 
   const messages = [
-    { role: 'system', content: 'あなたはIBM日本の採用担当トップリクルーターです。候補者分析の専門家として、IBM専用の11軸訴求マスタを使ってJSONのみ返してください。' },
+    { role: 'system', content: 'あなたはIBM日本の採用担当トップリクルーターです。候補者分析の専門家として、IBM専用の14軸訴求マスタを使ってJSONのみ返してください。' },
     { role: 'user', content: prompt }
   ];
   const res = await fetch(getApiUrl(), {
@@ -3398,21 +3687,28 @@ improvementsは改善すべき点を2〜3点のみ。高品質な場合は1点�
   renderSelfReview();
 }
 
-// ── セクション個別再生成 ──
+// ── セクション個別再生成（v1.4: Story Planner参照）──
 async function regenSection(sec) {
   const c = S.candidate, j = S.job, a = S.analysis;
   const typeCategory = a.candidateTypeCategory || a.candidateType || '';
+
+  // v1.4: Story Plannerの設計をregenに注入
+  const sp = S.storyPlan || {};
+  const spContext = sp.openingFocus
+    ? `\n## Story Planner（会話設計・必ず従うこと）\n冒頭フォーカス: ${sp.openingFocus}\n能力承認: ${sp.capabilityToAcknowledge || ''}\n文体指示: ${sp.writingTone || ''}\n避けること: ${sp.avoidInThisScout || ''}`
+    : '';
+
   const desc = {
     subject: '件名（40字以内・候補者固有の経験に言及）',
-    intro:   '冒頭文（3〜4文・候補者固有の経験・成果への言及から始める）',
-    why:     'なぜこの候補者に声をかけたか（2〜3文・具体的な経歴への言及）',
-    match:   'ポジションとの接点（2〜3文・具体的なスキルマッチ）',
-    benefit: '候補者にとってのメリット（2〜3文・訴求ポイント:' + S.selectedAppeals.join('・') + 'を反映）',
-    cta:     'カジュアル面談への誘導（2文・プレッシャーなし）'
+    intro:   'Story Plannerの冒頭フォーカス・能力承認に忠実な冒頭文（3〜4文）',
+    why:     'なぜこの候補者に声をかけたか（2〜3文・Story Plannerのキャリア仮説を根拠に）',
+    match:   'ポジションとの接点（2〜3文・Story PlannerのIBM訴求設計の文脈で）',
+    benefit: 'Story PlannerのIBM訴求1〜2位を使ったメリット（2〜3文・具体的数値・事例を含む）',
+    cta:     `Story Plannerの${sp.closingStyle || 'カジュアル型'}スタイルでCTA（2文・プレッシャーなし）`
   };
   const regenMessages = [
-    { role: 'system', content: '優秀な採用担当者としてJSONのみ返してください。' },
-    { role: 'user', content: `候補者:${c.role}(${c.company})、スキル:${c.skills}、志向:${c.reason || '不明'}\n求人:${j.position}(${j.company || ''})、魅力:${j.appeal}\nタイプ:${typeCategory}、訴求優先順位:${(a.appealPriority || []).map(p => p.rank + '位:' + p.appealName).join('・')}、選択訴求:${S.selectedAppeals.join('・')}\n「${desc[sec]}」を1つ生成。JSON:{"${sec}":"テキスト"}` }
+    { role: 'system', content: '日本のIBMトップリクルーターとして、Story Plannerの設計に忠実にJSONのみ返してください。AIっぽい定型表現は使わないこと。' },
+    { role: 'user', content: `候補者:${c.role}(${c.company})、スキル:${c.skills}、志向:${c.reason || '不明'}\n求人:${j.position}(${j.company || ''})、魅力:${j.appeal}\nタイプ:${typeCategory}、訴求優先順位:${(a.appealPriority || []).map(p => p.rank + '位:' + p.appealName).join('・')}、選択訴求:${S.selectedAppeals.join('・')}${spContext}\n\n「${desc[sec]}」を1つ生成。JSON:{"${sec}":"テキスト"}` }
   ];
   const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
@@ -4111,6 +4407,24 @@ function renderStoryPlanner() {
   $('spLoading').style.display = 'none';
   $('spContent').style.display = 'block';
 
+  // 表示モードを確実に表示
+  $('spViewMode').style.display = '';
+  $('spEditMode').style.display = 'none';
+  const toggleBtn = $('spEditToggleBtn');
+  if (toggleBtn) { toggleBtn.textContent = '✎ 編集モード'; toggleBtn.classList.remove('active'); }
+
+  _renderSpViewMode(sp);
+
+  // メモをクリア
+  const noteEl = $('sp-note');
+  if (noteEl) noteEl.value = sp._recruiterNote || '';
+
+  // 学習データにstoryPlanを保存
+  if (S.learningData) S.learningData.storyPlan = { ...sp };
+}
+
+/** 表示モードの描画（分離して再利用可能に） */
+function _renderSpViewMode(sp) {
   // 冒頭フォーカス・能力承認・キャリア仮説
   $('sp-openingFocus').textContent = sp.openingFocus || '';
   $('sp-capability').textContent   = sp.capabilityToAcknowledge || '';
@@ -4137,33 +4451,143 @@ function renderStoryPlanner() {
     </div>`).join('');
 
   // メタ情報
-  const closingBadge = {
-    '情報交換型': '🤝',
-    'カジュアル型': '☕',
-    '提案型': '💼',
-  };
+  const closingBadge = { '情報交換型': '🤝', 'カジュアル型': '☕', '提案型': '💼' };
   $('sp-closing').textContent = `${closingBadge[sp.closingStyle] || ''} ${sp.closingStyle || ''}` + (sp.closingReason ? `（${sp.closingReason}）` : '');
   $('sp-tone').textContent    = sp.writingTone || '';
   $('sp-avoid').textContent   = sp.avoidInThisScout || '';
+}
 
-  // メモをクリア
-  const noteEl = $('sp-note');
-  if (noteEl) noteEl.value = sp._recruiterNote || '';
+// ══════════════════════════════════════════
+// v1.4: Story Planner 直接編集UI
+// ══════════════════════════════════════════
 
-  // 学習データにstoryPlanを保存
-  if (S.learningData) S.learningData.storyPlan = { ...sp };
+/** 編集モード ↔ 表示モードの切り替え */
+function toggleSpEdit() {
+  const isEdit = $('spEditMode').style.display !== 'none';
+  if (isEdit) {
+    cancelSpEdit();
+  } else {
+    _openSpEditMode();
+  }
+}
+
+/** 編集モードを開いてフォームにS.storyPlanの値を反映 */
+function _openSpEditMode() {
+  const sp = S.storyPlan;
+  if (!sp) return;
+
+  $('spViewMode').style.display = 'none';
+  $('spEditMode').style.display = '';
+  const btn = $('spEditToggleBtn');
+  if (btn) { btn.textContent = '← 表示に戻る'; btn.classList.add('active'); }
+
+  // 単一テキストフィールド
+  _setSpEditField('spe-openingFocus',    sp.openingFocus || '');
+  _setSpEditField('spe-capability',      sp.capabilityToAcknowledge || '');
+  _setSpEditField('spe-hypothesis',      sp.careerHypothesis || '');
+  _setSpEditField('spe-writingTone',     sp.writingTone || '');
+  _setSpEditField('spe-avoidInThisScout',sp.avoidInThisScout || '');
+
+  // クロージングスタイル select
+  const sel = $('spe-closingStyle');
+  if (sel) sel.value = sp.closingStyle || '情報交換型';
+
+  // 会話フロー（STEP1〜5）の動的レンダリング
+  const flowEl = $('spe-flowFields');
+  if (flowEl) {
+    flowEl.innerHTML = (sp.conversationFlow || []).map((f, idx) => `
+      <div class="sp-edit-flow-item">
+        <div class="sp-edit-flow-label">
+          <div class="sp-edit-flow-step">${f.step}</div>
+          <div class="sp-edit-flow-phase">${esc(f.phase)}</div>
+        </div>
+        <textarea class="sp-edit-ta" rows="2"
+          oninput="spEditFlowSync(${idx}, this.value)">${esc(f.content)}</textarea>
+      </div>`).join('');
+  }
+
+  // IBM訴求設計（訴求名・理由・例）
+  const appealsEl = $('spe-appealFields');
+  if (appealsEl) {
+    const rankBadgeClass = ['', '', 'r2', 'r3'];
+    appealsEl.innerHTML = (sp.ibmAppeals || []).map((a, idx) => `
+      <div class="sp-edit-appeal-item">
+        <div class="sp-edit-appeal-header">
+          <div class="sp-edit-appeal-rank-badge ${rankBadgeClass[a.rank] || ''}">${a.rank}</div>
+          <input class="sp-edit-appeal-name-input" type="text" value="${esc(a.appeal)}"
+            placeholder="訴求名" oninput="spEditAppealSync(${idx}, 'appeal', this.value)">
+        </div>
+        <div class="sp-edit-appeal-sub-label">理由（なぜこの訴求が刺さるか）</div>
+        <textarea class="sp-edit-ta" rows="2"
+          oninput="spEditAppealSync(${idx}, 'reason', this.value)">${esc(a.reason || '')}</textarea>
+        <div class="sp-edit-appeal-sub-label">IBMの具体例（1文）</div>
+        <textarea class="sp-edit-ta" rows="1"
+          oninput="spEditAppealSync(${idx}, 'ibmExample', this.value)">${esc(a.ibmExample || '')}</textarea>
+      </div>`).join('');
+  }
+}
+
+/** textarea/inputの初期値セット */
+function _setSpEditField(id, val) {
+  const el = $(id);
+  if (!el) return;
+  el.value = val;
+}
+
+/** 単一フィールドのリアルタイム同期（S.storyPlanに即反映） */
+function spEditSync(field, val) {
+  if (!S.storyPlan) return;
+  S.storyPlan[field] = val;
+}
+
+/** 会話フローのリアルタイム同期 */
+function spEditFlowSync(idx, val) {
+  if (!S.storyPlan || !S.storyPlan.conversationFlow) return;
+  if (S.storyPlan.conversationFlow[idx]) S.storyPlan.conversationFlow[idx].content = val;
+}
+
+/** IBM訴求のリアルタイム同期 */
+function spEditAppealSync(idx, field, val) {
+  if (!S.storyPlan || !S.storyPlan.ibmAppeals) return;
+  if (S.storyPlan.ibmAppeals[idx]) S.storyPlan.ibmAppeals[idx][field] = val;
+}
+
+/** 編集内容を保存して表示モードへ戻る */
+function applySpEdit() {
+  if (!S.storyPlan) return;
+  // saveStoryPlanEditでログに保存（メモと一緒に）
+  const note = $('sp-note')?.value || '';
+  saveStoryPlanEdit(S.storyPlan, note);
+  if (S.learningData?.storyPlan) S.learningData.storyPlan.wasEdited = true;
+
+  // 表示モードに戻って再描画
+  $('spEditMode').style.display = 'none';
+  $('spViewMode').style.display = '';
+  const btn = $('spEditToggleBtn');
+  if (btn) { btn.textContent = '✎ 編集モード'; btn.classList.remove('active'); }
+  _renderSpViewMode(S.storyPlan);
+}
+
+/** キャンセル — S.storyPlanは変更しない（リアルタイム同期されているため再描画だけ） */
+function cancelSpEdit() {
+  $('spEditMode').style.display = 'none';
+  $('spViewMode').style.display = '';
+  const btn = $('spEditToggleBtn');
+  if (btn) { btn.textContent = '✎ 編集モード'; btn.classList.remove('active'); }
+  _renderSpViewMode(S.storyPlan);
 }
 
 // ══════════════════════════════════════════
 // STEP5: スカウト文生成・レンダリング（v1.3: Story Planner依存）
 // ══════════════════════════════════════════
 async function generateMail() {
-  // Story Plannerのメモを保存
+  // Story Plannerのメモを保存 + 編集ログを記録
   const noteEl = $('sp-note');
   if (noteEl && S.storyPlan) {
     S.storyPlan._recruiterNote = noteEl.value;
-    // 学習データにメモも保存
     if (S.learningData?.storyPlan) S.learningData.storyPlan._recruiterNote = noteEl.value;
+    // v1.4: メモがあれば編集ログに保存
+    if (noteEl.value.trim()) saveStoryPlanEdit(S.storyPlan, noteEl.value);
   }
   showLoad(5);
   try { if (hasApiKey()) await callMailAPI(); else demoMail(); }
@@ -4174,13 +4598,47 @@ function demoMail() {
   const c = S.candidate, j = S.job, sel = S.selectedAppeals, jCo = j.company || 'IBM';
   const sk0 = c.skills.split(/[,、\n]/)[0].trim();
   const story = (S.analysis?.careerStory || {}).narrative || '';
+
+  // v1.4: Story Plannerが存在する場合はその設計に従ってデモ文を構成
+  const sp = S.storyPlan || {};
+  const spFlow1 = (sp.conversationFlow || []).find(f => f.step === 1)?.content || '';
+  const spFlow2 = (sp.conversationFlow || []).find(f => f.step === 2)?.content || '';
+  const spFlow3 = (sp.conversationFlow || []).find(f => f.step === 3)?.content || '';
+  const spAppeal1 = (sp.ibmAppeals || [])[0];
+  const spAppeal2 = (sp.ibmAppeals || [])[1];
+  const spOpening = sp.openingFocus || '';
+  const spCapability = sp.capabilityToAcknowledge || '';
+
+  const introText = spOpening
+    ? `${spOpening}\n${spCapability ? spCapability : ''}`
+    : `${c.company}で${c.role}として${c.experience.slice(0, 40)}...という経験を積まれてきた点に注目し、ご連絡しました。${story ? '\n' + story.slice(0, 80) + '...' : ''}`;
+
+  const whyText = spFlow1 || spFlow2
+    ? `${spFlow1}\n${spFlow2}`
+    : `${sk0}の実務経験と${c.experience.includes('リード') ? 'チームリードとしての実績' : '高い実装力'}は、このポジションで求めているプロフィールと非常に合致しています。\n特に${c.experience.slice(0, 50)}...という部分が、今回の求人要件に直接マッチしています。`;
+
+  const matchText = spFlow3
+    ? `${spFlow3}\n${j.position}では${j.description.slice(0, 60)}...というプロジェクトに関われます。`
+    : `${j.position}では${j.description.slice(0, 60)}...という業務を担当いただきます。\n${sk0}のご経験は即戦力として活かせる部分が多く、${j.requirements.slice(0, 40)}...という要件にも強く合致しています。`;
+
+  const benefitText = spAppeal1
+    ? `${spAppeal1.ibmExample || spAppeal1.reason || ''}\n${spAppeal2 ? (spAppeal2.ibmExample || spAppeal2.reason || '') : ''}`
+    : `${sel.includes('技術的挑戦') ? 'IBMでは最先端AI・クラウド技術に関わる大規模プロジェクトに携わることができ、' : sel.includes('グローバル環境') ? 'IBMのグローバル環境で170カ国以上のチームと協業できる機会があり、' : 'IBMという環境では、'}${j.appeal.split(/[,、\n]/)[0].trim()}という特徴があります。\n${c.reason ? '「' + c.reason.slice(0, 30) + '...」という志向に応える環境です。' : 'これまでの経験を次のステージで活かしていただけます。'}`;
+
+  const closingStyle = sp.closingStyle || '';
+  const ctaText = closingStyle === '情報交換型'
+    ? `もしよければ、30分ほど情報交換という形でお話しできませんか。選考は一切関係ありません。\nご都合のよいお日時を教えていただければ、こちらで日程を合わせます。`
+    : closingStyle === '提案型'
+    ? `一度、具体的なポジションの詳細をお伝えしながらお話しできればと思います。\n30分、オンラインで構いません。ご都合はいかがでしょうか。`
+    : `30分ほど、選考を前提としないカジュアルなお話しの機会をいただけますか？\n「興味はあるけど転職は考えていない」という方でも大歓迎です。ご都合のよいお日時をいただけますと幸いです。`;
+
   S.mail = {
     subject: `${c.company}での${sk0}ご経験について — ${j.position}のご相談`,
-    intro:   `${c.company}で${c.role}として${c.experience.slice(0, 40)}...という経験を積まれてきた点に注目し、ご連絡しました。${story ? '\n' + story.slice(0, 80) + '...' : ''}`,
-    why:     `${sk0}の実務経験と${c.experience.includes('リード') ? 'チームリードとしての実績' : '高い実装力'}は、このポジションで求めているプロフィールと非常に合致しています。\n特に${c.experience.slice(0, 50)}...という部分が、今回の求人要件に直接マッチしています。`,
-    match:   `${j.position}では${j.description.slice(0, 60)}...という業務を担当いただきます。\n${sk0}のご経験は即戦力として活かせる部分が多く、${j.requirements.slice(0, 40)}...という要件にも強く合致しています。`,
-    benefit: `${sel.includes('技術的挑戦') ? 'IBMでは最先端AI・クラウド技術に関わる大規模プロジェクトに携わることができ、' : sel.includes('グローバル環境') ? 'IBMのグローバル環境で170カ国以上のチームと協業できる機会があり、' : 'IBMという環境では、'}${j.appeal.split(/[,、\n]/)[0].trim()}という特徴があります。\n${c.reason ? '「' + c.reason.slice(0, 30) + '...」という志向に応える環境です。' : 'これまでの経験を次のステージで活かしていただけます。'}`,
-    cta:     `30分ほど、選考を前提としないカジュアルなお話しの機会をいただけますか？\n「興味はあるけど転職は考えていない」という方でも大歓迎です。ご都合のよいお日時をいただけますと幸いです。`
+    intro:   introText.trim(),
+    why:     whyText.trim(),
+    match:   matchText.trim(),
+    benefit: benefitText.trim(),
+    cta:     ctaText
   };
   hideLoad(); renderMail(); renderProcessLog(); go(6);
   // デモ用のセルフレビュー（v1.2新5軸版・遅延実行）

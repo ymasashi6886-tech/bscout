@@ -294,18 +294,22 @@ async function analyzeSuccessExample(exampleText) {
   if (!exampleText || !hasApiKey()) return null;
   const msgs = [
     { role: 'system', content: 'スカウトメール分析の専門家です。JSONのみ返してください。' },
-    { role: 'user', content: `以下の成功スカウト例を分析し、「何が良いのか」を構造化してください。
+    { role: 'user', content: `以下の成功スカウト例を分析し、「何が良いのか」を構造化してください。v1.4では改行リズム・一文長さ・距離感・CTAの言い回しも必ず抽出してください。
 
 ## 成功スカウト例
 ${exampleText}
 
-## 返すJSONの構造
+## 返すJSONの構造（v1.4拡張版）
 {
   "openingStyle": "冒頭の書き方の特徴（1文）",
   "toneKeywords": ["文体を表すキーワード3〜5個"],
   "strongPoints": ["良い点を3〜5個、各15字以内"],
   "usableExpressions": ["そのまま転用できる表現・フレーズを2〜4個"],
-  "structurePattern": "全体の構成パターンの説明（2〜3文）"
+  "structurePattern": "全体の構成パターンの説明（2〜3文）",
+  "lineBreakRhythm": "改行のリズムの特徴（例: '2〜3文ごとに改行・段落が短め'など 1文）",
+  "avgSentenceLength": "平均的な一文の長さの特徴（例: '短文主体・30字前後'など 1文）",
+  "distanceFeel": "読者との距離感・温度感（例: '親近感あり・です/ます調で柔らかい'など 1文）",
+  "ctaStyle": "CTAの言い回しの特徴（例: '「気軽に」「話を聞くだけでもOK」という低圧アプローチ'など 1文）"
 }` }
   ];
   try {
@@ -316,16 +320,24 @@ ${exampleText}
 }
 
 /**
- * 成功例分析結果をプロンプト注入文に変換
+ * 成功例分析結果をプロンプト注入文に変換（v1.4: 拡張項目対応）
  */
 function buildSuccessExampleHint(analysis) {
   if (!analysis) return '';
+  const extraHints = [
+    analysis.lineBreakRhythm   ? `- 改行リズム: ${analysis.lineBreakRhythm}` : '',
+    analysis.avgSentenceLength ? `- 一文の長さ: ${analysis.avgSentenceLength}` : '',
+    analysis.distanceFeel      ? `- 距離感・温度感: ${analysis.distanceFeel}` : '',
+    analysis.ctaStyle          ? `- CTAの言い回し: ${analysis.ctaStyle}` : '',
+  ].filter(Boolean).join('\n');
+
   return `## 過去の成功スカウト例から学んだパターン（参考にして自然に活かすこと）
 - 冒頭スタイル: ${analysis.openingStyle || ''}
 - 文体の特徴: ${(analysis.toneKeywords || []).join('・')}
 - 良かった点: ${(analysis.strongPoints || []).join(' / ')}
 - 活かせる表現例: 「${(analysis.usableExpressions || []).join('」「')}」
 - 構成パターン: ${analysis.structurePattern || ''}
+${extraHints}
 ※ 上記はあくまで参考。コピーではなくエッセンスを自分の文章に自然に組み込むこと。`;
 }
 
@@ -608,15 +620,17 @@ ${ibmKnowledgeForAnalysis}
   "strategyNote": "今回のアプローチで採用担当者が意識すべき戦略的ポイント（1〜2文）"
 }
 
-appealPriority/recommendedAppealsに使えるIDは（IBM専用11軸）:
+appealPriority/recommendedAppealsに使えるIDは（IBM専用14軸）:
 ai_transformation（AI変革）, watsonx（watsonx）, global（グローバル環境）, scale（大規模案件）,
 social（社会貢献）, training（育成制度）, workstyle（働き方）, benefits（福利厚生）,
-brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）
+brand（IBMブランド）, autonomy（裁量）, tech_env（技術環境）,
+finance_dx（金融DX）, public_dx（官公庁・社会インフラDX）, stability（安定・長期雇用）, career_change（キャリアチェンジ支援）
 
-上記IBM専用IDのみ使用。旧ID（tech/career/startup等）は使わないこと。`;
+上記IBM専用IDのみ使用。旧ID（tech/career/startup等）は使わないこと。
+finance_dxは金融業界経験者・金融志向の候補者に、public_dxは官公庁・公共事業関係者に、stabilityは安定志向型に、career_changeはキャリアチェンジ希望者に優先的に使うこと。`;
 
   const messages = [
-    { role: 'system', content: 'あなたはIBM日本の採用担当トップリクルーターです。候補者分析の専門家として、IBM専用の11軸訴求マスタを使ってJSONのみ返してください。' },
+    { role: 'system', content: 'あなたはIBM日本の採用担当トップリクルーターです。候補者分析の専門家として、IBM専用の14軸訴求マスタを使ってJSONのみ返してください。' },
     { role: 'user', content: prompt }
   ];
   const res = await fetch(getApiUrl(), {
@@ -920,21 +934,28 @@ improvementsは改善すべき点を2〜3点のみ。高品質な場合は1点�
   renderSelfReview();
 }
 
-// ── セクション個別再生成 ──
+// ── セクション個別再生成（v1.4: Story Planner参照）──
 async function regenSection(sec) {
   const c = S.candidate, j = S.job, a = S.analysis;
   const typeCategory = a.candidateTypeCategory || a.candidateType || '';
+
+  // v1.4: Story Plannerの設計をregenに注入
+  const sp = S.storyPlan || {};
+  const spContext = sp.openingFocus
+    ? `\n## Story Planner（会話設計・必ず従うこと）\n冒頭フォーカス: ${sp.openingFocus}\n能力承認: ${sp.capabilityToAcknowledge || ''}\n文体指示: ${sp.writingTone || ''}\n避けること: ${sp.avoidInThisScout || ''}`
+    : '';
+
   const desc = {
     subject: '件名（40字以内・候補者固有の経験に言及）',
-    intro:   '冒頭文（3〜4文・候補者固有の経験・成果への言及から始める）',
-    why:     'なぜこの候補者に声をかけたか（2〜3文・具体的な経歴への言及）',
-    match:   'ポジションとの接点（2〜3文・具体的なスキルマッチ）',
-    benefit: '候補者にとってのメリット（2〜3文・訴求ポイント:' + S.selectedAppeals.join('・') + 'を反映）',
-    cta:     'カジュアル面談への誘導（2文・プレッシャーなし）'
+    intro:   'Story Plannerの冒頭フォーカス・能力承認に忠実な冒頭文（3〜4文）',
+    why:     'なぜこの候補者に声をかけたか（2〜3文・Story Plannerのキャリア仮説を根拠に）',
+    match:   'ポジションとの接点（2〜3文・Story PlannerのIBM訴求設計の文脈で）',
+    benefit: 'Story PlannerのIBM訴求1〜2位を使ったメリット（2〜3文・具体的数値・事例を含む）',
+    cta:     `Story Plannerの${sp.closingStyle || 'カジュアル型'}スタイルでCTA（2文・プレッシャーなし）`
   };
   const regenMessages = [
-    { role: 'system', content: '優秀な採用担当者としてJSONのみ返してください。' },
-    { role: 'user', content: `候補者:${c.role}(${c.company})、スキル:${c.skills}、志向:${c.reason || '不明'}\n求人:${j.position}(${j.company || ''})、魅力:${j.appeal}\nタイプ:${typeCategory}、訴求優先順位:${(a.appealPriority || []).map(p => p.rank + '位:' + p.appealName).join('・')}、選択訴求:${S.selectedAppeals.join('・')}\n「${desc[sec]}」を1つ生成。JSON:{"${sec}":"テキスト"}` }
+    { role: 'system', content: '日本のIBMトップリクルーターとして、Story Plannerの設計に忠実にJSONのみ返してください。AIっぽい定型表現は使わないこと。' },
+    { role: 'user', content: `候補者:${c.role}(${c.company})、スキル:${c.skills}、志向:${c.reason || '不明'}\n求人:${j.position}(${j.company || ''})、魅力:${j.appeal}\nタイプ:${typeCategory}、訴求優先順位:${(a.appealPriority || []).map(p => p.rank + '位:' + p.appealName).join('・')}、選択訴求:${S.selectedAppeals.join('・')}${spContext}\n\n「${desc[sec]}」を1つ生成。JSON:{"${sec}":"テキスト"}` }
   ];
   const res = await fetch(getApiUrl(), {
     method: 'POST', headers: apiHeaders(),
