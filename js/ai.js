@@ -453,9 +453,12 @@ function watsonxUrl() {
 }
 
 // ── エンドポイント自動判定 ──
+// Netlifyのみ /api/proxy を使う（GitHub Pagesは除外）
 const IS_NETLIFY = location.hostname !== 'localhost'
   && location.protocol === 'https:'
-  && !location.hostname.includes('127.0.0.1');
+  && !location.hostname.includes('127.0.0.1')
+  && !location.hostname.includes('github.io')
+  && !location.hostname.includes('pages.github.com');
 
 function getApiUrl() {
   if (IS_NETLIFY) return '/api/proxy';

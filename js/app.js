@@ -399,8 +399,11 @@ async function runAnalysis() {
   try { await callAnalysisAPI(); }
   catch (e) {
     hideLoad();
-    if (e.message.includes('demo')) { demoAnalysis(); }
-    else { err('分析エラー: ' + e.message); demoAnalysis(); hideLoad(); }
+    // APIキーなし → デモへ（エラー表示なし）
+    if (e.message.includes('demo')) { demoAnalysis(); return; }
+    // APIエラー → デモへフォールバック（ユーザーに通知のみ）
+    console.warn('分析APIエラー:', e.message);
+    demoAnalysis();
   }
 }
 
@@ -419,10 +422,17 @@ function demoAnalysis() {
   else if (wantsStability)                { typeCategory = '安定志向型';            typeReason = `現職での経験を活かしつつ、より安定した環境・待遇を求めている傾向があります。急成長フェーズよりも、事業基盤が安定した環境を好む可能性があります。`; }
   else                                    { typeCategory = 'キャリアアップ型';      typeReason = `${c.company}での${c.role}としての実績を踏まえ、より大きな責任範囲・役職・影響力を求めてキャリアアップを目指していると判断します。`; }
 
-  const pri1 = wantsChallenge ? { id: 'tech',     name: '技術的挑戦' } : { id: 'career',   name: 'キャリアアップ' };
-  const pri2 = hasLead        ? { id: 'autonomy', name: '裁量・自由度' } : { id: 'startup', name: 'スタートアップ成長' };
-  const pri3 = { id: 'team', name: '優秀なチーム' };
-  const sk0 = c.skills.split(/[,、\n]/)[0].trim();
+  // 実際のIBM_APPEALSのIDを使用
+  const pri1 = wantsChallenge
+    ? { id: 'ai_transformation', name: 'AI Transformation' }
+    : { id: 'training',          name: '育成・スキルアップ' };
+  const pri2 = hasLead
+    ? { id: 'autonomy',   name: '裁量・技術選定' }
+    : { id: 'scale',      name: '大規模案件' };
+  const pri3 = wantsStability
+    ? { id: 'stability',  name: '安定性・ブランド' }
+    : { id: 'tech_env',   name: '技術環境' };
+  const sk0 = (c.skills || '').split(/[,、\n]/)[0]?.trim() || 'エンジニアリング';
 
   S.analysis = {
     candidateTypeCategory: typeCategory,
@@ -433,24 +443,24 @@ function demoAnalysis() {
     avoidPoints:  `・「大手企業の安定性」を前面に出した訴求は逆効果になる可能性\n・「マネジメント不要・個人作業中心」という訴求はリード経験者には響かない可能性`,
     // Phase1: OHEREフレーム
     ohere: {
-      observation: `・${c.company}にて${c.role}として従事\n・スキルセット: ${c.skills.slice(0, 60)}\n・${c.experience.slice(0, 80)}`,
+      observation: `・${c.company || ''}にて${c.role || 'エンジニア'}として従事\n・スキルセット: ${(c.skills || '').slice(0, 60)}\n・${(c.experience || '').slice(0, 80)}`,
       hypothesis:  `${sk0}での実績を武器に、より大きな裁量とインパクトを求めているのではないか。現職での${hasLead ? 'リード経験を活かしつつ' : '専門性を深めつつ'}、次のステージへのタイミングを探っている可能性がある。`,
       evidence:    `・転職理由に「${c.reason ? c.reason.slice(0, 30) : '成長・挑戦'}」への言及\n・${hasLead ? 'チームリード経験はマネジメント志向を示す' : 'スペシャリスト志向が経歴から読み取れる'}\n・スキルセットの広さが市場価値向上意識を反映`,
       recommendation: `冒頭で「${sk0}でのご経験」に言及し、まず候補者の実績を認めるトーンで始める。次に「技術的な課題の大きさ」を具体的に語ることで、相手の好奇心を引き出す。最後はカジュアル面談の提案で低コストな返信を促す。`,
       scoutStrategy: {
-        step1_empathy:    `${c.company}での${c.role}として積み上げてきた経験への共感と、現在の環境が持つ可能性の限界への理解を示す。`,
-        step2_recognition: `${sk0}を活かした${c.experience.includes('リード') ? 'リードとしての実績' : '技術的な成果'}を具体的に言及し、能力を正当に評価していることを伝える。`,
-        step3_future:     `このポジションでは${j.position}として、${j.description.slice(0, 40)}...という挑戦ができることを伝える。`,
+        step1_empathy:    `${c.company || ''}での${c.role || 'エンジニア'}として積み上げてきた経験への共感と、現在の環境が持つ可能性の限界への理解を示す。`,
+        step2_recognition: `${sk0}を活かした${(c.experience || '').includes('リード') ? 'リードとしての実績' : '技術的な成果'}を具体的に言及し、能力を正当に評価していることを伝える。`,
+        step3_future:     `このポジションでは${j.position || 'ポジション'}として、${(j.description || '').slice(0, 40)}...という挑戦ができることを伝える。`,
         step4_ibm:        `IBMのグローバルスケール・最先端技術・社会貢献というユニークな環境が、候補者の志向と合致していることを説明する。`,
         step5_meeting:    `「30分・選考なし・話を聞くだけでもOK」というフレーミングで、返信コストを最小化する。`
       }
     },
     // Phase1: キャリアストーリーAI
     careerStory: {
-      past:      `${c.company}にて${c.role}として、${c.experience.slice(0, 60)}...という実績を積み上げてきた。`,
-      present:   `現在は${sk0}を中心とするスキルセットを武器に、${c.company}で${hasLead ? 'チームをリードする立場として' : '専門家として'}価値を発揮している。`,
-      future:    `${j.position}では${wantsChallenge ? '技術的挑戦と裁量の大きさ' : 'キャリアの拡大と影響範囲の広さ'}を手に入れ、市場でさらに希少な人材へと成長できる可能性がある。`,
-      narrative:  `${c.company}で${c.role}として培ってきた${sk0}の実力は、着実に市場価値を高めてきた証です。現職での経験と実績は本物ですが、次のステージでより大きな挑戦をする時期に来ているのではないでしょうか。${j.position}でのポジションは、その方向性と合致しています。`
+      past:      `${c.company || ''}にて${c.role || 'エンジニア'}として、${(c.experience || '').slice(0, 60)}...という実績を積み上げてきた。`,
+      present:   `現在は${sk0}を中心とするスキルセットを武器に、${c.company || ''}で${hasLead ? 'チームをリードする立場として' : '専門家として'}価値を発揮している。`,
+      future:    `${j.position || 'ポジション'}では${wantsChallenge ? '技術的挑戦と裁量の大きさ' : 'キャリアの拡大と影響範囲の広さ'}を手に入れ、市場でさらに希少な人材へと成長できる可能性がある。`,
+      narrative:  `${c.company || ''}で${c.role || 'エンジニア'}として培ってきた${sk0}の実力は、着実に市場価値を高めてきた証です。現職での経験と実績は本物ですが、次のステージでより大きな挑戦をする時期に来ているのではないでしょうか。${j.position || 'ポジション'}でのポジションは、その方向性と合致しています。`
     },
     // Phase1: 候補者温度感AI
     temperature: {
@@ -464,7 +474,7 @@ function demoAnalysis() {
       { rank: 2, appealId: pri2.id, appealName: pri2.name, reason: `${hasLead ? 'リード経験者は裁量・意思決定権の大きさを重視する傾向があります' : '成長フェーズへの参画意向が読み取れます'}。2番目に有効な訴求として訴求戦略に組み込んでください。` },
       { rank: 3, appealId: pri3.id, appealName: pri3.name, reason: `優秀なエンジニアとの協業機会は、技術・成長志向の候補者に普遍的に有効です。メール内で「チームの質」を具体的に伝えることで差別化できます。` }
     ],
-    otherRecommendedAppeals: wantsChallenge ? ['startup'] : ['salary'],
+    otherRecommendedAppeals: wantsChallenge ? ['startup_dna'] : ['benefits'],
     recommendedAppeals: [pri1.id, pri2.id, pri3.id, wantsChallenge ? 'startup' : 'salary'],
     recruiterGuidance: [
       { judgment: `この候補者は「${typeCategory}」パターンです`, judgmentReason: `${c.company}での${c.role}経験、スキルセット（${sk0}等）、転職理由の組み合わせからこのタイプと判断しています。`, approach: `スカウトメールでは${wantsChallenge ? '「技術的な難易度・裁量の大きさ」を冒頭に前面に出す' : '「キャリアの拡大・影響範囲の広さ」を具体的な数字で示す'}ことで、開封率・返信率を高めてください。` },
@@ -957,8 +967,8 @@ async function generateMail() {
 }
 
 function demoMail() {
-  const c = S.candidate, j = S.job, sel = S.selectedAppeals, jCo = j.company || 'IBM';
-  const sk0 = c.skills.split(/[,、\n]/)[0].trim();
+  const c = S.candidate || {}, j = S.job || {}, sel = S.selectedAppeals || [], jCo = (j.company || 'IBM');
+  const sk0 = (c.skills || '').split(/[,、\n]/)[0]?.trim() || 'エンジニアリング';
   const story = (S.analysis?.careerStory || {}).narrative || '';
 
   // v1.4: Story Plannerが存在する場合はその設計に従ってデモ文を構成
@@ -971,21 +981,29 @@ function demoMail() {
   const spOpening = sp.openingFocus || '';
   const spCapability = sp.capabilityToAcknowledge || '';
 
+  const exp  = c.experience || '';
+  const role = c.role || 'エンジニア';
+  const co   = c.company || '';
+  const pos  = j.position || 'ポジション';
+  const desc = j.description || '';
+  const req  = j.requirements || '';
+  const appl = (j.appeal || '').split(/[,、\n]/)[0]?.trim() || '成長できる環境';
+
   const introText = spOpening
     ? `${spOpening}\n${spCapability ? spCapability : ''}`
-    : `${c.company}で${c.role}として${c.experience.slice(0, 40)}...という経験を積まれてきた点に注目し、ご連絡しました。${story ? '\n' + story.slice(0, 80) + '...' : ''}`;
+    : `${co}で${role}として${exp.slice(0, 40)}...という経験を積まれてきた点に注目し、ご連絡しました。${story ? '\n' + story.slice(0, 80) + '...' : ''}`;
 
   const whyText = spFlow1 || spFlow2
     ? `${spFlow1}\n${spFlow2}`
-    : `${sk0}の実務経験と${c.experience.includes('リード') ? 'チームリードとしての実績' : '高い実装力'}は、このポジションで求めているプロフィールと非常に合致しています。\n特に${c.experience.slice(0, 50)}...という部分が、今回の求人要件に直接マッチしています。`;
+    : `${sk0}の実務経験と${exp.includes('リード') ? 'チームリードとしての実績' : '高い実装力'}は、このポジションで求めているプロフィールと非常に合致しています。\n特に${exp.slice(0, 50)}...という部分が、今回の求人要件に直接マッチしています。`;
 
   const matchText = spFlow3
-    ? `${spFlow3}\n${j.position}では${j.description.slice(0, 60)}...というプロジェクトに関われます。`
-    : `${j.position}では${j.description.slice(0, 60)}...という業務を担当いただきます。\n${sk0}のご経験は即戦力として活かせる部分が多く、${j.requirements.slice(0, 40)}...という要件にも強く合致しています。`;
+    ? `${spFlow3}\n${pos}では${desc.slice(0, 60)}...というプロジェクトに関われます。`
+    : `${pos}では${desc.slice(0, 60)}...という業務を担当いただきます。\n${sk0}のご経験は即戦力として活かせる部分が多く、${req.slice(0, 40)}...という要件にも強く合致しています。`;
 
   const benefitText = spAppeal1
     ? `${spAppeal1.ibmExample || spAppeal1.reason || ''}\n${spAppeal2 ? (spAppeal2.ibmExample || spAppeal2.reason || '') : ''}`
-    : `${sel.includes('技術的挑戦') ? 'IBMでは最先端AI・クラウド技術に関わる大規模プロジェクトに携わることができ、' : sel.includes('グローバル環境') ? 'IBMのグローバル環境で170カ国以上のチームと協業できる機会があり、' : 'IBMという環境では、'}${j.appeal.split(/[,、\n]/)[0].trim()}という特徴があります。\n${c.reason ? '「' + c.reason.slice(0, 30) + '...」という志向に応える環境です。' : 'これまでの経験を次のステージで活かしていただけます。'}`;
+    : `${sel.includes('技術的挑戦') ? 'IBMでは最先端AI・クラウド技術に関わる大規模プロジェクトに携わることができ、' : sel.includes('グローバル環境') ? 'IBMのグローバル環境で170カ国以上のチームと協業できる機会があり、' : 'IBMという環境では、'}${appl}という特徴があります。\n${c.reason ? '「' + c.reason.slice(0, 30) + '...」という志向に応える環境です。' : 'これまでの経験を次のステージで活かしていただけます。'}`;
 
   const closingStyle = sp.closingStyle || '';
   const ctaText = closingStyle === '情報交換型'
@@ -995,7 +1013,7 @@ function demoMail() {
     : `30分ほど、選考を前提としないカジュアルなお話しの機会をいただけますか？\n「興味はあるけど転職は考えていない」という方でも大歓迎です。ご都合のよいお日時をいただけますと幸いです。`;
 
   S.mail = {
-    subject: `${c.company}での${sk0}ご経験について — ${j.position}のご相談`,
+    subject: `${co}での${sk0}ご経験について — ${pos}のご相談`,
     intro:   introText.trim(),
     why:     whyText.trim(),
     match:   matchText.trim(),
