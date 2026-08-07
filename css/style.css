@@ -2521,90 +2521,109 @@ textarea.tall { min-height:110px; }
 }
 
 /* ── トップ3グリッド ── */
+/* ── トップ3 横並びグリッド ── */
 .ap3-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  display: flex;
+  gap: 10px;
   margin-bottom: 4px;
+  align-items: stretch;
 }
-@media (max-width: 720px) { .ap3-grid { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .ap3-grid { flex-direction: column; } }
 
 .ap3-card {
+  flex: 1;
+  min-width: 0;           /* flex子要素の縮小を許可 */
   border: 2px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
   background: var(--bg);
   transition: border-color .15s, box-shadow .15s;
-  cursor: pointer;
 }
 .ap3-card.checked { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
-.ap3-card[data-rank="1"] .ap3-rank-bar { background: #2563eb; }
-.ap3-card[data-rank="2"] .ap3-rank-bar { background: #7c3aed; }
-.ap3-card[data-rank="3"] .ap3-rank-bar { background: #059669; }
 
 .ap3-rank-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
+  gap: 6px;
+  padding: 5px 10px;
 }
+.ap3-card[data-rank="1"] .ap3-rank-bar { background: #2563eb; }
+.ap3-card[data-rank="2"] .ap3-rank-bar { background: #7c3aed; }
+.ap3-card[data-rank="3"] .ap3-rank-bar { background: #059669; }
 .ap3-rank-num {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
   color: #fff;
 }
 .ap3-rank-label {
   font-size: 10px;
   font-weight: 700;
-  color: rgba(255,255,255,.8);
-  letter-spacing: .4px;
+  color: rgba(255,255,255,.75);
 }
 
-.ap3-body { padding: 12px; }
+.ap3-body { padding: 10px 12px 12px; }
 
 .ap3-check-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 7px;
+  margin-bottom: 7px;
 }
 .ap3-cb {
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   accent-color: #2563eb;
   flex-shrink: 0;
   cursor: pointer;
 }
 .ap3-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.ap3-icon { font-size: 16px; }
+.ap3-icon { font-size: 14px; flex-shrink: 0; }
 
 .ap3-desc {
   font-size: 11px;
   color: var(--muted);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   line-height: 1.5;
+  /* 2行で切り捨て */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .ap3-strength {
   font-size: 11px;
   color: var(--text);
-  line-height: 1.55;
+  line-height: 1.5;
   border-left: 3px solid;
-  padding: 6px 8px;
+  padding: 5px 8px;
   border-radius: 0 4px 4px 0;
   margin-bottom: 6px;
+  /* 3行で切り捨て */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 .ap3-reason {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--amber);
   line-height: 1.5;
   font-weight: 600;
+  /* 2行で切り捨て */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 /* ── その他の訴求グリッド ── */

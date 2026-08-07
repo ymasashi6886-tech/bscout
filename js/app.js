@@ -994,7 +994,7 @@ async function generateMail() {
     }
     // S.mailが未設定の場合のみdemoMailを呼ぶ（二重呼び出し防止）
     if (!S.mail) demoMail();
-    else { hideLoad(); renderMail(); renderProcessLog(); go(6); }
+    else { hideLoad(); renderMail(); renderProcessLog(); go(5); }
   }
 }
 
@@ -1052,7 +1052,7 @@ function demoMail() {
     benefit: benefitText.trim(),
     cta:     ctaText
   };
-  hideLoad(); renderMail(); renderProcessLog(); go(6);
+  hideLoad(); renderMail(); renderProcessLog(); go(5);
   // デモ用のセルフレビュー（v1.2新5軸版・遅延実行）
   setTimeout(() => {
     S.selfReview = {

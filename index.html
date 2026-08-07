@@ -59,12 +59,22 @@
 <!-- watsonx 設定パネル (v2.0: 接続テスト・バックアップ機能追加) -->
 <div class="wx-panel" id="wxPanel">
   <div class="wx-panel-inner">
-    <div class="wx-panel-title">モデル・バックエンド設定 <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:8px">v2.0</span></div>
+    <div class="wx-panel-title">AI接続設定 <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:8px">v2.0</span></div>
+
+    <!-- デモモード説明 -->
+    <div style="background:#1f2937;border:1px solid #374151;border-radius:6px;padding:10px 12px;margin-bottom:12px">
+      <div style="font-size:11px;color:#f59e0b;font-weight:700;margin-bottom:4px">📌 現在：デモモード（AIなし）</div>
+      <div style="font-size:11px;color:#9ca3af;line-height:1.6">OpenAI APIキーを入力すると、AIが実際に分析・スカウト文を生成します。<br>キーがない場合もデモ文が生成されます（AIなし）。</div>
+      <div style="margin-top:8px">
+        <a href="https://platform.openai.com/api-keys" target="_blank" style="font-size:11px;color:#60a5fa;text-decoration:none">→ OpenAI APIキーを取得する ↗</a>
+      </div>
+    </div>
+
     <div class="wx-row">
       <span class="wx-label">OpenAIモデル</span>
       <select class="wx-input" id="mdl" onchange="">
         <option value="gpt-4o">GPT-4o（推奨）</option>
-        <option value="gpt-4o-mini">GPT-4o-mini（高速）</option>
+        <option value="gpt-4o-mini">GPT-4o-mini（高速・低コスト）</option>
         <option value="gpt-4-turbo">GPT-4 Turbo</option>
       </select>
     </div>
@@ -78,7 +88,7 @@
     <div id="wxOpenaiFields" class="wx-fields">
       <div class="wx-row">
         <span class="wx-label">APIキー</span>
-        <input type="password" class="wx-input" id="wxApiKey" placeholder="sk-..." oninput="saveWxField('bscout_apikey', this.value)">
+        <input type="password" class="wx-input" id="wxApiKey" placeholder="sk-proj-..." oninput="saveWxField('bscout_apikey', this.value)">
       </div>
     </div>
     <div id="wxWatsonxFields" class="wx-fields" style="display:none">
@@ -138,12 +148,12 @@
 
   <!-- Stepper -->
   <div class="stepper">
-    <div class="st active" id="si1" title="候補者情報と求人情報を入力してください"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
-    <div class="st"        id="si2" title="AIがトップリクルーター視点で候補者を分析します"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
-    <div class="st"        id="si3" title="AIが推奨するIBM訴求ポイントを確認・選択します"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
-    <div class="st"        id="si4" title="AIがスカウト文を書く前の「会話設計」を行います"><div class="st-num">4</div><span class="st-label">会話設計</span></div>
-    <div class="st"        id="si5" title="会話設計に基づいてスカウト文が生成されます（このSTEPはありません）"><div class="st-num">5</div><span class="st-label">文章生成</span></div>
-    <div class="st"        id="si6" title="生成されたスカウト文を編集・コピーして完成です"><div class="st-num">6</div><span class="st-label">編集・完成</span></div>
+    <div class="st active" id="si1" title="候補者情報と求人情報を入力"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
+    <div class="st"        id="si2" title="AIがトップリクルーター視点で分析"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
+    <div class="st"        id="si3" title="AIが推奨するIBM訴求ポイントを選択"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
+    <div class="st"        id="si4" title="AIがスカウト文の会話設計を行います"><div class="st-num">4</div><span class="st-label">会話設計</span></div>
+    <div class="st"        id="si5" title="スカウト文を生成・編集・コピーして完成"><div class="st-num">5</div><span class="st-label">スカウト完成</span></div>
+    <div class="st"        id="si6" style="display:none"></div>
   </div>
 
   <div class="err-bar" id="errBar"></div>

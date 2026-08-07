@@ -1037,7 +1037,7 @@ ${bannedList}
   // v1.5 — 高度品質チェック（同期・即座に実行）
   S.advancedQuality = advancedMailQualityCheck(S.mail);
 
-  hideLoad(); renderMail(); renderProcessLog(); go(6);
+  hideLoad(); renderMail(); renderProcessLog(); go(5);
 }
 
 // ══════════════════════════════════════════

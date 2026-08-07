@@ -2528,90 +2528,109 @@ textarea.tall { min-height:110px; }
 }
 
 /* ── トップ3グリッド ── */
+/* ── トップ3 横並びグリッド ── */
 .ap3-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  display: flex;
+  gap: 10px;
   margin-bottom: 4px;
+  align-items: stretch;
 }
-@media (max-width: 720px) { .ap3-grid { grid-template-columns: 1fr; } }
+@media (max-width: 720px) { .ap3-grid { flex-direction: column; } }
 
 .ap3-card {
+  flex: 1;
+  min-width: 0;           /* flex子要素の縮小を許可 */
   border: 2px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
   background: var(--bg);
   transition: border-color .15s, box-shadow .15s;
-  cursor: pointer;
 }
 .ap3-card.checked { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
-.ap3-card[data-rank="1"] .ap3-rank-bar { background: #2563eb; }
-.ap3-card[data-rank="2"] .ap3-rank-bar { background: #7c3aed; }
-.ap3-card[data-rank="3"] .ap3-rank-bar { background: #059669; }
 
 .ap3-rank-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
+  gap: 6px;
+  padding: 5px 10px;
 }
+.ap3-card[data-rank="1"] .ap3-rank-bar { background: #2563eb; }
+.ap3-card[data-rank="2"] .ap3-rank-bar { background: #7c3aed; }
+.ap3-card[data-rank="3"] .ap3-rank-bar { background: #059669; }
 .ap3-rank-num {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 900;
   color: #fff;
 }
 .ap3-rank-label {
   font-size: 10px;
   font-weight: 700;
-  color: rgba(255,255,255,.8);
-  letter-spacing: .4px;
+  color: rgba(255,255,255,.75);
 }
 
-.ap3-body { padding: 12px; }
+.ap3-body { padding: 10px 12px 12px; }
 
 .ap3-check-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 7px;
+  margin-bottom: 7px;
 }
 .ap3-cb {
-  width: 17px;
-  height: 17px;
+  width: 16px;
+  height: 16px;
   accent-color: #2563eb;
   flex-shrink: 0;
   cursor: pointer;
 }
 .ap3-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 800;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.ap3-icon { font-size: 16px; }
+.ap3-icon { font-size: 14px; flex-shrink: 0; }
 
 .ap3-desc {
   font-size: 11px;
   color: var(--muted);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   line-height: 1.5;
+  /* 2行で切り捨て */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .ap3-strength {
   font-size: 11px;
   color: var(--text);
-  line-height: 1.55;
+  line-height: 1.5;
   border-left: 3px solid;
-  padding: 6px 8px;
+  padding: 5px 8px;
   border-radius: 0 4px 4px 0;
   margin-bottom: 6px;
+  /* 3行で切り捨て */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 .ap3-reason {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--amber);
   line-height: 1.5;
   font-weight: 600;
+  /* 2行で切り捨て */
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 /* ── その他の訴求グリッド ── */
@@ -2730,12 +2749,22 @@ textarea.tall { min-height:110px; }
 <!-- watsonx 設定パネル (v2.0: 接続テスト・バックアップ機能追加) -->
 <div class="wx-panel" id="wxPanel">
   <div class="wx-panel-inner">
-    <div class="wx-panel-title">モデル・バックエンド設定 <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:8px">v2.0</span></div>
+    <div class="wx-panel-title">AI接続設定 <span style="font-size:10px;font-weight:400;color:var(--muted);margin-left:8px">v2.0</span></div>
+
+    <!-- デモモード説明 -->
+    <div style="background:#1f2937;border:1px solid #374151;border-radius:6px;padding:10px 12px;margin-bottom:12px">
+      <div style="font-size:11px;color:#f59e0b;font-weight:700;margin-bottom:4px">📌 現在：デモモード（AIなし）</div>
+      <div style="font-size:11px;color:#9ca3af;line-height:1.6">OpenAI APIキーを入力すると、AIが実際に分析・スカウト文を生成します。<br>キーがない場合もデモ文が生成されます（AIなし）。</div>
+      <div style="margin-top:8px">
+        <a href="https://platform.openai.com/api-keys" target="_blank" style="font-size:11px;color:#60a5fa;text-decoration:none">→ OpenAI APIキーを取得する ↗</a>
+      </div>
+    </div>
+
     <div class="wx-row">
       <span class="wx-label">OpenAIモデル</span>
       <select class="wx-input" id="mdl" onchange="">
         <option value="gpt-4o">GPT-4o（推奨）</option>
-        <option value="gpt-4o-mini">GPT-4o-mini（高速）</option>
+        <option value="gpt-4o-mini">GPT-4o-mini（高速・低コスト）</option>
         <option value="gpt-4-turbo">GPT-4 Turbo</option>
       </select>
     </div>
@@ -2749,7 +2778,7 @@ textarea.tall { min-height:110px; }
     <div id="wxOpenaiFields" class="wx-fields">
       <div class="wx-row">
         <span class="wx-label">APIキー</span>
-        <input type="password" class="wx-input" id="wxApiKey" placeholder="sk-..." oninput="saveWxField('bscout_apikey', this.value)">
+        <input type="password" class="wx-input" id="wxApiKey" placeholder="sk-proj-..." oninput="saveWxField('bscout_apikey', this.value)">
       </div>
     </div>
     <div id="wxWatsonxFields" class="wx-fields" style="display:none">
@@ -2809,12 +2838,12 @@ textarea.tall { min-height:110px; }
 
   <!-- Stepper -->
   <div class="stepper">
-    <div class="st active" id="si1" title="候補者情報と求人情報を入力してください"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
-    <div class="st"        id="si2" title="AIがトップリクルーター視点で候補者を分析します"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
-    <div class="st"        id="si3" title="AIが推奨するIBM訴求ポイントを確認・選択します"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
-    <div class="st"        id="si4" title="AIがスカウト文を書く前の「会話設計」を行います"><div class="st-num">4</div><span class="st-label">会話設計</span></div>
-    <div class="st"        id="si5" title="会話設計に基づいてスカウト文が生成されます（このSTEPはありません）"><div class="st-num">5</div><span class="st-label">文章生成</span></div>
-    <div class="st"        id="si6" title="生成されたスカウト文を編集・コピーして完成です"><div class="st-num">6</div><span class="st-label">編集・完成</span></div>
+    <div class="st active" id="si1" title="候補者情報と求人情報を入力"><div class="st-num">1</div><span class="st-label">候補者情報</span></div>
+    <div class="st"        id="si2" title="AIがトップリクルーター視点で分析"><div class="st-num">2</div><span class="st-label">AI分析</span></div>
+    <div class="st"        id="si3" title="AIが推奨するIBM訴求ポイントを選択"><div class="st-num">3</div><span class="st-label">戦略決定</span></div>
+    <div class="st"        id="si4" title="AIがスカウト文の会話設計を行います"><div class="st-num">4</div><span class="st-label">会話設計</span></div>
+    <div class="st"        id="si5" title="スカウト文を生成・編集・コピーして完成"><div class="st-num">5</div><span class="st-label">スカウト完成</span></div>
+    <div class="st"        id="si6" style="display:none"></div>
   </div>
 
   <div class="err-bar" id="errBar"></div>
@@ -5154,7 +5183,7 @@ ${bannedList}
   // v1.5 — 高度品質チェック（同期・即座に実行）
   S.advancedQuality = advancedMailQualityCheck(S.mail);
 
-  hideLoad(); renderMail(); renderProcessLog(); go(6);
+  hideLoad(); renderMail(); renderProcessLog(); go(5);
 }
 
 // ══════════════════════════════════════════
@@ -6466,7 +6495,7 @@ async function generateMail() {
     }
     // S.mailが未設定の場合のみdemoMailを呼ぶ（二重呼び出し防止）
     if (!S.mail) demoMail();
-    else { hideLoad(); renderMail(); renderProcessLog(); go(6); }
+    else { hideLoad(); renderMail(); renderProcessLog(); go(5); }
   }
 }
 
@@ -6524,7 +6553,7 @@ function demoMail() {
     benefit: benefitText.trim(),
     cta:     ctaText
   };
-  hideLoad(); renderMail(); renderProcessLog(); go(6);
+  hideLoad(); renderMail(); renderProcessLog(); go(5);
   // デモ用のセルフレビュー（v1.2新5軸版・遅延実行）
   setTimeout(() => {
     S.selfReview = {
