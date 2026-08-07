@@ -587,22 +587,11 @@ function parseApiResponse(data) {
 
 function ensureLocalKey() {
   if (IS_NETLIFY) return true;
+  // APIキーがなければダイアログを出さず即falseを返す（デモモードへ）
   if (currentBackend() === 'watsonx') {
-    let tok = localStorage.getItem('bscout_wx_token');
-    if (!tok) {
-      tok = window.prompt('IBM watsonx IAMトークンを入力してください:') || '';
-      if (!tok) return false;
-      localStorage.setItem('bscout_wx_token', tok);
-    }
-    return true;
+    return !!localStorage.getItem('bscout_wx_token');
   }
-  let k = localStorage.getItem('bscout_apikey');
-  if (!k) {
-    k = window.prompt('OpenAI APIキーを入力してください（ローカル実行時のみ）:') || '';
-    if (!k) return false;
-    localStorage.setItem('bscout_apikey', k);
-  }
-  return true;
+  return !!localStorage.getItem('bscout_apikey');
 }
 
 // ── 接続モード表示 ──
@@ -933,6 +922,8 @@ ${successHintForSP}
 // STEP5: スカウト文生成 API（v1.3: Story Planner依存版）
 // ══════════════════════════════════════════
 async function callMailAPI() {
+  // APIキーなし時は即デモへ（ダイアログ不要）
+  if (!IS_NETLIFY && !ensureLocalKey()) { demoMail(); throw new Error('demo'); }
   const c = S.candidate, j = S.job, a = S.analysis, sel = S.selectedAppeals;
   const typeCategory = a.candidateTypeCategory || a.candidateType || '';
   const pri = a.appealPriority || [];

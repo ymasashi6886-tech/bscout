@@ -2465,3 +2465,205 @@ textarea.tall { min-height:110px; }
 }
 .learn-tag-check:hover { background: var(--purple-l); border-color: var(--purple); }
 .learn-tag-check input[type=checkbox] { width: 13px; height: 13px; }
+
+/* ════════════════════════════════════════════
+   STEP3 訴求セレクター 刷新版 CSS
+   ════════════════════════════════════════════ */
+
+/* タイプバナー */
+.ap-type-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #1e293b;
+  border-radius: var(--r);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.ap-type-chip {
+  flex-shrink: 0;
+  background: #2563eb;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+.ap-type-hint {
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+/* セクションヘッド */
+.ap-section-head, .apo-section-head {
+  margin-bottom: 8px;
+}
+.ap-section-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ap-section-star {
+  color: #f59e0b;
+  font-size: 14px;
+}
+.ap-section-note {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ── トップ3グリッド ── */
+.ap3-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 4px;
+}
+@media (max-width: 720px) { .ap3-grid { grid-template-columns: 1fr; } }
+
+.ap3-card {
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--bg);
+  transition: border-color .15s, box-shadow .15s;
+  cursor: pointer;
+}
+.ap3-card.checked { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+.ap3-card[data-rank="1"] .ap3-rank-bar { background: #2563eb; }
+.ap3-card[data-rank="2"] .ap3-rank-bar { background: #7c3aed; }
+.ap3-card[data-rank="3"] .ap3-rank-bar { background: #059669; }
+
+.ap3-rank-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+}
+.ap3-rank-num {
+  font-size: 13px;
+  font-weight: 900;
+  color: #fff;
+}
+.ap3-rank-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,.8);
+  letter-spacing: .4px;
+}
+
+.ap3-body { padding: 12px; }
+
+.ap3-check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.ap3-cb {
+  width: 17px;
+  height: 17px;
+  accent-color: #2563eb;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.ap3-name {
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ap3-icon { font-size: 16px; }
+
+.ap3-desc {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+.ap3-strength {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.55;
+  border-left: 3px solid;
+  padding: 6px 8px;
+  border-radius: 0 4px 4px 0;
+  margin-bottom: 6px;
+}
+.ap3-reason {
+  font-size: 11px;
+  color: var(--amber);
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+/* ── その他の訴求グリッド ── */
+.apo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+@media (max-width: 900px) { .apo-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .apo-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.apo-card {
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+  transition: border-color .15s;
+  cursor: pointer;
+}
+.apo-card.checked { border-color: #2563eb; background: #eff6ff; }
+.apo-card input[type=checkbox] { display: none; } /* チェックボックスは非表示 */
+
+.apo-label {
+  display: block;
+  padding: 10px 10px 8px;
+  cursor: pointer;
+}
+.apo-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.apo-icon { font-size: 15px; }
+.apo-name {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text);
+  flex: 1;
+}
+.apo-rank {
+  font-size: 9px;
+  font-weight: 800;
+  background: var(--surface2);
+  color: var(--muted);
+  padding: 1px 5px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.apo-rank.rec {
+  background: var(--accent-l);
+  color: var(--accent);
+}
+.apo-desc {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+/* チェック済み表示 */
+.apo-card.checked .apo-name { color: #2563eb; }
+.apo-card.checked .apo-desc { color: #1e3a8a; }

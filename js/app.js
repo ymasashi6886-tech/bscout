@@ -597,7 +597,7 @@ function renderAnalysis() {
 }
 
 // ══════════════════════════════════════════
-// STEP3: IBM専用 訴求セレクターレンダリング (Phase2)
+// STEP3: IBM専用 訴求セレクターレンダリング（刷新版）
 // ══════════════════════════════════════════
 function renderAppealSelector() {
   const a = S.analysis;
@@ -606,7 +606,7 @@ function renderAppealSelector() {
   const priMap = {};
   (a.appealPriority || []).forEach(p => { if (p.appealId) priMap[p.appealId] = { reason: p.reason, rank: p.rank }; });
 
-  // マトリクス推奨順でソート：推奨上位を先頭に、それ以外を後ろに
+  // マトリクス推奨順でソート
   const matrixOrder = getIbmAppealsForType(typeCategory);
   const sorted = [
     ...matrixOrder.map(id => IBM_APPEALS.find(a => a.id === id)).filter(Boolean),
@@ -615,85 +615,112 @@ function renderAppealSelector() {
 
   // タイプ専用ヒントバナー
   const typeHint = {
-    '技術スペシャリスト型':  '技術スペシャリスト型はAI Transformation・watsonx・技術環境が最も刺さります。IBMが「技術を社会に実装する場」であることを前面に出してください。',
-    'PM・マネジメント型':    'PM・マネジメント型は大規模案件・AI変革・裁量の訴求が有効です。IBMのプロジェクト規模と意思決定権の大きさを具体的に伝えてください。',
-    'キャリアアップ型':       'キャリアアップ型には育成制度・IBMブランド・大規模案件が響きます。「IBMにいた」という経歴価値と体系的な成長機会を強調してください。',
-    '市場価値向上型':         '市場価値向上型はAI×IBM×グローバルの組み合わせが最強です。IBMのAI変革経験が市場で最も希少な実績になることを訴求してください。',
-    '安定志向型':             '安定志向型にはIBMブランド・福利厚生・働き方・社会貢献が有効です。IBMの112年の実績と安定した事業基盤を具体的に示してください。',
+    '技術スペシャリスト型':  'AI Transformation・watsonx・技術環境が最も刺さります。IBMが「技術を社会に実装する場」であることを前面に。',
+    'PM・マネジメント型':    '大規模案件・AI変革・裁量が有効。プロジェクト規模と意思決定権の大きさを具体的に伝えてください。',
+    'キャリアアップ型':       '育成制度・IBMブランド・大規模案件が響きます。「IBMにいた」という経歴価値を強調してください。',
+    '市場価値向上型':         'AI×IBM×グローバルの組み合わせが最強。AI変革経験が市場で最も希少な実績になることを訴求。',
+    '安定志向型':             'IBMブランド・福利厚生・働き方・社会貢献が有効。112年の実績と安定基盤を具体的に示してください。',
   };
 
-  // ④ 訴求UI改善: トップ3を上部に大きく、残りを折りたたみ
-  const top3   = sorted.filter(ap => priMap[ap.id]?.rank <= 3 && priMap[ap.id]?.rank >= 1)
+  // トップ3 / それ以外に分割
+  const top3   = sorted.filter(ap => priMap[ap.id]?.rank >= 1 && priMap[ap.id]?.rank <= 3)
                         .sort((a, b) => priMap[a.id].rank - priMap[b.id].rank);
   const others = sorted.filter(ap => !(priMap[ap.id]?.rank >= 1 && priMap[ap.id]?.rank <= 3));
 
-  function renderApItem(ap, forceChecked = false) {
-    const isRec    = rec.includes(ap.id);
-    const priInfo  = priMap[ap.id];
-    const rank     = priInfo ? priInfo.rank : (isRec ? '推奨' : '');
-    const reason   = priInfo ? priInfo.reason : '';
-    const rankClass = priInfo?.rank === 1 ? 'rank1' : priInfo?.rank === 2 ? 'rank2' : priInfo?.rank === 3 ? 'rank3' : isRec ? 'recommended' : '';
-    const checked  = forceChecked || isRec;
+  // トップ3カードのレンダリング（大きめ）
+  function renderTop3Card(ap) {
+    const priInfo = priMap[ap.id];
+    const rank    = priInfo?.rank;
+    const reason  = priInfo?.reason || '';
+    const rankColor = rank === 1 ? '#2563eb' : rank === 2 ? '#7c3aed' : '#059669';
+    const rankBg    = rank === 1 ? '#eff6ff'  : rank === 2 ? '#f5f3ff' : '#ecfdf5';
     return `
-      <div class="ibm-appeal-item ${rankClass}">
-        <input type="checkbox" id="ap_${ap.id}" value="${ap.id}" ${checked ? 'checked' : ''}>
-        <label class="ibm-appeal-label" for="ap_${ap.id}" style="--ap-color:${ap.color};--ap-color-l:${ap.colorL}">
-          <div class="ibm-ap-head">
-            <span class="ibm-ap-icon">${ap.icon}</span>
-            <span class="ibm-ap-name">${esc(ap.name)}</span>
-            ${rank ? `<span class="ibm-ap-rank rank-${rank === '推奨' ? 'rec' : rank}">${rank === '推奨' ? 'AI推奨' : rank + '位'}</span>` : ''}
+      <div class="ap3-card" data-rank="${rank}">
+        <div class="ap3-rank-bar" style="background:${rankColor}">
+          <span class="ap3-rank-num">${rank}位</span>
+          <span class="ap3-rank-label">AI推奨</span>
+        </div>
+        <div class="ap3-body">
+          <div class="ap3-check-row">
+            <input type="checkbox" class="ap3-cb" id="ap_${ap.id}" value="${ap.id}" checked>
+            <label class="ap3-name" for="ap_${ap.id}" style="color:${rankColor}">
+              <span class="ap3-icon">${ap.icon}</span> ${esc(ap.name)}
+            </label>
           </div>
-          <div class="ibm-ap-desc">${esc(ap.desc)}</div>
-          <div class="ibm-ap-strength">${esc(ap.ibmStrength)}</div>
-          ${reason ? `<div class="ibm-ap-reason">💡 ${esc(reason)}</div>` : ''}
+          <div class="ap3-desc">${esc(ap.desc)}</div>
+          <div class="ap3-strength" style="border-left-color:${rankColor};background:${rankBg}">${esc(ap.ibmStrength)}</div>
+          ${reason ? `<div class="ap3-reason">💡 ${esc(reason)}</div>` : ''}
+        </div>
+      </div>`;
+  }
+
+  // コンパクトカードのレンダリング（他の訴求）
+  function renderOtherCard(ap) {
+    const isRec  = rec.includes(ap.id);
+    const priInfo = priMap[ap.id];
+    const rank   = priInfo?.rank;
+    const checked = isRec;
+    const rankBadge = rank ? `<span class="apo-rank">${rank}位</span>` : (isRec ? `<span class="apo-rank rec">推奨</span>` : '');
+    return `
+      <div class="apo-card ${checked ? 'checked' : ''}">
+        <input type="checkbox" class="apo-cb" id="ap_${ap.id}" value="${ap.id}" ${checked ? 'checked' : ''}>
+        <label class="apo-label" for="ap_${ap.id}" style="--ap-color:${ap.color}">
+          <div class="apo-head">
+            <span class="apo-icon">${ap.icon}</span>
+            <span class="apo-name">${esc(ap.name)}</span>
+            ${rankBadge}
+          </div>
+          <div class="apo-desc">${esc(ap.desc)}</div>
         </label>
       </div>`;
   }
 
   $('appealGrid').innerHTML = `
-    <div class="ibm-matrix-banner">
-      <div class="imb-type-row">
-        <span class="imb-type-badge">${esc(typeCategory || '未分類')}</span>
-        <span class="imb-type-label">候補者タイプ × IBM訴求 マトリクス最適化</span>
-      </div>
-      <div class="imb-hint">${esc(typeHint[typeCategory] || '候補者タイプに合わせたIBM訴求を選択してください。')}</div>
+    <div class="ap-type-banner">
+      <span class="ap-type-chip">${esc(typeCategory || '未分類')}</span>
+      <span class="ap-type-hint">${esc(typeHint[typeCategory] || '候補者タイプに合わせてIBM訴求を選択してください。')}</span>
     </div>
+
     ${top3.length > 0 ? `
-    <div class="appeal-top3-label">
-      <span class="appeal-top3-badge">AI厳選 トップ3訴求</span>
-      <span class="appeal-top3-sub">この候補者に最も刺さると判断した訴求ポイントです</span>
+    <div class="ap-section-head">
+      <div class="ap-section-title">
+        <span class="ap-section-star">★</span> AI厳選 トップ3訴求
+        <span class="ap-section-note">最初からチェック済み — 必要に応じて変更してください</span>
+      </div>
     </div>
-    <div class="ibm-appeal-grid appeal-top3-grid">${top3.map(ap => renderApItem(ap, true)).join('')}</div>
-    <div class="appeal-others-toggle" id="appealOthersToggle" onclick="toggleOtherAppeals()">
-      <span id="appealOthersToggleText">▼ 他の訴求を見る（${others.length}件）</span>
-    </div>
-    <div class="ibm-appeal-grid appeal-others-grid" id="appealOthersGrid" style="display:none">
-      ${others.map(ap => renderApItem(ap)).join('')}
-    </div>` : `
-    <div class="ibm-appeal-grid">${sorted.map(ap => renderApItem(ap)).join('')}</div>`}`;
+    <div class="ap3-grid">${top3.map(renderTop3Card).join('')}</div>` : ''}
 
-  document.querySelectorAll('.ibm-appeal-item input[type=checkbox]').forEach(cb => {
+    <div class="apo-section-head" style="margin-top:${top3.length > 0 ? '20px' : '0'}">
+      <div class="ap-section-title">その他の訴求ポイント
+        <span class="ap-section-note">チェックを入れると文章生成に反映されます</span>
+      </div>
+    </div>
+    <div class="apo-grid">${others.map(renderOtherCard).join('')}</div>`;
+
+  // チェックボックスのイベント登録
+  document.querySelectorAll('#appealGrid input[type=checkbox]').forEach(cb => {
     cb.addEventListener('change', () => {
-      const item = cb.closest('.ibm-appeal-item');
-      if (cb.checked) item.classList.add('checked'); else item.classList.remove('checked');
+      const card = cb.closest('.ap3-card, .apo-card');
+      if (card) {
+        if (cb.checked) card.classList.add('checked'); else card.classList.remove('checked');
+      }
     });
-    // 初期状態反映
-    if (cb.checked) cb.closest('.ibm-appeal-item').classList.add('checked');
+    const card = cb.closest('.ap3-card, .apo-card');
+    if (card && cb.checked) card.classList.add('checked');
   });
-  $('strategyNote').innerHTML = `<strong>IBMアプローチ戦略メモ：</strong>${esc(a.strategyNote || '')}`;
-}
 
-function toggleOtherAppeals() {
-  const grid   = $('appealOthersGrid');
-  const toggle = $('appealOthersToggle');
-  const text   = $('appealOthersToggleText');
-  if (!grid) return;
-  const isOpen = grid.style.display !== 'none';
-  grid.style.display = isOpen ? 'none' : 'grid';
-  if (text) text.textContent = isOpen
-    ? `▼ 他の訴求を見る（${grid.querySelectorAll('.ibm-appeal-item').length}件）`
-    : `▲ 折りたたむ`;
-  if (toggle) toggle.classList.toggle('open', !isOpen);
+  // apo-card（コンパクトカード）はカード全体クリックでチェックトグル
+  document.querySelectorAll('#appealGrid .apo-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (e.target.tagName === 'INPUT') return; // チェックボックス直接クリック時はデフォルト動作
+      const cb = card.querySelector('input[type=checkbox]');
+      if (!cb) return;
+      cb.checked = !cb.checked;
+      cb.dispatchEvent(new Event('change'));
+    });
+  });
+
+  $('strategyNote').innerHTML = `<strong>IBMアプローチ戦略メモ：</strong>${esc(a.strategyNote || '')}`;
 }
 
 // ══════════════════════════════════════════
@@ -959,10 +986,15 @@ async function generateMail() {
       demoMail();
     }
   } catch (e) {
-    // ① STEP5エラー修正: API失敗時は hideLoad せずデモにフォールバック（demoMailの中でhideLoad+go(6)が呼ばれる）
-    console.warn('generateMail error, falling back to demo:', e.message);
-    err('スカウト生成でエラーが発生しました（デモモードで表示します）: ' + e.message);
-    demoMail();
+    // API失敗・デモ分岐どちらも demoMail() で確実にSTEP6へ
+    console.warn('generateMail fallback:', e.message);
+    if (!e.message?.includes('demo')) {
+      // demo以外のエラー（通信失敗など）のみ通知
+      err('スカウト生成でエラーが発生しました（デモで表示します）');
+    }
+    // S.mailが未設定の場合のみdemoMailを呼ぶ（二重呼び出し防止）
+    if (!S.mail) demoMail();
+    else { hideLoad(); renderMail(); renderProcessLog(); go(6); }
   }
 }
 
